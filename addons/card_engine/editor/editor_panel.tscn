@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dunj7mka6qqgd"]
+
+[node name="CardDatabase" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Container/TopBar"]
+layout_mode = 2
+text = "test"
+
+[node name="Split" type="VSplitContainer" parent="Container"]
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 100
+
+[node name="DataTableScroll" type="ScrollContainer" parent="Container/Split"]
+layout_mode = 2
+
+[node name="DataTable" type="GridContainer" parent="Container/Split/DataTableScroll"]
+layout_mode = 2
+columns = 2
+
+[node name="LineEdit" type="LineEdit" parent="Container/Split/DataTableScroll/DataTable"]
+layout_mode = 2
+text = "asdf"
+placeholder_text = "asdf"
+
+[node name="Button" type="Button" parent="Container/Split/DataTableScroll/DataTable"]
+layout_mode = 2
+text = "text"
+
+[node name="AbilityEditor" type="VBoxContainer" parent="Container/Split"]
+layout_mode = 2
+
+[node name="TabBar" type="TabBar" parent="Container/Split/AbilityEditor"]
+layout_mode = 2
+tab_count = 2
+tab_0/title = "Ability 1"
+tab_1/title = "Ability 2"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Container/Split/AbilityEditor"]
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 100
+
+[node name="AbilityProps" type="GridContainer" parent="Container/Split/AbilityEditor/HSplitContainer"]
+layout_mode = 2
+columns = 2
