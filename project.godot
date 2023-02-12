@@ -14,6 +14,15 @@ config/name="Starlight"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+CardDatabase="*res://addons/card_engine/card_database.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/card_engine/plugin.cfg")
+
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/canvas_textures/default_texture_filter=0

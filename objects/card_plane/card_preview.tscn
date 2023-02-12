@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://cayr46irqiw8h"]
+
+[ext_resource type="PackedScene" uid="uid://qnpur3opjopg" path="res://objects/card_plane/card_render.tscn" id="1_3g6yo"]
+
+[node name="CardPreview" type="SubViewportContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(240, 336)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="SubViewport"]
+
+[node name="CardRender" parent="SubViewport" instance=ExtResource("1_3g6yo")]
