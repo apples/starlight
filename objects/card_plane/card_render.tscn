@@ -3,33 +3,59 @@
 [ext_resource type="Script" path="res://objects/card_plane/card_render.gd" id="1_m5yay"]
 [ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://data/cards/images/frame.png" id="2_gc1nv"]
 [ext_resource type="Texture2D" uid="uid://scw7ioffqw1j" path="res://data/cards/images/back.png" id="3_mmc3k"]
-[ext_resource type="Texture2D" uid="uid://boydx0pr8pko7" path="res://icon.svg" id="4_peitx"]
-[ext_resource type="Resource" uid="uid://bupongc73fef3" path="res://data/cards/carddata/screet.tres" id="4_xbgf5"]
 [ext_resource type="FontFile" uid="uid://csbkftl0ppmkv" path="res://fonts/Silver.ttf" id="5_1oswe"]
 [ext_resource type="Texture2D" uid="uid://cfiv4igjnlj0o" path="res://data/cards/images/highlight.png" id="5_1xp4r"]
+[ext_resource type="Texture2D" uid="uid://bb07j7tokq6g3" path="res://data/cards/artwork/screet.png" id="6_hu1ff"]
+[ext_resource type="LabelSettings" uid="uid://cnmmt33fm8ff6" path="res://objects/card_plane/card_label_settings.tres" id="8_gb13g"]
 
 [node name="CardRender" type="Node2D"]
 script = ExtResource("1_m5yay")
 frame_texture = ExtResource("2_gc1nv")
 back_texture = ExtResource("3_mmc3k")
-card = ExtResource("4_xbgf5")
 
 [node name="Highlight" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 0, 1)
 texture = ExtResource("5_1xp4r")
 
 [node name="Background" type="Sprite2D" parent="."]
-texture = ExtResource("2_gc1nv")
+texture = ExtResource("3_mmc3k")
 
-[node name="Artwork" type="Sprite2D" parent="."]
+[node name="CardFace" type="Node2D" parent="."]
+visible = false
+
+[node name="Artwork" type="Sprite2D" parent="CardFace"]
 position = Vector2(-8, -58)
 scale = Vector2(3, 3)
-texture = ExtResource("4_peitx")
+texture = ExtResource("6_hu1ff")
 
-[node name="Name" type="Label" parent="."]
+[node name="Name" type="Label" parent="CardFace"]
 offset_left = -88.0
 offset_top = -153.0
 offset_right = -48.0
 offset_bottom = -129.0
 theme_override_fonts/font = ExtResource("5_1oswe")
 theme_override_font_sizes/font_size = 19
-text = "NO_NAME"
+text = "Screet"
+
+[node name="Ability1Description" type="Label" parent="CardFace"]
+offset_left = -114.0
+offset_top = 25.0
+offset_right = 117.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("5_1oswe")
+theme_override_font_sizes/font_size = 19
+text = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
+label_settings = ExtResource("8_gb13g")
+autowrap_mode = 3
+
+[node name="Ability2Description" type="Label" parent="CardFace"]
+offset_left = -114.0
+offset_top = 25.0
+offset_right = 117.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("5_1oswe")
+theme_override_font_sizes/font_size = 19
+text = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
+label_settings = ExtResource("8_gb13g")
+autowrap_mode = 3

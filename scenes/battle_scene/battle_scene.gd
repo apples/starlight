@@ -11,9 +11,7 @@ class_name BattleScene extends Node
 @onready var player_hand := $PlayerHand
 @onready var opponent_hand := $OpponentHand
 
-@onready var cursor := $Cursor
-
-var current_cursor_location: CursorLocation = null
+var screen_layer_stack: Array[BattleScreenLayer] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,38 +27,6 @@ func _ready():
 func _process(delta: float):
 	fiber.execute_one()
 	reconcile()
-	_process_input(delta)
-
-func _process_input(delta: float):
-	var nav_dir: StringName = StringName()
-	
-	if Input.is_action_just_pressed("up"):
-		nav_dir = "up"
-	elif Input.is_action_just_pressed("down"):
-		nav_dir = "down"
-	elif Input.is_action_just_pressed("left"):
-		nav_dir = "left"
-	elif Input.is_action_just_pressed("right"):
-		nav_dir = "right"
-	
-	if nav_dir:
-		if !current_cursor_location:
-			current_cursor_location = CursorLocation.find_location(get_tree(), BattleState.ZoneLocation.new(BattleState.Side.Player, BattleState.Zone.Hand, 0), CursorLocation.LAYER_BATTLE)
-			if !current_cursor_location:
-				current_cursor_location = CursorLocation.find_location(get_tree(), BattleState.ZoneLocation.new(BattleState.Side.Player, BattleState.Zone.BackRow, 1), CursorLocation.LAYER_BATTLE)
-		else:
-			var next := current_cursor_location.navigate(nav_dir)
-			if next:
-				current_cursor_location = next
-			else:
-				# TODO: play bonk sfx
-				pass
-	
-	if current_cursor_location:
-		cursor.visible = true
-		cursor.global_transform = current_cursor_location.global_transform
-	else:
-		cursor.visible = false
 
 func reconcile():
 	var player_state := battle_state.get_side_state(BattleState.Side.Player)
@@ -73,7 +39,7 @@ func reconcile():
 func _reconcile_field(state: BattleState.BattleSideState, field: BattleField):
 	_reconcile_field_row(state.front_row, field.front_row)
 	_reconcile_field_row(state.back_row, field.back_row)
-		
+
 func _reconcile_field_row(state_row: Array[BattleState.UnitState], field_row: Array[CardPlane]):
 	for i in range(state_row.size()):
 		if i >= field_row.size():
@@ -106,6 +72,10 @@ func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: b
 			var left_slot := hand.get_child(i - 1) as CardPlane
 			left_slot.cursor_location.right = cursor_location
 			cursor_location.left = left_slot.cursor_location
+		else:
+			cursor_location.left = null
+		if i == state.hand.size() - 1:
+			cursor_location.right = null
 		if state.side == BattleState.Side.Player:
 			cursor_location.up = player_field.back_row[1].cursor_location
 	
@@ -116,3 +86,34 @@ func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: b
 	
 	for i in range(state.hand.size(), hand.get_child_count()):
 		hand.get_child(i).queue_free()
+
+
+func push_screen(screen_scene) -> BattleScreenLayer:
+	var screen := (
+		screen_scene.instantiate() if screen_scene is PackedScene
+		else screen_scene) as BattleScreenLayer
+	
+	screen.battle_scene = self
+	screen.battle_state = self.battle_state
+	
+	if screen_layer_stack.size() > 0:
+		screen_layer_stack[-1].cover()
+	
+	screen_layer_stack.append(screen)
+	add_child(screen)
+	screen.call_deferred("uncover")
+	
+	return screen
+
+func pop_screen():
+	assert(screen_layer_stack.size() > 0)
+	if screen_layer_stack.size() == 0:
+		return
+	
+	var screen = screen_layer_stack.pop_back()
+	remove_child(screen)
+	screen.queue_free()
+	
+	if screen_layer_stack.size() > 0:
+		screen_layer_stack[-1].uncover()
+

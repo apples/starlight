@@ -147,6 +147,7 @@ func check_future():
 		goto(check_future)
 		return
 	var value = awaiting_future.value
+	var next = future_next_state
 	awaiting_future = null
 	future_next_state = StringName()
-	self.call(future_next_state, value)
+	self.call(next, value)

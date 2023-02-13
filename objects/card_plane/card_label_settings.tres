@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://cnmmt33fm8ff6"]
+
+[ext_resource type="FontFile" uid="uid://csbkftl0ppmkv" path="res://fonts/Silver.ttf" id="1_kxbt5"]
+
+[resource]
+line_spacing = -7.0
+font = ExtResource("1_kxbt5")
+font_size = 19
