@@ -20,7 +20,7 @@ func _init():
 
 func navigate(dir: StringName) -> CursorLocation:
 	assert([&"up", &"down", &"left", &"right"].has(dir), "Invalid direction")
-	var next: CursorLocation = self[dir]
+	var next = self[dir]
 	if next:
 		if next.enabled:
 			return next
@@ -39,3 +39,14 @@ static func find_location(tree: SceneTree, location: BattleState.ZoneLocation, l
 					return cursor_location
 	return null
 
+static func filter_enable(tree: SceneTree, layer: int, filter: Callable) -> Array[CursorLocation]:
+	var results: Array[CursorLocation] = []
+	for cl in tree.get_nodes_in_group("cursor_location"):
+		var cursor_location := cl as CursorLocation
+		if (cursor_location.layers & layer) == 0:
+			cursor_location.enabled = false
+		else:
+			cursor_location.enabled = filter.call(cursor_location)
+			if cursor_location.enabled:
+				results.append(cursor_location)
+	return results
