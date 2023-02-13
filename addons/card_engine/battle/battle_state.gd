@@ -34,26 +34,29 @@ func remove_unit(location: ZoneLocation) -> void:
 func set_unit(location: ZoneLocation, unit: UnitState) -> void:
 	var state = get_side_state(location.side)
 	var zone = state.get_field_zone(location.zone)
+	assert(location.slot < zone.size())
 	if location.slot < zone.size():
 		zone[location.slot] = unit
 
 
-func summon_unit(card: CardInstance, location: ZoneLocation):
+func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 	var unit = get_unit(location)
 	
-	if (unit == null):
+	if unit != null:
+		push_error("Not implemented")
+		return
+	else:
 		unit = UnitState.new()
 		set_unit(location, unit)
+		if card_instance.location.zone == Zone.Hand:
+			var hand_side_state = get_side_state(card_instance.location.side)
+			hand_side_state.remove_from_hand(card_instance)
+		unit.card_instance = card_instance
+		card_instance.location = location
 	
-	if (unit.card != null):
-		push_error("Not implemented")
-	
-	unit.card_instance = card
-	
-	print("Summoned %s at %s" % [card.card_name, location])
+	print("Summoned %s" % card_instance)
 	
 	broadcast_message({ type = "unit_summoned", location = location })
-
 
 func push_event(e: Dictionary) -> void:
 	current_events.append(e)
@@ -101,7 +104,7 @@ func draw_card(side: Side) -> void:
 	var card_instance := state.deck[state.deck.size() - 1]
 	state.deck.remove_at(state.deck.size() - 1)
 	state.hand.append(card_instance)
-	card_instance.location = ZoneLocation.new(side, Zone.Hand)
+	card_instance.location = ZoneLocation.new(side, Zone.Hand, state.hand.size() - 1)
 	
 	send_message_to(side, { type = "card_drawn", side = side, card_instance = card_instance })
 	send_message_to(flip(side), { type = "card_drawn", side = side, card_instance = null })
@@ -116,6 +119,18 @@ func send_message_to(side: Side, e: Dictionary):
 	var state = get_side_state(side)
 	state.agent.handle_message(e)
 
+func get_unit_at(location: ZoneLocation) -> UnitState:
+	match location.tuple():
+		[Side.Player, Zone.BackRow, var idx]:
+			return player.back_row[idx]
+		[Side.Player, Zone.FrontRow, var idx]:
+			return player.front_row[idx]
+		[Side.Opponent, Zone.FrontRow, var idx]:
+			return opponent.front_row[idx]
+		[Side.Opponent, Zone.BackRow, var idx]:
+			return opponent.back_row[idx]
+	return null
+
 class CardInstance:
 	var card: Card
 	var battle_id: int
@@ -124,6 +139,8 @@ class CardInstance:
 		card = c
 		battle_id = id
 		location = l
+	func _to_string():
+		return "<%s, %s, %s>" % [card, battle_id, location]
 
 class BattleSideState extends Resource:
 	var battle_state: BattleState
@@ -135,8 +152,8 @@ class BattleSideState extends Resource:
 	var discard: Array[CardInstance] = []
 	var starlights: Array[CardInstance] = []
 	
-	var front_row: Array[UnitState] = []
-	var back_row: Array[UnitState] = []
+	var front_row: Array[UnitState] = [null, null]
+	var back_row: Array[UnitState] = [null, null, null, null]
 	
 	func _init(bs: BattleState, a: BattleAgent, s: Side):
 		battle_state = bs
@@ -144,6 +161,8 @@ class BattleSideState extends Resource:
 		side = s
 		
 		print("Initting %s" % s)
+		
+		agent.battle_state = bs
 		
 		var card_deck := agent.get_deck()
 		
@@ -162,7 +181,14 @@ class BattleSideState extends Resource:
 			_:
 				push_error("Zone is non-field: %s" % zone)
 				return front_row
-
+	
+	func remove_from_hand(card_instance: CardInstance):
+		var idx := hand.find(card_instance)
+		assert(idx != -1, "Card not found in hand.")
+		hand.remove_at(idx)
+		for i in range(hand.size()):
+			hand[i].location.slot = i
+	
 
 class UnitState extends Resource:
 	var card_instance: CardInstance
@@ -198,7 +224,13 @@ class ZoneLocation extends Resource:
 		slot = i
 	
 	func equals(other: ZoneLocation):
-		return side == other.side and zone == other.zone and slot == other.slot
+		return tuple() == other.tuple()
+	
+	func tuple() -> Array:
+		return [side, zone, slot]
+	
+	func _to_string():
+		return "<%s, %s, %s>" % [Side.keys()[side], Zone.keys()[zone], slot]
 
 static func flip(side: Side) -> Side:
 	match side:
@@ -207,4 +239,3 @@ static func flip(side: Side) -> Side:
 		_:
 			push_error("Not implemented")
 			return Side.Player
-

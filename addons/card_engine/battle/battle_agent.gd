@@ -1,6 +1,6 @@
 class_name BattleAgent extends Node
 
-var battleState: BattleState
+var battle_state: BattleState
 var side: BattleState.Side
 
 func get_deck() -> CardDeck:

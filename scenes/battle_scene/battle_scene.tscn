@@ -10,8 +10,8 @@
 [ext_resource type="Resource" uid="uid://e56r0lowi2ag" path="res://data/decks/test_deck.tres" id="6_e4m36"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_hand.gd" id="10_86xfy"]
-[ext_resource type="Texture2D" uid="uid://cjn42gnmsrct6" path="res://data/cards/images/cursor.png" id="11_bpl4h"]
 [ext_resource type="Texture2D" uid="uid://csbup4415o24m" path="res://scenes/battle_scene/images/field.png" id="12_ivm3m"]
+[ext_resource type="Script" path="res://scenes/battle_scene/screen_layer.gd" id="13_r5s1h"]
 
 [node name="BattleScene" type="Node3D"]
 script = ExtResource("1_vdvqa")
@@ -23,9 +23,10 @@ rules = ExtResource("3_qp2vo")
 [node name="CardFiber" type="Node" parent="BattleState"]
 script = ExtResource("2_vl6gp")
 
-[node name="PlayerAgent" type="Node" parent="BattleState"]
+[node name="PlayerAgent" type="Node" parent="BattleState" node_paths=PackedStringArray("battle_scene")]
 script = ExtResource("4_5xqig")
 deck = ExtResource("6_e4m36")
+battle_scene = NodePath("../..")
 
 [node name="OpponentAgent" type="Node" parent="BattleState"]
 script = ExtResource("5_rwywo")
@@ -59,6 +60,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0
 [node name="OpponentField" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.04907e-06, 0, -12)
 script = ExtResource("8_tbdo0")
+side = 1
 flip_cursor_dirs = true
 
 [node name="BackRow0" parent="OpponentField" instance=ExtResource("2_mdxbd")]
@@ -91,10 +93,6 @@ script = ExtResource("10_86xfy")
 transform = Transform3D(-1, 8.44439e-08, 2.26267e-08, 0, -0.258819, 0.965926, 8.74228e-08, 0.965926, 0.258819, -0.0185368, -0.0319576, -16.0767)
 script = ExtResource("10_86xfy")
 
-[node name="Cursor" type="Sprite3D" parent="."]
-alpha_cut = 1
-texture = ExtResource("11_bpl4h")
-
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
@@ -104,3 +102,6 @@ text = "Howdy"
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.1, -6)
 transparent = false
 texture = ExtResource("12_ivm3m")
+
+[node name="ScreenLayer" type="Node3D" parent="."]
+script = ExtResource("13_r5s1h")
