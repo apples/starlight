@@ -1,12 +1,118 @@
 class_name BattleScene extends Node
 
+@export var card_plane_scene: PackedScene = preload("res://objects/card_plane/card_plane.tscn")
 
-@onready var fiber = $BattleState/CardFiber
+@onready var battle_state: BattleState = $BattleState
+@onready var fiber: CardFiber = $BattleState/CardFiber
+
+@onready var player_field: BattleField = $PlayerField
+@onready var opponent_field: BattleField = $OpponentField
+
+@onready var player_hand := $PlayerHand
+@onready var opponent_hand := $OpponentHand
+
+@onready var cursor := $Cursor
+
+var current_cursor_location: CursorLocation = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	fiber.run_task(RootBattleTask.new())
+	
+	assert(player_field.front_row.size() == opponent_field.front_row.size())
+	for i in range(player_field.front_row.size()):
+		var p := player_field.front_row[i].cursor_location
+		var o := opponent_field.front_row[opponent_field.front_row.size() - i - 1].cursor_location
+		p.up = o
+		o.down = p
 
-
-func _process(delta):
+func _process(delta: float):
 	fiber.execute_one()
+	reconcile()
+	_process_input(delta)
+
+func _process_input(delta: float):
+	var nav_dir: StringName = StringName()
+	
+	if Input.is_action_just_pressed("up"):
+		nav_dir = "up"
+	elif Input.is_action_just_pressed("down"):
+		nav_dir = "down"
+	elif Input.is_action_just_pressed("left"):
+		nav_dir = "left"
+	elif Input.is_action_just_pressed("right"):
+		nav_dir = "right"
+	
+	if nav_dir:
+		if !current_cursor_location:
+			current_cursor_location = CursorLocation.find_location(get_tree(), BattleState.ZoneLocation.new(BattleState.Side.Player, BattleState.Zone.Hand, 0), CursorLocation.LAYER_BATTLE)
+			if !current_cursor_location:
+				current_cursor_location = CursorLocation.find_location(get_tree(), BattleState.ZoneLocation.new(BattleState.Side.Player, BattleState.Zone.BackRow, 1), CursorLocation.LAYER_BATTLE)
+		else:
+			var next := current_cursor_location.navigate(nav_dir)
+			if next:
+				current_cursor_location = next
+			else:
+				# TODO: play bonk sfx
+				pass
+	
+	if current_cursor_location:
+		cursor.visible = true
+		cursor.global_transform = current_cursor_location.global_transform
+	else:
+		cursor.visible = false
+
+func reconcile():
+	var player_state := battle_state.get_side_state(BattleState.Side.Player)
+	var opponent_state := battle_state.get_side_state(BattleState.Side.Opponent)
+	_reconcile_field(player_state, player_field)
+	_reconcile_field(opponent_state, opponent_field)
+	_reconcile_hand(player_state, player_hand, false)
+	_reconcile_hand(opponent_state, opponent_hand, true)
+
+func _reconcile_field(state: BattleState.BattleSideState, field: BattleField):
+	_reconcile_field_row(state.front_row, field.front_row)
+	_reconcile_field_row(state.back_row, field.back_row)
+		
+func _reconcile_field_row(state_row: Array[BattleState.UnitState], field_row: Array[CardPlane]):
+	for i in range(state_row.size()):
+		if i >= field_row.size():
+			push_error("Too many units in row")
+			break
+		_reconcile_field_slot(field_row[i], state_row[i])
+	for i in range(state_row.size(), field_row.size()):
+		_reconcile_field_slot(field_row[i], null)
+
+func _reconcile_field_slot(slot_card_plane: CardPlane, slot_unit: BattleState.UnitState):
+	if slot_unit:
+		slot_card_plane.show_card = true
+		slot_card_plane.card = slot_unit.card_instance.card
+	else:
+		slot_card_plane.show_card = false
+		slot_card_plane.card = null
+
+func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: bool):
+	for i in range(state.hand.size()):
+		var card_plane: CardPlane = null
+		if i < hand.get_child_count():
+			card_plane = hand.get_child(i)
+		else:
+			card_plane = card_plane_scene.instantiate()
+			hand.add_child(card_plane)
+		card_plane.card = state.hand[i].card if not hidden else null
+		card_plane.location = BattleState.ZoneLocation.new(state.side, BattleState.Zone.Hand, i)
+		var cursor_location = card_plane.cursor_location
+		if i > 0:
+			var left_slot := hand.get_child(i - 1) as CardPlane
+			left_slot.cursor_location.right = cursor_location
+			cursor_location.left = left_slot.cursor_location
+		if state.side == BattleState.Side.Player:
+			cursor_location.up = player_field.back_row[1].cursor_location
+	
+	if hand.get_child_count() > 0 and state.side == BattleState.Side.Player:
+		for card_plane in player_field.back_row:
+			var cl := card_plane.cursor_location
+			cl.down = hand.get_child((hand.get_child_count() - 1) / 2).cursor_location
+	
+	for i in range(state.hand.size(), hand.get_child_count()):
+		hand.get_child(i).queue_free()

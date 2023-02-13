@@ -187,7 +187,7 @@ enum Zone {
 	Starlight,
 }
 
-class ZoneLocation:
+class ZoneLocation extends Resource:
 	var side: Side
 	var zone: Zone
 	var slot: int
