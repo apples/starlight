@@ -129,6 +129,26 @@ func get_unit_at(location: ZoneLocation) -> UnitState:
 			return opponent.front_row[idx]
 		[Side.Opponent, Zone.BackRow, var idx]:
 			return opponent.back_row[idx]
+		_:
+			push_warning("Not implemented")
+	return null
+
+func get_card_at(location: ZoneLocation) -> CardInstance:
+	match location.tuple():
+		[Side.Player, Zone.Hand, var idx]:
+			return player.hand[idx]
+		[Side.Player, Zone.BackRow, var idx]:
+			return player.back_row[idx].card_instance if player.back_row[idx] else null
+		[Side.Player, Zone.FrontRow, var idx]:
+			return player.front_row[idx].card_instance if player.front_row[idx] else null
+		[Side.Opponent, Zone.FrontRow, var idx]:
+			return opponent.front_row[idx].card_instance if opponent.front_row[idx] else null
+		[Side.Opponent, Zone.BackRow, var idx]:
+			return opponent.back_row[idx].card_instance if opponent.back_row[idx] else null
+		[Side.Opponent, Zone.Hand, var idx]:
+			return opponent.hand[idx]
+		_:
+			push_warning("Not implemented")
 	return null
 
 class CardInstance:

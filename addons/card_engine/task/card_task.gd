@@ -20,6 +20,8 @@ class Future:
 	func fulfill(v):
 		value = v
 		fulfilled = true
+	func _to_string():
+		return "<unfulfilled future>" if not fulfilled else "<fulfilled, %s>" % value
 
 signal finished()
 
