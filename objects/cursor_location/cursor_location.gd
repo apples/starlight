@@ -2,9 +2,10 @@ class_name CursorLocation extends Node3D
 
 enum {
 	LAYER_BATTLE = 1,
+	LAYER_ACTIONS = 2,
 }
 
-@export_flags("Battle") var layers: int = LAYER_BATTLE
+@export_flags("Battle", "Actions") var layers: int = LAYER_BATTLE
 
 @export var enabled: bool = true
 

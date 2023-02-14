@@ -28,20 +28,21 @@ class_name CardPlane extends Node3D
 		location = value
 		call_deferred("refresh")
 
+@onready var sprite := $Sprite
 @onready var cursor_location := $CursorLocation
 
 func _ready():
-	$Sprite.texture = $SubViewport.get_texture()
-	$CursorLocation.location = location
+	sprite.texture = $SubViewport.get_texture()
+	cursor_location.location = location
 	refresh()
 
 func refresh():
-	$CursorLocation.location = location
+	cursor_location.location = location
 	if show_card:
 		$SubViewport/CardRender.card = card
 		$SubViewport/CardRender.highlight = highlight
 		$SubViewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
-		$Sprite.visible = true
+		sprite.visible = true
 	else:
-		$Sprite.visible = false
+		sprite.visible = false
 

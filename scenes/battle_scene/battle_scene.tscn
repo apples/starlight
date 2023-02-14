@@ -36,6 +36,11 @@ deck = ExtResource("6_e4m36")
 transform = Transform3D(1, 0, 0, 0, 0.408426, 0.912791, 0, -0.912791, 0.408426, 4.76837e-07, 23.4694, 6.16592)
 fov = 40.0
 
+[node name="PreviewCardPlane" parent="Camera" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, 0, 1, -3.00959, -1.78814e-05, -6.61848)
+card = null
+show_card = false
+
 [node name="PlayerField" type="Node3D" parent="."]
 script = ExtResource("8_tbdo0")
 
