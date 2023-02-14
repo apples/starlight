@@ -1,12 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqkhlf501oucc"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scenes/battle_scene/screen_layers/choose_field_location/choose_field_location.gd" id="1_ehy6p"]
-[ext_resource type="Texture2D" uid="uid://cjn42gnmsrct6" path="res://data/cards/images/cursor.png" id="2_ju6tj"]
+[ext_resource type="PackedScene" uid="uid://clme064i8bckt" path="res://objects/card_cursor/card_cursor.tscn" id="2_x7ofl"]
 
 [node name="ChooseFieldLocation" type="Node3D"]
 script = ExtResource("1_ehy6p")
 
-[node name="CardCursor" type="Sprite3D" parent="."]
-visible = false
-alpha_cut = 1
-texture = ExtResource("2_ju6tj")
+[node name="CardCursor" parent="." instance=ExtResource("2_x7ofl")]

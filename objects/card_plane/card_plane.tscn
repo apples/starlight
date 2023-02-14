@@ -22,6 +22,7 @@ render_target_update_mode = 1
 
 [node name="Sprite" type="Sprite3D" parent="."]
 alpha_cut = 1
+texture_filter = 1
 texture = ExtResource("4_bhxf5")
 
 [node name="CursorLocation" type="Node3D" parent="."]

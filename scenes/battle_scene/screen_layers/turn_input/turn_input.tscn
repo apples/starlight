@@ -1,12 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://tj17qjcjtt0l"]
+[gd_scene load_steps=3 format=3 uid="uid://36m05qriftxd"]
 
 [ext_resource type="Script" path="res://scenes/battle_scene/screen_layers/turn_input/turn_input.gd" id="1_tcdem"]
-[ext_resource type="Texture2D" uid="uid://cjn42gnmsrct6" path="res://data/cards/images/cursor.png" id="2_pvjs8"]
+[ext_resource type="PackedScene" uid="uid://dfiiwglym5jdl" path="res://objects/card_cursor/card_cursor.tscn" id="2_wqdyw"]
 
 [node name="TurnInput" type="Node3D"]
 script = ExtResource("1_tcdem")
 
-[node name="CardCursor" type="Sprite3D" parent="."]
-visible = false
-alpha_cut = 1
-texture = ExtResource("2_pvjs8")
+[node name="CardCursor" parent="." instance=ExtResource("2_wqdyw")]
+
+[connection signal="cursor_location_changed" from="CardCursor" to="." method="_on_card_cursor_cursor_location_changed"]

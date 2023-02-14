@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://fyqrc8ikxftu"]
+
+[ext_resource type="Script" path="res://objects/action_cursor/action_cursor.gd" id="1_71gym"]
+[ext_resource type="Texture2D" uid="uid://dnrpwohe0v44q" path="res://objects/action_cursor/action_cursor.png" id="2_yaonu"]
+
+[node name="ActionCursor" type="Node3D"]
+script = ExtResource("1_71gym")
+
+[node name="Sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.160654, -0.0535513, 0)
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_yaonu")
