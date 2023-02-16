@@ -11,7 +11,7 @@ class_name BattleScene extends Node
 @onready var player_hand := $PlayerHand
 @onready var opponent_hand := $OpponentHand
 
-@onready var card_preview := $Camera/PreviewCardPlane
+@onready var card_preview := $UI/CardPreview
 
 var screen_layer_stack: Array[BattleScreenLayer] = []
 
@@ -26,7 +26,7 @@ func _ready():
 		p.up = o
 		o.down = p
 	
-	card_preview.show_card = false
+	card_preview.visible = false
 
 func _process(delta: float):
 	fiber.execute_one()
@@ -123,8 +123,8 @@ func pop_screen():
 
 func set_preview_card(card_instance: BattleState.CardInstance):
 	if not card_instance:
-		card_preview.show_card = false
+		card_preview.visible = false
 		return
 	
-	card_preview.show_card = true
+	card_preview.visible = true
 	card_preview.card = card_instance.card

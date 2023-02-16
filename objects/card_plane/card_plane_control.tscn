@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://bh77c2cyjobnn"]
+
+[ext_resource type="Script" path="res://objects/card_plane/card_plane_control.gd" id="1_37i78"]
+[ext_resource type="PackedScene" uid="uid://qnpur3opjopg" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
+[ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_7gcy2"]
+[ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_lunqm"]
+[ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://data/cards/images/frame.png" id="5_w6bcx"]
+[ext_resource type="Script" path="res://objects/cursor_location/cursor_location.gd" id="7_36vjy"]
+
+[node name="CardPlaneControl" type="Control"]
+custom_minimum_size = Vector2(272, 368)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_37i78")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(272, 368)
+render_target_update_mode = 1
+
+[node name="CardRender" parent="SubViewport" instance=ExtResource("3_6nsie")]
+
+[node name="Camera2D" type="Camera2D" parent="SubViewport"]
+
+[node name="Sprite" type="TextureRect" parent="."]
+texture_filter = 2
+material = ExtResource("3_7gcy2")
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 336.0
+texture = ExtResource("5_w6bcx")
+script = ExtResource("4_lunqm")
+
+[node name="CursorLocation" type="Node2D" parent="."]
+script = ExtResource("7_36vjy")
+
+[connection signal="updated" from="Sprite" to="." method="_on_sprite_updated"]

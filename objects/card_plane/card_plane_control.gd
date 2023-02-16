@@ -1,4 +1,4 @@
-class_name CardPlane extends Node3D
+extends Control
 
 @export var card: Card = null:
 	get:
@@ -33,6 +33,7 @@ class_name CardPlane extends Node3D
 
 func _ready():
 	sprite.texture = $SubViewport.get_texture()
+	sprite._refresh()
 	cursor_location.location = location
 	refresh()
 

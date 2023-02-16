@@ -3,8 +3,7 @@ class_name AttackDamageEffect
 
 @export var amount: int = 0
 
-func task() -> CardTask:
-	return Task.new(self)
+func task() -> CardTask: return Task.new(self)
 
 class Task extends CardTask:
 	var effect: AttackDamageEffect
