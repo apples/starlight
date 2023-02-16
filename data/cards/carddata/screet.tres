@@ -19,7 +19,7 @@ effect = SubResource("Resource_w0dk3")
 [resource]
 script = ExtResource("1_hbw7y")
 id = ""
-card_name = "Screet"
+card_name = "Kainei, Avatar of the Queen of Darkness"
 artwork = ExtResource("2_y4uko")
 kind = 0
 unit_hp = 3

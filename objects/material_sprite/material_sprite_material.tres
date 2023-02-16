@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3]
+
+[ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_material.gdshader" id="1_lp0os"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_lp0os")
+shader_parameter/sprite_filter_trilinear = null
+shader_parameter/alpha_scissor_threshold = 0.5
+shader_parameter/alpha_antialiasing_edge = 0.3
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture_size = null
+shader_parameter/metallic = null
+shader_parameter/metallic_texture_channel = null
+shader_parameter/roughness = null
+shader_parameter/specular = null
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = null
