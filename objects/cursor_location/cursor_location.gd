@@ -1,4 +1,4 @@
-class_name CursorLocation extends Node3D
+class_name CursorLocation extends Node
 
 enum {
 	LAYER_BATTLE = 1,

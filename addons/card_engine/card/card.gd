@@ -12,6 +12,7 @@ enum Kind {
 
 @export var kind: Kind = Kind.UNIT
 @export var unit_hp: int
+@export var unit_level: int
 
 @export var ability1: CardAbility
 @export var ability2: CardAbility

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://sq1x58k7y4rl"]
+
+[ext_resource type="Script" path="res://objects/card_plane/card_control.gd" id="1_7jy4t"]
+[ext_resource type="PackedScene" uid="uid://qnpur3opjopg" path="res://objects/card_plane/card_render.tscn" id="1_ncj5q"]
+
+[node name="CardControl" type="Control"]
+custom_minimum_size = Vector2(240, 336)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 240.0
+offset_bottom = 336.0
+script = ExtResource("1_7jy4t")
+
+[node name="CardRender" parent="." instance=ExtResource("1_ncj5q")]
+position = Vector2(120, 168)

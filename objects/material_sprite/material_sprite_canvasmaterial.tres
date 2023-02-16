@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://buraluh2x3tka"]
+
+[ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_canvasmaterial.gdshader" id="1_ph3ky"]
+
+[resource]
+shader = ExtResource("1_ph3ky")
+shader_parameter/sprite_filter_trilinear = null
