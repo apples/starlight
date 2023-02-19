@@ -6,46 +6,47 @@ class_name CardPlane extends Node3D
 		return card
 	set(value):
 		card = value
-		call_deferred("refresh")
+		refresh()
 
 @export var highlight: CardRender.Highlight = CardRender.Highlight.OFF:
 	get:
 		return highlight
 	set(value):
 		highlight = value
-		call_deferred("refresh")
+		refresh()
 
 @export var show_card: bool = true:
 	get:
 		return show_card
 	set(value):
 		show_card = value
-		call_deferred("refresh")
+		refresh()
 
 @export var location: BattleState.ZoneLocation = null:
 	get:
 		return location
 	set(value):
 		location = value
-		call_deferred("refresh")
+		refresh()
 
 @onready var sprite := $Sprite
 @onready var cursor_location := $CursorLocation
+@onready var subviewport := $SubViewport
+@onready var card_render := $SubViewport/CardRender
 
 func _ready():
-	sprite.texture = $SubViewport.get_texture()
-	cursor_location.location = location
 	refresh()
 
 func refresh():
+	if not is_inside_tree():
+		return
+	
 	cursor_location.location = location
+	
 	if show_card:
-		$SubViewport/CardRender.card = card
-		$SubViewport/CardRender.highlight = highlight
-		$SubViewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
+		card_render.card = card
+		card_render.highlight = highlight
+		subviewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 		sprite.visible = true
 	else:
 		sprite.visible = false
-
-func _on_sprite_updated():
-	call_deferred("refresh")
