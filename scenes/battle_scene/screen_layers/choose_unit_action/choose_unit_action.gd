@@ -2,8 +2,7 @@ extends BattleScreenLayer
 
 @onready var cursor := $CardCursor
 
-var card_instance: BattleState.CardInstance = null
-var location: BattleState.ZoneLocation = null
+var card_plane: CardPlane = null
 
 signal action_chosen(action: Dictionary)
 

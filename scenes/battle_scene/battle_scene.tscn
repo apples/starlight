@@ -1,8 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://dxfsxbmihqmm"]
+[gd_scene load_steps=13 format=3 uid="uid://dxfsxbmihqmm"]
 
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
 [ext_resource type="Script" path="res://addons/card_engine/battle/battle_state.gd" id="2_bdq53"]
-[ext_resource type="PackedScene" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
+[ext_resource type="PackedScene" uid="uid://cfyimib4gsvdf" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
 [ext_resource type="Script" path="res://addons/card_engine/task/card_fiber.gd" id="2_vl6gp"]
 [ext_resource type="Resource" uid="uid://ccejnbeeab8k2" path="res://data/rulesets/default_rules.tres" id="3_qp2vo"]
 [ext_resource type="Script" path="res://scenes/battle_scene/player_agent.gd" id="4_5xqig"]
@@ -11,8 +11,7 @@
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_hand.gd" id="10_86xfy"]
 [ext_resource type="Texture2D" uid="uid://csbup4415o24m" path="res://scenes/battle_scene/images/field.png" id="12_ivm3m"]
-[ext_resource type="Script" path="res://scenes/battle_scene/screen_layer.gd" id="13_r5s1h"]
-[ext_resource type="PackedScene" uid="uid://bh77c2cyjobnn" path="res://objects/card_plane/card_plane_control.tscn" id="13_wngi3"]
+[ext_resource type="PackedScene" uid="uid://dvx53oob87xe4" path="res://objects/card_plane/card_plane_control.tscn" id="13_wngi3"]
 
 [node name="BattleScene" type="Node3D"]
 script = ExtResource("1_vdvqa")
@@ -98,9 +97,6 @@ script = ExtResource("10_86xfy")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.1, -6)
 transparent = false
 texture = ExtResource("12_ivm3m")
-
-[node name="ScreenLayer" type="Node3D" parent="."]
-script = ExtResource("13_r5s1h")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

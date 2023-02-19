@@ -1,7 +1,7 @@
 extends Node
 
 signal sprite_filter_trilinear_changed
-var sprite_filter_trilinear: bool = false:
+var sprite_filter_trilinear: bool = true:
 	get:
 		return sprite_filter_trilinear
 	set(value):

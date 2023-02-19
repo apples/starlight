@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://bupongc73fef3"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://bupongc73fef3"]
 
 [ext_resource type="Script" path="res://addons/card_engine/card/card.gd" id="1_hbw7y"]
 [ext_resource type="Script" path="res://addons/card_engine/card/card_ability.gd" id="1_tqta2"]
@@ -12,9 +12,19 @@ amount = 3
 [sub_resource type="Resource" id="Resource_skvku"]
 script = ExtResource("1_tqta2")
 ability_name = "Bite"
+attack_power = "10"
+mana_cost = "4"
 description = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
 type = 2
 effect = SubResource("Resource_w0dk3")
+
+[sub_resource type="Resource" id="Resource_62j28"]
+script = ExtResource("1_tqta2")
+ability_name = ""
+attack_power = ""
+mana_cost = ""
+description = ""
+type = 1
 
 [resource]
 script = ExtResource("1_hbw7y")
@@ -23,4 +33,6 @@ card_name = "Kainei, Avatar of the Queen of Darkness"
 artwork = ExtResource("2_y4uko")
 kind = 0
 unit_hp = 3
+unit_level = 0
 ability1 = SubResource("Resource_skvku")
+ability2 = SubResource("Resource_62j28")

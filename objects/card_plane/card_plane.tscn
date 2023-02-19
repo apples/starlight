@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://cfyimib4gsvdf"]
 
-[ext_resource type="PackedScene" uid="uid://qnpur3opjopg" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
+[ext_resource type="PackedScene" uid="uid://33lp1pvrvsqc" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane.gd" id="1_q5tqm"]
 [ext_resource type="Resource" uid="uid://bupongc73fef3" path="res://data/cards/carddata/screet.tres" id="2_idvy1"]
-[ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://data/cards/images/frame.png" id="4_bhxf5"]
 [ext_resource type="Material" path="res://objects/material_sprite/material_sprite_material.tres" id="4_xytkv"]
 [ext_resource type="Script" path="res://objects/cursor_location/cursor_location.gd" id="5_ud883"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_3d.gd" id="6_74fw4"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ww8px"]
 
 [node name="CardPlane" type="Node3D"]
 script = ExtResource("1_q5tqm")
@@ -27,7 +28,7 @@ material_override = ExtResource("4_xytkv")
 cast_shadow = 0
 alpha_cut = 1
 texture_filter = 1
-texture = ExtResource("4_bhxf5")
+texture = SubResource("ViewportTexture_ww8px")
 script = ExtResource("6_74fw4")
 
 [node name="CursorLocation" type="Node3D" parent="."]

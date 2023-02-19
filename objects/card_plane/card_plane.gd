@@ -1,3 +1,4 @@
+@tool
 class_name CardPlane extends Node3D
 
 @export var card: Card = null:
