@@ -1,3 +1,4 @@
+@tool
 class_name CardAbility
 extends Resource
 
@@ -15,6 +16,8 @@ enum CardAbilityAttributes {
 }
 
 @export var ability_name: String
+@export var attack_power: String
+@export var mana_cost: String
 @export_multiline var description: String
 
 @export var type: CardAbilityType = CardAbilityType.ACTION

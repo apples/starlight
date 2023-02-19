@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://c55s1j0qj1bn3"]
 
 [ext_resource type="Script" path="res://scenes/battle_scene/screen_layers/choose_field_location/choose_field_location.gd" id="1_ehy6p"]
-[ext_resource type="PackedScene" uid="uid://clme064i8bckt" path="res://objects/card_cursor/card_cursor.tscn" id="2_x7ofl"]
+[ext_resource type="PackedScene" uid="uid://bllqus03x44j5" path="res://objects/card_cursor/card_cursor.tscn" id="2_x7ofl"]
 
 [node name="ChooseFieldLocation" type="Node3D"]
 script = ExtResource("1_ehy6p")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjn42gnmsrct6"
-path="res://.godot/imported/cursor.png-220c039d818a4f1216286d23ee85a3aa.ctex"
+uid="uid://db8xm23r1xx07"
+path="res://.godot/imported/frame_ability_starlight.png-9115d2d316729186f0c1f3a9da33f41e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://data/cards/images/cursor.png"
-dest_files=["res://.godot/imported/cursor.png-220c039d818a4f1216286d23ee85a3aa.ctex"]
+source_file="res://objects/card_plane/images/frame_ability_starlight.png"
+dest_files=["res://.godot/imported/frame_ability_starlight.png-9115d2d316729186f0c1f3a9da33f41e.ctex"]
 
 [params]
 

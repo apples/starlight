@@ -92,7 +92,7 @@ func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: b
 		hand.get_child(i).queue_free()
 
 
-func push_screen(screen_scene) -> BattleScreenLayer:
+func push_screen(screen_scene, init: Callable = func(a): pass) -> BattleScreenLayer:
 	var screen := (
 		screen_scene.instantiate() if screen_scene is PackedScene
 		else screen_scene) as BattleScreenLayer
@@ -105,7 +105,11 @@ func push_screen(screen_scene) -> BattleScreenLayer:
 	
 	screen_layer_stack.append(screen)
 	add_child(screen)
-	screen.call_deferred("uncover")
+	
+	if init:
+		init.call(screen)
+	
+	screen.uncover()
 	
 	return screen
 

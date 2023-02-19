@@ -1,62 +1,368 @@
-[gd_scene load_steps=8 format=3 uid="uid://qnpur3opjopg"]
+[gd_scene load_steps=18 format=3 uid="uid://33lp1pvrvsqc"]
 
 [ext_resource type="Script" path="res://objects/card_plane/card_render.gd" id="1_m5yay"]
-[ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://data/cards/images/frame.png" id="2_gc1nv"]
-[ext_resource type="Texture2D" uid="uid://scw7ioffqw1j" path="res://data/cards/images/back.png" id="3_mmc3k"]
-[ext_resource type="FontFile" uid="uid://csbkftl0ppmkv" path="res://fonts/Silver.ttf" id="5_1oswe"]
-[ext_resource type="Texture2D" uid="uid://cfiv4igjnlj0o" path="res://data/cards/images/highlight.png" id="5_1xp4r"]
+[ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://objects/card_plane/images/frame.png" id="2_2x50j"]
+[ext_resource type="Texture2D" uid="uid://scw7ioffqw1j" path="res://objects/card_plane/images/back.png" id="3_k2v5a"]
+[ext_resource type="Texture2D" uid="uid://cfiv4igjnlj0o" path="res://objects/card_plane/images/highlight.png" id="4_e02qo"]
+[ext_resource type="Resource" uid="uid://bupongc73fef3" path="res://data/cards/carddata/screet.tres" id="4_x8iop"]
+[ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://objects/card_plane/face_theme.tres" id="5_5si3a"]
 [ext_resource type="Texture2D" uid="uid://bb07j7tokq6g3" path="res://data/cards/artwork/screet.png" id="6_hu1ff"]
-[ext_resource type="LabelSettings" uid="uid://cnmmt33fm8ff6" path="res://objects/card_plane/card_label_settings.tres" id="8_gb13g"]
+[ext_resource type="Script" path="res://objects/card_plane/ability.gd" id="7_m8w3x"]
+[ext_resource type="Texture2D" uid="uid://b6yyo8lo0mep" path="res://objects/card_plane/images/frame_ability.png" id="7_uyx28"]
+[ext_resource type="Texture2D" uid="uid://73vgyww6ux5f" path="res://objects/card_plane/images/frame_ability_attackpower.png" id="8_15m1a"]
+[ext_resource type="Script" path="res://data/cards/abilities/attack_damage.gd" id="9_lk6wl"]
+[ext_resource type="Texture2D" uid="uid://db8xm23r1xx07" path="res://objects/card_plane/images/frame_ability_starlight.png" id="9_tv415"]
+[ext_resource type="Script" path="res://addons/card_engine/card/card_ability.gd" id="10_oeolo"]
+[ext_resource type="Texture2D" uid="uid://dmw1px5imhen5" path="res://objects/card_plane/images/frame_ability_manacost.png" id="11_vlm6w"]
+
+[sub_resource type="Resource" id="Resource_w0dk3"]
+script = ExtResource("9_lk6wl")
+amount = 3
+
+[sub_resource type="Resource" id="Resource_skvku"]
+script = ExtResource("10_oeolo")
+ability_name = "Bite"
+attack_power = "10"
+mana_cost = "4"
+description = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
+type = 2
+effect = SubResource("Resource_w0dk3")
+
+[sub_resource type="Resource" id="Resource_62j28"]
+script = ExtResource("10_oeolo")
+ability_name = ""
+attack_power = ""
+mana_cost = ""
+description = ""
+type = 1
 
 [node name="CardRender" type="Node2D"]
 script = ExtResource("1_m5yay")
-frame_texture = ExtResource("2_gc1nv")
-back_texture = ExtResource("3_mmc3k")
+frame_texture = ExtResource("2_2x50j")
+back_texture = ExtResource("3_k2v5a")
+card = ExtResource("4_x8iop")
 
 [node name="Highlight" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 0, 1)
-texture = ExtResource("5_1xp4r")
+texture = ExtResource("4_e02qo")
 
 [node name="Background" type="Sprite2D" parent="."]
-texture = ExtResource("3_mmc3k")
+texture = ExtResource("2_2x50j")
 
-[node name="CardFace" type="Node2D" parent="."]
-visible = false
+[node name="CardFace" type="Control" parent="."]
+custom_minimum_size = Vector2(240, 336)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -168.0
+offset_right = 120.0
+offset_bottom = 168.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_5si3a")
 
 [node name="Artwork" type="Sprite2D" parent="CardFace"]
-position = Vector2(-8, -58)
+position = Vector2(120, 104)
 scale = Vector2(3, 3)
 texture = ExtResource("6_hu1ff")
 
 [node name="Name" type="Label" parent="CardFace"]
-offset_left = -112.0
-offset_top = -163.0
-offset_right = 112.0
-offset_bottom = -139.0
-theme_override_fonts/font = ExtResource("5_1oswe")
-theme_override_font_sizes/font_size = 19
-text = "Screet"
+layout_mode = 0
+offset_left = 8.0
+offset_top = 11.0
+offset_right = 232.0
+offset_bottom = 35.0
+theme_override_constants/line_spacing = -5
+text = "Kainei, Avatar of the Queen of Darkness"
 horizontal_alignment = 1
 
-[node name="Ability1Description" type="Label" parent="CardFace"]
-offset_left = -114.0
-offset_top = 25.0
-offset_right = 117.0
-offset_bottom = 102.0
-theme_override_fonts/font = ExtResource("5_1oswe")
-theme_override_font_sizes/font_size = 19
-text = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
-label_settings = ExtResource("8_gb13g")
-autowrap_mode = 3
+[node name="Ability1" type="Control" parent="CardFace"]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 177.0
+offset_right = 232.0
+offset_bottom = 252.0
+script = ExtResource("7_m8w3x")
+card_ability = SubResource("Resource_skvku")
 
-[node name="Ability2Description" type="Label" parent="CardFace"]
-offset_left = -114.0
-offset_top = 25.0
-offset_right = 117.0
-offset_bottom = 102.0
-theme_override_fonts/font = ExtResource("5_1oswe")
-theme_override_font_sizes/font_size = 19
+[node name="Frame" type="TextureRect" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 75.0
+texture = ExtResource("7_uyx28")
+
+[node name="StarlightFrame" type="TextureRect" parent="CardFace/Ability1"]
+visible = false
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 75.0
+texture = ExtResource("9_tv415")
+
+[node name="Type" type="Label" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 177.0
+offset_bottom = 25.0
+theme_type_variation = &"AbilityTypeLabel"
+text = "ATTACK"
+
+[node name="AttackPowerFrame" type="TextureRect" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 1.0
+offset_right = 68.0
+offset_bottom = 17.0
+texture = ExtResource("8_15m1a")
+
+[node name="AttackPower" type="Label" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 1.0
+offset_right = 65.0
+offset_bottom = 22.0
+text = "10"
+horizontal_alignment = 1
+
+[node name="Name" type="Label" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 1.0
+offset_right = 244.0
+offset_bottom = 25.0
+text = "Bite"
+
+[node name="StarlightName" type="Label" parent="CardFace/Ability1"]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 1.0
+offset_right = 208.0
+offset_bottom = 22.0
+theme_type_variation = &"StarlightNameLabel"
+text = "STARLIGHT"
+horizontal_alignment = 1
+
+[node name="ManaCostFrame" type="TextureRect" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_left = 195.0
+offset_top = 1.0
+offset_right = 223.0
+offset_bottom = 17.0
+texture = ExtResource("11_vlm6w")
+
+[node name="ManaCost" type="Label" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_left = 209.0
+offset_top = 1.0
+offset_right = 226.0
+offset_bottom = 22.0
+theme_type_variation = &"AbilityManaCostLabel"
+text = "4"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="CardFace/Ability1"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 17.0
+offset_right = 224.0
+offset_bottom = 80.0
 text = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
-label_settings = ExtResource("8_gb13g")
 autowrap_mode = 3
+visible_characters_behavior = 1
+
+[node name="Ability2" type="Control" parent="CardFace"]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 253.0
+offset_right = 232.0
+offset_bottom = 328.0
+script = ExtResource("7_m8w3x")
+card_ability = SubResource("Resource_62j28")
+
+[node name="Frame" type="TextureRect" parent="CardFace/Ability2"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 75.0
+texture = ExtResource("7_uyx28")
+
+[node name="StarlightFrame" type="TextureRect" parent="CardFace/Ability2"]
+visible = false
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 75.0
+texture = ExtResource("9_tv415")
+
+[node name="Type" type="Label" parent="CardFace/Ability2"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 177.0
+offset_bottom = 25.0
+theme_type_variation = &"AbilityTypeLabel"
+text = "ACTION"
+
+[node name="AttackPowerFrame" type="TextureRect" parent="CardFace/Ability2"]
+visible = false
+layout_mode = 0
+offset_left = 43.0
+offset_top = 1.0
+offset_right = 68.0
+offset_bottom = 17.0
+texture = ExtResource("8_15m1a")
+
+[node name="AttackPower" type="Label" parent="CardFace/Ability2"]
+visible = false
+layout_mode = 0
+offset_left = 48.0
+offset_top = 1.0
+offset_right = 65.0
+offset_bottom = 22.0
+text = "10+"
+horizontal_alignment = 1
+
+[node name="Name" type="Label" parent="CardFace/Ability2"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 1.0
+offset_right = 244.0
+offset_bottom = 25.0
+
+[node name="StarlightName" type="Label" parent="CardFace/Ability2"]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 1.0
+offset_right = 208.0
+offset_bottom = 22.0
+theme_type_variation = &"StarlightNameLabel"
+text = "STARLIGHT"
+horizontal_alignment = 1
+
+[node name="ManaCostFrame" type="TextureRect" parent="CardFace/Ability2"]
+visible = false
+layout_mode = 0
+offset_left = 195.0
+offset_top = 1.0
+offset_right = 223.0
+offset_bottom = 17.0
+texture = ExtResource("11_vlm6w")
+
+[node name="ManaCost" type="Label" parent="CardFace/Ability2"]
+visible = false
+layout_mode = 0
+offset_left = 209.0
+offset_top = 1.0
+offset_right = 226.0
+offset_bottom = 22.0
+theme_type_variation = &"AbilityManaCostLabel"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="CardFace/Ability2"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 17.0
+offset_right = 224.0
+offset_bottom = 80.0
+autowrap_mode = 3
+visible_characters_behavior = 1
+
+[node name="AbilitySolo" type="Control" parent="CardFace"]
+visible = false
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 215.0
+offset_right = 232.0
+offset_bottom = 290.0
+script = ExtResource("7_m8w3x")
+
+[node name="Frame" type="TextureRect" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 75.0
+texture = ExtResource("7_uyx28")
+
+[node name="StarlightFrame" type="TextureRect" parent="CardFace/AbilitySolo"]
+visible = false
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 75.0
+texture = ExtResource("9_tv415")
+
+[node name="Type" type="Label" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 177.0
+offset_bottom = 25.0
+theme_type_variation = &"AbilityTypeLabel"
+text = "ATTACK"
+
+[node name="AttackPowerFrame" type="TextureRect" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 1.0
+offset_right = 68.0
+offset_bottom = 17.0
+texture = ExtResource("8_15m1a")
+
+[node name="AttackPower" type="Label" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 1.0
+offset_right = 65.0
+offset_bottom = 22.0
+text = "10"
+horizontal_alignment = 1
+
+[node name="Name" type="Label" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 1.0
+offset_right = 244.0
+offset_bottom = 25.0
+text = "Bite"
+
+[node name="StarlightName" type="Label" parent="CardFace/AbilitySolo"]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 1.0
+offset_right = 208.0
+offset_bottom = 22.0
+theme_type_variation = &"StarlightNameLabel"
+text = "STARLIGHT"
+horizontal_alignment = 1
+
+[node name="ManaCostFrame" type="TextureRect" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_left = 195.0
+offset_top = 1.0
+offset_right = 223.0
+offset_bottom = 17.0
+texture = ExtResource("11_vlm6w")
+
+[node name="ManaCost" type="Label" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_left = 209.0
+offset_top = 1.0
+offset_right = 226.0
+offset_bottom = 22.0
+theme_type_variation = &"AbilityManaCostLabel"
+text = "4"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="CardFace/AbilitySolo"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 17.0
+offset_right = 224.0
+offset_bottom = 80.0
+text = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
+autowrap_mode = 3
+visible_characters_behavior = 1
