@@ -1,25 +1,25 @@
-[gd_scene load_steps=8 format=3 uid="uid://cfyimib4gsvdf"]
+[gd_scene load_steps=7 format=3 uid="uid://cfyimib4gsvdf"]
 
 [ext_resource type="PackedScene" uid="uid://33lp1pvrvsqc" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane.gd" id="1_q5tqm"]
-[ext_resource type="Resource" uid="uid://bupongc73fef3" path="res://data/cards/carddata/screet.tres" id="2_idvy1"]
 [ext_resource type="Material" path="res://objects/material_sprite/material_sprite_material.tres" id="4_xytkv"]
 [ext_resource type="Script" path="res://objects/cursor_location/cursor_location.gd" id="5_ud883"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_3d.gd" id="6_74fw4"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ww8px"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_c2f4v"]
+viewport_path = NodePath("SubViewport")
 
 [node name="CardPlane" type="Node3D"]
 script = ExtResource("1_q5tqm")
-card = ExtResource("2_idvy1")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(272, 368)
+size = Vector2i(240, 336)
 render_target_update_mode = 1
 
 [node name="CardRender" parent="SubViewport" instance=ExtResource("1_2hb1l")]
+card = null
 
 [node name="Camera2D" type="Camera2D" parent="SubViewport"]
 
@@ -28,10 +28,8 @@ material_override = ExtResource("4_xytkv")
 cast_shadow = 0
 alpha_cut = 1
 texture_filter = 1
-texture = SubResource("ViewportTexture_ww8px")
+texture = SubResource("ViewportTexture_c2f4v")
 script = ExtResource("6_74fw4")
 
 [node name="CursorLocation" type="Node3D" parent="."]
 script = ExtResource("5_ud883")
-
-[connection signal="updated" from="Sprite" to="." method="_on_sprite_updated"]
