@@ -39,10 +39,10 @@ func _process_input(delta: float):
 					match card_instance.card.kind:
 						Card.Kind.UNIT:
 							_choose_summon_location(card_instance)
-				[BattleState.Side.Player, BattleState.Zone.FrontRow, var idx]:
-					_choose_unit_action(battle_state.player.front_row[idx], card_plane.location)
-				[BattleState.Side.Player, BattleState.Zone.BackRow, var idx]:
-					_choose_unit_action(battle_state.player.back_row[idx], card_plane.location)
+				[BattleState.Side.Player, BattleState.Zone.FrontRow, _],\
+				[BattleState.Side.Player, BattleState.Zone.BackRow, _]:
+					if card_plane.card:
+						_choose_unit_action(card_plane)
 
 func _choose_summon_location(card_instance: BattleState.CardInstance):
 	var screen := battle_scene.push_screen(choose_field_location_scene)
@@ -53,10 +53,11 @@ func _choose_summon_location(card_instance: BattleState.CardInstance):
 		emit_signal("player_action", { type = "play_unit", card = card_instance, where = location })
 		battle_scene.pop_screen()
 
-func _choose_unit_action(card_instance: BattleState.UnitState, location: BattleState.ZoneLocation):
-	var screen := battle_scene.push_screen(choose_unit_action_scene)
-	#screen.card_instance = 
-	screen.location = location
+func _choose_unit_action(card_plane: CardPlane):
+	assert(card_plane.card && card_plane.card.kind == Card.Kind.UNIT)
+	battle_scene.push_screen(choose_unit_action_scene, func (screen):
+		screen.card_plane = card_plane
+	)
 
 
 

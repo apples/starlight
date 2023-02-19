@@ -3,9 +3,6 @@ extends TextureRect
 signal updated
 
 func _ready():
-	#connect("texture_changed", _refresh)
-	print("ddfdfdf")
-	print(material)
 	Settings.connect("sprite_filter_trilinear_changed", _refresh)
 	_refresh()
 

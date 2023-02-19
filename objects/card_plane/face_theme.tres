@@ -1,0 +1,14 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c0c8ai1tjyx1y"]
+
+[ext_resource type="FontFile" uid="uid://csbkftl0ppmkv" path="res://fonts/Silver.ttf" id="1_eqd7e"]
+
+[resource]
+AbilityManaCostLabel/base_type = &"Label"
+AbilityManaCostLabel/colors/font_color = Color(0, 0, 0, 1)
+AbilityTypeLabel/base_type = &"Label"
+AbilityTypeLabel/colors/font_color = Color(0, 0, 0, 1)
+Label/constants/line_spacing = -7
+Label/font_sizes/font_size = 19
+Label/fonts/font = ExtResource("1_eqd7e")
+StarlightNameLabel/base_type = &"Label"
+StarlightNameLabel/colors/font_color = Color(0, 0, 0, 1)

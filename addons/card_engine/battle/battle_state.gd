@@ -208,7 +208,7 @@ class BattleSideState extends Resource:
 		hand.remove_at(idx)
 		for i in range(hand.size()):
 			hand[i].location.slot = i
-	
+
 
 class UnitState extends Resource:
 	var card_instance: CardInstance

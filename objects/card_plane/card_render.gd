@@ -16,24 +16,33 @@ enum Highlight {
 		return card
 	set(value):
 		card = value
-		call_deferred(&"refresh")
+		if is_inside_tree():
+			refresh()
 
 @export var highlight: Highlight = Highlight.OFF:
 	get:
 		return highlight
 	set(value):
 		highlight = value
-		call_deferred(&"refresh")
+		if is_inside_tree():
+			refresh()
+
+@export var poke: bool = false:
+	set(value):
+		poke = false
+		if is_inside_tree():
+			refresh()
 
 @onready var background: Sprite2D = $Background
-@onready var cardface: Node2D = $CardFace
+@onready var cardface: Control = $CardFace
 @onready var artwork: Sprite2D = $CardFace/Artwork
 @onready var name_label: Label = $CardFace/Name
-@onready var ability1description_label: Label = $CardFace/Ability1Description
-@onready var ability2description_label: Label = $CardFace/Ability2Description
+@onready var ability1 := $CardFace/Ability1
+@onready var ability2 := $CardFace/Ability2
+@onready var ability_solo := $CardFace/AbilitySolo
 
 func _ready():
-	call_deferred(&"refresh")
+	refresh()
 
 func refresh():
 	if card:
@@ -41,13 +50,22 @@ func refresh():
 		cardface.visible = true
 		artwork.texture = card.artwork
 		name_label.text = card.card_name
-		if card.ability1:
-			ability1description_label.text = card.ability1.description
-		if card.ability2:
-			ability2description_label.text = card.ability2.description
+		var solo: bool = card.ability1 and not card.ability2 or \
+			not card.ability1 and card.ability2
+		if solo:
+			ability1.card_ability = null
+			ability2.card_ability = null
+			ability_solo.card_ability = card.ability1 if card.ability1 else card.ability2
+		else:
+			ability1.card_ability = card.ability1
+			ability2.card_ability = card.ability2
+			ability_solo.card_ability = null
 	else:
 		background.texture = back_texture
 		cardface.visible = false
+		ability1.card_ability = null
+		ability2.card_ability = null
+		ability_solo.card_ability = null
 	
 	match highlight:
 		Highlight.OFF:

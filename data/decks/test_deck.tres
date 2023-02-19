@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_wsudd")
 main_deck_cards = Array[Resource("res://addons/card_engine/card/card.gd")]([ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e")])
-starter_unit_cards = Array[Resource("res://addons/card_engine/card/card.gd")]([])
-starlight_cards = Array[Resource("res://addons/card_engine/card/card.gd")]([])
+starter_unit_cards = Array[Resource("res://addons/card_engine/card/card.gd")]([ExtResource("1_run4e"), ExtResource("1_run4e")])
+starlight_cards = Array[Resource("res://addons/card_engine/card/card.gd")]([ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e")])

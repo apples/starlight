@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bftdwrfdkciwy"]
 
 [ext_resource type="Script" path="res://scenes/battle_scene/screen_layers/choose_unit_action/choose_unit_action.gd" id="1_fivxi"]
-[ext_resource type="PackedScene" uid="uid://dfiiwglym5jdl" path="res://objects/card_cursor/card_cursor.tscn" id="2_r7m3t"]
+[ext_resource type="PackedScene" uid="uid://bllqus03x44j5" path="res://objects/card_cursor/card_cursor.tscn" id="2_r7m3t"]
 
 [node name="ChooseUnitAction" type="Node3D"]
 script = ExtResource("1_fivxi")
