@@ -43,6 +43,8 @@ var future_next_state: StringName = StringName()
 # Used for debugging purposes
 var did_update_state: bool = false
 
+@onready var filename: String = get_script().resource_path.get_file()
+
 func is_done() -> bool: return status == Status.DONE
 
 func run() -> void:
@@ -54,10 +56,13 @@ func run() -> void:
 	
 	var awaiting = get_awaiting()
 	if !awaiting:
+		if next_state != &"check_future":
+			print("[CardTask] %s: %s" % [filename, next_state])
 		self.call(next_state)
 	else:
 		if awaiting.is_done():
 			var state := next_state if awaiting.result == Result.SUCCESS else fail_state
+			print("[CardTask] %s: %s" % [filename, state])
 			remove_child(awaiting)
 			_call_with_optional_argument(state, awaiting.value)
 			awaiting.queue_free()
@@ -96,6 +101,7 @@ func get_awaiting() -> CardTask:
 
 func set_awaiting(task: CardTask):
 	assert(!get_child(0), "Already awaiting something.")
+	print("[CardTask] <await> %s: %s" % [filename, task.filename])
 	add_child(task)
 
 func run_task(task: CardTask) -> void:

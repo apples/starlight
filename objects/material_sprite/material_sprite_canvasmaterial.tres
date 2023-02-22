@@ -4,4 +4,5 @@
 
 [resource]
 shader = ExtResource("1_ph3ky")
-shader_parameter/sprite_filter_trilinear = null
+shader_parameter/sprite_filter_trilinear = true
+shader_parameter/texture2DAA_bias = 0.8

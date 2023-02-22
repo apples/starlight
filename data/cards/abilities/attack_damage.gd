@@ -7,9 +7,9 @@ func task() -> CardTask: return Task.new(self)
 
 class Task extends CardTask:
 	var effect: AttackDamageEffect
-	
 	func _init(e: AttackDamageEffect):
 		self.effect = e
 	
 	func start():
-		pass
+		print("holy cow")
+		done()

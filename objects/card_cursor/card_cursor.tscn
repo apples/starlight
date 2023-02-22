@@ -1,20 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bllqus03x44j5"]
+[gd_scene load_steps=2 format=3 uid="uid://bllqus03x44j5"]
 
-[ext_resource type="Texture2D" uid="uid://cjn42gnmsrct6" path="res://objects/card_plane/images/cursor.png" id="1_u0iem"]
 [ext_resource type="Script" path="res://objects/card_cursor/card_cursor.gd" id="2_8dkt8"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vtftp"]
-transparency = 2
-alpha_scissor_threshold = 0.004
-alpha_antialiasing_mode = 1
-alpha_antialiasing_edge = 0.3
-shading_mode = 0
-albedo_texture = ExtResource("1_u0iem")
-texture_filter = 1
-texture_repeat = false
-
-[node name="Cursor" type="Sprite3D"]
-material_override = SubResource("StandardMaterial3D_vtftp")
-alpha_cut = 1
-texture = ExtResource("1_u0iem")
+[node name="Cursor" type="Node"]
 script = ExtResource("2_8dkt8")

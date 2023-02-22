@@ -8,3 +8,8 @@ func cover():
 
 func uncover():
 	process_mode = Node.PROCESS_MODE_INHERIT
+
+func remove_screen():
+	assert(battle_scene.screen_layer_stack.back() == self)
+	battle_scene.pop_screen()
+

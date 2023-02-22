@@ -68,6 +68,10 @@ func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: b
 			card_plane = hand.get_child(i)
 		else:
 			card_plane = card_plane_scene.instantiate()
+			card_plane.cursor_layers = \
+				CursorLocation.LAYER_BATTLE | \
+				CursorLocation.LAYER_HAND | \
+				(CursorLocation.LAYER_PLAYER if hand == player_hand else CursorLocation.LAYER_OPPONENT)
 			hand.add_child(card_plane)
 		card_plane.card = state.hand[i].card if not hidden else null
 		card_plane.location = BattleState.ZoneLocation.new(state.side, BattleState.Zone.Hand, i)
@@ -97,6 +101,8 @@ func push_screen(screen_scene, init: Callable = func(a): pass) -> BattleScreenLa
 		screen_scene.instantiate() if screen_scene is PackedScene
 		else screen_scene) as BattleScreenLayer
 	
+	print("push_screen: %s" % screen.name)
+	
 	screen.battle_scene = self
 	screen.battle_state = self.battle_state
 	
@@ -104,11 +110,11 @@ func push_screen(screen_scene, init: Callable = func(a): pass) -> BattleScreenLa
 		screen_layer_stack[-1].cover()
 	
 	screen_layer_stack.append(screen)
-	add_child(screen)
 	
 	if init:
 		init.call(screen)
 	
+	add_child(screen)
 	screen.uncover()
 	
 	return screen
@@ -119,6 +125,7 @@ func pop_screen():
 		return
 	
 	var screen = screen_layer_stack.pop_back()
+	print("pop_screen: %s" % screen.name)
 	remove_child(screen)
 	screen.queue_free()
 	

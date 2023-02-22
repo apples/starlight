@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://d0m8r2o7lgaiu"]
+
+[ext_resource type="Shader" path="res://objects/card_plane/materials/glow.gdshader" id="1_nsgyw"]
+[ext_resource type="CompressedTexture3D" uid="uid://mbjg3uyuld7h" path="res://noise/noise64.png" id="2_kepct"]
+
+[resource]
+shader = ExtResource("1_nsgyw")
+shader_parameter/color = Color(0, 1, 0, 1)
+shader_parameter/speed = 0.25
+shader_parameter/edge_thickness = 8.0
+shader_parameter/edge_left = 8.0
+shader_parameter/edge_right = 233.0
+shader_parameter/edge_top = 8.0
+shader_parameter/edge_bottom = 81.0
+shader_parameter/noise = ExtResource("2_kepct")

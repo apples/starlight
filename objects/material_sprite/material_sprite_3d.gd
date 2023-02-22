@@ -8,5 +8,6 @@ func _ready():
 	_update_filtering()
 
 func _update_filtering():
-	var material := material_override as ShaderMaterial
-	material.set_shader_parameter("sprite_filter_trilinear", Settings.sprite_filter_trilinear)
+	if Settings:
+		var material := material_override as ShaderMaterial
+		material.set_shader_parameter("sprite_filter_trilinear", Settings.sprite_filter_trilinear)

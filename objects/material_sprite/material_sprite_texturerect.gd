@@ -1,5 +1,5 @@
 @tool
-extends TextureRect
+class_name MaterialTextureRect extends TextureRect
 
 func _ready():
 	Settings.connect("sprite_filter_trilinear_changed", _refresh_filter)

@@ -2,12 +2,6 @@
 class_name CardRender
 extends Node2D
 
-enum Highlight {
-	OFF,
-	YELLOW,
-	BLUE,
-}
-
 @export var frame_texture: Texture2D = null
 @export var back_texture: Texture2D = null
 
@@ -16,14 +10,6 @@ enum Highlight {
 		return card
 	set(value):
 		card = value
-		if is_inside_tree():
-			refresh()
-
-@export var highlight: Highlight = Highlight.OFF:
-	get:
-		return highlight
-	set(value):
-		highlight = value
 		if is_inside_tree():
 			refresh()
 
@@ -66,13 +52,3 @@ func refresh():
 		ability1.card_ability = null
 		ability2.card_ability = null
 		ability_solo.card_ability = null
-	
-	match highlight:
-		Highlight.OFF:
-			$Highlight.visible = false
-		Highlight.YELLOW:
-			$Highlight.visible = true
-			$Highlight.modulate = Color.YELLOW
-		Highlight.BLUE:
-			$Highlight.visible = true
-			$Highlight.modulate = Color.DEEP_SKY_BLUE

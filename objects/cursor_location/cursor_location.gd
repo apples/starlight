@@ -2,12 +2,19 @@ class_name CursorLocation extends Node
 
 enum {
 	LAYER_BATTLE = 1,
-	LAYER_ACTIONS = 2,
+	LAYER_PLAYER = 2,
+	LAYER_OPPONENT = 4,
+	LAYER_FIELD = 8,
+	LAYER_HAND = 16,
+	LAYER_ACTIONS = 32,
+	LAYER_CARD_ABILITIES = 64,
 }
 
-@export_flags("Battle", "Actions") var layers: int = LAYER_BATTLE
+@export_flags("Battle", "Player", "Opponent", "Field", "Hand", "Actions", "Card Abilities") var layers: int = LAYER_BATTLE
 
 @export var enabled: bool = true
+
+@export var custom_tag: String = ""
 
 @export var location: BattleState.ZoneLocation = null
 
@@ -16,8 +23,15 @@ enum {
 @export var left: CursorLocation = null
 @export var right: CursorLocation = null
 
-func _init():
-	add_to_group("cursor_location")
+var is_current: bool = false:
+	get:
+		return is_current
+	set(value):
+		is_current = value
+		self.visible = is_current
+
+func _ready():
+	self.visible = is_current
 
 func navigate(dir: StringName) -> CursorLocation:
 	assert([&"up", &"down", &"left", &"right"].has(dir), "Invalid direction")

@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwbnl60kwgnl7"]
+
+[ext_resource type="Script" path="res://addons/noise_maker/noise_maker.gd" id="1_f53fa"]
+
+[node name="ConfirmationDialog" type="ConfirmationDialog"]
+initial_position = 2
+title = "Make Noise"
+size = Vector2i(330, 158)
+script = ExtResource("1_f53fa")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 322.0
+offset_bottom = 109.0
+columns = 2
+
+[node name="FilePathLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "File path:"
+
+[node name="Control" type="HBoxContainer" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FilePath" type="LineEdit" parent="GridContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FilePathBrowse" type="Button" parent="GridContainer/Control"]
+layout_mode = 2
+text = "Browse
+"
+
+[node name="SizeLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Size:"
+
+[node name="Size" type="LineEdit" parent="GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScaleLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Scale:"
+
+[node name="Scale" type="LineEdit" parent="GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+initial_position = 2
+size = Vector2i(392, 162)
+filters = PackedStringArray("*.png")
+
+[connection signal="pressed" from="GridContainer/Control/FilePathBrowse" to="." method="_on_file_path_browse_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]

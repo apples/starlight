@@ -1,23 +1,30 @@
-extends Sprite3D
+extends Node
 
 @export var enabled: bool = false:
 	get:
 		return enabled
 	set(value):
 		enabled = value
-		visible = enabled
 
 var current_cursor_location: CursorLocation = null:
 	get:
 		return current_cursor_location
 	set(value):
+		if current_cursor_location:
+			current_cursor_location.is_current = false
 		current_cursor_location = value
+		if current_cursor_location:
+			current_cursor_location.is_current = true
 		emit_signal("cursor_location_changed", current_cursor_location)
 
 signal cursor_location_changed(cursor_location: CursorLocation)
 
 func _ready():
 	pass
+
+func _exit_tree():
+	if current_cursor_location:
+		current_cursor_location.is_current = false
 
 func _process(delta: float):
 	if !enabled:
@@ -46,10 +53,3 @@ func _process(delta: float):
 			else:
 				# TODO: play bonk sfx
 				pass
-	
-	if current_cursor_location:
-		visible = true
-		global_transform = current_cursor_location.global_transform
-	else:
-		visible = false
-	
