@@ -8,13 +8,6 @@ class_name CardPlane extends Node3D
 		card = value
 		refresh()
 
-@export var highlight: CardRender.Highlight = CardRender.Highlight.OFF:
-	get:
-		return highlight
-	set(value):
-		highlight = value
-		refresh()
-
 @export var show_card: bool = true:
 	get:
 		return show_card
@@ -29,12 +22,16 @@ class_name CardPlane extends Node3D
 		location = value
 		refresh()
 
-@onready var sprite := $Sprite
-@onready var cursor_location := $CursorLocation
+@export_flags("Battle", "Player", "Opponent", "Field", "Hand", "Actions") var cursor_layers: int = 0
+
 @onready var subviewport := $SubViewport
 @onready var card_render := $SubViewport/CardRender
+@onready var sprite := $Sprite
+@onready var cursor_location := %CursorLocation
+@onready var action_root := %ActionRoot
 
 func _ready():
+	cursor_location.layers = cursor_layers
 	refresh()
 
 func refresh():
@@ -45,7 +42,6 @@ func refresh():
 	
 	if show_card:
 		card_render.card = card
-		card_render.highlight = highlight
 		subviewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 		sprite.visible = true
 	else:

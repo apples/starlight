@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7dgtslwidawq"]
+
+[ext_resource type="Script" path="res://objects/cursor_location/cursor_location.gd" id="1_x1sg0"]
+[ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="2_q2ix4"]
+[ext_resource type="Texture2D" uid="uid://citn41hrcyfq1" path="res://scenes/battle_scene/screen_layers/choose_unit_action/images/cursor.png" id="3_lvg5u"]
+[ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_mdieb"]
+
+[node name="ActionCursorLocation" type="CenterContainer" groups=["cursor_location"]]
+offset_right = 80.0
+offset_bottom = 80.0
+script = ExtResource("1_x1sg0")
+
+[node name="MaterialTextureRect" type="TextureRect" parent="."]
+texture_filter = 2
+material = ExtResource("2_q2ix4")
+layout_mode = 2
+texture = ExtResource("3_lvg5u")
+script = ExtResource("4_mdieb")

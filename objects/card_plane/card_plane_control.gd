@@ -8,13 +8,6 @@ extends Control
 		card = value
 		refresh()
 
-@export var highlight: CardRender.Highlight = CardRender.Highlight.OFF:
-	get:
-		return highlight
-	set(value):
-		highlight = value
-		refresh()
-
 @export var show_card: bool = true:
 	get:
 		return show_card
@@ -30,7 +23,7 @@ extends Control
 		refresh()
 
 @onready var sprite := $Sprite
-@onready var cursor_location := $CursorLocation
+#@onready var cursor_location := $CursorLocation
 
 func _ready():
 	refresh()
@@ -39,11 +32,10 @@ func refresh():
 	if not is_inside_tree():
 		return
 	
-	cursor_location.location = location
+#	cursor_location.location = location
 	
 	if show_card:
 		$SubViewport/CardRender.card = card
-		$SubViewport/CardRender.highlight = highlight
 		$SubViewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 		sprite.visible = true
 	else:

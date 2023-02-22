@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
 [ext_resource type="Script" path="res://addons/card_engine/battle/battle_state.gd" id="2_bdq53"]
-[ext_resource type="PackedScene" uid="uid://cfyimib4gsvdf" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
+[ext_resource type="PackedScene" uid="uid://bcrmyin4iw0kk" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
 [ext_resource type="Script" path="res://addons/card_engine/task/card_fiber.gd" id="2_vl6gp"]
 [ext_resource type="Resource" uid="uid://ccejnbeeab8k2" path="res://data/rulesets/default_rules.tres" id="3_qp2vo"]
 [ext_resource type="Script" path="res://scenes/battle_scene/player_agent.gd" id="4_5xqig"]
@@ -41,21 +41,27 @@ script = ExtResource("8_tbdo0")
 
 [node name="BackRow0" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, 0)
+cursor_layers = 11
 
 [node name="BackRow1" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 0)
+cursor_layers = 11
 
 [node name="BackRow2" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 0)
+cursor_layers = 11
 
 [node name="BackRow3" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, 0)
+cursor_layers = 11
 
 [node name="FrontRow0" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
+cursor_layers = 11
 
 [node name="FrontRow1" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
+cursor_layers = 11
 
 [node name="OpponentField" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.04907e-06, 0, -12)
@@ -65,21 +71,27 @@ flip_cursor_dirs = true
 
 [node name="BackRow0" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, 0)
+cursor_layers = 13
 
 [node name="BackRow1" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 0)
+cursor_layers = 13
 
 [node name="BackRow2" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 0)
+cursor_layers = 13
 
 [node name="BackRow3" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, 0)
+cursor_layers = 13
 
 [node name="FrontRow0" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
+cursor_layers = 13
 
 [node name="FrontRow1" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
+cursor_layers = 13
 
 [node name="PlayerDeck" parent="." instance=ExtResource("2_mdxbd")]
 transform = Transform3D(0.965926, -0.258819, -1.13133e-08, 0, -4.37114e-08, 1, -0.258819, -0.965926, -4.2222e-08, 8, 0, 1)

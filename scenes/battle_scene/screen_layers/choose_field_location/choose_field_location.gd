@@ -33,6 +33,6 @@ func _process(delta: float):
 func _process_input(delta: float):
 	if Input.is_action_just_pressed("confirm"):
 		if cursor.current_cursor_location:
+			battle_scene.pop_screen()
 			var card_plane: CardPlane = cursor.current_cursor_location.get_parent()
 			emit_signal("location_picked", card_plane.location)
-			battle_scene.pop_screen()
