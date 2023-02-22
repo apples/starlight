@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://33lp1pvrvsqc" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
 [ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_7gcy2"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_lunqm"]
-[ext_resource type="Script" path="res://objects/cursor_location/cursor_location.gd" id="7_36vjy"]
+[ext_resource type="PackedScene" uid="uid://cyr4o4b07vyay" path="res://objects/card_ability_cursor_location/card_ability_cursor_location.tscn" id="6_vvfj4"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_w30fd"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_j4k81"]
 viewport_path = NodePath("SubViewport")
 
 [node name="CardPlaneControl" type="Control"]
@@ -24,21 +24,39 @@ render_target_update_mode = 1
 
 [node name="CardRender" parent="SubViewport" instance=ExtResource("3_6nsie")]
 
-[node name="Camera2D" type="Camera2D" parent="SubViewport"]
-
 [node name="Sprite" type="TextureRect" parent="."]
 texture_filter = 2
 material = ExtResource("3_7gcy2")
+custom_minimum_size = Vector2(240, 336)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("ViewportTexture_w30fd")
+texture = SubResource("ViewportTexture_j4k81")
 expand_mode = 1
 stretch_mode = 4
 script = ExtResource("4_lunqm")
 
+[node name="CardAbilityCursorLocation1" parent="Sprite" node_paths=PackedStringArray("down") instance=ExtResource("6_vvfj4")]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 216.0
+offset_right = 120.0
+offset_bottom = 216.0
+layers = 65
+custom_tag = "ability_1"
+down = NodePath("../CardAbilityCursorLocation2")
+
+[node name="CardAbilityCursorLocation2" parent="Sprite" node_paths=PackedStringArray("up") instance=ExtResource("6_vvfj4")]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 292.0
+offset_right = 120.0
+offset_bottom = 292.0
+layers = 65
+custom_tag = "ability_2"
+up = NodePath("../CardAbilityCursorLocation1")
+
 [node name="CursorLocation" type="Node2D" parent="."]
-script = ExtResource("7_36vjy")

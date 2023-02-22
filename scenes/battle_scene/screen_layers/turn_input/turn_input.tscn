@@ -7,6 +7,5 @@
 script = ExtResource("1_tcdem")
 
 [node name="CardCursor" parent="." instance=ExtResource("2_wqdyw")]
-visible = false
 
 [connection signal="cursor_location_changed" from="CardCursor" to="." method="_on_card_cursor_cursor_location_changed"]
