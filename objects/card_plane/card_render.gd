@@ -23,9 +23,8 @@ extends Node2D
 @onready var cardface: Control = $CardFace
 @onready var artwork: Sprite2D = $CardFace/Artwork
 @onready var name_label: Label = $CardFace/Name
-@onready var ability1 := $CardFace/Ability1
-@onready var ability2 := $CardFace/Ability2
-@onready var ability_solo := $CardFace/AbilitySolo
+@onready var ability1: Control = %Ability1
+@onready var ability2: Control = %Ability2
 
 func _ready():
 	refresh()
@@ -36,19 +35,12 @@ func refresh():
 		cardface.visible = true
 		artwork.texture = card.artwork
 		name_label.text = card.card_name
-		var solo: bool = card.ability1 and not card.ability2 or \
-			not card.ability1 and card.ability2
-		if solo:
-			ability1.card_ability = null
-			ability2.card_ability = null
-			ability_solo.card_ability = card.ability1 if card.ability1 else card.ability2
-		else:
-			ability1.card_ability = card.ability1
-			ability2.card_ability = card.ability2
-			ability_solo.card_ability = null
+		ability1.card_ability = card.ability1
+		ability2.card_ability = card.ability2
 	else:
 		background.texture = back_texture
 		cardface.visible = false
 		ability1.card_ability = null
 		ability2.card_ability = null
-		ability_solo.card_ability = null
+	ability1.visible = ability1.card_ability != null
+	ability2.visible = ability2.card_ability != null

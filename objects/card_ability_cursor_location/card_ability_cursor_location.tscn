@@ -5,13 +5,22 @@
 [ext_resource type="Texture2D" uid="uid://drlvmestbp05o" path="res://objects/card_ability_cursor_location/images/card_ability_cursor.png" id="3_5xfec"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_70s0g"]
 
-[node name="CardAbilityCursorLocation" type="CenterContainer" groups=["cursor_location"]]
-use_top_left = true
+[node name="CardAbilityCursorLocation" type="MarginContainer" groups=["cursor_location"]]
+offset_right = 132.0
+offset_bottom = 92.0
+theme_override_constants/margin_left = -16
+theme_override_constants/margin_top = -16
+theme_override_constants/margin_right = -16
+theme_override_constants/margin_bottom = -16
 script = ExtResource("1_ffqbe")
 
-[node name="MaterialTextureRect" type="TextureRect" parent="."]
+[node name="MaterialTextureRect" type="NinePatchRect" parent="."]
 texture_filter = 2
 material = ExtResource("2_otp6b")
 layout_mode = 2
 texture = ExtResource("3_5xfec")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
 script = ExtResource("4_70s0g")
