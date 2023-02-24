@@ -23,20 +23,33 @@ extends Control
 		refresh()
 
 @onready var sprite := $Sprite
-#@onready var cursor_location := $CursorLocation
+@onready var viewport := $SubViewport
+@onready var card_render: CardRender = %CardRender
+@onready var ability1_cursor := %CardAbilityCursorLocation1
+@onready var ability2_cursor := %CardAbilityCursorLocation2
 
 func _ready():
+	$Sprite.texture = $SubViewport.get_texture()
 	refresh()
 
 func refresh():
 	if not is_inside_tree():
 		return
 	
-#	cursor_location.location = location
-	
-	if show_card:
-		$SubViewport/CardRender.card = card
-		$SubViewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
-		sprite.visible = true
-	else:
+	if not show_card:
 		sprite.visible = false
+		return
+	
+	sprite.visible = true
+	
+	card_render.card = card
+	viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
+	
+	if Engine.is_editor_hint():
+		return
+	
+	ability1_cursor.position = card_render.ability1.global_position
+	ability1_cursor.size = card_render.ability1.size
+	
+	ability2_cursor.position = card_render.ability2.global_position
+	ability2_cursor.size = card_render.ability2.size

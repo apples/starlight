@@ -14,16 +14,16 @@ script = ExtResource("1_tqta2")
 ability_name = "Bite"
 attack_power = "10"
 mana_cost = "4"
-description = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
+description = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token and then do the thing a make it cool and win the game yeah yeah."
 type = 2
 effect = SubResource("Resource_w0dk3")
 
 [sub_resource type="Resource" id="Resource_62j28"]
 script = ExtResource("1_tqta2")
-ability_name = ""
+ability_name = "adf"
 attack_power = ""
 mana_cost = ""
-description = ""
+description = "asdf"
 type = 1
 
 [resource]

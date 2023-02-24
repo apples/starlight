@@ -80,11 +80,11 @@ func _choose_unit_action_ability_chosen(card_instance: BattleState.CardInstance,
 	if index == -1:
 		return
 	
+	assert(index == 1 or index == 2)
 	print("Activating ability %s on %s" % [index, card_instance])
 	
-	var key := "ability%s" % index
-	assert(key in card_instance.card)
-	battle_state.perform_ability(card_instance, card_instance.card[key] as CardAbility)
+	emit_signal("player_action", { type = "activate_ability", location = card_instance.location, ability_index = index })
+	battle_scene.pop_screen()
 
 func _on_card_cursor_cursor_location_changed(cursor_location: CursorLocation):
 	if cursor_location:
