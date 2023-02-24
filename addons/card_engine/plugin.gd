@@ -12,6 +12,7 @@ func _enter_tree():
 	add_custom_type("Card", "Resource", preload("res://addons/card_engine/card/card.gd"), get_editor_interface().get_base_control().get_theme_icon("ImageTexture", "EditorIcons"))
 	add_custom_type("CardAbility", "Resource", preload("res://addons/card_engine/card/card_ability.gd"), get_editor_interface().get_base_control().get_theme_icon("Rayito", "EditorIcons"))
 	add_custom_type("CardAbilityCost", "Resource", preload("res://addons/card_engine/card/card_ability_cost.gd"), get_editor_interface().get_base_control().get_theme_icon("Script", "EditorIcons"))
+	add_custom_type("CardAbilityCondition", "Resource", preload("res://addons/card_engine/card/card_ability_condition.gd"), get_editor_interface().get_base_control().get_theme_icon("Script", "EditorIcons"))
 	add_custom_type("CardAbilityEffect", "Resource", preload("res://addons/card_engine/card/card_ability_effect.gd"), get_editor_interface().get_base_control().get_theme_icon("Script", "EditorIcons"))
 	add_custom_type("CardAbilityPassive", "Resource", preload("res://addons/card_engine/card/card_ability_passive.gd"), get_editor_interface().get_base_control().get_theme_icon("Script", "EditorIcons"))
 	add_custom_type("CardAbilityTrigger", "Resource", preload("res://addons/card_engine/card/card_ability_trigger.gd"), get_editor_interface().get_base_control().get_theme_icon("Script", "EditorIcons"))

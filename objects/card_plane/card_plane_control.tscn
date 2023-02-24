@@ -1,20 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://dvx53oob87xe4"]
+[gd_scene load_steps=7 format=3 uid="uid://dvx53oob87xe4"]
 
 [ext_resource type="Script" path="res://objects/card_plane/card_plane_control.gd" id="1_37i78"]
-[ext_resource type="Resource" uid="uid://bupongc73fef3" path="res://data/cards/carddata/screet.tres" id="2_lceyb"]
-[ext_resource type="PackedScene" uid="uid://33lp1pvrvsqc" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
+[ext_resource type="PackedScene" uid="uid://cx1oksosrx7bb" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
 [ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_7gcy2"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_lunqm"]
 [ext_resource type="PackedScene" uid="uid://cyr4o4b07vyay" path="res://objects/card_ability_cursor_location/card_ability_cursor_location.tscn" id="6_vvfj4"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_j4k81"]
-viewport_path = NodePath("SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_6cqd6"]
 
-[node name="CardPlaneControl" type="Control"]
-layout_mode = 3
-anchors_preset = 0
+[node name="CardPlaneControl" type="MarginContainer"]
+offset_right = 288.0
+offset_bottom = 404.0
+size_flags_vertical = 4
 script = ExtResource("1_37i78")
-card = ExtResource("2_lceyb")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -23,40 +21,43 @@ size = Vector2i(240, 336)
 render_target_update_mode = 1
 
 [node name="CardRender" parent="SubViewport" instance=ExtResource("3_6nsie")]
+unique_name_in_owner = true
+card = null
 
 [node name="Sprite" type="TextureRect" parent="."]
 texture_filter = 2
 material = ExtResource("3_7gcy2")
-custom_minimum_size = Vector2(240, 336)
+layout_mode = 2
+texture = SubResource("ViewportTexture_6cqd6")
+expand_mode = 3
+script = ExtResource("4_lunqm")
+
+[node name="CardAbilityCursorLocation1" parent="Sprite" node_paths=PackedStringArray("down") instance=ExtResource("6_vvfj4")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("ViewportTexture_j4k81")
-expand_mode = 1
-stretch_mode = 4
-script = ExtResource("4_lunqm")
-
-[node name="CardAbilityCursorLocation1" parent="Sprite" node_paths=PackedStringArray("down") instance=ExtResource("6_vvfj4")]
-layout_mode = 0
-offset_left = 120.0
-offset_top = 216.0
-offset_right = 120.0
-offset_bottom = 216.0
 layers = 65
 custom_tag = "ability_1"
 down = NodePath("../CardAbilityCursorLocation2")
 
 [node name="CardAbilityCursorLocation2" parent="Sprite" node_paths=PackedStringArray("up") instance=ExtResource("6_vvfj4")]
-layout_mode = 0
-offset_left = 120.0
-offset_top = 292.0
-offset_right = 120.0
-offset_bottom = 292.0
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 296.0
+offset_right = -6.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
 layers = 65
 custom_tag = "ability_2"
 up = NodePath("../CardAbilityCursorLocation1")
-
-[node name="CursorLocation" type="Node2D" parent="."]

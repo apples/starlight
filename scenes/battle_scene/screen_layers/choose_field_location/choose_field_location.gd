@@ -15,7 +15,7 @@ func uncover():
 			return false
 		match cl.location.tuple():
 			[BattleState.Side.Player, BattleState.Zone.FrontRow, _], [BattleState.Side.Player, BattleState.Zone.BackRow, _]:
-				var unit := battle_state.get_unit_at(cl.location)
+				var unit := battle_state.get_unit(cl.location)
 				return unit == null
 		return false
 	)

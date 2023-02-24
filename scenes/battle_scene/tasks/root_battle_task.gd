@@ -8,6 +8,9 @@ func start():
 		battle_state.draw_card(BattleState.Side.Player)
 		battle_state.draw_card(BattleState.Side.Opponent)
 	
+	battle_state.summon_starters(BattleState.Side.Player)
+	battle_state.summon_starters(BattleState.Side.Opponent)
+	
 	goto(start_first_turn)
 
 func start_first_turn():

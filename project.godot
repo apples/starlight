@@ -24,11 +24,15 @@ CardDatabase="*res://addons/card_engine/card_database.gd"
 [display]
 
 window/size/viewport_width=1280
-window/size/viewport_height=800
+window/size/viewport_height=720
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/card_engine/plugin.cfg", "res://addons/noise_maker/plugin.cfg")
+
+[gui]
+
+theme/custom="res://global_theme.tres"
 
 [importer_defaults]
 

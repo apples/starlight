@@ -21,6 +21,7 @@ enum CardAbilityAttributes {
 
 @export var type: CardAbilityType = CardAbilityType.ACTION
 @export var trigger: CardAbilityTrigger = null
+@export var condition: CardAbilityCondition = null
 @export var cost: CardAbilityCost = null
 @export var passive: CardAbilityPassive = null
 @export var effect: CardAbilityEffect = null

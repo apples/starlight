@@ -12,6 +12,8 @@ enum Zone {
 	Deck,
 	Discard,
 	Starlight,
+	Banish,
+	Floating,
 }
 
 @export var rules: BattleRules = null
@@ -35,6 +37,8 @@ func declare_winner(side: BattleState.Side):
 	broadcast_message({ type = "declare_winner", winner = side })
 
 func get_unit(location: ZoneLocation) -> UnitState:
+	assert(location.zone in [Zone.FrontRow, Zone.BackRow])
+	assert(location.slot >= 0 && location.slot < (2 if location.zone == Zone.FrontRow else 4))
 	var state = get_side_state(location.side)
 	var zone = state.get_field_zone(location.zone)
 	return zone[location.slot] if location.slot < zone.size() else null
@@ -72,6 +76,14 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 	
 	broadcast_message({ type = "unit_summoned", location = location })
 
+
+func summon_starters(side: BattleState.Side):
+	var side_state := get_side_state(side)
+	
+	summon_unit(side_state.starters[0], ZoneLocation.new(side, Zone.FrontRow, 0))
+	summon_unit(side_state.starters[1], ZoneLocation.new(side, Zone.FrontRow, 1))
+
+
 func push_event(e: Dictionary) -> void:
 	current_events.append(e)
 	broadcast_message({ type = "event", what = e })
@@ -99,7 +111,6 @@ func remove_from_hand(side: BattleState.Side, handIndex: int, card: Card):
 	
 	if (!success):
 		push_error("Card not found in hand (side = %s, handIndex = %s, card = %s)." % [side, handIndex, card])
-
 
 
 func shuffle_deck(side: BattleState.Side):
@@ -132,20 +143,6 @@ func broadcast_message(e: Dictionary):
 func send_message_to(side: BattleState.Side, e: Dictionary):
 	var state = get_side_state(side)
 	state.agent.handle_message(e)
-
-func get_unit_at(location: ZoneLocation) -> UnitState:
-	match location.tuple():
-		[BattleState.Side.Player, Zone.BackRow, var idx]:
-			return player.back_row[idx]
-		[BattleState.Side.Player, Zone.FrontRow, var idx]:
-			return player.front_row[idx]
-		[BattleState.Side.Opponent, Zone.FrontRow, var idx]:
-			return opponent.front_row[idx]
-		[BattleState.Side.Opponent, Zone.BackRow, var idx]:
-			return opponent.back_row[idx]
-		_:
-			push_warning("Not implemented")
-	return null
 
 func get_card_at(location: ZoneLocation) -> CardInstance:
 	match location.tuple():
@@ -190,6 +187,7 @@ class BattleSideState extends Resource:
 	var hand: Array[CardInstance] = []
 	var discard: Array[CardInstance] = []
 	var starlights: Array[CardInstance] = []
+	var starters: Array[CardInstance] = []
 	
 	var front_row: Array[UnitState] = [null, null]
 	var back_row: Array[UnitState] = [null, null, null, null]
@@ -208,7 +206,9 @@ class BattleSideState extends Resource:
 		for card in card_deck.main_deck_cards:
 			deck.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Deck)))
 		for card in card_deck.starlight_cards:
-			starlights.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Starlight)))
+			starlights.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Starlight, starlights.size())))
+		for card in card_deck.starter_unit_cards:
+			starters.append(CardInstance.new(card_deck.starter_unit_cards[0], battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Floating)))
 		
 		deck.shuffle()
 		starlights.shuffle()

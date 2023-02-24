@@ -120,10 +120,10 @@ grow_vertical = 2
 [node name="CardPreview" parent="UI" instance=ExtResource("13_wngi3")]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.062
-anchor_right = 0.281
-anchor_bottom = 0.752
-offset_top = 0.399998
-offset_right = -119.68
-offset_bottom = -183.6
+anchor_top = 0.407
+anchor_bottom = 0.407
+offset_top = -275.6
+offset_right = 240.0
+offset_bottom = 92.4
+grow_vertical = 2
 scale = Vector2(1.5, 1.5)
