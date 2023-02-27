@@ -16,7 +16,7 @@ enum {
 
 @export var custom_tag: String = ""
 
-@export var location: BattleState.ZoneLocation = null
+@export var location: ZoneLocation = null
 
 @export var up: CursorLocation = null
 @export var down: CursorLocation = null
@@ -44,7 +44,7 @@ func navigate(dir: StringName) -> CursorLocation:
 	else:
 		return null
 
-static func find_location(tree: SceneTree, location: BattleState.ZoneLocation, layer: int) -> CursorLocation:
+static func find_location(tree: SceneTree, location: ZoneLocation, layer: int) -> CursorLocation:
 	for cl in tree.get_nodes_in_group("cursor_location"):
 		var cursor_location := cl as CursorLocation
 		assert(cursor_location)

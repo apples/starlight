@@ -11,5 +11,15 @@ class Task extends CardTask:
 		self.effect = e
 	
 	func start():
-		print("holy cow")
+		print("attack_damage task start (amount = %s)" % effect.amount)
+		var choose := ChooseTargetTask.new()
+		choose.allowed_locations = [
+			ZoneLocation.new(ZoneLocation.flip(source_side), ZoneLocation.Zone.FrontRow, 0),
+			ZoneLocation.new(ZoneLocation.flip(source_side), ZoneLocation.Zone.FrontRow, 1),
+		]
+		wait_for(choose, chosen)
+	
+	func chosen(where: ZoneLocation):
+		print(where)
+		battle_state.deal_damage(where, effect.amount)
 		done()

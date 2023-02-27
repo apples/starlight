@@ -3,7 +3,7 @@ class_name BattleField extends Node3D
 var front_row: Array[CardPlane] = []
 var back_row: Array[CardPlane] = []
 
-@export var side: BattleState.Side = BattleState.Side.Player
+@export var side: ZoneLocation.Side = ZoneLocation.Side.Player
 @export var flip_cursor_dirs: bool = false
 
 func _ready():
@@ -22,7 +22,7 @@ func _ready():
 		row[idx] = x
 	
 	for i in range(back_row.size()):
-		back_row[i].location = BattleState.ZoneLocation.new(side, BattleState.Zone.BackRow, i)
+		back_row[i].location = ZoneLocation.new(side, ZoneLocation.Zone.BackRow, i)
 		var cursor_location := back_row[i].cursor_location
 		if i > 0:
 			var left := back_row[i - 1].cursor_location
@@ -45,7 +45,7 @@ func _ready():
 				cursor_location.down = front
 	
 	for i in range(front_row.size()):
-		front_row[i].location = BattleState.ZoneLocation.new(side, BattleState.Zone.FrontRow, i)
+		front_row[i].location = ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, i)
 		var cursor_location := front_row[i].cursor_location
 		if i > 0:
 			var left := front_row[i - 1].cursor_location

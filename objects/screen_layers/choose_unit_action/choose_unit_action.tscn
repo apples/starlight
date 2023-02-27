@@ -1,0 +1,118 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://objects/screen_layers/choose_unit_action/choose_unit_action.gd" id="1_fivxi"]
+[ext_resource type="PackedScene" uid="uid://bllqus03x44j5" path="res://objects/card_cursor/card_cursor.tscn" id="2_r7m3t"]
+[ext_resource type="Texture2D" uid="uid://brkd6gmslwr1s" path="res://objects/screen_layers/choose_unit_action/images/icon_ability.png" id="3_8hvnt"]
+[ext_resource type="PackedScene" uid="uid://b7dgtslwidawq" path="res://objects/action_cursor_location/action_cursor_location.tscn" id="3_u22qg"]
+[ext_resource type="LabelSettings" uid="uid://bh8851qad5fd7" path="res://fonts/label_settings.tres" id="4_pam37"]
+[ext_resource type="Texture2D" uid="uid://bs63pkahpyl2w" path="res://objects/screen_layers/choose_unit_action/images/retreat.png" id="5_5yubr"]
+
+[sub_resource type="Gradient" id="Gradient_04fpr"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.708609, 0.993378, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0.054902, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l0bqh"]
+gradient = SubResource("Gradient_04fpr")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4ag2e"]
+texture = SubResource("GradientTexture2D_l0bqh")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pggq3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r3cbw"]
+
+[node name="ChooseUnitAction" type="Node3D"]
+script = ExtResource("1_fivxi")
+
+[node name="ActionCursor" parent="." instance=ExtResource("2_r7m3t")]
+
+[node name="ControlRoot" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="ControlRoot"]
+layout_mode = 0
+offset_top = -42.0
+offset_bottom = -42.0
+use_top_left = true
+
+[node name="Panel" type="Panel" parent="ControlRoot/CenterContainer"]
+custom_minimum_size = Vector2(200, 120)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_4ag2e")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ControlRoot/CenterContainer"]
+layout_mode = 2
+
+[node name="Ability" type="PanelContainer" parent="ControlRoot/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pggq3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlRoot/CenterContainer/HBoxContainer/Ability"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="ControlRoot/CenterContainer/HBoxContainer/Ability/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_r3cbw")
+
+[node name="Spacer" type="Control" parent="ControlRoot/CenterContainer/HBoxContainer/Ability/VBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="AbilityCursorLocation" parent="ControlRoot/CenterContainer/HBoxContainer/Ability/VBoxContainer/PanelContainer" node_paths=PackedStringArray("right") instance=ExtResource("3_u22qg")]
+layout_mode = 2
+layers = 33
+custom_tag = "ability"
+right = NodePath("../../../../Retreat/VBoxContainer/PanelContainer/RetreatCursorLocation")
+
+[node name="TextureRect" type="TextureRect" parent="ControlRoot/CenterContainer/HBoxContainer/Ability/VBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("3_8hvnt")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="ControlRoot/CenterContainer/HBoxContainer/Ability/VBoxContainer"]
+layout_mode = 2
+text = "Ability"
+label_settings = ExtResource("4_pam37")
+horizontal_alignment = 1
+
+[node name="Retreat" type="PanelContainer" parent="ControlRoot/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pggq3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlRoot/CenterContainer/HBoxContainer/Retreat"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="ControlRoot/CenterContainer/HBoxContainer/Retreat/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_r3cbw")
+
+[node name="Spacer" type="Control" parent="ControlRoot/CenterContainer/HBoxContainer/Retreat/VBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="RetreatCursorLocation" parent="ControlRoot/CenterContainer/HBoxContainer/Retreat/VBoxContainer/PanelContainer" node_paths=PackedStringArray("left") instance=ExtResource("3_u22qg")]
+layout_mode = 2
+layers = 33
+custom_tag = "retreat"
+left = NodePath("../../../../Ability/VBoxContainer/PanelContainer/AbilityCursorLocation")
+
+[node name="TextureRect" type="TextureRect" parent="ControlRoot/CenterContainer/HBoxContainer/Retreat/VBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("5_5yubr")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="ControlRoot/CenterContainer/HBoxContainer/Retreat/VBoxContainer"]
+layout_mode = 2
+text = "Retreat"
+label_settings = ExtResource("4_pam37")
+horizontal_alignment = 1

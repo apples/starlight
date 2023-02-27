@@ -13,6 +13,6 @@ func _ready():
 	if Engine.is_editor_hint():
 		process_mode = Node.PROCESS_MODE_DISABLED
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("toggle_filter_mode"):
 		sprite_filter_trilinear = !sprite_filter_trilinear
