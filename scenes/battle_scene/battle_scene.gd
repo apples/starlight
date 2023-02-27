@@ -33,18 +33,18 @@ func _process(delta: float):
 	reconcile()
 
 func reconcile():
-	var player_state := battle_state.get_side_state(BattleState.Side.Player)
-	var opponent_state := battle_state.get_side_state(BattleState.Side.Opponent)
+	var player_state := battle_state.get_side_state(ZoneLocation.Side.Player)
+	var opponent_state := battle_state.get_side_state(ZoneLocation.Side.Opponent)
 	_reconcile_field(player_state, player_field)
 	_reconcile_field(opponent_state, opponent_field)
 	_reconcile_hand(player_state, player_hand, false)
 	_reconcile_hand(opponent_state, opponent_hand, true)
 
-func _reconcile_field(state: BattleState.BattleSideState, field: BattleField):
+func _reconcile_field(state: BattleSideState, field: BattleField):
 	_reconcile_field_row(state.front_row, field.front_row)
 	_reconcile_field_row(state.back_row, field.back_row)
 
-func _reconcile_field_row(state_row: Array[BattleState.UnitState], field_row: Array[CardPlane]):
+func _reconcile_field_row(state_row: Array[UnitState], field_row: Array[CardPlane]):
 	for i in range(state_row.size()):
 		if i >= field_row.size():
 			push_error("Too many units in row")
@@ -53,7 +53,7 @@ func _reconcile_field_row(state_row: Array[BattleState.UnitState], field_row: Ar
 	for i in range(state_row.size(), field_row.size()):
 		_reconcile_field_slot(field_row[i], null)
 
-func _reconcile_field_slot(slot_card_plane: CardPlane, slot_unit: BattleState.UnitState):
+func _reconcile_field_slot(slot_card_plane: CardPlane, slot_unit: UnitState):
 	if slot_unit:
 		slot_card_plane.show_card = true
 		slot_card_plane.card = slot_unit.card_instance.card
@@ -61,7 +61,7 @@ func _reconcile_field_slot(slot_card_plane: CardPlane, slot_unit: BattleState.Un
 		slot_card_plane.show_card = false
 		slot_card_plane.card = null
 
-func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: bool):
+func _reconcile_hand(state: BattleSideState, hand: Node3D, hidden: bool):
 	for i in range(state.hand.size()):
 		var card_plane: CardPlane = null
 		if i < hand.get_child_count():
@@ -74,7 +74,7 @@ func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: b
 				(CursorLocation.LAYER_PLAYER if hand == player_hand else CursorLocation.LAYER_OPPONENT)
 			hand.add_child(card_plane)
 		card_plane.card = state.hand[i].card if not hidden else null
-		card_plane.location = BattleState.ZoneLocation.new(state.side, BattleState.Zone.Hand, i)
+		card_plane.location = ZoneLocation.new(state.side, ZoneLocation.Zone.Hand, i)
 		var cursor_location = card_plane.cursor_location
 		if i > 0:
 			var left_slot := hand.get_child(i - 1) as CardPlane
@@ -84,10 +84,10 @@ func _reconcile_hand(state: BattleState.BattleSideState, hand: Node3D, hidden: b
 			cursor_location.left = null
 		if i == state.hand.size() - 1:
 			cursor_location.right = null
-		if state.side == BattleState.Side.Player:
+		if state.side == ZoneLocation.Side.Player:
 			cursor_location.up = player_field.back_row[1].cursor_location
 	
-	if hand.get_child_count() > 0 and state.side == BattleState.Side.Player:
+	if hand.get_child_count() > 0 and state.side == ZoneLocation.Side.Player:
 		for card_plane in player_field.back_row:
 			var cl := card_plane.cursor_location
 			cl.down = hand.get_child((hand.get_child_count() - 1) / 2).cursor_location
@@ -101,7 +101,7 @@ func push_screen(screen_scene, init: Callable = func(a): pass) -> BattleScreenLa
 		screen_scene.instantiate() if screen_scene is PackedScene
 		else screen_scene) as BattleScreenLayer
 	
-	print("push_screen: %s" % screen.name)
+	print("push_screen: %s (from %s)" % [screen.name, screen_scene])
 	
 	screen.battle_scene = self
 	screen.battle_state = self.battle_state
@@ -132,7 +132,7 @@ func pop_screen():
 	if screen_layer_stack.size() > 0:
 		screen_layer_stack[-1].uncover()
 
-func set_preview_card(card_instance: BattleState.CardInstance):
+func set_preview_card(card_instance: CardInstance):
 	if not card_instance:
 		card_preview.visible = false
 		return

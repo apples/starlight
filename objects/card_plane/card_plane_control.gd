@@ -15,7 +15,7 @@ extends Control
 		show_card = value
 		refresh()
 
-@export var location: BattleState.ZoneLocation = null:
+@export var location: ZoneLocation = null:
 	get:
 		return location
 	set(value):
@@ -49,7 +49,7 @@ func refresh():
 		return
 	
 	ability1_cursor.position = card_render.ability1.global_position
-	ability1_cursor.size = card_render.ability1.size
+	ability1_cursor.set_deferred("size", card_render.ability1.size)
 	
 	ability2_cursor.position = card_render.ability2.global_position
-	ability2_cursor.size = card_render.ability2.size
+	ability2_cursor.set_deferred("size", card_render.ability2.size)

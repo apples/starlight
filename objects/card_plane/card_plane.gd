@@ -15,7 +15,7 @@ class_name CardPlane extends Node3D
 		show_card = value
 		refresh()
 
-@export var location: BattleState.ZoneLocation = null:
+@export var location: ZoneLocation = null:
 	get:
 		return location
 	set(value):

@@ -80,3 +80,4 @@ func _refresh_starlight():
 	
 	# description
 	starlight_description_label.text = card_ability.description
+

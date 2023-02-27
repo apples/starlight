@@ -21,6 +21,12 @@ Settings="*res://singletons/settings.gd"
 FullscreenToggle="*res://singletons/fullscreen_toggle.gd"
 CardDatabase="*res://addons/card_engine/card_database.gd"
 
+[debug]
+
+gdscript/warnings/unassigned_variable_op_assign=2
+gdscript/warnings/assert_always_true=2
+gdscript/warnings/assert_always_false=0
+
 [display]
 
 window/size/viewport_width=1280
@@ -28,7 +34,7 @@ window/size/viewport_height=720
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/card_engine/plugin.cfg", "res://addons/noise_maker/plugin.cfg")
+enabled=PackedStringArray("res://addons/noise_maker/plugin.cfg", "res://addons/card_engine/plugin.cfg")
 
 [gui]
 

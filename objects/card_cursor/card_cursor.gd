@@ -43,9 +43,9 @@ func _process(delta: float):
 	
 	if nav_dir:
 		if !current_cursor_location:
-			current_cursor_location = CursorLocation.find_location(get_tree(), BattleState.ZoneLocation.new(BattleState.Side.Player, BattleState.Zone.Hand, 0), CursorLocation.LAYER_BATTLE)
+			current_cursor_location = CursorLocation.find_location(get_tree(), ZoneLocation.new(ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, 0), CursorLocation.LAYER_BATTLE)
 			if !current_cursor_location:
-				current_cursor_location = CursorLocation.find_location(get_tree(), BattleState.ZoneLocation.new(BattleState.Side.Player, BattleState.Zone.BackRow, 1), CursorLocation.LAYER_BATTLE)
+				current_cursor_location = CursorLocation.find_location(get_tree(), ZoneLocation.new(ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, 1), CursorLocation.LAYER_BATTLE)
 		else:
 			var next := current_cursor_location.navigate(nav_dir)
 			if next:

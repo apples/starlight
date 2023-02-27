@@ -1,13 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxfsxbmihqmm"]
+[gd_scene load_steps=13 format=3 uid="uid://dw34q3n1vmyjg"]
 
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
-[ext_resource type="Script" path="res://addons/card_engine/battle/battle_state.gd" id="2_bdq53"]
+[ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="2_aqa2u"]
 [ext_resource type="PackedScene" uid="uid://bcrmyin4iw0kk" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
-[ext_resource type="Script" path="res://addons/card_engine/task/card_fiber.gd" id="2_vl6gp"]
 [ext_resource type="Resource" uid="uid://ccejnbeeab8k2" path="res://data/rulesets/default_rules.tres" id="3_qp2vo"]
-[ext_resource type="Script" path="res://scenes/battle_scene/player_agent.gd" id="4_5xqig"]
-[ext_resource type="Script" path="res://scenes/battle_scene/dummy_agent.gd" id="5_rwywo"]
-[ext_resource type="Resource" uid="uid://e56r0lowi2ag" path="res://data/decks/test_deck.tres" id="6_e4m36"]
+[ext_resource type="Script" path="res://objects/fiber/card_fiber.gd" id="4_yrerv"]
+[ext_resource type="Script" path="res://objects/battle_agents/player_agent.gd" id="5_rmg7w"]
+[ext_resource type="Resource" uid="uid://yjojke7uv260" path="res://data/decks/test_deck.tres" id="6_e4m36"]
+[ext_resource type="Script" path="res://objects/battle_agents/dummy_agent.gd" id="7_kgpwf"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_hand.gd" id="10_86xfy"]
 [ext_resource type="Texture2D" uid="uid://csbup4415o24m" path="res://scenes/battle_scene/images/field.png" id="12_ivm3m"]
@@ -17,19 +17,19 @@
 script = ExtResource("1_vdvqa")
 
 [node name="BattleState" type="Node" parent="."]
-script = ExtResource("2_bdq53")
+script = ExtResource("2_aqa2u")
 rules = ExtResource("3_qp2vo")
 
 [node name="CardFiber" type="Node" parent="BattleState"]
-script = ExtResource("2_vl6gp")
+script = ExtResource("4_yrerv")
 
 [node name="PlayerAgent" type="Node" parent="BattleState" node_paths=PackedStringArray("battle_scene")]
-script = ExtResource("4_5xqig")
+script = ExtResource("5_rmg7w")
 deck = ExtResource("6_e4m36")
 battle_scene = NodePath("../..")
 
 [node name="OpponentAgent" type="Node" parent="BattleState"]
-script = ExtResource("5_rwywo")
+script = ExtResource("7_kgpwf")
 deck = ExtResource("6_e4m36")
 
 [node name="Camera" type="Camera3D" parent="."]

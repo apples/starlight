@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjisatde2vivp"]
+
+[ext_resource type="Script" path="res://objects/screen_layers/turn_input/turn_input.gd" id="1_ey2wu"]
+[ext_resource type="PackedScene" uid="uid://bllqus03x44j5" path="res://objects/card_cursor/card_cursor.tscn" id="2_mobpo"]
+
+[node name="TurnInput" type="Node3D"]
+script = ExtResource("1_ey2wu")
+
+[node name="CardCursor" parent="." instance=ExtResource("2_mobpo")]
+
+[connection signal="cursor_location_changed" from="CardCursor" to="." method="_on_card_cursor_cursor_location_changed"]

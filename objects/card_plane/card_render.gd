@@ -14,7 +14,7 @@ extends Node2D
 			refresh()
 
 @export var poke: bool = false:
-	set(value):
+	set(_v):
 		poke = false
 		if is_inside_tree():
 			refresh()

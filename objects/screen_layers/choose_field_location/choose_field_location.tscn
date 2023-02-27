@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://objects/screen_layers/choose_field_location/choose_field_location.gd" id="1_ehy6p"]
+[ext_resource type="PackedScene" uid="uid://bllqus03x44j5" path="res://objects/card_cursor/card_cursor.tscn" id="2_x7ofl"]
+
+[node name="ChooseFieldLocation" type="Node3D"]
+script = ExtResource("1_ehy6p")
+
+[node name="CardCursor" parent="." instance=ExtResource("2_x7ofl")]
