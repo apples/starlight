@@ -81,7 +81,7 @@ func summon_starters(side: ZoneLocation.Side):
 	summon_unit(side_state.starters[1], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 1))
 
 func discard(card_instance: CardInstance):
-	var side := card_instance.owner
+	var side := card_instance.owner_side
 	var side_state := get_side_state(side)
 	card_instance.location = ZoneLocation.new(side, ZoneLocation.Zone.Discard, side_state.discard.size())
 	side_state.discard.append(card_instance)
@@ -180,3 +180,8 @@ func deal_damage(where: ZoneLocation, amount: int):
 	print("deal_damage: to %s (%s / %s)" % [where, unit.damage, unit.card_instance.card.unit_hp])
 	if unit.damage >= unit.card_instance.card.unit_hp:
 		destroy_unit(where)
+
+func set_tapped(card_instance: CardInstance, is_tapped: bool):
+	if card_instance.location.is_field():
+		var unit := get_unit(card_instance.location)
+		unit.is_tapped = is_tapped

@@ -24,5 +24,6 @@ class Task extends CardTask:
 			print("attack_damage cancelled")
 			return done()
 		print("attack_damage task target location: %s" % where)
+		battle_state.set_tapped(source_card_instance, true)
 		battle_state.deal_damage(where, effect.amount)
 		done()

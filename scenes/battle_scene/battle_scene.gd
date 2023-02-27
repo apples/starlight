@@ -57,6 +57,7 @@ func _reconcile_field_slot(slot_card_plane: CardPlane, slot_unit: UnitState):
 	if slot_unit:
 		slot_card_plane.show_card = true
 		slot_card_plane.card = slot_unit.card_instance.card
+		slot_card_plane.is_tapped = slot_unit.is_tapped
 	else:
 		slot_card_plane.show_card = false
 		slot_card_plane.card = null
