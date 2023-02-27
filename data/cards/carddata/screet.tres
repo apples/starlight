@@ -7,12 +7,12 @@
 
 [sub_resource type="Resource" id="Resource_piu31"]
 script = ExtResource("1_1m82d")
-amount = 0
+amount = 3
 
 [sub_resource type="Resource" id="Resource_73gvl"]
 script = ExtResource("1_tqta2")
 ability_name = "Bite"
-attack_power = "12"
+attack_power = "1"
 mana_cost = ""
 description = "bite"
 type = 2

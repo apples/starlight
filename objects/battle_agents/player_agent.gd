@@ -32,8 +32,6 @@ func handle_choose_target(message: MessageTypes.ChooseTarget):
 	
 	var screen = battle_scene.push_screen(choose_target_screen_scene, func (screen):
 		screen.allowed_locations = message.allowed_locations
-		print(screen)
+		var where: ZoneLocation = await screen.location_picked
+		message.future.fulfill(where)
 	)
-	var where: ZoneLocation = await screen.location_picked
-	
-	message.future.fulfill(where)

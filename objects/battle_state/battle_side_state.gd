@@ -28,11 +28,11 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	var card_deck := agent.get_deck()
 
 	for card in card_deck.main_deck_cards:
-		deck.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Deck)))
+		deck.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Deck), side))
 	for card in card_deck.starlight_cards:
-		starlights.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Starlight, starlights.size())))
+		starlights.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Starlight, starlights.size()), side))
 	for card in card_deck.starter_unit_cards:
-		starters.append(CardInstance.new(card_deck.starter_unit_cards[0], battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Floating)))
+		starters.append(CardInstance.new(card_deck.starter_unit_cards[0], battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Floating), side))
 
 	deck.shuffle()
 	starlights.shuffle()

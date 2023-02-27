@@ -49,7 +49,7 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 
 	if unit != null:
 		# TODO: verify requirements
-		add_discard(location.side, unit.card_instance)
+		discard(unit.card_instance)
 		if card_instance.location.zone == ZoneLocation.Zone.Hand:
 			var hand_side_state = get_side_state(card_instance.location.side)
 			hand_side_state.remove_from_hand(card_instance)
@@ -69,13 +69,19 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 	broadcast_message(MessageTypes.UnitSummoned.new({ location = location }))
 
 
+func destroy_unit(where: ZoneLocation):
+	var card_instance := get_unit(where).card_instance
+	remove_unit(where)
+	discard(card_instance)
+
 func summon_starters(side: ZoneLocation.Side):
 	var side_state := get_side_state(side)
 
 	summon_unit(side_state.starters[0], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 0))
 	summon_unit(side_state.starters[1], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 1))
 
-func add_discard(side: ZoneLocation.Side, card_instance: CardInstance):
+func discard(card_instance: CardInstance):
+	var side := card_instance.owner
 	var side_state := get_side_state(side)
 	card_instance.location = ZoneLocation.new(side, ZoneLocation.Zone.Discard, side_state.discard.size())
 	side_state.discard.append(card_instance)
@@ -167,4 +173,10 @@ func perform_ability(who: ZoneLocation.Side, card_instance: CardInstance, abilit
 	return task
 
 func deal_damage(where: ZoneLocation, amount: int):
-	pass
+	assert(where)
+	var unit := get_unit(where)
+	assert(unit)
+	unit.damage += amount
+	print("deal_damage: to %s (%s / %s)" % [where, unit.damage, unit.card_instance.card.unit_hp])
+	if unit.damage >= unit.card_instance.card.unit_hp:
+		destroy_unit(where)
