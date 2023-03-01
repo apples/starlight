@@ -20,20 +20,20 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	battle_state = bs
 	agent = a
 	side = s
-
+	
 	print("Initting %s" % s)
-
+	
 	agent.battle_state = bs
-
+	
 	var card_deck := agent.get_deck()
-
+	
 	for card in card_deck.main_deck_cards:
-		deck.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Deck), side))
+		deck.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Deck), side))
 	for card in card_deck.starlight_cards:
-		starlights.append(CardInstance.new(card, battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Starlight, starlights.size()), side))
+		starlights.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Starlight, starlights.size()), side))
 	for card in card_deck.starter_unit_cards:
-		starters.append(CardInstance.new(card_deck.starter_unit_cards[0], battle_state.next_card_instance_id, ZoneLocation.new(side, Zone.Floating), side))
-
+		starters.append(battle_state.create_card_instance(card_deck.starter_unit_cards[0], ZoneLocation.new(side, Zone.Floating), side))
+	
 	deck.shuffle()
 	starlights.shuffle()
 
@@ -51,3 +51,9 @@ func remove_from_hand(card_instance: CardInstance):
 	hand.remove_at(idx)
 	for i in range(hand.size()):
 		hand[i].location.slot = i
+
+func get_all_units() -> Array[UnitState]:
+	var results: Array[UnitState] = []
+	results.append_array(front_row)
+	results.append_array(back_row)
+	return results.filter(func (u): return u != null)

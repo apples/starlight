@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://ct7kkrr7kxn3e"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://cw8fetlfi74k8"]
 
-[ext_resource type="Script" path="res://data/cards/abilities/attack_damage.gd" id="1_1m82d"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="1_1m82d"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_hbw7y"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_tqta2"]
 [ext_resource type="Texture2D" uid="uid://bb07j7tokq6g3" path="res://data/cards/artwork/screet.png" id="2_y4uko"]

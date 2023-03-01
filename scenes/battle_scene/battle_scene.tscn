@@ -42,44 +42,26 @@ script = ExtResource("8_tbdo0")
 [node name="BackRow0" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, 0)
 cursor_layers = 11
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="BackRow1" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 0)
 cursor_layers = 11
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="BackRow2" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 0)
 cursor_layers = 11
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="BackRow3" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, 0)
 cursor_layers = 11
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="FrontRow0" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
 cursor_layers = 11
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="FrontRow1" parent="PlayerField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
 cursor_layers = 11
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="OpponentField" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.04907e-06, 0, -12)
@@ -90,50 +72,29 @@ flip_cursor_dirs = true
 [node name="BackRow0" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, 0)
 cursor_layers = 13
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="BackRow1" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 0)
 cursor_layers = 13
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="BackRow2" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 0)
 cursor_layers = 13
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="BackRow3" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, 0)
 cursor_layers = 13
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="FrontRow0" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
 cursor_layers = 13
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="FrontRow1" parent="OpponentField" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
 cursor_layers = 13
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="PlayerDeck" parent="." instance=ExtResource("2_mdxbd")]
 transform = Transform3D(0.965926, -0.258819, -1.13133e-08, 0, -4.37114e-08, 1, -0.258819, -0.965926, -4.2222e-08, 8, 0, 1)
-is_tapped = false
-tween_target = -90.0
-tween_duration = 0.5
 
 [node name="PlayerHand" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 4.28541)

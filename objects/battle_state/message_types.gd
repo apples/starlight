@@ -33,3 +33,8 @@ class ChooseTarget extends BattleAgent.Message:
 class TakeTurn extends BattleAgent.Message:
 	func get_type(): return "take_turn"
 	var action_future: CardTask.Future
+
+class RequestResponse extends BattleAgent.Message:
+	func get_type(): return "request_response"
+	var action_future: CardTask.Future
+	var available_triggers: Array[Array]

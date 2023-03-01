@@ -54,9 +54,9 @@ func process_activate_ability(payload: Dictionary):
 		goto(start)
 		return
 	
-	var task := battle_state.perform_ability(battle_state.current_turn, unit.card_instance, ability)
+	var ability_instance := battle_state.perform_ability(battle_state.current_turn, unit.card_instance, ability)
 	
-	wait_for(task, start)
+	wait_for(ability_instance.task, start)
 
 #func process_retreat(_payload):
 #	push_error("Not implemented")

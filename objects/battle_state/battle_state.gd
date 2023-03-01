@@ -9,15 +9,22 @@ var current_turn: ZoneLocation.Side = ZoneLocation.Side.Player
 @onready var player := BattleSideState.new(self, $PlayerAgent, ZoneLocation.Side.Player)
 @onready var opponent := BattleSideState.new(self, $OpponentAgent, ZoneLocation.Side.Opponent)
 
-var current_events: Array[Event] = []
+var trigger_events: Array[TriggerEvent] = []
+var ability_stack: Array[AbilityInstance] = []
+var current_priority: ZoneLocation.Side = ZoneLocation.Side.Player
+var consecutive_passes: int = 0
 
-var next_card_instance_id: int = 0:
+var _next_card_instance_id: int = 0:
 	get:
-		next_card_instance_id += 1
-		return next_card_instance_id
+		_next_card_instance_id += 1
+		return _next_card_instance_id
 
-class Event:
-	var is_ongoing: bool = false
+var all_card_instances: Dictionary = {}
+
+func create_card_instance(card: Card, location: ZoneLocation, owner_side: ZoneLocation.Side) -> CardInstance:
+	var ci := CardInstance.new(card, _next_card_instance_id, location, owner_side)
+	all_card_instances[ci.uid] = ci
+	return ci
 
 func declare_winner(side: ZoneLocation.Side):
 	fiber.stop_all_tasks()
@@ -87,14 +94,12 @@ func discard(card_instance: CardInstance):
 	side_state.discard.append(card_instance)
 	broadcast_message(MessageTypes.AddDiscard.new({ what = card_instance }))
 
-func push_event(e: Event) -> void:
-	current_events.append(e)
+func push_event(e: TriggerEvent) -> void:
+	trigger_events.push_front(e)
 	#broadcast_message({ type = "event", what = e })
 
-
 func flush_events() -> void:
-	current_events.clear()
-
+	trigger_events.clear()
 
 func get_side_state(side: ZoneLocation.Side) -> BattleSideState:
 	match (side):
@@ -164,13 +169,24 @@ func get_card_at(location: ZoneLocation) -> CardInstance:
 			push_warning("Not implemented")
 	return null
 
-func perform_ability(who: ZoneLocation.Side, card_instance: CardInstance, ability: CardAbility) -> CardTask:
-	var task := ability.effect.task()
-	task.source_card_instance = card_instance
-	task.source_location = card_instance.location
-	task.source_side = who
-	fiber.run_task(task)
-	return task
+func perform_ability(controller: ZoneLocation.Side, card_instance: CardInstance, ability: CardAbility) -> AbilityInstance:
+	var ability_instance := AbilityInstance.new()
+	
+	ability_instance.battle_state = self
+	ability_instance.controller = controller
+	ability_instance.card_ability = ability
+	ability_instance.card_instance = card_instance
+	ability_instance.source_location = card_instance.location
+	ability_instance.task =  TaskActivateAbility.new(card_instance, ability_instance)
+	
+	ability_stack.push_back(ability_instance)
+	fiber.run_task(ability_instance.task)
+	
+	return ability_instance
+
+func pop_ability():
+	assert(ability_stack.size() > 0)
+	ability_stack.pop_back()
 
 func deal_damage(where: ZoneLocation, amount: int):
 	assert(where)

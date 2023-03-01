@@ -14,8 +14,8 @@ class Task extends CardTask:
 		print("attack_damage task start (amount = %s)" % effect.amount)
 		var choose := ChooseTargetTask.new()
 		choose.allowed_locations = [
-			ZoneLocation.new(ZoneLocation.flip(source_side), ZoneLocation.Zone.FrontRow, 0),
-			ZoneLocation.new(ZoneLocation.flip(source_side), ZoneLocation.Zone.FrontRow, 1),
+			ZoneLocation.new(ZoneLocation.flip(ability_instance.controller), ZoneLocation.Zone.FrontRow, 0),
+			ZoneLocation.new(ZoneLocation.flip(ability_instance.controller), ZoneLocation.Zone.FrontRow, 1),
 		]
 		wait_for(choose, chosen)
 	
@@ -24,6 +24,6 @@ class Task extends CardTask:
 			print("attack_damage cancelled")
 			return done()
 		print("attack_damage task target location: %s" % where)
-		battle_state.set_tapped(source_card_instance, true)
+		battle_state.set_tapped(ability_instance.card_instance, true)
 		battle_state.deal_damage(where, effect.amount)
 		done()
