@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://dm4dt70ha1q8n"]
 
 [ext_resource type="Script" path="res://objects/card_plane/ability.gd" id="1_v8red"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_p4qpi"]

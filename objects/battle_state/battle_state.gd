@@ -37,13 +37,13 @@ func get_unit(location: ZoneLocation) -> UnitState:
 	var zone = state.get_field_zone(location.zone)
 	return zone[location.slot] if location.slot < zone.size() else null
 
-func remove_unit(location: ZoneLocation) -> void:
+func _remove_unit(location: ZoneLocation) -> void:
 	var state = get_side_state(location.side)
 	var zone = state.get_field_zone(location.zone)
 	if location.slot < zone.size():
 		zone[location.slot] = null
 
-func set_unit(location: ZoneLocation, unit: UnitState) -> void:
+func _set_unit(location: ZoneLocation, unit: UnitState) -> void:
 	var state = get_side_state(location.side)
 	var zone = state.get_field_zone(location.zone)
 	assert(location.slot < zone.size())
@@ -57,18 +57,21 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 	if unit != null:
 		# TODO: verify requirements
 		discard(unit.card_instance)
+		unit.card_instance.unit = null
 		if card_instance.location.zone == ZoneLocation.Zone.Hand:
 			var hand_side_state = get_side_state(card_instance.location.side)
 			hand_side_state.remove_from_hand(card_instance)
 		unit.card_instance = card_instance
+		card_instance.unit = unit
 		card_instance.location = location
 	else:
 		unit = UnitState.new()
-		set_unit(location, unit)
+		_set_unit(location, unit)
 		if card_instance.location.zone == ZoneLocation.Zone.Hand:
 			var hand_side_state = get_side_state(card_instance.location.side)
 			hand_side_state.remove_from_hand(card_instance)
 		unit.card_instance = card_instance
+		card_instance.unit = unit
 		card_instance.location = location
 
 	print("Summoned %s" % card_instance)
@@ -78,8 +81,9 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 
 func destroy_unit(where: ZoneLocation):
 	var card_instance := get_unit(where).card_instance
-	remove_unit(where)
+	_remove_unit(where)
 	discard(card_instance)
+	card_instance.unit = null
 
 func summon_starters(side: ZoneLocation.Side):
 	var side_state := get_side_state(side)
@@ -197,7 +201,25 @@ func deal_damage(where: ZoneLocation, amount: int):
 	if unit.damage >= unit.card_instance.card.unit_hp:
 		destroy_unit(where)
 
-func set_tapped(card_instance: CardInstance, is_tapped: bool):
-	if card_instance.location.is_field():
-		var unit := get_unit(card_instance.location)
-		unit.is_tapped = is_tapped
+func set_tapped(unit: UnitState, is_tapped: bool = true):
+	assert(unit)
+	unit.is_tapped = is_tapped
+	# TODO: broadcast message
+
+func get_tappable_units(controller: ZoneLocation.Side, exclude_uids: Array[int] = []) -> Array[ZoneLocation]:
+	var side_state := get_side_state(controller)
+	var all_units := side_state.get_all_units()
+	
+	# Build list of tappable units
+	var tappable: Array[ZoneLocation] = []
+	
+	# Mana is paid by tapping units - check tappable units
+	for unit in all_units:
+		if unit.card_instance.uid in exclude_uids:
+			continue
+		
+		if not unit.is_tapped:
+			tappable.append(unit.card_instance.location)
+	
+	return tappable
+

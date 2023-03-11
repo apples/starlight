@@ -2,6 +2,7 @@ class_name TaskActivateAbility extends CardTask
 
 var card_instance: CardInstance
 
+
 func _init(ci: CardInstance, ai: AbilityInstance):
 	card_instance = ci
 	ability_instance = ai
@@ -18,17 +19,19 @@ func start() -> void:
 		CardAbility.CardAbilityType.STARLIGHT:
 			pass
 		CardAbility.CardAbilityType.TRIGGER:
-			assert(ability.trigger.can_activate())
+			assert(ability.trigger.can_activate(battle_state, card_instance.owner_side))
 		CardAbility.CardAbilityType.PASSIVE:
 			assert(false)
 	
 	# Pay cost
 	
 	if ability.cost:
-		assert(ability.cost.can_be_paid(battle_state, card_instance, ability_instance.controller))
+		if not ability.cost.can_be_paid(battle_state, card_instance, ability_instance.controller):
+			assert(false)
+			return fail()
 		var cost_task := ability.cost.pay_task()
-		wait_for(cost_task, response_window)
-		return
+		cost_task.ability_instance = ability_instance
+		return wait_for(cost_task, response_window)
 	
 	# If no cost, go straight to response window
 	goto(response_window)

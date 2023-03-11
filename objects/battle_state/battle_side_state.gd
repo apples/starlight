@@ -16,7 +16,6 @@ var back_row: Array[UnitState] = [null, null, null, null]
 var Zone := ZoneLocation.Zone
 
 func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
-	print("ASDF ", Zone, typeof(Zone))
 	battle_state = bs
 	agent = a
 	side = s

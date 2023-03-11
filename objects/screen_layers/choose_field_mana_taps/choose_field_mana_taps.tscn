@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqy6ao85x8ljv"]
+
+[ext_resource type="Script" path="res://objects/screen_layers/choose_field_mana_taps/choose_field_mana_taps.gd" id="1_oab12"]
+[ext_resource type="PackedScene" uid="uid://bllqus03x44j5" path="res://objects/card_cursor/card_cursor.tscn" id="2_bh1dp"]
+
+[node name="ChooseFieldManaTaps" type="Node3D"]
+script = ExtResource("1_oab12")
+
+[node name="CardCursor" parent="." instance=ExtResource("2_bh1dp")]

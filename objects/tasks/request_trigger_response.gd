@@ -31,18 +31,23 @@ func start() -> void:
 	
 	var action_future := Future.new()
 	battle_state.send_message_to(side, MessageTypes.RequestResponse.new({
-		future = action_future,
+		action_future = action_future,
 		available_triggers = _available_triggers,
 	}))
 	wait_for_future(action_future, action_chosen)
 
 
 func action_chosen(trigger_action: Array) -> void:
+	# Check for pass
+	
+	if trigger_action.size() == 0:
+		return goto(pass_to_next)
+	
 	# Validate parameters
 	
 	assert(trigger_action.size() == 2)
 	if trigger_action.size() > 2:
-		push_error("Invalid response")
+		push_error("Invalid response: unexpected tuple size")
 		return done(null, Result.FAILED)
 	
 	var uid: int = trigger_action[0]
@@ -89,6 +94,8 @@ func pass_to_next() -> void:
 	done()
 
 func _check_ability(card_instance: CardInstance, ability: CardAbility) -> bool:
+	if not ability:
+		return false
 	if ability.cost and ability.cost.can_be_paid(battle_state, card_instance, side):
 		return true
 	return false

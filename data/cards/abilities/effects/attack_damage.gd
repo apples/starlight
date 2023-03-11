@@ -24,6 +24,8 @@ class Task extends CardTask:
 			print("attack_damage cancelled")
 			return done()
 		print("attack_damage task target location: %s" % where)
-		battle_state.set_tapped(ability_instance.card_instance, true)
+		
+		var damage_amount := effect.amount + ability_instance.attack_bonus_damage
+		
 		battle_state.deal_damage(where, effect.amount)
 		done()

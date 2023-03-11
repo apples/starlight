@@ -38,3 +38,9 @@ class RequestResponse extends BattleAgent.Message:
 	func get_type(): return "request_response"
 	var action_future: CardTask.Future
 	var available_triggers: Array[Array]
+
+class RequestManaTaps extends BattleAgent.Message:
+	func get_type(): return "request_mana_taps"
+	var action_future: CardTask.Future
+	var amount: int
+	var available_locations: Array[ZoneLocation]

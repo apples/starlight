@@ -26,7 +26,7 @@ class Future:
 		_value = v
 		is_fulfilled = true
 	func _to_string():
-		return "<unfulfilled future>" if not is_fulfilled else "<fulfilled, %s>" % _value
+		return "<unfulfilled future>" if not is_fulfilled else ("<fulfilled, %s>" % [_value])
 
 class ResultValue:
 	var value
@@ -186,6 +186,9 @@ func done(value = null, result: Result = Result.SUCCESS) -> void:
 	_did_update_state = true
 	_result_future.fulfill(ResultValue.new(value, result))
 	finished.emit()
+
+func fail(value = null) -> void:
+	done(value, Result.FAILED)
 
 func cancel() -> void:
 	if _awaited_task != null and _awaited_task.status != Status.DONE:

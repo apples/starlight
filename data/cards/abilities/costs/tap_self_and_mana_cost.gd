@@ -7,6 +7,16 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, user_si
 	if card_instance.location.side != user_side:
 		return false
 	
+	var self_unit := battle_state.get_unit(card_instance.location)
+	
+	# Short circuit if not a unit
+	if not self_unit:
+		return false
+	
+	# If it's already tapped, we can't tap it (incredible)
+	if self_unit.is_tapped:
+		return false
+	
 	var side_state := battle_state.get_side_state(user_side)
 	var all_units := side_state.get_all_units()
 	
@@ -58,6 +68,17 @@ class PayTask extends CardTask:
 		wait_for_future(m.action_future, taps_chosen)
 	
 	func taps_chosen(chosen_locations: Array[ZoneLocation]) -> void:
+		# Perform self-tap
+		
+		var self_unit := battle_state.get_unit(ability_instance.card_instance.location)
+		assert(not self_unit.is_tapped)
+		if self_unit.is_tapped:
+			push_error("Invalid payload: Unit already tapped")
+			return fail()
+		battle_state.set_tapped(ability_instance.card_instance.unit)
+		
+		# Perform mana taps
+		
 		var units: Array[UnitState] = []
 		
 		var card_instance := ability_instance.card_instance
@@ -69,15 +90,20 @@ class PayTask extends CardTask:
 					return true
 			return false
 		
-		for unit in chosen_locations:
-			assert(unit)
-			if not unit:
-				push_error("Invalid payload")
+		for unit_location in chosen_locations:
+			assert(unit_location)
+			if not unit_location:
+				push_error("Invalid payload: unit_location is null")
 				return fail()
-			var unit_is_tappable: bool = is_tappable.call(unit.card_instance.location)
+			var unit_is_tappable: bool = is_tappable.call(unit_location)
 			assert(unit_is_tappable)
 			if not unit_is_tappable:
-				push_error("Invalid payload")
+				push_error("Invalid payload: unit_location is not tappable")
+				return fail()
+			var unit := battle_state.get_unit(unit_location)
+			assert(unit)
+			if not unit:
+				push_error("Invalid payload: no unit at unit_location")
 				return fail()
 			units.append(unit)
 		
