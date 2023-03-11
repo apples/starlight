@@ -31,6 +31,12 @@ func equals(other: ZoneLocation):
 func tuple() -> Array:
 	return [side, zone, slot]
 
+func is_field() -> bool:
+	match zone:
+		Zone.FrontRow,Zone.BackRow:
+			return true
+	return false
+
 func _to_string():
 	return "<%s, %s, %s>" % [ZoneLocation.Side.keys()[side], Zone.keys()[zone], slot]
 

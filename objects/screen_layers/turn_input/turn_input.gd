@@ -24,7 +24,6 @@ func uncover():
 	if cursor.current_cursor_location:
 		battle_scene.set_preview_card(battle_state.get_card_at(cursor.current_cursor_location.location))
 
-
 func cover():
 	super.cover()
 	cursor.enabled = false
