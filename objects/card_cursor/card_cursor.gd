@@ -1,4 +1,4 @@
-extends Node
+class_name CardCursor extends Node
 
 @export var enabled: bool = false:
 	get:
@@ -15,7 +15,7 @@ var current_cursor_location: CursorLocation = null:
 		current_cursor_location = value
 		if current_cursor_location:
 			current_cursor_location.is_current = true
-		emit_signal("cursor_location_changed", current_cursor_location)
+		cursor_location_changed.emit(current_cursor_location)
 
 signal cursor_location_changed(cursor_location: CursorLocation)
 
@@ -42,14 +42,30 @@ func _process(delta: float):
 		nav_dir = "right"
 	
 	if nav_dir:
+		navigate(nav_dir)
+		# TODO: play bonk sfx
+
+## Attempts to move the current location to the next location in the specified direction.
+## If the cursor is not at any location, an attempt is made to place it at a good starting location.
+## Returns true if the location changed.
+func navigate(nav_dir: String):
+	if !current_cursor_location:
+		current_cursor_location = CursorLocation.find_location(get_tree(), ZoneLocation.new(ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, 0), CursorLocation.LAYER_BATTLE)
 		if !current_cursor_location:
-			current_cursor_location = CursorLocation.find_location(get_tree(), ZoneLocation.new(ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, 0), CursorLocation.LAYER_BATTLE)
-			if !current_cursor_location:
-				current_cursor_location = CursorLocation.find_location(get_tree(), ZoneLocation.new(ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, 1), CursorLocation.LAYER_BATTLE)
-		else:
-			var next := current_cursor_location.navigate(nav_dir)
-			if next:
-				current_cursor_location = next
-			else:
-				# TODO: play bonk sfx
-				pass
+			current_cursor_location = CursorLocation.find_location(get_tree(), ZoneLocation.new(ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, 1), CursorLocation.LAYER_BATTLE)
+		return current_cursor_location != null
+	else:
+		var next := current_cursor_location.navigate(nav_dir)
+		if next:
+			current_cursor_location = next
+			return true
+	
+	return false
+
+## Disables the current cursor location and attempts to find a next location.
+func disable_current():
+	assert(current_cursor_location)
+	current_cursor_location.enabled = false
+	for d in ["right", "up", "down", "left"]:
+		if navigate(d):
+			break

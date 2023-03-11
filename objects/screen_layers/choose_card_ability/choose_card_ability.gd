@@ -16,7 +16,10 @@ func uncover():
 	var results := CursorLocation.filter_enable(get_tree(), CursorLocation.LAYER_CARD_ABILITIES, func (cl: CursorLocation):
 		assert(cl.custom_tag.begins_with("ability_"))
 		var key := "ability%s" % cl.custom_tag.trim_prefix("ability_")
-		return (card_instance.card[key] as CardAbility).type in allowed_ability_types
+		var card_ability := card_instance.card[key] as CardAbility
+		if not card_ability:
+			return false
+		return card_ability.type in allowed_ability_types
 	)
 	
 	if results.size() > 0:
