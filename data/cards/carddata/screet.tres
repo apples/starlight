@@ -1,30 +1,28 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://ct7kkrr7kxn3e"]
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://cw8fetlfi74k8"]
 
-[ext_resource type="Script" path="res://data/cards/abilities/attack_damage.gd" id="1_1m82d"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="1_1m82d"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_hbw7y"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_tqta2"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/tap_self_and_mana_cost.gd" id="1_ua3bb"]
 [ext_resource type="Texture2D" uid="uid://bb07j7tokq6g3" path="res://data/cards/artwork/screet.png" id="2_y4uko"]
+
+[sub_resource type="Resource" id="Resource_iwpm8"]
+script = ExtResource("1_ua3bb")
+amount = 1
 
 [sub_resource type="Resource" id="Resource_piu31"]
 script = ExtResource("1_1m82d")
-amount = 0
+amount = 3
 
 [sub_resource type="Resource" id="Resource_73gvl"]
 script = ExtResource("1_tqta2")
 ability_name = "Bite"
-attack_power = "12"
-mana_cost = ""
+attack_power = "1"
+mana_cost = "1"
 description = "bite"
 type = 2
+cost = SubResource("Resource_iwpm8")
 effect = SubResource("Resource_piu31")
-
-[sub_resource type="Resource" id="Resource_62j28"]
-script = ExtResource("1_tqta2")
-ability_name = "adf"
-attack_power = ""
-mana_cost = ""
-description = "asdf"
-type = 1
 
 [resource]
 script = ExtResource("1_hbw7y")
@@ -35,4 +33,3 @@ kind = 0
 unit_hp = 3
 unit_level = 0
 ability1 = SubResource("Resource_73gvl")
-ability2 = SubResource("Resource_62j28")

@@ -26,7 +26,7 @@ class Future:
 		_value = v
 		is_fulfilled = true
 	func _to_string():
-		return "<unfulfilled future>" if not is_fulfilled else "<fulfilled, %s>" % _value
+		return "<unfulfilled future>" if not is_fulfilled else ("<fulfilled, %s>" % [_value])
 
 class ResultValue:
 	var value
@@ -40,9 +40,7 @@ signal finished()
 # Standard properties
 var battle_state: BattleState = null
 var fiber: CardFiber = null
-var source_card_instance: CardInstance = null
-var source_location: ZoneLocation = null
-var source_side: ZoneLocation.Side = ZoneLocation.Side.Player
+var ability_instance: AbilityInstance = null
 
 # Execution status
 var status: Status = Status.PENDING
@@ -153,7 +151,8 @@ func wait_for_future(future: Future, next: Callable) -> void:
 func wait_for(task: CardTask, next: Callable, on_fail: Callable = Callable()) -> void:
 	assert(!_did_update_state, "Duplicate state update.")
 	assert(next.get_object() == self, "Next state must belong to this object.")
-	assert(!on_fail.is_valid() or on_fail.get_object() == self, "Fail state must belong to this object.")
+	# (on_fail == next) due to bug in calling get_object() multiple times
+	assert(on_fail == next or !on_fail.is_valid() or on_fail.get_object() == self, "Fail state must belong to this object.")
 	assert(!_awaited_future, "Already awaiting something.")
 	status = Status.WAITING
 	if !task.is_inside_tree():
@@ -164,10 +163,10 @@ func wait_for(task: CardTask, next: Callable, on_fail: Callable = Callable()) ->
 	_did_update_state = true
 
 func become(task: CardTask):
-	wait_for(task, _become_done, _become_done)
+	wait_for(task, self._become_done, self._become_done)
 
 func _become_done(value):
-	done(_awaited_task_result, value)
+	done(value, _awaited_task_result)
 
 func goto(next: Callable) -> void:
 	assert(!_did_update_state, "Duplicate state update.")
@@ -187,6 +186,9 @@ func done(value = null, result: Result = Result.SUCCESS) -> void:
 	_did_update_state = true
 	_result_future.fulfill(ResultValue.new(value, result))
 	finished.emit()
+
+func fail(value = null) -> void:
+	done(value, Result.FAILED)
 
 func cancel() -> void:
 	if _awaited_task != null and _awaited_task.status != Status.DONE:

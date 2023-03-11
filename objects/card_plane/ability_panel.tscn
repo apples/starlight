@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://dm4dt70ha1q8n"]
 
 [ext_resource type="Script" path="res://objects/card_plane/ability.gd" id="1_v8red"]
-[ext_resource type="Script" path="res://data/cards/abilities/attack_damage.gd" id="2_p4qpi"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_p4qpi"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_dwtj0"]
 [ext_resource type="Texture2D" uid="uid://b6yyo8lo0mep" path="res://objects/card_plane/images/frame_ability.png" id="4_42y8b"]
 [ext_resource type="Texture2D" uid="uid://73vgyww6ux5f" path="res://objects/card_plane/images/frame_ability_attackpower.png" id="6_1ajto"]

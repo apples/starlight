@@ -32,6 +32,10 @@ gdscript/warnings/assert_always_false=0
 window/size/viewport_width=1280
 window/size/viewport_height=720
 
+[dotnet]
+
+project/assembly_name="Starlight"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/noise_maker/plugin.cfg", "res://addons/card_engine/plugin.cfg")
