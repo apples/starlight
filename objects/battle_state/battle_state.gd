@@ -194,6 +194,11 @@ func deal_damage(where: ZoneLocation, amount: int):
 	assert(unit)
 	unit.damage += amount
 	print("deal_damage: to %s (%s / %s)" % [where, unit.damage, unit.card_instance.card.unit_hp])
+	broadcast_message(MessageTypes.UnitDamaged.new({
+		card_uid = unit.card_instance.uid,
+		location = unit.card_instance.location,
+		amount = amount,
+	}))
 	if unit.damage >= unit.card_instance.card.unit_hp:
 		destroy_unit(where)
 

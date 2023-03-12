@@ -6,7 +6,8 @@
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_lunqm"]
 [ext_resource type="PackedScene" uid="uid://cyr4o4b07vyay" path="res://objects/card_ability_cursor_location/card_ability_cursor_location.tscn" id="6_vvfj4"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_576am"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_cx4mg"]
+viewport_path = NodePath("SubViewport")
 
 [node name="CardPlaneControl" type="MarginContainer"]
 offset_right = 288.0
@@ -28,11 +29,11 @@ card = null
 texture_filter = 2
 material = ExtResource("3_7gcy2")
 layout_mode = 2
-texture = SubResource("ViewportTexture_576am")
+texture = SubResource("ViewportTexture_cx4mg")
 expand_mode = 3
 script = ExtResource("4_lunqm")
 
-[node name="CardAbilityCursorLocation1" parent="Sprite" node_paths=PackedStringArray("down") instance=ExtResource("6_vvfj4")]
+[node name="CardAbilityCursorLocation0" parent="Sprite" node_paths=PackedStringArray("down") instance=ExtResource("6_vvfj4")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -44,9 +45,9 @@ grow_horizontal = 2
 grow_vertical = 2
 layers = 65
 custom_tag = "ability0"
-down = NodePath("../CardAbilityCursorLocation2")
+down = NodePath("../CardAbilityCursorLocation1")
 
-[node name="CardAbilityCursorLocation2" parent="Sprite" node_paths=PackedStringArray("up") instance=ExtResource("6_vvfj4")]
+[node name="CardAbilityCursorLocation1" parent="Sprite" node_paths=PackedStringArray("up") instance=ExtResource("6_vvfj4")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -60,4 +61,4 @@ grow_horizontal = 2
 grow_vertical = 2
 layers = 65
 custom_tag = "ability1"
-up = NodePath("../CardAbilityCursorLocation1")
+up = NodePath("../CardAbilityCursorLocation0")
