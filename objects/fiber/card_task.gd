@@ -58,7 +58,7 @@ var _awaited_task_result: Result = Result.PENDING
 # Used for debugging purposes
 var _did_update_state: bool = false
 
-@onready var filename: String = get_script().resource_path.get_file()
+var filename: String = get_script().resource_path.get_file()
 
 func _ready():
 	assert(fiber != null)
@@ -77,7 +77,7 @@ func run() -> void:
 	_did_update_state = false
 	
 	if !_awaited_future:
-		print("[CardTask] %s: %s" % [filename, _next_state])
+		print("[CardTask] %s: Running state \"%s\"" % [filename, _next_state])
 		self.call(_next_state)
 	else:
 		assert(_awaited_future.is_fulfilled, "Waiting tasks must not be run!")
@@ -95,7 +95,7 @@ func run() -> void:
 			if _awaited_task_result != Result.SUCCESS:
 				state = _fail_state
 		_awaited_future = null
-		print("[CardTask] %s: %s" % [filename, state])
+		print("[CardTask] %s: Running state \"%s\"" % [filename, state])
 		_call_with_optional_argument(state, value)
 	
 	assert(_did_update_state, "Must call wait_for(), done(), or goto().")
@@ -194,3 +194,6 @@ func cancel() -> void:
 	if _awaited_task != null and _awaited_task.status != Status.DONE:
 		_awaited_task.cancel()
 	done(null, Result.CANCELLED)
+
+func info(what: String):
+	print("[CardTask] %s: INFO: %s" % [filename, what])

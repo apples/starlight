@@ -6,6 +6,8 @@ var location: ZoneLocation
 var owner_side: ZoneLocation.Side
 var unit: UnitState
 
+var ability_scratch: Array = [null, null]
+
 func _init(c: Card, id: int, l: ZoneLocation, o: ZoneLocation.Side):
 	card = c
 	uid = id
