@@ -102,7 +102,7 @@ func push_event(e: TriggerEvent) -> void:
 	trigger_events.push_front(e)
 	#broadcast_message({ type = "event", what = e })
 
-func flush_events() -> void:
+func clear_events() -> void:
 	trigger_events.clear()
 
 func get_side_state(side: ZoneLocation.Side) -> BattleSideState:
@@ -173,13 +173,9 @@ func get_card_at(location: ZoneLocation) -> CardInstance:
 			push_warning("Not implemented")
 	return null
 
-func perform_ability(controller: ZoneLocation.Side, card_instance: CardInstance, ability: CardAbility) -> AbilityInstance:
-	var ability_instance := AbilityInstance.new()
+func perform_ability(controller: ZoneLocation.Side, card_instance: CardInstance, ability_index: int) -> AbilityInstance:
+	var ability_instance := AbilityInstance.new(self, controller, card_instance, ability_index)
 	
-	ability_instance.battle_state = self
-	ability_instance.controller = controller
-	ability_instance.card_ability = ability
-	ability_instance.card_instance = card_instance
 	ability_instance.source_location = card_instance.location
 	ability_instance.task =  TaskActivateAbility.new(card_instance, ability_instance)
 	

@@ -9,6 +9,9 @@ func _init(s: ZoneLocation.Side):
 	side = s
 
 func start() -> void:
+	
+	print("request_trigger_response: %s" % [ZoneLocation.Side.find_key(side)])
+	
 	# Find possible trigger activations
 	
 	var side_state := battle_state.get_side_state(side)
@@ -18,15 +21,15 @@ func start() -> void:
 	
 	for unit in all_units:
 		var arr: Array = [unit.card_instance.uid]
-		if _check_ability(unit.card_instance, unit.card_instance.card.ability1):
-			arr.append("ability1")
-		if _check_ability(unit.card_instance, unit.card_instance.card.ability2):
-			arr.append("ability2")
+		for i in [0, 1]:
+			if _check_ability(unit.card_instance, i):
+				arr.append(i)
 		if arr.size() > 1:
 			_available_triggers.append(arr)
 	
 	# If no possible triggers, skip response window
 	if _available_triggers.size() == 0:
+		print("request_trigger_response: no valid triggers")
 		return goto(pass_to_next)
 	
 	var action_future := Future.new()
@@ -51,10 +54,10 @@ func action_chosen(trigger_action: Array) -> void:
 		return done(null, Result.FAILED)
 	
 	var uid: int = trigger_action[0]
-	var key: String = trigger_action[1]
+	var ability_index: int = trigger_action[1]
 	
-	assert(key == "ability1" or key == "ability2")
-	if key != "ability1" and key != "ability2":
+	assert(ability_index == 0 or ability_index == 1)
+	if ability_index != 0 and ability_index != 1:
 		push_error("Invalid response")
 		return done(null, Result.FAILED)
 	
@@ -62,7 +65,7 @@ func action_chosen(trigger_action: Array) -> void:
 	
 	var chosen: Array = []
 	for choice in _available_triggers:
-		if choice[0] == uid and key in choice:
+		if choice[0] == uid and ability_index in choice:
 			chosen = choice
 			break
 	
@@ -75,9 +78,8 @@ func action_chosen(trigger_action: Array) -> void:
 	# Execute trigger
 	
 	var card_instance: CardInstance = battle_state.all_card_instances[uid]
-	var ability: CardAbility = card_instance.card[key]
 	
-	var ability_instance := battle_state.perform_ability(side, card_instance, ability)
+	var ability_instance := battle_state.perform_ability(side, card_instance, ability_index)
 	
 	return become(ability_instance.task)
 
@@ -93,9 +95,15 @@ func pass_to_next() -> void:
 	# Otherwise, we are done
 	done()
 
-func _check_ability(card_instance: CardInstance, ability: CardAbility) -> bool:
+func _check_ability(card_instance: CardInstance, ability_index: int) -> bool:
+	assert(ability_index == 0 || ability_index == 1)
+	var ability: CardAbility = card_instance.card.get_ability(ability_index)
 	if not ability:
 		return false
-	if ability.cost and ability.cost.can_be_paid(battle_state, card_instance, side):
-		return true
-	return false
+	if not ability.type == CardAbility.CardAbilityType.TRIGGER:
+		return false
+	if ability.cost and not ability.cost.can_be_paid(battle_state, card_instance, side):
+		return false
+	if ability.trigger and not ability.trigger.can_activate(battle_state, card_instance, ability_index, side):
+		return false
+	return true
