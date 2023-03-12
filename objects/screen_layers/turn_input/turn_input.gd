@@ -79,8 +79,8 @@ func _choose_unit_action_ability_chosen(card_instance: CardInstance, index: int)
 	if index == -1:
 		return
 	
-	assert(index == 1 or index == 2)
-	print("Activating ability %s on %s" % [index, card_instance])
+	assert(index == 0 or index == 1)
+	print("Activating ability%s on %s" % [index, card_instance])
 	
 	emit_signal("player_action", { type = "activate_ability", location = card_instance.location, ability_index = index })
 	battle_scene.pop_screen()

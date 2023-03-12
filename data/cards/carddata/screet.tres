@@ -8,7 +8,7 @@
 
 [sub_resource type="Resource" id="Resource_iwpm8"]
 script = ExtResource("1_ua3bb")
-amount = 1
+mana_amount = 1
 
 [sub_resource type="Resource" id="Resource_piu31"]
 script = ExtResource("1_1m82d")
