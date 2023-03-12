@@ -8,6 +8,7 @@
 
 [sub_resource type="Resource" id="Resource_iwpm8"]
 script = ExtResource("1_ua3bb")
+tap_self = true
 mana_amount = 1
 
 [sub_resource type="Resource" id="Resource_piu31"]
@@ -32,4 +33,4 @@ artwork = ExtResource("2_y4uko")
 kind = 0
 unit_hp = 3
 unit_level = 0
-ability1 = SubResource("Resource_73gvl")
+ability0 = SubResource("Resource_73gvl")

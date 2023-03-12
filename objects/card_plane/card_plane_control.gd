@@ -25,8 +25,8 @@ extends Control
 @onready var sprite := $Sprite
 @onready var viewport := $SubViewport
 @onready var card_render: CardRender = %CardRender
+@onready var ability0_cursor := %CardAbilityCursorLocation0
 @onready var ability1_cursor := %CardAbilityCursorLocation1
-@onready var ability2_cursor := %CardAbilityCursorLocation2
 
 func _ready():
 	$Sprite.texture = $SubViewport.get_texture()
@@ -48,8 +48,8 @@ func refresh():
 	if Engine.is_editor_hint():
 		return
 	
+	ability0_cursor.position = card_render.ability0.global_position
+	ability0_cursor.set_deferred("size", card_render.ability0.size)
+	
 	ability1_cursor.position = card_render.ability1.global_position
 	ability1_cursor.set_deferred("size", card_render.ability1.size)
-	
-	ability2_cursor.position = card_render.ability2.global_position
-	ability2_cursor.set_deferred("size", card_render.ability2.size)

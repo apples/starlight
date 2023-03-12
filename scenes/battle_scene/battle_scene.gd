@@ -140,3 +140,28 @@ func set_preview_card(card_instance: CardInstance):
 	
 	card_preview.visible = true
 	card_preview.card = card_instance.card
+
+
+func get_card_plane(location: ZoneLocation) -> CardPlane:
+	var field := player_field
+	
+	match location.side:
+		ZoneLocation.Side.Player:
+			field = player_field
+		ZoneLocation.Side.Opponent:
+			field = opponent_field
+	
+	var row := field.back_row
+	
+	match location.zone:
+		ZoneLocation.Zone.FrontRow:
+			row = field.front_row
+		ZoneLocation.Zone.BackRow:
+			row = field.back_row
+		_:
+			assert(false)
+			push_error("Not supported")
+	
+	assert(location.slot >= 0 && location.slot < row.size())
+	
+	return row[location.slot]
