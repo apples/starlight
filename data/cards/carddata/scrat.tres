@@ -9,6 +9,7 @@
 
 [sub_resource type="Resource" id="Resource_glj64"]
 script = ExtResource("1_jqd3a")
+tap_self = true
 mana_amount = 0
 
 [sub_resource type="Resource" id="Resource_1bew4"]
@@ -37,4 +38,4 @@ artwork = ExtResource("3_vbn47")
 kind = 0
 unit_hp = 3
 unit_level = 0
-ability1 = SubResource("Resource_73gvl")
+ability0 = SubResource("Resource_73gvl")

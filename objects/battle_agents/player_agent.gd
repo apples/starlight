@@ -89,3 +89,7 @@ func _request_response_choose_ability(message: MessageTypes.RequestResponse, whe
 		assert(ability_index in screen.allowed_ability_indices)
 		message.action_future.fulfill([trigger[0], ability_index])
 	)
+
+func handle_unit_damaged(message: MessageTypes.UnitDamaged):
+	var card_plane := battle_scene.get_card_plane(message.location)
+	card_plane.toast("-%s" % message.amount)

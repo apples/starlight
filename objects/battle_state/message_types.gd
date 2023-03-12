@@ -44,3 +44,9 @@ class RequestManaTaps extends BattleAgent.Message:
 	var action_future: CardTask.Future
 	var amount: int
 	var available_locations: Array[ZoneLocation]
+
+class UnitDamaged extends BattleAgent.Message:
+	func get_type(): return "unit_damaged"
+	var card_uid: int
+	var location: ZoneLocation
+	var amount: int

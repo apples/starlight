@@ -1,15 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://bcrmyin4iw0kk"]
+[gd_scene load_steps=8 format=3 uid="uid://bcrmyin4iw0kk"]
 
 [ext_resource type="PackedScene" uid="uid://h44k1py4gfd3" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane.gd" id="1_q5tqm"]
 [ext_resource type="Material" uid="uid://cild4c13skl8l" path="res://objects/material_sprite/material_sprite_material.tres" id="4_xytkv"]
 [ext_resource type="PackedScene" uid="uid://jj4n3ey7ocix" path="res://objects/cursor_location/cursor_location.tscn" id="5_580d1"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_3d.gd" id="6_74fw4"]
+[ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="6_a2h0i"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_c2f4v"]
 viewport_path = NodePath("SubViewport")
 
 [node name="CardPlane" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 script = ExtResource("1_q5tqm")
 
 [node name="SubViewport" type="SubViewport" parent="."]
@@ -37,3 +39,18 @@ layers = 0
 [node name="ActionRoot" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="ToastRoot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.735689, -0.376137)
+
+[node name="ToastLabel" type="Label3D" parent="ToastRoot"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+visible = false
+billboard = 1
+render_priority = 2
+outline_render_priority = 1
+text = "-6"
+font = ExtResource("6_a2h0i")
+font_size = 190
+outline_size = 60

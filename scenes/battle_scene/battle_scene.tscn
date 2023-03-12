@@ -97,11 +97,11 @@ cursor_layers = 13
 transform = Transform3D(0.965926, -0.258819, -1.13133e-08, 0, -4.37114e-08, 1, -0.258819, -0.965926, -4.2222e-08, 8, 0, 1)
 
 [node name="PlayerHand" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 4.28541)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4.28541)
 script = ExtResource("10_86xfy")
 
 [node name="OpponentHand" type="Node3D" parent="."]
-transform = Transform3D(-1, 8.44439e-08, 2.26267e-08, 0, -0.258819, 0.965926, 8.74228e-08, 0.965926, 0.258819, -0.0185368, -0.0319576, -16.0767)
+transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, -0.0185368, -0.0319576, -16.0767)
 script = ExtResource("10_86xfy")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
