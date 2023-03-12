@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="CardDeck" load_steps=3 format=3 uid="uid://yjojke7uv260"]
+[gd_resource type="Resource" script_class="CardDeck" load_steps=4 format=3 uid="uid://yjojke7uv260"]
 
-[ext_resource type="Resource" path="res://data/cards/carddata/screet.tres" id="1_run4e"]
+[ext_resource type="Resource" uid="uid://cw8fetlfi74k8" path="res://data/cards/carddata/screet.tres" id="1_run4e"]
 [ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="1_wsudd"]
+[ext_resource type="Resource" uid="uid://nmri1lqct0a7" path="res://data/cards/carddata/scrat.tres" id="3_iwpd6"]
 
 [resource]
 script = ExtResource("1_wsudd")
 main_deck_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e")])
-starter_unit_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("1_run4e"), ExtResource("1_run4e")])
+starter_unit_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("1_run4e"), ExtResource("3_iwpd6")])
 starlight_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("1_run4e"), ExtResource("1_run4e"), ExtResource("1_run4e")])

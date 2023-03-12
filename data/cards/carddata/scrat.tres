@@ -1,8 +1,22 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://nmri1lqct0a7"]
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://nmri1lqct0a7"]
 
+[ext_resource type="Script" path="res://data/cards/abilities/costs/tap_self_and_mana_cost.gd" id="1_jqd3a"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_front_unit_attacks.gd" id="2_4qx33"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="2_67da2"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="2_bvnkh"]
 [ext_resource type="Texture2D" uid="uid://b7xjy426tlub5" path="res://data/cards/artwork/scrat.png" id="3_vbn47"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="4_bynn8"]
+
+[sub_resource type="Resource" id="Resource_glj64"]
+script = ExtResource("1_jqd3a")
+mana_amount = 0
+
+[sub_resource type="Resource" id="Resource_1bew4"]
+script = ExtResource("2_bvnkh")
+amount = 3
+
+[sub_resource type="Resource" id="Resource_v5mmf"]
+script = ExtResource("2_4qx33")
 
 [sub_resource type="Resource" id="Resource_73gvl"]
 script = ExtResource("2_67da2")
@@ -11,6 +25,9 @@ attack_power = ""
 mana_cost = ""
 description = "When your front row unit attacks: tap this; that attack deals +3 damage."
 type = 3
+trigger = SubResource("Resource_v5mmf")
+cost = SubResource("Resource_glj64")
+effect = SubResource("Resource_1bew4")
 
 [resource]
 script = ExtResource("4_bynn8")

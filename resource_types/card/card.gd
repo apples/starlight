@@ -29,6 +29,10 @@ func _init():
 func _to_string():
 	return "<%s>" % [card_name]
 
+func get_ability(ability_index: int) -> CardAbility:
+	assert(ability_index == 0 || ability_index == 1)
+	return self["ability%s" % (ability_index + 1)]
+
 static func random_id() -> String:
 	var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	var str = ""

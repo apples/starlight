@@ -33,7 +33,7 @@ func process_activate_ability(payload: Dictionary):
 	
 	var location: ZoneLocation = payload.location
 	var index: int = payload.ability_index
-	assert(index == 1 or index == 2)
+	assert(index == 0 or index == 1)
 	
 	var unit := battle_state.get_unit(location)
 	assert(unit != null)
@@ -42,7 +42,7 @@ func process_activate_ability(payload: Dictionary):
 		goto(start)
 		return
 	
-	var ability: CardAbility = unit.card_instance.card["ability%s" % index]
+	var ability: CardAbility = unit.card_instance.card.get_ability(index)
 	assert(ability != null)
 	if ability == null:
 		push_error("Invalid ability index: %s" % index)
@@ -54,9 +54,13 @@ func process_activate_ability(payload: Dictionary):
 		goto(start)
 		return
 	
-	var ability_instance := battle_state.perform_ability(battle_state.current_turn, unit.card_instance, ability)
+	var ability_instance := battle_state.perform_ability(battle_state.current_turn, unit.card_instance, index)
 	
-	wait_for(ability_instance.task, start)
+	wait_for(ability_instance.task, activate_ability_finished)
+
+func activate_ability_finished() -> void:
+	battle_state.clear_events()
+	goto(start)
 
 #func process_retreat(_payload):
 #	push_error("Not implemented")
