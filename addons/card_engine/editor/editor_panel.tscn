@@ -135,10 +135,17 @@ resource_key = "cardset_idx"
 is_editable = true
 
 [node name="DataTableColumnName" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
-custom_minimum_size = Vector2(500, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 header_text = "Name"
 resource_key = "card_name"
+is_editable = true
+
+[node name="DataTableColumnMana" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+header_text = "Mana"
+resource_key = "mana"
 is_editable = true
 
 [node name="DataTableColumnKind" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
@@ -191,6 +198,7 @@ split_offset = 100
 layout_mode = 2
 columns = 2
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="Container/HBoxContainer/TopBar/ConfigRow/ReloadButton" to="." method="_on_reload_button_pressed"]
 [connection signal="text_submitted" from="Container/HBoxContainer/TopBar/SearchRow/SearchEdit" to="." method="_on_search_edit_text_submitted"]
 [connection signal="item_selected" from="Container/HBoxContainer/VBoxContainer/HBoxContainer/SetOptionButton" to="." method="_on_set_option_button_item_selected"]
