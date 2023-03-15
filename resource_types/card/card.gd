@@ -6,31 +6,28 @@ enum Kind {
 	ORDER,
 }
 
+enum Mana {
+	Holy,
+	Dark,
+	Flame,
+	Ice,
+	Zipzap,
+	Gust,
+}
+
 @export var uid: String
 @export var cardset_name: String
 @export var cardset_idx: int
 @export var card_name: String
 @export_file("*.png") var artwork_path: String
 
+@export var mana: Mana = Mana.Holy
 @export var kind: Kind = Kind.UNIT
 @export var unit_hp: int
 @export var level: int
 
 @export var ability0: CardAbility
 @export var ability1: CardAbility
-
-func _init():
-	uid = ""
-	cardset_name = ""
-	cardset_idx = 0
-	card_name = "New Card"
-	artwork_path = ""
-	kind = Kind.UNIT
-	unit_hp = 0
-	level = 0
-	ability0 = null
-	ability1 = null
-
 
 func _to_string():
 	return "<%s>" % [card_name]
