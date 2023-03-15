@@ -13,7 +13,6 @@ extends Control
 @onready var card_render: CardRender = %CardRender
 
 func _ready():
-	$Sprite.texture = $SubViewport.get_texture()
 	refresh()
 
 func refresh():

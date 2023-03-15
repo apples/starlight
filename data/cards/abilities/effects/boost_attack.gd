@@ -1,3 +1,4 @@
+@tool
 extends CardAbilityEffect
 
 @export var amount: int = 0

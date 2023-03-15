@@ -9,6 +9,7 @@ var config: CardEngineConfig:
 		reset()
 
 var card_script: Script
+var ability_script: Script
 
 var data_root: String
 var cards_path: String
@@ -19,6 +20,8 @@ var ability_triggers_path: String
 
 func reset():
 	if config == null:
+		card_script = null
+		ability_script = null
 		data_root = ""
 		cards_path = ""
 		ability_effects_path = ""
@@ -26,6 +29,7 @@ func reset():
 		ability_costs_path = ""
 	else:
 		card_script = config.card_script
+		ability_script = config.ability_script
 		data_root = config.data_root
 		cards_path = data_root.path_join(config.cards_path)
 		ability_effects_path = data_root.path_join(config.ability_effects_path)

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardEngineConfig" load_steps=4 format=3 uid="uid://bi7uu80a2f5g2"]
+[gd_resource type="Resource" script_class="CardEngineConfig" load_steps=5 format=3 uid="uid://bi7uu80a2f5g2"]
 
 [ext_resource type="PackedScene" uid="uid://ccb62u8ib4n0u" path="res://objects/card_plane/card_plane_control_no_nav.tscn" id="1_bjcun"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_s7g2i"]
 [ext_resource type="Script" path="res://addons/card_engine/resource_types/card_engine_config.gd" id="1_vcn21"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_77hgf"]
 
@@ -12,5 +13,6 @@ ability_costs_path = "cards/abilities/costs"
 ability_effects_path = "cards/abilities/effects"
 ability_triggers_path = "cards/abilities/triggers"
 card_script = ExtResource("2_77hgf")
+ability_script = ExtResource("1_s7g2i")
 card_control = ExtResource("1_bjcun")
 set_list = Array[String]([])

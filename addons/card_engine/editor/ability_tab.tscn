@@ -1,0 +1,94 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5m1o5awdodjy"]
+
+[ext_resource type="Script" path="res://addons/card_engine/editor/ability_tab.gd" id="1_bvs6e"]
+[ext_resource type="PackedScene" uid="uid://dejk6fuga3ldo" path="res://addons/card_engine/editor/ability_script_panel.tscn" id="1_u7yoq"]
+
+[node name="AbilityTab" type="VBoxContainer"]
+offset_right = 607.0
+offset_bottom = 330.0
+script = ExtResource("1_bvs6e")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="EnableCheckBox" type="CheckButton" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Enable"
+
+[node name="AbilityEnabled" type="HSplitContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 200
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AbilityEnabled"]
+layout_mode = 2
+
+[node name="NameEdit" type="LineEdit" parent="AbilityEnabled/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "ability name"
+
+[node name="DescriptionEdit" type="TextEdit" parent="AbilityEnabled/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "ability text"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="AbilityEnabled"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AbilityEnabled/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GridContainer" type="HBoxContainer" parent="AbilityEnabled/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Type:"
+
+[node name="AbilityTypeOptionButton" type="OptionButton" parent="AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AbilityScriptPanelCost" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+unique_name_in_owner = true
+layout_mode = 2
+panel_label = "Cost"
+script_key = "cost"
+
+[node name="AbilityScriptPanelTrigger" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+unique_name_in_owner = true
+layout_mode = 2
+panel_label = "Trigger"
+script_key = "trigger"
+
+[node name="AbilityScriptPanelEffect" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+unique_name_in_owner = true
+layout_mode = 2
+panel_label = "Effect"
+script_key = "effect"
+
+[node name="AbilityDisabled" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="AbilityDisabled"]
+layout_mode = 2
+text = "Not Enabled"
+
+[connection signal="toggled" from="HBoxContainer/EnableCheckBox" to="." method="_on_enable_check_box_toggled"]
+[connection signal="text_changed" from="AbilityEnabled/VBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
+[connection signal="text_changed" from="AbilityEnabled/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
+[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_saved"]
+[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_saved"]
+[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_saved"]

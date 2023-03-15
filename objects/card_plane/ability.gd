@@ -52,9 +52,13 @@ func _refresh_normal():
 	type_label.text = CardAbility.CardAbilityType.find_key(card_ability.type)
 	
 	# attack power
-	if card_ability.type == CardAbility.CardAbilityType.ATTACK:
-		attack_power_frame.visible = true
-		attack_power_label.text = card_ability.attack_power
+	if card_ability.effect:
+		var attack_power := card_ability.effect.get_attack_damage()
+		if attack_power != "":
+			attack_power_frame.visible = true
+			attack_power_label.text = attack_power
+		else:
+			attack_power_frame.visible = false
 	else:
 		attack_power_frame.visible = false
 	
@@ -62,9 +66,13 @@ func _refresh_normal():
 	name_label.text = card_ability.ability_name
 	
 	# mana cost
-	if card_ability.mana_cost:
-		mana_cost_frame.visible = true
-		mana_cost_label.text = card_ability.mana_cost
+	if card_ability.cost:
+		var mana_cost := card_ability.cost.get_mana_cost()
+		if mana_cost != "":
+			mana_cost_frame.visible = true
+			mana_cost_label.text = mana_cost
+		else:
+			mana_cost_frame.visible = false
 	else:
 		mana_cost_frame.visible = false
 	

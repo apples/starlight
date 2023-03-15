@@ -21,8 +21,6 @@ script = ExtResource("4_6wfvh")
 [sub_resource type="Resource" id="Resource_iu3mt"]
 script = ExtResource("3_53vh0")
 ability_name = "Amplify"
-attack_power = ""
-mana_cost = ""
 description = "When your front row unit attacks: tap this; that attack deals +3 damage."
 type = 3
 trigger = SubResource("Resource_nd7am")

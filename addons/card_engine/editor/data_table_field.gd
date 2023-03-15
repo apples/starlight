@@ -32,7 +32,7 @@ var is_error: bool = false:
 var is_editing := false
 
 signal updated(me: Control)
-
+signal clicked(me: Control)
 signal double_clicked(idx: int)
 
 func _ready():
@@ -74,8 +74,10 @@ func stop_editing(cancelled: bool = false):
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			clicked.emit(self)
 		if not is_editing:
-			if event.button_index == MOUSE_BUTTON_LEFT && event.double_click:
+			if event.pressed and event.button_index == MOUSE_BUTTON_LEFT && event.double_click:
 				if not is_readonly:
 					start_editing()
 				else:

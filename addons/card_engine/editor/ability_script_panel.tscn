@@ -1,0 +1,127 @@
+[gd_scene load_steps=7 format=3 uid="uid://dejk6fuga3ldo"]
+
+[ext_resource type="Script" path="res://addons/card_engine/editor/ability_script_panel.gd" id="1_ttfmt"]
+[ext_resource type="Script" path="res://addons/card_engine/editor/popup_menu.gd" id="2_xhln7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4sytt"]
+bg_color = Color(0.270588, 0.439216, 0.584314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1uyf"]
+bg_color = Color(0.0901961, 0.141176, 0.184314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfp36"]
+bg_color = Color(0.270588, 0.439216, 0.584314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqake"]
+bg_color = Color(0.145098, 0.156863, 0.176471, 1)
+
+[node name="AbilityScriptPanel" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_ttfmt")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4sytt")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TypeLabel" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cost"
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Script:"
+
+[node name="ScriptPathEdit" type="LineEdit" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+editable = false
+select_all_on_focus = true
+
+[node name="ScriptPathPopupMenu" type="Window" parent="HBoxContainer/ScriptPathEdit"]
+unique_name_in_owner = true
+size = Vector2i(100, 200)
+visible = false
+wrap_controls = true
+transient = true
+borderless = true
+popup_window = true
+script = ExtResource("2_xhln7")
+
+[node name="Panel" type="PanelContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu"]
+z_index = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w1uyf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Items" type="VBoxContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ChooseButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "V"
+
+[node name="ClearButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "X"
+
+[node name="PropertiesContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pfp36")
+
+[node name="MarginContainer" type="MarginContainer" parent="PropertiesContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PropertiesContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vqake")
+
+[node name="Properties" type="GridContainer" parent="PropertiesContainer/MarginContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[connection signal="gui_input" from="HBoxContainer/ScriptPathEdit" to="." method="_on_script_path_edit_gui_input"]
+[connection signal="close_requested" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_script_path_popup_menu_close_requested"]
+[connection signal="close_requested" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" method="_on_close_requested"]
+[connection signal="selected_id" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_script_path_popup_menu_selected_id"]
+[connection signal="text_changed" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_submitted" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="HBoxContainer/ChooseButton" to="." method="_on_choose_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/ClearButton" to="." method="_on_clear_button_pressed"]

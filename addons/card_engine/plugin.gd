@@ -8,9 +8,9 @@ var panel
 func _enter_tree():
 	panel = MainPanel.instantiate()
 	panel.visible = false
+	add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
 	get_editor_interface().get_editor_main_screen().add_child(panel)
 	_make_visible(false)
-	add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
 	add_custom_type(
 		"CardEngineConfig",
 		"Resource",

@@ -1,5 +1,9 @@
+@tool
 class_name CardAbilityEffect
 extends Resource
+
+func get_attack_damage() -> String:
+	return ""
 
 func task() -> CardTask:
 	assert(false, "task() not implemented")

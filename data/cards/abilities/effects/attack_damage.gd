@@ -1,18 +1,21 @@
+@tool
 extends CardAbilityEffect
-class_name AttackDamageEffect
 
 @export var amount: int = 0
 
-func task() -> CardTask: return Task.new(self)
+func get_attack_damage() -> String:
+	return str(amount)
+
+func task() -> CardTask: return Task.new(amount)
 
 class Task extends CardTask:
-	var effect: AttackDamageEffect
+	var _amount: int
 	
-	func _init(e: AttackDamageEffect):
-		self.effect = e
+	func _init(amount: int):
+		_amount = amount
 	
 	func start() -> void:
-		info("amount = %s" % effect.amount)
+		info("amount = %s" % _amount)
 		var choose := ChooseTargetTask.new()
 		choose.allowed_locations = [
 			ZoneLocation.new(ZoneLocation.flip(ability_instance.controller), ZoneLocation.Zone.FrontRow, 0),
@@ -25,7 +28,7 @@ class Task extends CardTask:
 			info("cancelled by player")
 			return done()
 		
-		var damage_amount := effect.amount + ability_instance.attack_bonus_damage
+		var damage_amount := _amount + ability_instance.attack_bonus_damage
 		
 		info("target location: %s" % where)
 		info("total damage: %s" % damage_amount)
