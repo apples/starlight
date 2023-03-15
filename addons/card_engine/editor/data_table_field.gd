@@ -3,12 +3,15 @@ extends Control
 
 @export var is_readonly: bool = false
 
-var value: String = "":
+@export var value: String = "":
 	get:
 		return value
 	set(v):
 		value = v
-		_refresh()
+		if is_inside_tree():
+			_refresh()
+
+@export var allow_file_drops: Array[String] = []
 
 var is_error: bool = false:
 	get:
@@ -49,7 +52,6 @@ func start_editing():
 	if is_editing:
 		return
 	
-	assert(not is_editing)
 	is_editing = true
 	label.visible = false
 	edit.visible = true
@@ -88,7 +90,7 @@ func _on_gui_input(event):
 func _unhandled_input(event):
 	assert(is_editing)
 	if event is InputEventMouseButton:
-		if event.pressed and edit.get_global_rect().has_point(event.position):
+		if event.pressed and not edit.get_global_rect().has_point(event.position):
 			stop_editing()
 
 
@@ -99,4 +101,25 @@ func _on_line_edit_focus_exited():
 
 func _on_line_edit_gui_input(event):
 	_on_gui_input(event)
+
+
+func _can_drop_data(at_position, data):
+	if allow_file_drops.size() == 0:
+		return false
+	if data.type != "files":
+		return false
+	if data.files.size() != 1:
+		return false
+	var file_path: String = data.files[0]
+	var file_ext := file_path.get_extension()
+	if not file_ext in allow_file_drops:
+		return false
+	return true
+
+func _drop_data(at_position, data):
+	assert(data.type == "files")
+	assert(data.files[0].get_extension() in allow_file_drops)
+	var file_path: String = data.files[0]
+	value = file_path
+	updated.emit(self)
 
