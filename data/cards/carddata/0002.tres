@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://nmri1lqct0a7"]
+
+[ext_resource type="Script" path="res://data/cards/abilities/costs/tap_self_and_mana_cost.gd" id="1_ue2ph"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="2_hpb77"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_ftpl2"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_front_unit_attacks.gd" id="4_mu3u3"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="6_5k4h5"]
+
+[sub_resource type="Resource" id="Resource_glj64"]
+script = ExtResource("1_ue2ph")
+tap_self = true
+mana_amount = 0
+
+[sub_resource type="Resource" id="Resource_1bew4"]
+script = ExtResource("2_hpb77")
+amount = 3
+
+[sub_resource type="Resource" id="Resource_v5mmf"]
+script = ExtResource("4_mu3u3")
+
+[sub_resource type="Resource" id="Resource_73gvl"]
+script = ExtResource("3_ftpl2")
+ability_name = "Amplify"
+attack_power = ""
+mana_cost = ""
+description = "When your front row unit attacks: tap this; that attack deals +3 damage."
+type = 3
+trigger = SubResource("Resource_v5mmf")
+cost = SubResource("Resource_glj64")
+effect = SubResource("Resource_1bew4")
+
+[resource]
+script = ExtResource("6_5k4h5")
+uid = ""
+cardset_name = "Common"
+cardset_idx = 0
+card_name = "Scrat"
+artwork_path = "res://data/cards/artwork/scrat.png"
+kind = 0
+unit_hp = 0
+level = 0
+ability0 = SubResource("Resource_73gvl")

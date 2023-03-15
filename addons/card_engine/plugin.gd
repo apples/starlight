@@ -10,12 +10,18 @@ func _enter_tree():
 	get_editor_interface().get_editor_main_screen().add_child(panel)
 	_make_visible(false)
 	add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
-
+	add_custom_type(
+		"CardEngineConfig",
+		"Resource",
+		preload("res://addons/card_engine/resource_types/card_engine_config.gd"),
+		preload("res://addons/card_engine/icons/card_engine_config.png")
+	)
 
 func _exit_tree():
 	if panel:
 		panel.queue_free()
 	remove_autoload_singleton("CardDatabase")
+	remove_custom_type("CardEngineConfig")
 
 
 func _has_main_screen():

@@ -1,13 +1,29 @@
-[gd_scene format=3 uid="uid://dunj7mka6qqgd"]
+[gd_scene load_steps=7 format=3 uid="uid://dunj7mka6qqgd"]
 
-[node name="CardDatabase" type="Control"]
-layout_mode = 3
+[ext_resource type="Script" path="res://addons/card_engine/editor/editor_panel.gd" id="1_e0rvg"]
+[ext_resource type="Script" path="res://addons/card_engine/editor/data_table.gd" id="2_ic83h"]
+[ext_resource type="PackedScene" uid="uid://daqnnffluqgsa" path="res://addons/card_engine/editor/data_table_column.tscn" id="2_r8hdh"]
+
+[sub_resource type="SystemFont" id="SystemFont_5urc5"]
+
+[sub_resource type="Theme" id="Theme_qmoic"]
+default_font = SubResource("SystemFont_5urc5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxwu1"]
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+
+[node name="EditorPanel" type="Panel"]
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+mouse_filter = 1
+theme = SubResource("Theme_qmoic")
+theme_override_styles/panel = SubResource("StyleBoxFlat_kxwu1")
+script = ExtResource("1_e0rvg")
 
 [node name="Container" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -17,48 +33,166 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TopBar" type="HBoxContainer" parent="Container"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Container"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="Container/TopBar"]
+[node name="TopBar" type="VBoxContainer" parent="Container/HBoxContainer"]
 layout_mode = 2
-text = "test"
+
+[node name="ConfigRow" type="HBoxContainer" parent="Container/HBoxContainer/TopBar"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/HBoxContainer/TopBar/ConfigRow"]
+layout_mode = 2
+text = "Config:"
+
+[node name="ConfigPathEdit" type="LineEdit" parent="Container/HBoxContainer/TopBar/ConfigRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "res://card_engine_config.tres"
+placeholder_text = "CardEngineConfig"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="ReloadButton" type="Button" parent="Container/HBoxContainer/TopBar/ConfigRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reload"
+
+[node name="SearchRow" type="HBoxContainer" parent="Container/HBoxContainer/TopBar"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/HBoxContainer/TopBar/SearchRow"]
+layout_mode = 2
+text = "Search:"
+
+[node name="SearchEdit" type="LineEdit" parent="Container/HBoxContainer/TopBar/SearchRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "card name"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="VSeparator" type="VSeparator" parent="Container/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Set:"
+
+[node name="SetOptionButton" type="OptionButton" parent="Container/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewCardButton" type="Button" parent="Container/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Card
+"
 
 [node name="Split" type="VSplitContainer" parent="Container"]
 layout_mode = 2
 size_flags_vertical = 3
-split_offset = 100
+split_offset = 400
 
-[node name="DataTableScroll" type="ScrollContainer" parent="Container/Split"]
+[node name="UpperPanel" type="ScrollContainer" parent="Container/Split"]
+layout_mode = 2
+follow_focus = true
+vertical_scroll_mode = 0
+
+[node name="CardDataTable" type="ScrollContainer" parent="Container/Split/UpperPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+script = ExtResource("2_ic83h")
+
+[node name="Columns" type="HBoxContainer" parent="Container/Split/UpperPanel/CardDataTable"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DataTableColumnSet" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+header_text = "Set"
+resource_key = "cardset_name"
+
+[node name="DataTableColumnId" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+header_text = "ID"
+resource_key = "cardset_idx"
+is_editable = true
+
+[node name="DataTableColumnName" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+header_text = "Name"
+resource_key = "card_name"
+is_editable = true
+
+[node name="DataTableColumnKind" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+header_text = "Kind"
+resource_key = "kind"
+is_editable = true
+
+[node name="DataTableColumnUnitHP" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+header_text = "Unit HP"
+resource_key = "unit_hp"
+is_editable = true
+
+[node name="DataTableColumnLevel" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+layout_mode = 2
+header_text = "Level"
+resource_key = "level"
+is_editable = true
+
+[node name="DataTableColumnArtwork" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+layout_mode = 2
+size_flags_horizontal = 3
+header_text = "Artwork"
+resource_key = "artwork_path"
+is_editable = true
+is_last = true
+
+[node name="BottomPanel" type="HBoxContainer" parent="Container/Split"]
 layout_mode = 2
 
-[node name="DataTable" type="GridContainer" parent="Container/Split/DataTableScroll"]
+[node name="AbilityEditor" type="VBoxContainer" parent="Container/Split/BottomPanel"]
 layout_mode = 2
-columns = 2
+size_flags_horizontal = 3
 
-[node name="LineEdit" type="LineEdit" parent="Container/Split/DataTableScroll/DataTable"]
-layout_mode = 2
-text = "asdf"
-placeholder_text = "asdf"
-
-[node name="Button" type="Button" parent="Container/Split/DataTableScroll/DataTable"]
-layout_mode = 2
-text = "text"
-
-[node name="AbilityEditor" type="VBoxContainer" parent="Container/Split"]
-layout_mode = 2
-
-[node name="TabBar" type="TabBar" parent="Container/Split/AbilityEditor"]
+[node name="TabBar" type="TabBar" parent="Container/Split/BottomPanel/AbilityEditor"]
 layout_mode = 2
 tab_count = 2
 tab_0/title = "Ability 1"
 tab_1/title = "Ability 2"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="Container/Split/AbilityEditor"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Container/Split/BottomPanel/AbilityEditor"]
 layout_mode = 2
 size_flags_vertical = 3
 split_offset = 100
 
-[node name="AbilityProps" type="GridContainer" parent="Container/Split/AbilityEditor/HSplitContainer"]
+[node name="AbilityProps" type="GridContainer" parent="Container/Split/BottomPanel/AbilityEditor/HSplitContainer"]
 layout_mode = 2
 columns = 2
+
+[connection signal="pressed" from="Container/HBoxContainer/TopBar/ConfigRow/ReloadButton" to="." method="_on_reload_button_pressed"]
+[connection signal="text_submitted" from="Container/HBoxContainer/TopBar/SearchRow/SearchEdit" to="." method="_on_search_edit_text_submitted"]
+[connection signal="item_selected" from="Container/HBoxContainer/VBoxContainer/HBoxContainer/SetOptionButton" to="." method="_on_set_option_button_item_selected"]
+[connection signal="pressed" from="Container/HBoxContainer/VBoxContainer/NewCardButton" to="." method="_on_new_card_button_pressed"]
+[connection signal="double_clicked" from="Container/Split/UpperPanel/CardDataTable/Columns/DataTableColumnSet" to="." method="_on_data_table_column_set_double_clicked"]

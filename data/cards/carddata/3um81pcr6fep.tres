@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Card" load_steps=2 format=3 uid="uid://bp00g2clim87v"]
+
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_pv23o"]
+
+[resource]
+script = ExtResource("1_pv23o")
+uid = "3um81pcr6fep"
+cardset_name = "Horse"
+cardset_idx = 3
+card_name = "adf"
+artwork_path = ""
+kind = 0
+unit_hp = 0
+level = 0

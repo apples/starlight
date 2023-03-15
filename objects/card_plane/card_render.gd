@@ -33,7 +33,7 @@ func refresh():
 	if card:
 		background.texture = frame_texture
 		cardface.visible = true
-		artwork.texture = card.artwork
+		artwork.texture = load(card.artwork_path)
 		name_label.text = card.card_name
 		ability0.card_ability = card.ability0
 		ability1.card_ability = card.ability1
