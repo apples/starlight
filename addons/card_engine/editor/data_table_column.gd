@@ -28,8 +28,8 @@ extends Control
 
 var property_info = null
 
-var data_table_field_scene := preload("res://addons/card_engine/editor/data_table_field.tscn")
-var data_table_field_enum_scene := preload("res://addons/card_engine/editor/data_table_field_enum.tscn")
+@export var data_table_field_scene := preload("res://addons/card_engine/editor/data_table_field.tscn")
+@export var data_table_field_enum_scene := preload("res://addons/card_engine/editor/data_table_field_enum.tscn")
 
 var resizing: bool = false
 

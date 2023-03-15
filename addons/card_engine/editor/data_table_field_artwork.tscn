@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpuntfb77cqfe"]
+
+[ext_resource type="PackedScene" uid="uid://bquwv054gmmu5" path="res://addons/card_engine/editor/data_table_field.tscn" id="1_uqopu"]
+
+[node name="DataTableField" instance=ExtResource("1_uqopu")]
+allow_file_drops = Array[String](["png"])
