@@ -1,13 +1,12 @@
 [gd_scene load_steps=7 format=3 uid="uid://dvx53oob87xe4"]
 
 [ext_resource type="Script" path="res://objects/card_plane/card_plane_control.gd" id="1_37i78"]
-[ext_resource type="PackedScene" uid="uid://h44k1py4gfd3" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
+[ext_resource type="PackedScene" uid="uid://cw86a2s64vsu2" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
 [ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_7gcy2"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_lunqm"]
 [ext_resource type="PackedScene" uid="uid://cyr4o4b07vyay" path="res://objects/card_ability_cursor_location/card_ability_cursor_location.tscn" id="6_vvfj4"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_cx4mg"]
-viewport_path = NodePath("SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_ocrf5"]
 
 [node name="CardPlaneControl" type="MarginContainer"]
 offset_right = 288.0
@@ -29,7 +28,7 @@ card = null
 texture_filter = 2
 material = ExtResource("3_7gcy2")
 layout_mode = 2
-texture = SubResource("ViewportTexture_cx4mg")
+texture = SubResource("ViewportTexture_ocrf5")
 expand_mode = 3
 script = ExtResource("4_lunqm")
 
