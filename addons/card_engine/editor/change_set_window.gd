@@ -17,6 +17,7 @@ func set_sets(options: Array[String]):
 	for o in options:
 		option_button.add_item(o)
 	option_button.add_item("NEW SET")
+	_on_set_item_selected(option_button.selected)
 
 func _on_confirmed():
 	change_set.emit(%NewSet.text if is_new_set else option_button.get_item_text(option_button.selected))

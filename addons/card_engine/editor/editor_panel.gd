@@ -21,22 +21,21 @@ var card_sets: Dictionary
 var current_set: String = ""
 var name_filter: String = ""
 
-# Called when the node enters the scene tree for the first time.
+var is_loaded := false
+
 func _ready():
 	config_path_edit.text = "res://card_engine_config.tres"
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 
 func _on_reload_button_pressed():
+	print("Loading cards!")
 	CardDatabase.config = load(config_path_edit.text)
 	reload()
 	refresh()
 
 
 func reload():
+	is_loaded = true
 	all_cards = CardDatabase.get_all_cards()
 	if all_cards.size() == 0:
 		print("No cards!")
@@ -57,6 +56,7 @@ func reload():
 		cards.sort_custom(func (a, b):
 			return load(a).cardset_idx < load(b).cardset_idx)
 		set_option_button.add_item(cardset_name)
+	set_option_button.select(0)
 
 func refresh():
 	if current_set == "ALL_SETS" and name_filter == "":
@@ -157,3 +157,8 @@ func _on_set_option_button_item_selected(index):
 func _on_search_edit_text_submitted(new_text):
 	name_filter = new_text
 	refresh()
+
+
+func _on_visibility_changed():
+	if is_inside_tree() and visible and not is_loaded:
+		call_deferred("_on_reload_button_pressed")
