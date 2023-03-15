@@ -34,7 +34,7 @@ var property_info = null
 var resizing: bool = false
 
 signal saved(idx: int)
-
+signal clicked(column: Control, row: int)
 signal double_clicked(idx: int)
 
 func _ready():
@@ -92,13 +92,17 @@ func resize(count: int):
 			item = data_table_field_enum_scene.instantiate()
 			append_item(item)
 			item.set_options(enum_options)
-			item.updated.connect(_item_updated)
 		else:
 			item = data_table_field_scene.instantiate()
 			item.is_readonly = not is_editable
 			append_item(item)
 			item.double_clicked.connect(_item_double_clicked)
-			item.updated.connect(_item_updated)
+		if "clicked" in item:
+			item.clicked.connect(_item_clicked)
+		item.updated.connect(_item_updated)
+
+func _item_clicked(who: Control):
+	clicked.emit(self, who.get_index())
 
 func _item_double_clicked(idx: int):
 	double_clicked.emit(idx)

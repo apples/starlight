@@ -1,7 +1,11 @@
+@tool
 extends CardAbilityCost
 
 @export var tap_self: bool = true
 @export var mana_amount: int = 0
+
+func get_mana_cost() -> String:
+	return str(mana_amount) if mana_amount != 0 else ""
 
 func can_be_paid(battle_state: BattleState, card_instance: CardInstance, user_side: ZoneLocation.Side) -> bool:
 	# Cannot be paid unless controlled by user

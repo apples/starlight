@@ -1,7 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cild4c13skl8l"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cild4c13skl8l"]
 
 [ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_material.gdshader" id="1_lp0os"]
-[ext_resource type="Texture2D" uid="uid://cjn42gnmsrct6" path="res://objects/card_plane/images/cursor.png" id="2_4gjf7"]
 
 [resource]
 resource_local_to_scene = true
@@ -19,4 +18,3 @@ shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = null
 shader_parameter/sprite_filter_trilinear = true
 shader_parameter/texture2DAA_bias = 1.0
-shader_parameter/texture_albedo = ExtResource("2_4gjf7")
