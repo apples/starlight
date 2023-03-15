@@ -8,6 +8,7 @@ class_name CardEngineConfig extends Resource
 @export var ability_triggers_path := "cards/abilities/triggers"
 
 @export var card_script: Script
+@export var ability_script: Script
 
 @export var card_control: PackedScene
 

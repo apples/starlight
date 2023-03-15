@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dunj7mka6qqgd"]
+[gd_scene load_steps=11 format=3 uid="uid://dunj7mka6qqgd"]
 
 [ext_resource type="Script" path="res://addons/card_engine/editor/editor_panel.gd" id="1_e0rvg"]
 [ext_resource type="Script" path="res://addons/card_engine/editor/data_table.gd" id="2_ic83h"]
 [ext_resource type="PackedScene" uid="uid://daqnnffluqgsa" path="res://addons/card_engine/editor/data_table_column.tscn" id="2_r8hdh"]
 [ext_resource type="PackedScene" uid="uid://bpuntfb77cqfe" path="res://addons/card_engine/editor/data_table_field_artwork.tscn" id="4_6tsuu"]
+[ext_resource type="Script" path="res://addons/card_engine/editor/card_details.gd" id="5_terov"]
+[ext_resource type="PackedScene" uid="uid://b5m1o5awdodjy" path="res://addons/card_engine/editor/ability_tab.tscn" id="6_r4tym"]
 
 [sub_resource type="SystemFont" id="SystemFont_5urc5"]
 
@@ -12,6 +14,9 @@ default_font = SubResource("SystemFont_5urc5")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxwu1"]
 bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hddqr"]
+bg_color = Color(0.270588, 0.439216, 0.584314, 1)
 
 [node name="EditorPanel" type="Panel"]
 clip_contents = true
@@ -124,58 +129,76 @@ horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 script = ExtResource("2_ic83h")
 
-[node name="Columns" type="HBoxContainer" parent="Container/Split/UpperPanel/CardDataTable"]
+[node name="VBoxContainer" type="MarginContainer" parent="Container/Split/UpperPanel/CardDataTable"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DataTableColumnSet" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="Control" type="Control" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HighlightPanel" type="Panel" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Control"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hddqr")
+
+[node name="Columns" type="HBoxContainer" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DataTableColumnSet" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 header_text = "Set"
 resource_key = "cardset_name"
 
-[node name="DataTableColumnId" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnId" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 header_text = "ID"
 resource_key = "cardset_idx"
 is_editable = true
 
-[node name="DataTableColumnName" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnName" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 header_text = "Name"
 resource_key = "card_name"
 is_editable = true
 
-[node name="DataTableColumnMana" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnMana" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 header_text = "Mana"
 resource_key = "mana"
 is_editable = true
 
-[node name="DataTableColumnKind" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnKind" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 header_text = "Kind"
 resource_key = "kind"
 is_editable = true
 
-[node name="DataTableColumnUnitHP" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnUnitHP" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 header_text = "Unit HP"
 resource_key = "unit_hp"
 is_editable = true
 
-[node name="DataTableColumnLevel" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnLevel" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 layout_mode = 2
 header_text = "Level"
 resource_key = "level"
 is_editable = true
 
-[node name="DataTableColumnArtwork" parent="Container/Split/UpperPanel/CardDataTable/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnArtwork" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 layout_mode = 2
 size_flags_horizontal = 3
 header_text = "Artwork"
@@ -184,31 +207,50 @@ is_editable = true
 is_last = true
 data_table_field_scene = ExtResource("4_6tsuu")
 
-[node name="BottomPanel" type="HBoxContainer" parent="Container/Split"]
+[node name="CardDetails" type="HSplitContainer" parent="Container/Split"]
+unique_name_in_owner = true
+layout_mode = 2
+split_offset = 900
+script = ExtResource("5_terov")
+
+[node name="BottomPanel" type="TabContainer" parent="Container/Split/CardDetails"]
 layout_mode = 2
 
-[node name="AbilityEditor" type="VBoxContainer" parent="Container/Split/BottomPanel"]
+[node name="Design" type="VBoxContainer" parent="Container/Split/CardDetails/BottomPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TabBar" type="TabBar" parent="Container/Split/BottomPanel/AbilityEditor"]
+[node name="Label" type="Label" parent="Container/Split/CardDetails/BottomPanel/Design"]
 layout_mode = 2
-tab_count = 2
-tab_0/title = "Ability 1"
-tab_1/title = "Ability 2"
+text = "Notes"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="Container/Split/BottomPanel/AbilityEditor"]
+[node name="TextEdit" type="TextEdit" parent="Container/Split/CardDetails/BottomPanel/Design"]
 layout_mode = 2
 size_flags_vertical = 3
-split_offset = 100
+placeholder_text = "design notes"
 
-[node name="AbilityProps" type="GridContainer" parent="Container/Split/BottomPanel/AbilityEditor/HSplitContainer"]
+[node name="Ability 0" parent="Container/Split/CardDetails/BottomPanel" instance=ExtResource("6_r4tym")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
-columns = 2
+ability_key = "ability0"
+
+[node name="Ability 1" parent="Container/Split/CardDetails/BottomPanel" instance=ExtResource("6_r4tym")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+ability_key = "ability1"
+
+[node name="CardPreviewContainer" type="MarginContainer" parent="Container/Split/CardDetails"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="Container/HBoxContainer/TopBar/ConfigRow/ReloadButton" to="." method="_on_reload_button_pressed"]
 [connection signal="text_submitted" from="Container/HBoxContainer/TopBar/SearchRow/SearchEdit" to="." method="_on_search_edit_text_submitted"]
 [connection signal="item_selected" from="Container/HBoxContainer/VBoxContainer/HBoxContainer/SetOptionButton" to="." method="_on_set_option_button_item_selected"]
 [connection signal="pressed" from="Container/HBoxContainer/VBoxContainer/NewCardButton" to="." method="_on_new_card_button_pressed"]
-[connection signal="double_clicked" from="Container/Split/UpperPanel/CardDataTable/Columns/DataTableColumnSet" to="." method="_on_data_table_column_set_double_clicked"]
+[connection signal="row_clicked" from="Container/Split/UpperPanel/CardDataTable" to="." method="_on_card_data_table_row_clicked"]
+[connection signal="double_clicked" from="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns/DataTableColumnSet" to="." method="_on_data_table_column_set_double_clicked"]
+[connection signal="saved" from="Container/Split/CardDetails/BottomPanel/Ability 0" to="Container/Split/CardDetails" method="_on_ability_saved"]
+[connection signal="saved" from="Container/Split/CardDetails/BottomPanel/Ability 1" to="Container/Split/CardDetails" method="_on_ability_saved"]

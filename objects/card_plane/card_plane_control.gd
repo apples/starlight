@@ -29,7 +29,6 @@ extends Control
 @onready var ability1_cursor := %CardAbilityCursorLocation1
 
 func _ready():
-	$Sprite.texture = $SubViewport.get_texture()
 	refresh()
 
 func refresh():

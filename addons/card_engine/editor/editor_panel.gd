@@ -10,6 +10,7 @@ var card_engine_config: CardEngineConfig
 @onready var config_path_edit: LineEdit = %ConfigPathEdit
 @onready var card_data_table: Control = %CardDataTable
 @onready var set_option_button: OptionButton = %SetOptionButton
+@onready var card_details: Control = %CardDetails
 
 var card_script: Script = null
 
@@ -22,6 +23,8 @@ var current_set: String = ""
 var name_filter: String = ""
 
 var is_loaded := false
+
+var current_card_render: CardRender
 
 func _ready():
 	config_path_edit.text = "res://card_engine_config.tres"
@@ -162,3 +165,8 @@ func _on_search_edit_text_submitted(new_text):
 func _on_visibility_changed():
 	if is_inside_tree() and visible and not is_loaded:
 		call_deferred("_on_reload_button_pressed")
+
+
+func _on_card_data_table_row_clicked(idx: int):
+	var card := load(filtered_cards[idx])
+	card_details.card = card
