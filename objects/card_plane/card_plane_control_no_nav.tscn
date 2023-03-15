@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccb62u8ib4n0u"]
+
+[ext_resource type="Script" path="res://objects/card_plane/card_plane_control_no_nav.gd" id="1_uv8pl"]
+[ext_resource type="PackedScene" uid="uid://cw86a2s64vsu2" path="res://objects/card_plane/card_render.tscn" id="2_rt0ip"]
+[ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_xbigd"]
+[ext_resource type="Script" path="res://objects/material_sprite/material_sprite_texturerect.gd" id="4_3q82n"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_o55l0"]
+
+[node name="CardPlaneControl" type="MarginContainer"]
+offset_right = 288.0
+offset_bottom = 404.0
+size_flags_vertical = 4
+script = ExtResource("1_uv8pl")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(240, 336)
+render_target_update_mode = 1
+
+[node name="CardRender" parent="SubViewport" instance=ExtResource("2_rt0ip")]
+unique_name_in_owner = true
+card = null
+
+[node name="Sprite" type="TextureRect" parent="."]
+texture_filter = 2
+material = ExtResource("3_xbigd")
+layout_mode = 2
+texture = SubResource("ViewportTexture_o55l0")
+expand_mode = 3
+script = ExtResource("4_3q82n")

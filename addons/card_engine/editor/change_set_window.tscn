@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6jna0phcqend"]
+
+[ext_resource type="Script" path="res://addons/card_engine/editor/change_set_window.gd" id="1_21pp7"]
+
+[node name="ChangeSetWindow" type="ConfirmationDialog"]
+initial_position = 2
+visible = true
+script = ExtResource("1_21pp7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 192.0
+offset_bottom = 51.0
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Set:"
+
+[node name="Set" type="OptionButton" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewSetContainer" type="GridContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+columns = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/NewSetContainer"]
+layout_mode = 2
+text = "New Set Name:"
+
+[node name="NewSet" type="LineEdit" parent="VBoxContainer/NewSetContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="canceled" from="." to="." method="_on_canceled"]
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]
+[connection signal="item_selected" from="VBoxContainer/GridContainer/Set" to="." method="_on_set_item_selected"]
