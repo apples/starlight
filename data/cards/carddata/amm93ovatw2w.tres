@@ -6,26 +6,26 @@
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_53vh0"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_front_unit_attacks.gd" id="4_6wfvh"]
 
-[sub_resource type="Resource" id="Resource_tgla7"]
+[sub_resource type="Resource" id="Resource_quthf"]
 script = ExtResource("1_1scbr")
 tap_self = true
 mana_amount = 0
 
-[sub_resource type="Resource" id="Resource_phiaa"]
+[sub_resource type="Resource" id="Resource_w4t6d"]
 script = ExtResource("2_daa42")
 amount = 3
 
-[sub_resource type="Resource" id="Resource_edpfe"]
+[sub_resource type="Resource" id="Resource_nd13n"]
 script = ExtResource("4_6wfvh")
 
-[sub_resource type="Resource" id="Resource_iu3mt"]
+[sub_resource type="Resource" id="Resource_sko2r"]
 script = ExtResource("3_53vh0")
-ability_name = "Amplify"
-description = "When your front row unit attacks: tap this; that attack deals +3 damage."
-type = 3
-trigger = SubResource("Resource_edpfe")
-cost = SubResource("Resource_tgla7")
-effect = SubResource("Resource_phiaa")
+ability_name = "Boost!"
+description = "When your unit attacks, boost its power by 3!"
+type = 1
+trigger = SubResource("Resource_nd13n")
+cost = SubResource("Resource_quthf")
+effect = SubResource("Resource_w4t6d")
 
 [resource]
 script = ExtResource("1_oyuk5")
@@ -36,6 +36,6 @@ card_name = "Scrat"
 artwork_path = "res://data/cards/artwork/scrat.png"
 mana = 2
 kind = 0
-unit_hp = 0
+unit_hp = 5
 level = 0
-ability0 = SubResource("Resource_iu3mt")
+ability0 = SubResource("Resource_sko2r")

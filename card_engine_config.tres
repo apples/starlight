@@ -7,12 +7,12 @@
 
 [resource]
 script = ExtResource("1_vcn21")
-design_notes_path = "res://data/cards/design_notes"
 data_root = "res://data"
 cards_path = "cards/carddata"
 ability_costs_path = "cards/abilities/costs"
 ability_effects_path = "cards/abilities/effects"
 ability_triggers_path = "cards/abilities/triggers"
+design_notes_path = "cards/design_notes"
 card_script = ExtResource("2_77hgf")
 ability_script = ExtResource("1_s7g2i")
 cost_template_path = "res://resource_types/card/script_templates/cost.gd"

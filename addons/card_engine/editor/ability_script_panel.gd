@@ -30,6 +30,8 @@ extends Control
 		if is_inside_tree():
 			_reset_script_text()
 
+@export var new_script_dialog := preload("res://addons/card_engine/editor/new_script_dialog.tscn")
+
 @onready var type_label: Label = %TypeLabel
 @onready var script_path_edit: LineEdit = %ScriptPathEdit
 @onready var script_path_popup: Window = %ScriptPathPopupMenu
@@ -236,10 +238,39 @@ func _on_script_path_edit_gui_input(event):
 
 
 func _on_new_button_pressed():
-	CardDatabase.new_script(script_key, func (path: String):
-		options.append(path)
-		_set_new_script(path))
-
+	var dialog := new_script_dialog.instantiate()
+	
+	dialog.canceled.connect(func ():
+		dialog.queue_free())
+	
+	dialog.check_error = func (str: String):
+		if str == "":
+			return "Cannot be empty"
+		if str.contains(" "):
+			return "Cannot contain spaces"
+		var forbidden := "/\\|?*<>:\""
+		for c in forbidden:
+			if str.contains(c):
+				return "Cannot contain %s" % c
+		return ""
+	
+	add_child(dialog)
+	dialog.show()
+	
+	var str: String = await dialog.submit
+	
+	dialog.queue_free()
+	
+	if str == "":
+		print("Empty script name, cancelling")
+		return
+	
+	var script_name := str if str.ends_with(".gd") else ("%s.gd" % str)
+	
+	var path := CardDatabase.create_script(script_key, script_name)
+	
+	options.append(path)
+	_set_new_script(path)
 
 
 
