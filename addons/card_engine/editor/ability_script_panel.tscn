@@ -47,7 +47,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 editable = false
-select_all_on_focus = true
+selecting_enabled = false
 
 [node name="ScriptPathPopupMenu" type="Window" parent="HBoxContainer/ScriptPathEdit"]
 unique_name_in_owner = true
@@ -102,6 +102,7 @@ text = "+"
 [node name="EditButton" type="Button" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+disabled = true
 text = "E"
 
 [node name="PropertiesContainer" type="PanelContainer" parent="."]
