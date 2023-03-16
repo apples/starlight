@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CardEngineDesignNote" load_steps=2 format=3 uid="uid://brljjyat7dtph"]
+
+[ext_resource type="Script" path="res://addons/card_engine/resource_types/card_engine_design_note.gd" id="1_bm74q"]
+
+[resource]
+script = ExtResource("1_bm74q")
+text = "Just a lil scrat
+
+helps 'em out!"

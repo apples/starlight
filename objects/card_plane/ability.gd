@@ -40,11 +40,16 @@ func refresh():
 	visible = true
 	
 	if card_ability.type == CardAbility.CardAbilityType.STARLIGHT:
+		overlays.visible = false
+		starlight_overlays.visible = true
 		_refresh_starlight()
 	else:
+		overlays.visible = true
+		starlight_overlays.visible = false
 		_refresh_normal()
 
 func _refresh_normal():
+	
 	# frame
 	frame.texture = normal_frame_texture
 	

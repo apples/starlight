@@ -8,8 +8,6 @@ extends Control
 		return ability
 	set(value):
 		ability = value
-		if ability:
-			print(ability.resource_path)
 		if is_inside_tree():
 			_reset_script_text()
 			_reset_fields()
@@ -38,14 +36,17 @@ extends Control
 @onready var properties_container: Control = %PropertiesContainer
 @onready var properties: Control = %Properties
 @onready var clear_button: Button = %ClearButton
+@onready var edit_button: Button = %EditButton
 
 signal saved()
+signal edit_script_requested(script: Script)
 
 var filtered_options: Array[String] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	script_path_popup.selected_id.connect(_on_script_path_popup_menu_id_pressed)
+	type_label.text = panel_label
 	_reset_script_text()
 	_reset_fields()
 
@@ -59,6 +60,7 @@ func _reset_script_text():
 	else:
 		script_path_edit.text = ""
 		clear_button.disabled = true
+		edit_button.disabled = true
 
 func _update_filtered_options():
 	script_path_popup.clear()
@@ -73,9 +75,11 @@ func _update_filtered_options():
 func _reset_fields():
 	if not ability or not ability[script_key]:
 		properties_container.visible = false
+		edit_button.disabled = true
 		return
 	
 	properties_container.visible = true
+	edit_button.disabled = false
 	
 	while properties.get_child_count() > 0:
 		var c := properties.get_child(0)
@@ -115,7 +119,7 @@ func _reset_fields():
 						properties.add_child(option_button)
 					_:
 						var spinbox := SpinBox.new()
-						spinbox.value = current_value
+						spinbox.value = current_value if current_value != null else 0
 						spinbox.value_changed.connect(func (new_value):
 							_set_property(prop.name, new_value)
 						)
@@ -229,3 +233,28 @@ func _on_script_path_edit_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed and event.double_click and event.button_index == MOUSE_BUTTON_LEFT:
 			_open_search()
+
+
+func _on_new_button_pressed():
+	CardDatabase.new_script(script_key, func (path: String):
+		options.append(path)
+		_set_new_script(path))
+
+
+
+
+
+func _on_edit_button_pressed():
+	if ability[script_key] == null:
+		print("Null ability script")
+		return
+	var script := ability[script_key].get_script() as Script
+	if script == null:
+		print("Ability script has... no script...")
+		return
+	
+	print("Opening %s" % script.resource_path)
+	edit_script_requested.emit(script)
+
+
+

@@ -14,25 +14,36 @@ extends HSplitContainer
 @onready var ability0 := %"Ability 0"
 @onready var ability1 := %"Ability 1"
 
+@onready var design_notes_text_edit = %DesignNotesTextEdit
+@onready var notes_save_timer = %NotesSaveTimer
+@onready var save_indicator = %SaveIndicator
+
 var card_control: Control
 
+var design_note: CardEngineDesignNote
 
 func _ready():
 	_refresh()
 
 func _refresh():
+	_save_notes()
+	
 	if card_preview_container.get_child_count() > 0:
 		var c := card_preview_container.get_child(0)
 		assert(c == card_control)
 		c.queue_free()
 		card_preview_container.remove_child(c)
 		card_control = null
+		design_note = null
 	
 	if card:
 		card_control = CardDatabase.config.card_control.instantiate()
 		card_control.card = card
 		card_preview_container.add_child(card_control)
 		
+		design_note = CardDatabase.get_design_note(card)
+		design_notes_text_edit.text = design_note.text
+	
 	ability0.card = card
 	ability1.card = card
 
@@ -40,3 +51,26 @@ func _refresh():
 func _on_ability_saved():
 	if card_control:
 		card_control.refresh()
+
+
+func _on_design_notes_text_edit_text_changed():
+	if design_note:
+		design_note.text = design_notes_text_edit.text
+		notes_save_timer.start()
+		save_indicator.text = "..."
+
+
+func _on_notes_save_timer_timeout():
+	_save_notes()
+
+
+func _save_notes():
+	if design_note:
+		ResourceSaver.save(design_note)
+	
+	notes_save_timer.stop()
+	save_indicator.text = "saved"
+
+
+func _on_design_notes_text_edit_focus_exited():
+	_save_notes()

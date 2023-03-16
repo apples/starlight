@@ -14,8 +14,6 @@ amount = 3
 [sub_resource type="Resource" id="Resource_skvku"]
 script = ExtResource("3_dwtj0")
 ability_name = "Bite"
-attack_power = "10"
-mana_cost = "4"
 description = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
 type = 2
 effect = SubResource("Resource_w0dk3")
@@ -76,7 +74,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "10"
+text = "3"
 horizontal_alignment = 1
 
 [node name="Name" type="Label" parent="NormalOverlays/VBoxContainer/HBoxContainer"]
@@ -87,6 +85,7 @@ text = "Bite"
 
 [node name="ManaCostFrame" type="TextureRect" parent="NormalOverlays/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 texture = ExtResource("7_blf14")
 stretch_mode = 2

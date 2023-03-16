@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://bcj0q51tq6sye"]
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://bcj0q51tq6sye"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_a1xo7"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/tap_self_and_mana_cost.gd" id="1_uv3yv"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3g7gi"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_t1uh2"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/test_trigger.gd" id="4_0t7mf"]
 
 [sub_resource type="Resource" id="Resource_vgte5"]
 script = ExtResource("1_uv3yv")
@@ -14,19 +15,29 @@ mana_amount = 0
 script = ExtResource("2_3g7gi")
 amount = 3
 
+[sub_resource type="Resource" id="Resource_0xek1"]
+script = ExtResource("4_0t7mf")
+
 [sub_resource type="Resource" id="Resource_0k2tq"]
 script = ExtResource("3_t1uh2")
 ability_name = "Bite"
 description = "Bites."
 type = 2
+trigger = SubResource("Resource_0xek1")
 cost = SubResource("Resource_vgte5")
 effect = SubResource("Resource_t4wxm")
+
+[sub_resource type="Resource" id="Resource_e5hgu"]
+script = ExtResource("3_t1uh2")
+ability_name = "bite"
+description = "bitesahasd hsdsh"
+type = 5
 
 [resource]
 script = ExtResource("1_a1xo7")
 uid = "i8bwz5vm54h6"
 cardset_name = "Screet"
-cardset_idx = 0
+cardset_idx = 1
 card_name = "Kainei, Avatar of the Queen of Darkness"
 artwork_path = "res://data/cards/artwork/screet.png"
 mana = 2
@@ -34,3 +45,4 @@ kind = 0
 unit_hp = 0
 level = 0
 ability0 = SubResource("Resource_0k2tq")
+ability1 = SubResource("Resource_e5hgu")

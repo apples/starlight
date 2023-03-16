@@ -15,7 +15,7 @@ mana_amount = 0
 script = ExtResource("2_daa42")
 amount = 3
 
-[sub_resource type="Resource" id="Resource_nd7am"]
+[sub_resource type="Resource" id="Resource_edpfe"]
 script = ExtResource("4_6wfvh")
 
 [sub_resource type="Resource" id="Resource_iu3mt"]
@@ -23,7 +23,7 @@ script = ExtResource("3_53vh0")
 ability_name = "Amplify"
 description = "When your front row unit attacks: tap this; that attack deals +3 damage."
 type = 3
-trigger = SubResource("Resource_nd7am")
+trigger = SubResource("Resource_edpfe")
 cost = SubResource("Resource_tgla7")
 effect = SubResource("Resource_phiaa")
 
@@ -31,7 +31,7 @@ effect = SubResource("Resource_phiaa")
 script = ExtResource("1_oyuk5")
 uid = "amm93ovatw2w"
 cardset_name = "Screet"
-cardset_idx = 1
+cardset_idx = 0
 card_name = "Scrat"
 artwork_path = "res://data/cards/artwork/scrat.png"
 mana = 2

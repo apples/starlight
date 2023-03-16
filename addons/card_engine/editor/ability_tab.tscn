@@ -21,6 +21,7 @@ text = "Enable"
 
 [node name="AbilityEnabled" type="HSplitContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 split_offset = 200
@@ -78,7 +79,6 @@ script_key = "effect"
 
 [node name="AbilityDisabled" type="CenterContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -89,6 +89,10 @@ text = "Not Enabled"
 [connection signal="toggled" from="HBoxContainer/EnableCheckBox" to="." method="_on_enable_check_box_toggled"]
 [connection signal="text_changed" from="AbilityEnabled/VBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_changed" from="AbilityEnabled/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
+[connection signal="item_selected" from="AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/AbilityTypeOptionButton" to="." method="_on_ability_type_option_button_item_selected"]
+[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_edit_script_requested"]
 [connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_saved"]
+[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_edit_script_requested"]
 [connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_saved"]
+[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_edit_script_requested"]
 [connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_saved"]
