@@ -81,7 +81,7 @@ func _on_gui_input(event):
 				if not is_readonly:
 					start_editing()
 				else:
-					double_clicked.emit(get_index() - 1)
+					double_clicked.emit(get_index())
 	if event is InputEventKey:
 		if event.pressed:
 			match event.keycode:

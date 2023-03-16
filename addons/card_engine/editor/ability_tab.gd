@@ -23,11 +23,12 @@ extends Control
 @onready var ability_enabled := %AbilityEnabled
 @onready var ability_disabled := %AbilityDisabled
 
-@onready var ability_type_option_button := %AbilityTypeOptionButton
+@onready var ability_type_option_button: OptionButton = %AbilityTypeOptionButton
 @onready var name_edit = %NameEdit
 @onready var description_edit = %DescriptionEdit
 
 signal saved()
+signal edit_script_requested(script: Script)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -140,4 +141,14 @@ func _on_name_edit_text_changed(new_text):
 
 func _on_description_edit_text_changed():
 	card[ability_key].description = description_edit.text
+	_save()
+
+
+func _on_ability_script_panel_edit_script_requested(script):
+	edit_script_requested.emit(script)
+
+
+func _on_ability_type_option_button_item_selected(index):
+	var type := ability_type_option_button.get_item_id(index)
+	card[ability_key].type = type
 	_save()

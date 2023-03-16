@@ -24,7 +24,9 @@ var name_filter: String = ""
 
 var is_loaded := false
 
-var current_card_render: CardRender
+var current_selection: String
+
+signal edit_script_requested(script: Script)
 
 func _ready():
 	config_path_edit.text = "res://card_engine_config.tres"
@@ -80,6 +82,15 @@ func refresh():
 		if a.cardset_name != b.cardset_name:
 			return a.cardset_name < b.cardset_name
 		return a.cardset_idx < b.cardset_idx)
+	if current_selection != "":
+		var idx := filtered_cards.find(current_selection)
+		if idx != -1:
+			_select_index(idx)
+		else:
+			current_selection = ""
+			card_details.card = null
+	else:
+		card_details.card = null
 	card_data_table.set_data(filtered_cards)
 
 func _on_new_card_button_pressed():
@@ -121,11 +132,16 @@ func _on_new_card_button_pressed():
 func _on_data_table_column_set_double_clicked(idx):
 	var popup := change_set_window.instantiate()
 	add_child(popup)
+	
 	var card_set_names: Array[String] = []
 	card_set_names.assign(card_sets.keys())
 	popup.set_sets(card_set_names)
+	
 	var card := load(filtered_cards[idx])
 	var old_set: String = card.cardset_name
+	
+	print("changing set: %s: %s" % [card.card_name, old_set])
+	
 	popup.change_set.connect(func (cardset_name: String):
 		if card.cardset_name == cardset_name:
 			return
@@ -165,8 +181,58 @@ func _on_search_edit_text_submitted(new_text):
 func _on_visibility_changed():
 	if is_inside_tree() and visible and not is_loaded:
 		call_deferred("_on_reload_button_pressed")
+	if is_inside_tree() and visible:
+		card_details.card = card_details.card
 
 
 func _on_card_data_table_row_clicked(idx: int):
+	_select_index(idx)
+
+
+func _select_index(idx: int):
 	var card := load(filtered_cards[idx])
 	card_details.card = card
+	current_selection = filtered_cards[idx]
+
+
+func _on_data_table_column_id_saved(idx: int):
+	var card := load(filtered_cards[idx])
+	
+	var cardset: Array = card_sets[card.cardset_name]
+	var old_idx: int = cardset.find(filtered_cards[idx])
+	var new_idx: int = card.cardset_idx
+	
+	if new_idx >= cardset.size():
+		new_idx = cardset.size() - 1
+		card.cardset_idx = new_idx
+		ResourceSaver.save(card)
+	
+	print("asdf: %s -> %s" % [old_idx, new_idx])
+	
+	# rotate
+	if old_idx < new_idx:
+		print("rotating left")
+		for i in range(old_idx, new_idx):
+			cardset[i] = cardset[i + 1]
+			var c := load(cardset[i])
+			print("setting %s idx to %s" % [c.card_name, i])
+			c.cardset_idx = i
+			ResourceSaver.save(c)
+	elif new_idx < old_idx:
+		print("rotating right")
+		for i in range(old_idx, new_idx, -1):
+			cardset[i] = cardset[i - 1]
+			var c := load(cardset[i])
+			print("setting %s idx to %s" % [c.card_name, i])
+			c.cardset_idx = i
+			ResourceSaver.save(c)
+	cardset[new_idx] = filtered_cards[idx]
+	print("done")
+	
+	refresh()
+
+
+
+
+func _on_ability_edit_script_requested(script):
+	edit_script_requested.emit(script)

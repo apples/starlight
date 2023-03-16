@@ -155,7 +155,14 @@ func _item_updated(who: Control):
 				push_error("Resource properties not supported")
 				return
 			_:
-				data[resource_key] = who.value
+				match property_info.type:
+					TYPE_STRING:
+						data[resource_key] = who.value
+					TYPE_INT:
+						data[resource_key] = int(who.value)
+					_:
+						push_error("Unsupported property type")
+						return
 	else:
 		data[resource_key] = who.value
 	
