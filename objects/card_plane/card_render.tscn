@@ -87,7 +87,6 @@ offset_top = 177.0
 offset_right = 232.0
 offset_bottom = 328.0
 theme_override_constants/separation = 1
-alignment = 2
 
 [node name="Ability0" parent="CardFace/VBoxContainer" instance=ExtResource("7_5rtdu")]
 unique_name_in_owner = true

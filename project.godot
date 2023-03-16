@@ -40,10 +40,6 @@ project/assembly_name="Starlight"
 
 enabled=PackedStringArray("res://addons/noise_maker/plugin.cfg", "res://addons/card_engine/plugin.cfg")
 
-[gui]
-
-theme/custom="res://global_theme.tres"
-
 [importer_defaults]
 
 texture={
