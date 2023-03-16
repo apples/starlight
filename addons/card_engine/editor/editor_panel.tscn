@@ -113,7 +113,8 @@ text = "New Card
 [node name="Split" type="VSplitContainer" parent="Container"]
 layout_mode = 2
 size_flags_vertical = 3
-split_offset = 400
+theme_override_constants/autohide = 0
+split_offset = 250
 
 [node name="UpperPanel" type="ScrollContainer" parent="Container/Split"]
 layout_mode = 2
@@ -210,6 +211,7 @@ data_table_field_scene = ExtResource("4_6tsuu")
 [node name="CardDetails" type="HSplitContainer" parent="Container/Split"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/autohide = 0
 split_offset = 700
 script = ExtResource("5_terov")
 
