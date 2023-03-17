@@ -13,7 +13,7 @@ func _init(fields: Dictionary):
 		self[k] = fields[k]
 
 func _to_string():
-	var s := "<Message(%s):" % get_type()
+	var s := "TriggerEvent(%s):" % get_type()
 	for k in self.get_script().get_script_property_list():
 		if k.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
 			s += " %s = %s," % [k.name, self[k.name]]

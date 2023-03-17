@@ -19,6 +19,16 @@ layout_mode = 2
 layout_mode = 2
 text = "Enable"
 
+[node name="CopyButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Copy"
+
+[node name="PasteButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Paste"
+
 [node name="AbilityEnabled" type="HSplitContainer" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -39,6 +49,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 placeholder_text = "ability text"
+wrap_mode = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="AbilityEnabled"]
 layout_mode = 2
@@ -59,17 +70,17 @@ text = "Type:"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AbilityScriptPanelCost" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
-unique_name_in_owner = true
-layout_mode = 2
-panel_label = "Cost"
-script_key = "cost"
-
 [node name="AbilityScriptPanelTrigger" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Trigger"
 script_key = "trigger"
+
+[node name="AbilityScriptPanelCost" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+unique_name_in_owner = true
+layout_mode = 2
+panel_label = "Cost"
+script_key = "cost"
 
 [node name="AbilityScriptPanelEffect" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
@@ -87,12 +98,14 @@ layout_mode = 2
 text = "Not Enabled"
 
 [connection signal="toggled" from="HBoxContainer/EnableCheckBox" to="." method="_on_enable_check_box_toggled"]
+[connection signal="pressed" from="HBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/PasteButton" to="." method="_on_paste_button_pressed"]
 [connection signal="text_changed" from="AbilityEnabled/VBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_changed" from="AbilityEnabled/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
 [connection signal="item_selected" from="AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/AbilityTypeOptionButton" to="." method="_on_ability_type_option_button_item_selected"]
-[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_edit_script_requested"]
-[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_saved"]
 [connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_edit_script_requested"]
 [connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_saved"]
+[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_edit_script_requested"]
+[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_saved"]
 [connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_edit_script_requested"]
 [connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_saved"]

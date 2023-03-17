@@ -15,6 +15,8 @@ var back_row: Array[UnitState] = [null, null, null, null]
 
 var Zone := ZoneLocation.Zone
 
+var token_amounts: Dictionary = {}
+
 func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	battle_state = bs
 	agent = a
@@ -56,3 +58,16 @@ func get_all_units() -> Array[UnitState]:
 	results.append_array(front_row)
 	results.append_array(back_row)
 	return results.filter(func (u): return u != null)
+
+func get_token_amount(kind: BattleState.TokenType):
+	if kind in token_amounts:
+		return token_amounts[kind]
+	else:
+		return 0
+
+func gain_tokens(kind: BattleState.TokenType, amount: int):
+	if not kind in token_amounts:
+		token_amounts[kind] = 0
+	
+	token_amounts[kind] += amount
+	

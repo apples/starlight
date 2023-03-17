@@ -22,11 +22,11 @@ func _ready():
 
 
 func _submit():
-	assert(error_string == null)
+	assert(error_string == "")
 	submit.emit(line_edit.text)
 
 func _on_line_edit_text_submitted(new_text):
-	if error_string != null:
+	if error_string == "":
 		_submit()
 
 func _refresh_error():
@@ -47,5 +47,10 @@ func _on_line_edit_text_changed(new_text):
 
 
 func _on_confirmed():
-	if error_string != null:
+	if error_string == "":
 		_submit()
+
+
+func _on_visibility_changed():
+	if visible:
+		line_edit.grab_focus()
