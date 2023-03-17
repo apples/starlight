@@ -6,10 +6,10 @@ const MainPanel = preload("res://addons/card_engine/editor/editor_panel.tscn")
 var panel
 
 func _enter_tree():
+	add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
 	panel = MainPanel.instantiate()
 	panel.visible = false
 	panel.edit_script_requested.connect(_edit_script)
-	add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
 	get_editor_interface().get_editor_main_screen().add_child(panel)
 	_make_visible(false)
 	add_custom_type(
