@@ -10,6 +10,7 @@ func _enter_tree():
 	panel = MainPanel.instantiate()
 	panel.visible = false
 	panel.edit_script_requested.connect(_edit_script)
+	panel.show_in_filesystem_requested.connect(_show_in_filesystem)
 	get_editor_interface().get_editor_main_screen().add_child(panel)
 	_make_visible(false)
 	add_custom_type(
@@ -53,3 +54,6 @@ func _get_plugin_icon():
 func _edit_script(script: Script):
 	get_editor_interface().edit_script(script)
 	get_editor_interface().set_main_screen_editor("Script")
+
+func _show_in_filesystem(path: String):
+	get_editor_interface().get_file_system_dock().navigate_to_path(path)

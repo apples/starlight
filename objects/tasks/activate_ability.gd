@@ -27,7 +27,18 @@ func start() -> void:
 		CardAbility.CardAbilityType.PASSIVE:
 			assert(false)
 	
+	# Check scratch
+	
+	var scratch := ability_instance.card_instance.ability_scratch[ability_instance.ability_index]
+	if "trigger_event" in scratch:
+		ability_instance.trigger_event = scratch.trigger_event
+	
+	# Clear scratch
+	
+	ability_instance.card_instance.ability_scratch[ability_instance.ability_index] = {}
+	
 	# Push Trigger Event
+	
 	activation_event = TriggerEvents.AbilityActivated.new({ ability_instance = ability_instance })
 	battle_state.push_event(activation_event)
 	
@@ -42,6 +53,7 @@ func start() -> void:
 		return wait_for(cost_task, response_window)
 	
 	# If no cost, go straight to response window
+	
 	goto(response_window)
 
 func response_window() -> void:

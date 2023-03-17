@@ -34,6 +34,7 @@ var is_editing := false
 signal updated(me: Control)
 signal clicked(me: Control)
 signal double_clicked(idx: int)
+signal right_clicked(me: Control)
 
 func _ready():
 	label.visible = true
@@ -76,6 +77,8 @@ func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			clicked.emit(self)
+		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+			right_clicked.emit(self)
 		if not is_editing:
 			if event.pressed and event.button_index == MOUSE_BUTTON_LEFT && event.double_click:
 				if not is_readonly:

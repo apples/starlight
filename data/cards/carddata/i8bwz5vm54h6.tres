@@ -18,7 +18,7 @@ amount = 3
 script = ExtResource("3_t1uh2")
 ability_name = "Bite"
 description = "Bites."
-type = 1
+type = 2
 cost = SubResource("Resource_vgte5")
 effect = SubResource("Resource_t4wxm")
 

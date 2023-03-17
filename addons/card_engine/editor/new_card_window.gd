@@ -32,3 +32,12 @@ func _on_change_set_button_pressed():
 		cardset_edit.text = cardset_name
 	)
 	
+
+
+func _on_visibility_changed():
+	if visible:
+		name_edit.grab_focus()
+
+
+func _on_name_text_submitted(new_text):
+	_on_confirmed()

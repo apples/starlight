@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://d3t0l5g1nxu12"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_8j6uf"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="1_424jv"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_akq0j"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_ascends.gd" id="2_3is70"]
+
+[sub_resource type="Resource" id="Resource_20l0g"]
+script = ExtResource("1_424jv")
+kind = 0
+amount = 1
+
+[sub_resource type="Resource" id="Resource_gcyjf"]
+script = ExtResource("2_3is70")
+from_this_card = true
+other_own_unit = false
+opponent_unit = false
+
+[sub_resource type="Resource" id="Resource_8yxgi"]
+script = ExtResource("1_8j6uf")
+ability_name = "Shadow Advancement"
+description = "When this unit ascends: gain a Darkness token."
+type = 3
+trigger = SubResource("Resource_gcyjf")
+effect = SubResource("Resource_20l0g")
+
+[resource]
+script = ExtResource("1_akq0j")
+uid = "83sq6vc7q196"
+cardset_name = "Darkness"
+cardset_idx = 0
+card_name = "Lily, Darkness Prodigy"
+artwork_path = ""
+mana = 1
+kind = 0
+unit_hp = 3
+level = 0
+ability0 = SubResource("Resource_8yxgi")

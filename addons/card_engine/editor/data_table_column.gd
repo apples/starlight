@@ -36,6 +36,7 @@ var resizing: bool = false
 signal saved(idx: int)
 signal clicked(column: Control, row: int)
 signal double_clicked(idx: int)
+signal right_clicked(column: Control, row: int)
 
 func _ready():
 	label.text = header_text
@@ -76,15 +77,7 @@ func resize(count: int):
 	if property_info:
 		match property_info.hint:
 			PROPERTY_HINT_ENUM:
-				var hint_string: String = property_info.hint_string
-				var option_strs := hint_string.split(",")
-				enum_options = []
-				for option in option_strs:
-					var split := option.split(":")
-					var label := split[0]
-					var value: int = int(split[1]) if split.size() == 2 else -1
-					assert(value != -1)
-					enum_options.append([label, value])
+				enum_options = CardDatabase.get_enum_options(property_info)
 	
 	while item_count() < count:
 		var item: Node
@@ -99,10 +92,15 @@ func resize(count: int):
 			item.double_clicked.connect(_item_double_clicked)
 		if "clicked" in item:
 			item.clicked.connect(_item_clicked)
+		if "right_clicked" in item:
+			item.right_clicked.connect(_item_right_clicked)
 		item.updated.connect(_item_updated)
 
 func _item_clicked(who: Control):
 	clicked.emit(self, who.get_index())
+
+func _item_right_clicked(who: Control):
+	right_clicked.emit(self, who.get_index())
 
 func _item_double_clicked(idx: int):
 	double_clicked.emit(idx)

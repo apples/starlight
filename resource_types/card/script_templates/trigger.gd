@@ -10,18 +10,19 @@ extends CardAbilityTrigger
 # The first handler which returns `true` will stop older events from being handled
 
 # This handler is called when an ability is activated
-func handle_ability_activated(e: TriggerEvents.AbilityActivated, battle_state: BattleState, card_instance: CardInstance, ability_index: int, user_side: ZoneLocation.Side):
-	# Get the ability from the card
+func handle_ability_activated(
+	e: TriggerEvents.AbilityActivated, # The trigger event
+	battle_state: BattleState,
+	card_instance: CardInstance, # The card instance *this* ability belongs to
+	ability_index: int, # Which ability slot *this* ability occupies on the card
+	user_side: ZoneLocation.Side, # Which user will be activating *this* ability
+) -> bool:
+	# Get the ability from the other card
 	var ability := e.ability_instance.get_ability()
 	
 	# Check for an attack which was activated by our controller
 	if ability.type == CardAbility.CardAbilityType.ATTACK:
 		if e.ability_instance.controller == user_side:
-			
-			# Store this ability instance as the target in scratch
-			card_instance.ability_scratch[ability_index] = {
-				target_ability_instance = e.ability_instance,
-			}
 			
 			return true
 	

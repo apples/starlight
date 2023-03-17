@@ -106,12 +106,9 @@ func _reset_fields():
 				match prop.hint:
 					PROPERTY_HINT_ENUM:
 						var option_button := OptionButton.new()
-						var hint_string: String = prop.hint_string
-						var option_strs := hint_string.split(",")
-						for option in option_strs:
-							var split := option.split(":")
-							var l := split[0]
-							var v: int = int(split[1]) if split.size() == 2 else -1
+						for option in CardDatabase.get_enum_options(prop):
+							var l = option[0]
+							var v = option[1]
 							assert(v >= 0)
 							option_button.add_item(l, v)
 						option_button.select(option_button.get_item_index(current_value))
@@ -138,7 +135,7 @@ func _reset_fields():
 				properties.add_child(lineedit)
 			TYPE_BOOL:
 				var checkbox := CheckBox.new()
-				checkbox.button_pressed = current_value
+				checkbox.button_pressed = current_value == true
 				checkbox.toggled.connect(func (new_value):
 					_set_property(prop.name, new_value)
 				)
@@ -161,9 +158,8 @@ func _open_search():
 	var edit_size := edit_xform.get_scale() * script_path_edit.size
 	script_path_popup.position = edit_pos
 	script_path_popup.size.x = edit_size.x
-	script_path_popup.edit.text = script_path_edit.text
+	script_path_popup.edit.text = ""
 	script_path_popup.edit.call_deferred("grab_focus")
-	script_path_popup.edit.call_deferred("select_all")
 	_update_filtered_options()
 
 

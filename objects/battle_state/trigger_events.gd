@@ -7,3 +7,16 @@ class AbilityActivated extends TriggerEvent:
 class AbilityPerformed extends TriggerEvent:
 	func get_type(): return "ability_performed"
 	var ability_instance: AbilityInstance
+
+class UnitAscended extends TriggerEvent:
+	func get_type(): return "unit_ascended"
+	var unit: UnitState
+	var from: CardInstance
+	var to: CardInstance
+
+class GainedTokens extends TriggerEvent:
+	func get_type(): return "gained_tokens"
+	var side: ZoneLocation.Side
+	var kind: BattleState.TokenType
+	var amount_gained: int
+	var total_amount: int

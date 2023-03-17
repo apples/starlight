@@ -21,6 +21,13 @@ var _next_card_instance_id: int = 0:
 
 var all_card_instances: Dictionary = {}
 
+enum TokenType {
+	Darkness = 0,
+}
+
+func info(a="", b="", c=""):
+	print("[BattleState] ", a, b, c)
+
 func create_card_instance(card: Card, location: ZoneLocation, owner_side: ZoneLocation.Side) -> CardInstance:
 	var ci := CardInstance.new(card, _next_card_instance_id, location, owner_side)
 	all_card_instances[ci.uid] = ci
@@ -100,6 +107,7 @@ func discard(card_instance: CardInstance):
 
 func push_event(e: TriggerEvent) -> void:
 	trigger_events.push_front(e)
+	info("push_event: ", e)
 	#broadcast_message({ type = "event", what = e })
 
 func clear_events() -> void:
@@ -224,3 +232,13 @@ func get_tappable_units(controller: ZoneLocation.Side, exclude_uids: Array[int] 
 	
 	return tappable
 
+func gain_tokens(who: ZoneLocation.Side, kind: TokenType, amount: int):
+	var side_state := get_side_state(who)
+	side_state.gain_tokens(kind, amount)
+	
+	push_event(TriggerEvents.GainedTokens.new({
+		side = who,
+		kind = kind,
+		amount_gained = amount,
+		total_amount = side_state.get_token_amount(kind),
+	}))

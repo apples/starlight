@@ -14,16 +14,16 @@ func task() -> CardTask:
 
 # The task which will perform the effect
 class Task extends CardTask:
-	var _amount: int
+	var amount: int
 	
 	# Initialize with parameters from above
-	func _init(amount: int):
-		_amount = amount
+	func _init(p_amount: int):
+		amount = p_amount
 	
 	# Start of effect execution
 	func start() -> void:
 		# Print some debug info
-		info("amount = %s" % _amount)
+		info("amount = %s" % amount)
 		
 		# Get the opponent's side
 		var opponent_side := ZoneLocation.flip(ability_instance.controller)
@@ -47,7 +47,7 @@ class Task extends CardTask:
 			return done()
 		
 		# Calculate attack damage including modifiers
-		var damage_amount := _amount + ability_instance.attack_bonus_damage
+		var damage_amount := amount + ability_instance.attack_bonus_damage
 		
 		# Debug info
 		info("target location: %s" % where)
