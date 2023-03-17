@@ -85,7 +85,6 @@ func get_design_note(card: Resource) -> CardEngineDesignNote:
 		note = CardEngineDesignNote.new()
 		ResourceSaver.save(note, notes_filename, ResourceSaver.FLAG_CHANGE_PATH)
 	else:
-		print("Loading existing design notes ", notes_filename)
 		note = load(notes_filename)
 	
 	return note
@@ -117,3 +116,28 @@ func create_script(script_key: String, filename: String) -> String:
 	
 	return script_path
 
+func get_enum_options(prop: Dictionary) -> Array:
+	assert(prop.hint == PROPERTY_HINT_ENUM)
+	var result := []
+	var option_strs = prop.hint_string.split(",")
+	for i in range(option_strs.size()):
+		var option = option_strs[i]
+		var split = option.split(":")
+		var label = split[0]
+		var value: int = int(split[1]) if split.size() == 2 else i
+		result.append([label, value])
+	return result
+
+func get_mana_types():
+	if card_script == null:
+		print("Card script not set!")
+		return []
+	
+	for p in card_script.get_script_property_list():
+		if p.name == "mana":
+			if p.hint != PROPERTY_HINT_ENUM:
+				return []
+			return get_enum_options(p)
+	
+	print("Mana property not found!")
+	return []

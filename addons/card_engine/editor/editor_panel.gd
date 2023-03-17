@@ -8,9 +8,10 @@ extends Control
 var card_engine_config: CardEngineConfig
 
 @onready var config_path_edit: LineEdit = %ConfigPathEdit
-@onready var card_data_table: Control = %CardDataTable
+@onready var card_data_table = %CardDataTable
 @onready var set_option_button: OptionButton = %SetOptionButton
-@onready var card_details: Control = %CardDetails
+@onready var card_details = %CardDetails
+@onready var default_mana_option_button: OptionButton = %DefaultManaOptionButton
 
 var card_script: Script = null
 
@@ -27,6 +28,7 @@ var is_loaded := false
 var current_selection: String
 
 signal edit_script_requested(script: Script)
+signal show_in_filesystem_requested(path: String)
 
 func _ready():
 	config_path_edit.text = "res://card_engine_config.tres"
@@ -62,6 +64,10 @@ func reload():
 			return load(a).cardset_idx < load(b).cardset_idx)
 		set_option_button.add_item(cardset_name)
 	set_option_button.select(0)
+	
+	default_mana_option_button.clear()
+	for mt in CardDatabase.get_mana_types():
+		default_mana_option_button.add_item(mt[0], mt[1])
 
 func refresh():
 	if current_set == "ALL_SETS" and name_filter == "":
@@ -92,6 +98,12 @@ func refresh():
 	else:
 		card_details.card = null
 	card_data_table.set_data(filtered_cards)
+	
+	if current_set != "ALL_SETS" and filtered_cards.size() > 0:
+		var mid = load(filtered_cards[0]).mana
+		var midx := default_mana_option_button.get_item_index(mid)
+		default_mana_option_button.select(midx)
+	
 
 func _on_new_card_button_pressed():
 	var popup := new_card_window.instantiate()
@@ -114,6 +126,8 @@ func _on_new_card_button_pressed():
 		card.cardset_name = cardset_name
 		card.card_name = card_name
 		
+		card.mana = default_mana_option_button.get_selected_id()
+		
 		all_cards.append(path)
 		if not cardset_name in card_sets:
 			card_sets[cardset_name] = [path]
@@ -122,11 +136,12 @@ func _on_new_card_button_pressed():
 		else:
 			card_sets[cardset_name].append(path)
 			card.cardset_idx = card_sets[cardset_name].size() - 1
-			
+		
 		ResourceSaver.save(card, path, ResourceSaver.FLAG_CHANGE_PATH)
 		
 		refresh()
 	)
+	popup.show()
 
 
 func _on_data_table_column_set_double_clicked(idx):
@@ -236,3 +251,7 @@ func _on_data_table_column_id_saved(idx: int):
 
 func _on_ability_edit_script_requested(script):
 	edit_script_requested.emit(script)
+
+
+func _on_card_data_table_show_in_filesystem_requested(path):
+	show_in_filesystem_requested.emit(path)

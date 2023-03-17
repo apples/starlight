@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c1suogjnywb00"]
+
+[ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="1_df55l"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_v52u6"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="2_4w2gm"]
+
+[sub_resource type="Resource" id="Resource_sb7vf"]
+script = ExtResource("1_df55l")
+kind = 0
+amount = 1
+
+[sub_resource type="Resource" id="Resource_ir414"]
+script = ExtResource("2_4w2gm")
+ability_name = "Shadow Advancement"
+description = "Gain a Darkness token when this unit is tapped for mana."
+type = 4
+effect = SubResource("Resource_sb7vf")
+
+[resource]
+script = ExtResource("1_v52u6")
+uid = "0vsgi3n2tqxa"
+cardset_name = "Darkness"
+cardset_idx = 2
+card_name = "Gregori, Shadow Butler"
+artwork_path = ""
+mana = 1
+kind = 0
+unit_hp = 3
+level = 0
+ability0 = SubResource("Resource_ir414")

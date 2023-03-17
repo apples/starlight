@@ -33,7 +33,10 @@ func refresh():
 	if card:
 		background.texture = frame_texture
 		cardface.visible = true
-		artwork.texture = load(card.artwork_path)
+		if card.artwork_path != "":
+			artwork.texture = load(card.artwork_path)
+		else:
+			artwork.texture = load("res://data/cards/artwork/_missing.png")
 		name_label.text = card.card_name
 		ability0.card_ability = card.ability0
 		ability1.card_ability = card.ability1

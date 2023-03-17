@@ -22,6 +22,8 @@ var card_control: Control
 
 var design_note: CardEngineDesignNote
 
+var ability_clipboard: Resource
+
 func _ready():
 	_refresh()
 
@@ -74,3 +76,22 @@ func _save_notes():
 
 func _on_design_notes_text_edit_focus_exited():
 	_save_notes()
+
+
+func _on_ability_copy(ability_tab):
+	var ability: Resource = card[ability_tab.ability_key]
+	assert(ability)
+	ability_clipboard = ability.duplicate(true)
+	print("Ability copied")
+
+
+func _on_ability_paste(ability_tab):
+	assert(card[ability_tab.ability_key] == null)
+	if ability_clipboard == null:
+		print("Ability clipboard empty!")
+		return
+	card[ability_tab.ability_key] = ability_clipboard.duplicate(true)
+	ResourceSaver.save(card)
+	_on_ability_saved()
+	ability_tab._refresh()
+	print("Ability pasted")

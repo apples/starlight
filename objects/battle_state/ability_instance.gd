@@ -6,6 +6,7 @@ var card_instance: CardInstance
 var ability_index: int
 var source_location: ZoneLocation
 var task: CardTask
+var trigger_event: TriggerEvent
 
 var attack_bonus_damage: int = 0
 
