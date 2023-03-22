@@ -70,4 +70,3 @@ func gain_tokens(kind: BattleState.TokenType, amount: int):
 		token_amounts[kind] = 0
 	
 	token_amounts[kind] += amount
-	

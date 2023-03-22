@@ -1,14 +1,32 @@
-[gd_scene load_steps=8 format=3 uid="uid://bcrmyin4iw0kk"]
+[gd_scene load_steps=9 format=3 uid="uid://bcrmyin4iw0kk"]
 
 [ext_resource type="PackedScene" uid="uid://cw86a2s64vsu2" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane.gd" id="1_q5tqm"]
-[ext_resource type="Material" uid="uid://cild4c13skl8l" path="res://objects/material_sprite/material_sprite_material.tres" id="4_xytkv"]
+[ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_material.gdshader" id="3_0imkw"]
 [ext_resource type="PackedScene" uid="uid://jj4n3ey7ocix" path="res://objects/cursor_location/cursor_location.tscn" id="5_580d1"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_3d.gd" id="6_74fw4"]
 [ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="6_a2h0i"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_c2f4v"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ieiuw"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_0imkw")
+shader_parameter/alpha_scissor_threshold = 0.5
+shader_parameter/alpha_antialiasing_edge = 0.3
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture_size = null
+shader_parameter/metallic = null
+shader_parameter/metallic_texture_channel = null
+shader_parameter/roughness = null
+shader_parameter/specular = null
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = null
+shader_parameter/sprite_filter_trilinear = true
+shader_parameter/texture2DAA_bias = 1.0
+shader_parameter/texture_albedo = SubResource("ViewportTexture_c2f4v")
 
 [node name="CardPlane" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
@@ -24,7 +42,7 @@ render_target_update_mode = 1
 card = null
 
 [node name="Sprite" type="Sprite3D" parent="."]
-material_override = ExtResource("4_xytkv")
+material_override = SubResource("ShaderMaterial_ieiuw")
 cast_shadow = 0
 transparent = false
 alpha_cut = 1

@@ -1,111 +1,145 @@
-[gd_scene load_steps=3 format=3 uid="uid://b5m1o5awdodjy"]
+[gd_scene load_steps=4 format=3 uid="uid://b5m1o5awdodjy"]
 
 [ext_resource type="Script" path="res://addons/card_engine/editor/ability_tab.gd" id="1_bvs6e"]
 [ext_resource type="PackedScene" uid="uid://dejk6fuga3ldo" path="res://addons/card_engine/editor/ability_script_panel.tscn" id="1_u7yoq"]
 
-[node name="AbilityTab" type="VBoxContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jxkr5"]
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+
+[node name="AbilityTab" type="PanelContainer"]
 offset_right = 607.0
 offset_bottom = 330.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jxkr5")
 script = ExtResource("1_bvs6e")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="EnableCheckBox" type="CheckButton" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="EnableCheckBox" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Enable"
 
-[node name="CopyButton" type="Button" parent="HBoxContainer"]
+[node name="CopyButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+disabled = true
 text = "Copy"
 
-[node name="PasteButton" type="Button" parent="HBoxContainer"]
+[node name="PasteButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+disabled = true
 text = "Paste"
 
-[node name="AbilityEnabled" type="HSplitContainer" parent="."]
+[node name="AbilityEnabled" type="HSplitContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 split_offset = 200
 
-[node name="VBoxContainer" type="VBoxContainer" parent="AbilityEnabled"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/AbilityEnabled"]
 layout_mode = 2
 
-[node name="NameEdit" type="LineEdit" parent="AbilityEnabled/VBoxContainer"]
+[node name="NameEdit" type="LineEdit" parent="VBoxContainer/AbilityEnabled/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "ability name"
+caret_blink = true
+caret_blink_interval = 0.5
 
-[node name="DescriptionEdit" type="TextEdit" parent="AbilityEnabled/VBoxContainer"]
+[node name="DescriptionEdit" type="TextEdit" parent="VBoxContainer/AbilityEnabled/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 placeholder_text = "ability text"
 wrap_mode = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="AbilityEnabled"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/AbilityEnabled"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="AbilityEnabled/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/AbilityEnabled/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GridContainer" type="HBoxContainer" parent="AbilityEnabled/ScrollContainer/VBoxContainer"]
+[node name="GridContainer" type="HBoxContainer" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Type:"
 
-[node name="AbilityTypeOptionButton" type="OptionButton" parent="AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
+[node name="AbilityTypeOptionButton" type="OptionButton" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AbilityScriptPanelTrigger" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+[node name="ConditionsContainer" type="VBoxContainer" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AddConditionButton" type="Button" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/ConditionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add Condition"
+
+[node name="AbilityScriptPanelTrigger" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Trigger"
 script_key = "trigger"
+is_array = false
 
-[node name="AbilityScriptPanelCost" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+[node name="AbilityScriptPanelCost" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Cost"
 script_key = "cost"
+is_array = false
 
-[node name="AbilityScriptPanelEffect" parent="AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+[node name="AbilityScriptPanelEffect" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Effect"
 script_key = "effect"
+is_array = false
 
-[node name="AbilityDisabled" type="CenterContainer" parent="."]
+[node name="AbilityScriptPanelPassive" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
+unique_name_in_owner = true
+layout_mode = 2
+panel_label = "Passive"
+script_key = "passive"
+is_array = false
+
+[node name="AbilityDisabled" type="CenterContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="AbilityDisabled"]
+[node name="Label" type="Label" parent="VBoxContainer/AbilityDisabled"]
 layout_mode = 2
 text = "Not Enabled"
 
-[connection signal="toggled" from="HBoxContainer/EnableCheckBox" to="." method="_on_enable_check_box_toggled"]
-[connection signal="pressed" from="HBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/PasteButton" to="." method="_on_paste_button_pressed"]
-[connection signal="text_changed" from="AbilityEnabled/VBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
-[connection signal="text_changed" from="AbilityEnabled/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
-[connection signal="item_selected" from="AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/AbilityTypeOptionButton" to="." method="_on_ability_type_option_button_item_selected"]
-[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_edit_script_requested"]
-[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_saved"]
-[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_edit_script_requested"]
-[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_saved"]
-[connection signal="edit_script_requested" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_edit_script_requested"]
-[connection signal="saved" from="AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_saved"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/EnableCheckBox" to="." method="_on_enable_check_box_toggled"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/PasteButton" to="." method="_on_paste_button_pressed"]
+[connection signal="text_changed" from="VBoxContainer/AbilityEnabled/VBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/AbilityEnabled/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
+[connection signal="item_selected" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/AbilityTypeOptionButton" to="." method="_on_ability_type_option_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/ConditionsContainer/AddConditionButton" to="." method="_on_add_condition_button_pressed"]
+[connection signal="edit_script_requested" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_edit_script_requested"]
+[connection signal="saved" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_saved"]
+[connection signal="edit_script_requested" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_edit_script_requested"]
+[connection signal="saved" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelCost" to="." method="_on_ability_script_panel_saved"]
+[connection signal="edit_script_requested" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_edit_script_requested"]
+[connection signal="saved" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelEffect" to="." method="_on_ability_script_panel_saved"]
+[connection signal="edit_script_requested" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelPassive" to="." method="_on_ability_script_panel_edit_script_requested"]
+[connection signal="saved" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelPassive" to="." method="_on_ability_script_panel_saved"]

@@ -16,6 +16,8 @@ var cards_path: String
 var ability_costs_path: String
 var ability_effects_path: String
 var ability_triggers_path: String
+var ability_conditionss_path: String
+var ability_passives_path: String
 var design_notes_path: String
 
 
@@ -27,6 +29,8 @@ func reset():
 		cards_path = ""
 		ability_effects_path = ""
 		ability_triggers_path = ""
+		ability_conditionss_path = ""
+		ability_passives_path = ""
 		ability_costs_path = ""
 		design_notes_path = ""
 	else:
@@ -36,6 +40,8 @@ func reset():
 		cards_path = data_root.path_join(config.cards_path)
 		ability_effects_path = data_root.path_join(config.ability_effects_path)
 		ability_triggers_path = data_root.path_join(config.ability_triggers_path)
+		ability_conditionss_path = data_root.path_join(config.ability_conditions_path)
+		ability_passives_path = data_root.path_join(config.ability_passives_path)
 		ability_costs_path = data_root.path_join(config.ability_costs_path)
 		design_notes_path = data_root.path_join(config.design_notes_path)
 
@@ -53,6 +59,12 @@ func get_all_ability_effects() -> Array[String]:
 
 func get_all_ability_triggers() -> Array[String]:
 	return get_all_files(ability_triggers_path)
+
+func get_all_ability_conditions() -> Array[String]:
+	return get_all_files(ability_conditionss_path)
+
+func get_all_ability_passives() -> Array[String]:
+	return get_all_files(ability_passives_path)
 
 
 func get_all_files(dir_path: String, accum = null) -> Array[String]:

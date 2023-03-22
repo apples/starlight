@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dunj7mka6qqgd"]
+[gd_scene load_steps=13 format=3 uid="uid://dunj7mka6qqgd"]
 
 [ext_resource type="Script" path="res://addons/card_engine/editor/editor_panel.gd" id="1_e0rvg"]
 [ext_resource type="Script" path="res://addons/card_engine/editor/data_table.gd" id="2_ic83h"]
@@ -13,6 +13,12 @@
 default_font = SubResource("SystemFont_5urc5")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxwu1"]
+bg_color = Color(0.0941176, 0.109804, 0.137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8rp17"]
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0nfg"]
 bg_color = Color(0.211765, 0.239216, 0.290196, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hddqr"]
@@ -38,21 +44,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Container"]
+[node name="PanelContainer" type="PanelContainer" parent="Container"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8rp17")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/PanelContainer"]
 layout_mode = 2
 
-[node name="TopBar" type="VBoxContainer" parent="Container/HBoxContainer"]
+[node name="TopBar" type="VBoxContainer" parent="Container/PanelContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ConfigRow" type="HBoxContainer" parent="Container/HBoxContainer/TopBar"]
+[node name="ConfigRow" type="HBoxContainer" parent="Container/PanelContainer/HBoxContainer/TopBar"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Container/HBoxContainer/TopBar/ConfigRow"]
+[node name="Label" type="Label" parent="Container/PanelContainer/HBoxContainer/TopBar/ConfigRow"]
 layout_mode = 2
 text = "Config:"
 
-[node name="ConfigPathEdit" type="LineEdit" parent="Container/HBoxContainer/TopBar/ConfigRow"]
+[node name="ConfigPathEdit" type="LineEdit" parent="Container/PanelContainer/HBoxContainer/TopBar/ConfigRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -61,19 +72,19 @@ placeholder_text = "CardEngineConfig"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="ReloadButton" type="Button" parent="Container/HBoxContainer/TopBar/ConfigRow"]
+[node name="ReloadButton" type="Button" parent="Container/PanelContainer/HBoxContainer/TopBar/ConfigRow"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Reload"
 
-[node name="SearchRow" type="HBoxContainer" parent="Container/HBoxContainer/TopBar"]
+[node name="SearchRow" type="HBoxContainer" parent="Container/PanelContainer/HBoxContainer/TopBar"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Container/HBoxContainer/TopBar/SearchRow"]
+[node name="Label" type="Label" parent="Container/PanelContainer/HBoxContainer/TopBar/SearchRow"]
 layout_mode = 2
 text = "Search:"
 
-[node name="SearchEdit" type="LineEdit" parent="Container/HBoxContainer/TopBar/SearchRow"]
+[node name="SearchEdit" type="LineEdit" parent="Container/PanelContainer/HBoxContainer/TopBar/SearchRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -81,20 +92,20 @@ placeholder_text = "card name"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="VSeparator" type="VSeparator" parent="Container/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="Container/PanelContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Container/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/PanelContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Container/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/PanelContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Container/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Container/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Set:"
 
-[node name="SetOptionButton" type="OptionButton" parent="Container/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="SetOptionButton" type="OptionButton" parent="Container/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
@@ -106,11 +117,11 @@ popup/item_1/id = 1
 popup/item_2/text = "Screet"
 popup/item_2/id = 2
 
-[node name="Label2" type="Label" parent="Container/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="Container/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Default Mana:"
 
-[node name="DefaultManaOptionButton" type="OptionButton" parent="Container/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="DefaultManaOptionButton" type="OptionButton" parent="Container/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 6
@@ -128,10 +139,10 @@ popup/item_4/id = 4
 popup/item_5/text = "Gust"
 popup/item_5/id = 5
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Container/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Container/PanelContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="NewCardButton" type="Button" parent="Container/HBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="NewCardButton" type="Button" parent="Container/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "New Card
@@ -143,12 +154,16 @@ size_flags_vertical = 3
 theme_override_constants/autohide = 0
 split_offset = 250
 
-[node name="UpperPanel" type="ScrollContainer" parent="Container/Split"]
+[node name="PanelContainer" type="PanelContainer" parent="Container/Split"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a0nfg")
+
+[node name="UpperPanel" type="ScrollContainer" parent="Container/Split/PanelContainer"]
 layout_mode = 2
 follow_focus = true
 vertical_scroll_mode = 0
 
-[node name="CardDataTable" type="ScrollContainer" parent="Container/Split/UpperPanel"]
+[node name="CardDataTable" type="ScrollContainer" parent="Container/Split/PanelContainer/UpperPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -157,15 +172,15 @@ horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 script = ExtResource("2_ic83h")
 
-[node name="VBoxContainer" type="MarginContainer" parent="Container/Split/UpperPanel/CardDataTable"]
+[node name="VBoxContainer" type="MarginContainer" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer"]
+[node name="Control" type="Control" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HighlightPanel" type="Panel" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Control"]
+[node name="HighlightPanel" type="Panel" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Control"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -174,59 +189,59 @@ offset_bottom = 40.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hddqr")
 
-[node name="Columns" type="HBoxContainer" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer"]
+[node name="Columns" type="HBoxContainer" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DataTableColumnSet" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnSet" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 header_text = "Set"
 resource_key = "cardset_name"
 
-[node name="DataTableColumnId" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnId" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 header_text = "ID"
 resource_key = "cardset_idx"
 is_editable = true
 
-[node name="DataTableColumnName" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnName" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 header_text = "Name"
 resource_key = "card_name"
 is_editable = true
 
-[node name="DataTableColumnMana" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnMana" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 header_text = "Mana"
 resource_key = "mana"
 is_editable = true
 
-[node name="DataTableColumnKind" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnKind" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 header_text = "Kind"
 resource_key = "kind"
 is_editable = true
 
-[node name="DataTableColumnUnitHP" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnUnitHP" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 header_text = "Unit HP"
 resource_key = "unit_hp"
 is_editable = true
 
-[node name="DataTableColumnLevel" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnLevel" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 layout_mode = 2
 header_text = "Level"
 resource_key = "level"
 is_editable = true
 
-[node name="DataTableColumnArtwork" parent="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
+[node name="DataTableColumnArtwork" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_r8hdh")]
 layout_mode = 2
 size_flags_horizontal = 3
 header_text = "Artwork"
@@ -235,7 +250,7 @@ is_editable = true
 is_last = true
 data_table_field_scene = ExtResource("4_6tsuu")
 
-[node name="DataTablePopupMenu" type="PopupMenu" parent="Container/Split/UpperPanel/CardDataTable"]
+[node name="DataTablePopupMenu" type="PopupMenu" parent="Container/Split/PanelContainer/UpperPanel/CardDataTable"]
 unique_name_in_owner = true
 size = Vector2i(176, 100)
 item_count = 1
@@ -246,7 +261,7 @@ item_0/id = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/autohide = 0
-split_offset = 700
+split_offset = 800
 script = ExtResource("5_terov")
 
 [node name="BottomPanel" type="TabContainer" parent="Container/Split/CardDetails"]
@@ -301,15 +316,15 @@ unique_name_in_owner = true
 one_shot = true
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
-[connection signal="pressed" from="Container/HBoxContainer/TopBar/ConfigRow/ReloadButton" to="." method="_on_reload_button_pressed"]
-[connection signal="text_submitted" from="Container/HBoxContainer/TopBar/SearchRow/SearchEdit" to="." method="_on_search_edit_text_submitted"]
-[connection signal="item_selected" from="Container/HBoxContainer/VBoxContainer/HBoxContainer/SetOptionButton" to="." method="_on_set_option_button_item_selected"]
-[connection signal="pressed" from="Container/HBoxContainer/VBoxContainer/HBoxContainer2/NewCardButton" to="." method="_on_new_card_button_pressed"]
-[connection signal="row_clicked" from="Container/Split/UpperPanel/CardDataTable" to="." method="_on_card_data_table_row_clicked"]
-[connection signal="show_in_filesystem_requested" from="Container/Split/UpperPanel/CardDataTable" to="." method="_on_card_data_table_show_in_filesystem_requested"]
-[connection signal="double_clicked" from="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns/DataTableColumnSet" to="." method="_on_data_table_column_set_double_clicked"]
-[connection signal="saved" from="Container/Split/UpperPanel/CardDataTable/VBoxContainer/Columns/DataTableColumnId" to="." method="_on_data_table_column_id_saved"]
-[connection signal="id_pressed" from="Container/Split/UpperPanel/CardDataTable/DataTablePopupMenu" to="Container/Split/UpperPanel/CardDataTable" method="_on_data_table_popup_menu_id_pressed"]
+[connection signal="pressed" from="Container/PanelContainer/HBoxContainer/TopBar/ConfigRow/ReloadButton" to="." method="_on_reload_button_pressed"]
+[connection signal="text_submitted" from="Container/PanelContainer/HBoxContainer/TopBar/SearchRow/SearchEdit" to="." method="_on_search_edit_text_submitted"]
+[connection signal="item_selected" from="Container/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/SetOptionButton" to="." method="_on_set_option_button_item_selected"]
+[connection signal="pressed" from="Container/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer2/NewCardButton" to="." method="_on_new_card_button_pressed"]
+[connection signal="row_clicked" from="Container/Split/PanelContainer/UpperPanel/CardDataTable" to="." method="_on_card_data_table_row_clicked"]
+[connection signal="show_in_filesystem_requested" from="Container/Split/PanelContainer/UpperPanel/CardDataTable" to="." method="_on_card_data_table_show_in_filesystem_requested"]
+[connection signal="double_clicked" from="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns/DataTableColumnSet" to="." method="_on_data_table_column_set_double_clicked"]
+[connection signal="saved" from="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns/DataTableColumnId" to="." method="_on_data_table_column_id_saved"]
+[connection signal="id_pressed" from="Container/Split/PanelContainer/UpperPanel/CardDataTable/DataTablePopupMenu" to="Container/Split/PanelContainer/UpperPanel/CardDataTable" method="_on_data_table_popup_menu_id_pressed"]
 [connection signal="focus_exited" from="Container/Split/CardDetails/BottomPanel/Design/DesignNotesTextEdit" to="Container/Split/CardDetails" method="_on_design_notes_text_edit_focus_exited"]
 [connection signal="text_changed" from="Container/Split/CardDetails/BottomPanel/Design/DesignNotesTextEdit" to="Container/Split/CardDetails" method="_on_design_notes_text_edit_text_changed"]
 [connection signal="copy" from="Container/Split/CardDetails/BottomPanel/Ability 0" to="Container/Split/CardDetails" method="_on_ability_copy"]

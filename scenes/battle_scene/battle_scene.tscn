@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dw34q3n1vmyjg"]
+[gd_scene load_steps=14 format=3 uid="uid://nm2eypux40v4"]
 
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
 [ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="2_aqa2u"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://objects/battle_agents/dummy_agent.gd" id="7_kgpwf"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_hand.gd" id="10_86xfy"]
+[ext_resource type="Script" path="res://objects/token_display/token_display.gd" id="11_wuxep"]
 [ext_resource type="Texture2D" uid="uid://csbup4415o24m" path="res://scenes/battle_scene/images/field.png" id="12_ivm3m"]
 [ext_resource type="PackedScene" uid="uid://dvx53oob87xe4" path="res://objects/card_plane/card_plane_control.tscn" id="13_wngi3"]
 
@@ -101,8 +102,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4.28541)
 script = ExtResource("10_86xfy")
 
 [node name="OpponentHand" type="Node3D" parent="."]
-transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, -0.0185368, -0.0319576, -16.0767)
+transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, -4.74425, 0.345208, -6.10019)
 script = ExtResource("10_86xfy")
+
+[node name="PlayerTokens" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.146, 0.365876, -6.04829)
+script = ExtResource("11_wuxep")
+
+[node name="OpponentTokens" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.31971, 0.728384, -6.46124)
+script = ExtResource("11_wuxep")
+direction = -1
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.1, -6)
@@ -122,8 +132,8 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.407
 anchor_bottom = 0.407
-offset_top = -275.6
-offset_right = 240.0
-offset_bottom = 92.4
+offset_top = -276.04
+offset_right = 226.0
+offset_bottom = 39.96
 grow_vertical = 2
 scale = Vector2(1.5, 1.5)

@@ -5,24 +5,25 @@
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="2_eqgp3"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_ascends.gd" id="3_ws45f"]
 
-[sub_resource type="Resource" id="Resource_rrwq6"]
+[sub_resource type="Resource" id="Resource_qalgw"]
 script = ExtResource("1_vwhg0")
 kind = 0
 amount = 2
 
-[sub_resource type="Resource" id="Resource_qlegf"]
+[sub_resource type="Resource" id="Resource_unjhx"]
 script = ExtResource("3_ws45f")
 from_this_card = true
 other_own_unit = false
 opponent_unit = false
 
-[sub_resource type="Resource" id="Resource_5o4iw"]
+[sub_resource type="Resource" id="Resource_lyopv"]
 script = ExtResource("2_eqgp3")
 ability_name = "Shadow Advancement"
 description = "When this unit ascends: gain 2 Darkness tokens."
 type = 3
-trigger = SubResource("Resource_qlegf")
-effect = SubResource("Resource_rrwq6")
+trigger = SubResource("Resource_unjhx")
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+effect = SubResource("Resource_qalgw")
 
 [resource]
 script = ExtResource("1_0ov6s")
@@ -35,4 +36,4 @@ mana = 1
 kind = 0
 unit_hp = 7
 level = 1
-ability0 = SubResource("Resource_5o4iw")
+ability0 = SubResource("Resource_lyopv")

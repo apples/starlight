@@ -21,6 +21,7 @@ extends Control
 			type_label.text = panel_label
 
 @export var script_key: String
+@export var is_array: bool = false
 
 @export var options: Array[String] = []:
 	get:
@@ -42,6 +43,7 @@ extends Control
 
 signal saved()
 signal edit_script_requested(script: Script)
+signal cleared()
 
 var filtered_options: Array[String] = []
 
@@ -52,11 +54,32 @@ func _ready():
 	_reset_script_text()
 	_reset_fields()
 
+func get_ability_script():
+	if is_array:
+		var arr = ability[script_key]
+		if get_index() < arr.size():
+			return ability[script_key][get_index()]
+		else:
+			return null
+	else:
+		return ability[script_key]
+
+func set_ability_script(value) -> void:
+	if is_array:
+		var arr = ability[script_key]
+		if get_index() < arr.size():
+			arr[get_index()] = value
+		else:
+			assert(get_index() == arr.size())
+			arr.append(value)
+	else:
+		ability[script_key] = value
+
 func _reset_script_text():
 	if ability:
 		clear_button.disabled = false
-		if ability[script_key]:
-			script_path_edit.text = ability[script_key].get_script().resource_path.get_file()
+		if get_ability_script():
+			script_path_edit.text = get_ability_script().get_script().resource_path.get_file()
 		else:
 			script_path_edit.text = ""
 	else:
@@ -75,7 +98,7 @@ func _update_filtered_options():
 			filtered_options.append(o)
 
 func _reset_fields():
-	if not ability or not ability[script_key]:
+	if not ability or not get_ability_script():
 		properties_container.visible = false
 		edit_button.disabled = true
 		return
@@ -88,7 +111,7 @@ func _reset_fields():
 		c.queue_free()
 		properties.remove_child(c)
 	
-	var script := ability[script_key].get_script() as Script
+	var script := get_ability_script().get_script() as Script
 	assert(script)
 	
 	for prop in script.get_script_property_list():
@@ -99,7 +122,7 @@ func _reset_fields():
 		label.text = "%s:" % prop.name
 		properties.add_child(label)
 		
-		var current_value = ability[script_key][prop.name]
+		var current_value = get_ability_script()[prop.name]
 		
 		match prop.type:
 			TYPE_INT:
@@ -145,7 +168,7 @@ func _reset_fields():
 				push_error("Not supported!")
 
 func _set_property(prop_name: String, value):
-	ability[script_key][prop_name] = value
+	get_ability_script()[prop_name] = value
 	_save()
 
 func _on_choose_button_pressed():
@@ -178,22 +201,24 @@ func _on_script_path_edit_text_submitted(new_text):
 
 func _set_new_script(o: String):
 	if o == "":
-		script_path_edit.text = ""
-		ability[script_key] = null
+		set_ability_script(null)
 		_save()
-		
+		_reset_script_text()
 		_reset_fields()
 		return
 	
 	assert(FileAccess.file_exists(o))
 	
-	script_path_edit.text = o.get_file()
-	if ability[script_key]:
-		var current = ability[script_key].get_script().resource_path
+	# Setting the script without actually changing it would normally reset the
+	# field values too, so check here to make sure we keep existing values.
+	if get_ability_script():
+		var current = get_ability_script().get_script().resource_path
 		if current == o:
 			return
-	ability[script_key] = load(o).new()
+	
+	set_ability_script(load(o).new())
 	_save()
+	_reset_script_text()
 	_reset_fields()
 
 func _save():
@@ -207,6 +232,7 @@ func _on_script_path_popup_menu_id_pressed(id):
 func _on_clear_button_pressed():
 	_set_new_script("")
 	_reset_fields()
+	cleared.emit()
 
 
 func _on_script_path_popup_menu_close_requested():
@@ -272,10 +298,10 @@ func _on_new_button_pressed():
 
 
 func _on_edit_button_pressed():
-	if ability[script_key] == null:
+	if get_ability_script() == null:
 		print("Null ability script")
 		return
-	var script := ability[script_key].get_script() as Script
+	var script := get_ability_script().get_script() as Script
 	if script == null:
 		print("Ability script has... no script...")
 		return

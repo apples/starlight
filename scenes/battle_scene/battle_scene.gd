@@ -11,6 +11,9 @@ class_name BattleScene extends Node
 @onready var player_hand := $PlayerHand
 @onready var opponent_hand := $OpponentHand
 
+@onready var player_tokens := $PlayerTokens
+@onready var opponent_tokens := $OpponentTokens
+
 @onready var card_preview := $UI/CardPreview
 
 var screen_layer_stack: Array[BattleScreenLayer] = []
@@ -39,6 +42,8 @@ func reconcile():
 	_reconcile_field(opponent_state, opponent_field)
 	_reconcile_hand(player_state, player_hand, false)
 	_reconcile_hand(opponent_state, opponent_hand, true)
+	_reconcile_tokens(player_state, player_tokens)
+	_reconcile_tokens(opponent_state, opponent_tokens)
 
 func _reconcile_field(state: BattleSideState, field: BattleField):
 	_reconcile_field_row(state.front_row, field.front_row)
@@ -96,6 +101,8 @@ func _reconcile_hand(state: BattleSideState, hand: Node3D, hidden: bool):
 	for i in range(state.hand.size(), hand.get_child_count()):
 		hand.get_child(i).queue_free()
 
+func _reconcile_tokens(side_state: BattleSideState, tokens):
+	tokens.set_amounts(side_state.token_amounts)
 
 func push_screen(screen_scene, init: Callable = func(a): pass) -> BattleScreenLayer:
 	var screen := (

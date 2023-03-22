@@ -19,6 +19,7 @@ script = ExtResource("3_t1uh2")
 ability_name = "Bite"
 description = "Bites."
 type = 2
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 cost = SubResource("Resource_vgte5")
 effect = SubResource("Resource_t4wxm")
 
@@ -31,6 +32,6 @@ card_name = "Kainei, Avatar of the Queen of Darkness"
 artwork_path = "res://data/cards/artwork/screet.png"
 mana = 2
 kind = 0
-unit_hp = 0
+unit_hp = 3
 level = 0
 ability0 = SubResource("Resource_0k2tq")
