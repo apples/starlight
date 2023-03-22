@@ -18,6 +18,7 @@ extends Control
 @onready var cost := %AbilityScriptPanelCost
 @onready var trigger := %AbilityScriptPanelTrigger
 @onready var effect := %AbilityScriptPanelEffect
+@onready var passive := %AbilityScriptPanelPassive
 
 @onready var enable_checkbox := %EnableCheckBox
 @onready var ability_enabled := %AbilityEnabled
@@ -30,10 +31,16 @@ extends Control
 @onready var copy_button: Button = %CopyButton
 @onready var paste_button: Button = %PasteButton
 
+@onready var conditions_container = %ConditionsContainer
+@onready var add_condition_button = %AddConditionButton
+
+var ability_script_panel_scene = preload("res://addons/card_engine/editor/ability_script_panel.tscn")
+var ability_script_panel_condition_scene = preload("res://addons/card_engine/editor/ability_script_panel_condition.tscn")
+
 signal saved()
 signal edit_script_requested(script: Script)
 signal copy(ability_tab)
-signal paste(ability_tab)
+signal paste()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -53,6 +60,10 @@ func _refresh():
 		cost.ability = null
 		trigger.ability = null
 		effect.ability = null
+		passive.ability = null
+		
+		for i in range(conditions_container.get_child_count() - 1):
+			conditions_container.get_child(i).queue_free()
 		
 		copy_button.disabled = true
 		copy_button.modulate.a = 0
@@ -69,7 +80,7 @@ func _refresh():
 	paste_button.disabled = true
 	paste_button.modulate.a = 0
 	
-	var ability = card[ability_key]
+	var ability: CardAbility = card[ability_key]
 	
 	# Text
 	
@@ -99,6 +110,21 @@ func _refresh():
 		ability_enabled.visible = false
 		ability_disabled.visible = true
 	
+	# Conditions
+	
+	for i in range(ability.conditions.size()):
+		var panel
+		if i >= conditions_container.get_child_count() - 1:
+			panel = _add_condition_panel()
+		else:
+			panel = conditions_container.get_child(i)
+		panel.card = card
+		panel.ability = ability
+		panel.options = CardDatabase.get_all_ability_conditions()
+	
+	for i in range(ability.conditions.size(), conditions_container.get_child_count() - 1):
+		conditions_container.get_child(i).queue_free()
+	
 	# Details
 	
 	trigger.card = card
@@ -113,6 +139,10 @@ func _refresh():
 	effect.ability = ability
 	effect.options = CardDatabase.get_all_ability_effects()
 	
+	passive.card = card
+	passive.ability = ability
+	passive.options = CardDatabase.get_all_ability_passives()
+	
 	_refresh_visibility()
 
 func _refresh_visibility():
@@ -122,12 +152,22 @@ func _refresh_visibility():
 	
 	var CAT = CardDatabase.ability_script.CardAbilityType
 	
-	# Trigger script
 	match ability.type:
 		CAT.TRIGGER:
 			trigger.visible = true
+			cost.visible = true
+			effect.visible = true
+			passive.visible = false
+		CAT.PASSIVE:
+			trigger.visible = false
+			cost.visible = false
+			effect.visible = false
+			passive.visible = true
 		_:
 			trigger.visible = false
+			cost.visible = true
+			effect.visible = true
+			passive.visible = false
 
 
 func _on_ability_script_panel_saved():
@@ -177,15 +217,39 @@ func _on_ability_script_panel_edit_script_requested(script):
 func _on_ability_type_option_button_item_selected(index):
 	var type := ability_type_option_button.get_item_id(index)
 	
+	if card[ability_key].type == type:
+		return
+	
 	var CAT = CardDatabase.ability_script.CardAbilityType
 	
-	if card[ability_key].trigger != null and \
-			card[ability_key].type == CAT.TRIGGER and type != CAT.TRIGGER:
+	match type:
+		CAT.PASSIVE:
+			await _confirm_clear_script("trigger")
+			await _confirm_clear_script("cost")
+			await _confirm_clear_script("effect")
+			card[ability_key].trigger = null
+			card[ability_key].cost = null
+			card[ability_key].effect = null
+		CAT.TRIGGER:
+			await _confirm_clear_script("passive")
+			card[ability_key].passive = null
+		_:
+			await _confirm_clear_script("trigger")
+			await _confirm_clear_script("passive")
+			card[ability_key].trigger = null
+			card[ability_key].passive = null
+	
+	card[ability_key].type = type
+	_save()
+	_refresh_visibility()
+
+func _confirm_clear_script(key: String):
+	if card[ability_key][key] != null:
 		var dialog := ConfirmationDialog.new()
 		dialog.title = "Are you sure?"
 		dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 		var label := Label.new()
-		label.text = "There is a Trigger script on this ability.\nChanging the type will remove this script.\nThis cannot be undone."
+		label.text = "There is a %s script on this ability.\nChanging the type will remove this script.\nThis cannot be undone." % key
 		dialog.add_child(label)
 		add_child(dialog)
 		dialog.show()
@@ -193,12 +257,7 @@ func _on_ability_type_option_button_item_selected(index):
 			remove_child(dialog))
 		await dialog.confirmed
 		remove_child(dialog)
-		card[ability_key].trigger = null
 	
-	card[ability_key].type = type
-	_save()
-	_refresh_visibility()
-
 
 func _on_copy_button_pressed():
 	copy.emit(self)
@@ -206,3 +265,33 @@ func _on_copy_button_pressed():
 
 func _on_paste_button_pressed():
 	paste.emit(self)
+
+
+func _on_add_condition_button_pressed():
+	var ability: CardAbility = card[ability_key]
+	if ability.conditions.size() < conditions_container.get_child_count() - 1:
+		return
+	
+	_add_condition_panel()
+
+
+func _add_condition_panel():
+	var ability: CardAbility = card[ability_key]
+	
+	var panel = ability_script_panel_condition_scene.instantiate()
+	panel.panel_label = "Condition%s" % (conditions_container.get_child_count() - 1)
+	panel.script_key = "conditions"
+	panel.is_array = true
+	panel.card = card
+	panel.ability = ability
+	panel.options = CardDatabase.get_all_ability_conditions()
+	panel.saved.connect(_on_ability_script_panel_saved)
+	panel.cleared.connect(func ():
+		if panel.get_index() < ability.conditions.size():
+			ability.conditions.remove_at(panel.get_index())
+		conditions_container.remove_child(panel)
+		_save())
+	conditions_container.add_child(panel)
+	conditions_container.move_child(add_condition_button, -1)
+	
+	return panel

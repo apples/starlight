@@ -1,19 +1,25 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c1suogjnywb00"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="1_df55l"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_v52u6"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="2_4w2gm"]
+[ext_resource type="Script" path="res://data/cards/abilities/passives/when_tapped_gain_tokens.gd" id="2_gw61y"]
 
 [sub_resource type="Resource" id="Resource_sb7vf"]
 script = ExtResource("1_df55l")
 kind = 0
 amount = 1
 
+[sub_resource type="Resource" id="Resource_8ojlb"]
+script = ExtResource("2_gw61y")
+
 [sub_resource type="Resource" id="Resource_ir414"]
 script = ExtResource("2_4w2gm")
 ability_name = "Shadow Advancement"
 description = "Gain a Darkness token when this unit is tapped for mana."
 type = 4
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+passive = SubResource("Resource_8ojlb")
 effect = SubResource("Resource_sb7vf")
 
 [resource]

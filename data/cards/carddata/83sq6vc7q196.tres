@@ -22,6 +22,7 @@ ability_name = "Shadow Advancement"
 description = "When this unit ascends: gain a Darkness token."
 type = 3
 trigger = SubResource("Resource_gcyjf")
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 effect = SubResource("Resource_20l0g")
 
 [resource]

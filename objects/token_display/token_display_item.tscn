@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://tdndyp0w5h7v"]
+
+[ext_resource type="Script" path="res://objects/token_display/token_display_item.gd" id="1_36kru"]
+[ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="2_5nglx"]
+
+[node name="TokenDisplayItem" type="Node3D"]
+script = ExtResource("1_36kru")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+pixel_size = 0.02
+billboard = 1
+transparent = false
+alpha_cut = 1
+alpha_antialiasing_mode = 1
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.839395, 0, -0.103292)
+billboard = 1
+fixed_size = true
+texture_filter = 0
+text = "x?"
+font = ExtResource("2_5nglx")
+font_size = 19
+outline_size = 2
