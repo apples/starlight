@@ -25,7 +25,9 @@ enum TokenType {
 	Darkness = 0,
 }
 
+
 func info(a="", b="", c=""):
+	TokenType.find_key(1)
 	print("[BattleState] ", a, b, c)
 
 func create_card_instance(card: Card, location: ZoneLocation, owner_side: ZoneLocation.Side) -> CardInstance:
@@ -63,14 +65,20 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 
 	if unit != null:
 		# TODO: verify requirements
-		discard(unit.card_instance)
-		unit.card_instance.unit = null
+		var prev_card_instance = unit.card_instance
+		discard(prev_card_instance)
+		prev_card_instance.unit = null
 		if card_instance.location.zone == ZoneLocation.Zone.Hand:
 			var hand_side_state = get_side_state(card_instance.location.side)
 			hand_side_state.remove_from_hand(card_instance)
 		unit.card_instance = card_instance
 		card_instance.unit = unit
 		card_instance.location = location
+		push_event(TriggerEvents.UnitAscended.new({
+			unit = unit,
+			from = prev_card_instance,
+			to = card_instance,
+		}))
 	else:
 		unit = UnitState.new()
 		_set_unit(location, unit)
@@ -80,6 +88,10 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		unit.card_instance = card_instance
 		card_instance.unit = unit
 		card_instance.location = location
+		push_event(TriggerEvents.UnitSummoned.new({
+			unit = unit,
+			to = card_instance,
+		}))
 
 	print("Summoned %s" % card_instance)
 
@@ -87,14 +99,19 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 
 
 func destroy_unit(where: ZoneLocation):
-	var card_instance := get_unit(where).card_instance
+	var unit := get_unit(where)
+	var card_instance := unit.card_instance
 	_remove_unit(where)
 	discard(card_instance)
 	card_instance.unit = null
+	push_event(TriggerEvents.UnitDestroyed.new({
+		unit = unit,
+		was = card_instance,
+	}))
 
 func summon_starters(side: ZoneLocation.Side):
 	var side_state := get_side_state(side)
-
+	
 	summon_unit(side_state.starters[0], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 0))
 	summon_unit(side_state.starters[1], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 1))
 

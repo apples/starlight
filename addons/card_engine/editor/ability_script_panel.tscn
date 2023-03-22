@@ -18,6 +18,7 @@ bg_color = Color(0.145098, 0.156863, 0.176471, 1)
 [node name="AbilityScriptPanel" type="VBoxContainer"]
 theme_override_constants/separation = 0
 script = ExtResource("1_ttfmt")
+is_array = null
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -44,7 +45,7 @@ text = "Script:"
 
 [node name="ScriptPathEdit" type="LineEdit" parent="HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 editable = false
 selecting_enabled = false
@@ -86,7 +87,7 @@ size_flags_vertical = 3
 
 [node name="ChooseButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "V"
+text = "..."
 
 [node name="ClearButton" type="Button" parent="HBoxContainer"]
 unique_name_in_owner = true

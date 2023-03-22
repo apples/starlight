@@ -9,7 +9,9 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_a3llo"]
 viewport_path = NodePath("SubViewport")
 
-[node name="CardPlaneControl" type="MarginContainer"]
+[node name="CardPlaneControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 288.0
 offset_bottom = 404.0
 size_flags_vertical = 4
@@ -28,9 +30,15 @@ card = null
 [node name="Sprite" type="TextureRect" parent="."]
 texture_filter = 2
 material = ExtResource("3_7gcy2")
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = SubResource("ViewportTexture_a3llo")
-expand_mode = 3
+expand_mode = 1
+stretch_mode = 4
 script = ExtResource("4_peau8")
 
 [node name="CardAbilityCursorLocation0" parent="Sprite" node_paths=PackedStringArray("down") instance=ExtResource("6_vvfj4")]
