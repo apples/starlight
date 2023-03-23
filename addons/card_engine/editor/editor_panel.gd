@@ -13,6 +13,8 @@ var card_engine_config: CardEngineConfig
 @onready var card_details = %CardDetails
 @onready var default_mana_option_button: OptionButton = %DefaultManaOptionButton
 
+var plugin
+
 var card_script: Script = null
 
 var all_cards: Array[String] = []
@@ -29,6 +31,7 @@ var current_selection: String
 
 signal edit_script_requested(script: Script)
 signal show_in_filesystem_requested(path: String)
+signal delete_requested(cardfilepath: String)
 
 func _ready():
 	config_path_edit.text = "res://card_engine_config.tres"
@@ -223,27 +226,20 @@ func _on_data_table_column_id_saved(idx: int):
 		card.cardset_idx = new_idx
 		ResourceSaver.save(card)
 	
-	print("asdf: %s -> %s" % [old_idx, new_idx])
-	
 	# rotate
 	if old_idx < new_idx:
-		print("rotating left")
 		for i in range(old_idx, new_idx):
 			cardset[i] = cardset[i + 1]
 			var c := load(cardset[i])
-			print("setting %s idx to %s" % [c.card_name, i])
 			c.cardset_idx = i
 			ResourceSaver.save(c)
 	elif new_idx < old_idx:
-		print("rotating right")
 		for i in range(old_idx, new_idx, -1):
 			cardset[i] = cardset[i - 1]
 			var c := load(cardset[i])
-			print("setting %s idx to %s" % [c.card_name, i])
 			c.cardset_idx = i
 			ResourceSaver.save(c)
 	cardset[new_idx] = filtered_cards[idx]
-	print("done")
 	
 	refresh()
 
@@ -256,3 +252,26 @@ func _on_ability_edit_script_requested(script):
 
 func _on_card_data_table_show_in_filesystem_requested(path):
 	show_in_filesystem_requested.emit(path)
+
+
+func _on_card_data_table_delete_requested(cardfilepath):
+	var card := load(cardfilepath)
+	var cardset: Array = card_sets[card.cardset_name]
+	var old_idx: int = card.cardset_idx
+	assert(cardset[old_idx] == cardfilepath)
+	
+	if not await plugin.delete_card(cardfilepath):
+		return
+	
+	# rotate
+	for i in range(old_idx, cardset.size() - 1):
+		cardset[i] = cardset[i + 1]
+		var c := load(cardset[i])
+		c.cardset_idx = i
+		ResourceSaver.save(c)
+	
+	cardset.pop_back()
+	
+	all_cards.remove_at(all_cards.find(cardfilepath))
+	
+	refresh()

@@ -10,6 +10,9 @@ func task() -> CardTask:
 		task.filename = get_script().resource_path.get_file()
 	return task
 
+func get_output_variables() -> Array[String]:
+	return []
+
 class CardAbilityPassiveTask extends CardTask:
 	var passive_effect: PassiveEffect
 	var trigger_event: TriggerEvent
