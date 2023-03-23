@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm3n202lvxo3f"]
+
+[ext_resource type="Script" path="res://addons/card_engine/editor/variable_property_control.gd" id="1_enld0"]
+[ext_resource type="PackedScene" uid="uid://b88hs21jecmcs" path="res://addons/card_engine/editor/searchable_popup_menu.tscn" id="2_l0c8l"]
+
+[node name="VariablePropertyControl" type="HBoxContainer"]
+script = ExtResource("1_enld0")
+
+[node name="FixedValueContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VariableLineEdit" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Variable name"
+theme_override_constants/minimum_character_width = 15
+text = "destroyed_unit_level"
+placeholder_text = "variable"
+editable = false
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+
+[node name="SearchablePopupMenu" parent="VariableLineEdit" instance=ExtResource("2_l0c8l")]
+unique_name_in_owner = true
+
+[node name="CheckButtonContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="CheckButtonContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Toggle variable mode"
+button_pressed = true
+
+[connection signal="gui_input" from="VariableLineEdit" to="." method="_on_variable_line_edit_gui_input"]
+[connection signal="text_changed" from="VariableLineEdit" to="." method="_on_variable_line_edit_text_changed"]
+[connection signal="text_submitted" from="VariableLineEdit" to="." method="_on_variable_line_edit_text_submitted"]
+[connection signal="search_changed" from="VariableLineEdit/SearchablePopupMenu" to="." method="_on_searchable_popup_menu_search_changed"]
+[connection signal="search_submitted" from="VariableLineEdit/SearchablePopupMenu" to="." method="_on_searchable_popup_menu_search_submitted"]
+[connection signal="selected_id" from="VariableLineEdit/SearchablePopupMenu" to="." method="_on_searchable_popup_menu_selected_id"]
+[connection signal="toggled" from="CheckButtonContainer/CheckButton" to="." method="_on_check_button_toggled"]

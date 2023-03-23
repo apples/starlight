@@ -25,16 +25,8 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 	
 	return true
 
-# Called when the engine needs to execute this cost
-func pay_task() -> CardTask:
-	return PayTask.new()
-
 # The task which actually performs the payment
 class PayTask extends CardTask:
-	
-	# Initialize with parameters from above
-	func _init():
-		pass
 	
 	# Start of cost execution
 	func start() -> void:
