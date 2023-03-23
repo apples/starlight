@@ -13,12 +13,13 @@ tap_self = true
 mana_amount = 1
 target_count = 1
 target_zones = 2
+target_zones_var = ""
 
 [sub_resource type="Resource" id="Resource_8fliw"]
 script = ExtResource("4_pocai")
 kind = 0
 amount = 7
-amount_var = ""
+amount_var = "destroyed_unit_level"
 
 [sub_resource type="Resource" id="Resource_1idfo"]
 script = ExtResource("2_alk6l")
@@ -27,6 +28,7 @@ effect = SubResource("Resource_8fliw")
 [sub_resource type="Resource" id="Resource_b5hrb"]
 script = ExtResource("2_3g7gi")
 amount = 3
+amount_var = ""
 effect = SubResource("Resource_1idfo")
 
 [sub_resource type="Resource" id="Resource_0k2tq"]

@@ -9,11 +9,13 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 	push_error("CardAbilityCost: can_be_paid() not implemented")
 	return false
 
-func pay_task() -> CardTask:
+func pay_task(ability_instance: AbilityInstance) -> CardTask:
 	var task = get_script().Task.new()
-	for prop in get_script().get_script_property_list():
-		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-			task[prop.name] = self[prop.name]
-	if task.filename == "":
-		task.filename = get_script().resource_path.get_file()
+	task.ability_instance = ability_instance
+	
+	task.assign_props(self)
+	
 	return task
+
+func get_output_variables() -> Array[String]:
+	return []

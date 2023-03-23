@@ -47,8 +47,7 @@ func start() -> void:
 		if not ability.cost.can_be_paid(battle_state, card_instance, ability_instance.ability_index, ability_instance.controller):
 			assert(false)
 			return fail()
-		var cost_task := ability.cost.pay_task()
-		cost_task.ability_instance = ability_instance
+		var cost_task := ability.cost.pay_task(ability_instance)
 		return wait_for(cost_task, response_window)
 	
 	# If no cost, go straight to response window

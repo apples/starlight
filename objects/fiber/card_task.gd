@@ -200,3 +200,27 @@ func cancel() -> void:
 
 func info(what: String):
 	print("[CardTask] %s: INFO: %s" % [filename, what])
+
+
+func assign_props(from: Object) -> void:
+	for prop in from.get_script().get_script_property_list():
+		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+			# Skip over variable props
+			if prop.name.ends_with("_var"):
+				continue
+			
+			# Check for an apply variable prop instead of value
+			var varkey: String = prop.name + "_var"
+			if varkey in from:
+				var varname: String = from[varkey]
+				if varname != "":
+					assert(ability_instance != null)
+					assert(varname in ability_instance.variables)
+					self[prop.name] = ability_instance.variables[varname]
+					continue
+			
+			self[prop.name] = from[prop.name]
+	
+	if filename == "":
+		filename = from.get_script().resource_path.get_file()
+	

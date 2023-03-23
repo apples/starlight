@@ -2,6 +2,7 @@
 extends CardAbilityEffect
 
 @export var amount: int = 0
+@export var amount_var: String = ""
 @export var effect: CardAbilityEffect
 
 func get_attack_damage() -> String:

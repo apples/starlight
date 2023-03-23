@@ -1,14 +1,14 @@
 @tool
 extends Window
 
-
 @onready var panel := $Panel
-
 @onready var items := %Items
 
 @onready var edit: LineEdit = $Panel/VBoxContainer/LineEdit
 
 signal selected_id(id: int)
+signal search_changed(new_text: String)
+signal search_submitted(new_text: String)
 
 func clear():
 	while items.get_child_count() > 0:
@@ -37,3 +37,10 @@ func _unhandled_input(event):
 
 func _on_close_requested():
 	hide()
+	edit.release_focus()
+
+func _on_line_edit_text_changed(new_text):
+	search_changed.emit(new_text)
+
+func _on_line_edit_text_submitted(new_text):
+	search_submitted.emit(new_text)
