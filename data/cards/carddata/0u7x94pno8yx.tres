@@ -1,29 +1,36 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://c8n12jjsmso87"]
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://c8n12jjsmso87"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_0ov6s"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="1_vwhg0"]
+[ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="1_wc27g"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="2_eqgp3"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_ascends.gd" id="3_ws45f"]
 
-[sub_resource type="Resource" id="Resource_qalgw"]
+[sub_resource type="Resource" id="Resource_u2ukx"]
 script = ExtResource("1_vwhg0")
 kind = 0
 amount = 2
+amount_var = ""
 
-[sub_resource type="Resource" id="Resource_unjhx"]
+[sub_resource type="Resource" id="Resource_3dvvl"]
 script = ExtResource("3_ws45f")
 from_this_card = true
 other_own_unit = false
 opponent_unit = false
 
+[sub_resource type="Resource" id="Resource_fv8e0"]
+script = ExtResource("1_wc27g")
+trigger = SubResource("Resource_3dvvl")
+effect = SubResource("Resource_u2ukx")
+
 [sub_resource type="Resource" id="Resource_lyopv"]
 script = ExtResource("2_eqgp3")
 ability_name = "Shadow Advancement"
 description = "When this unit ascends: gain 2 Darkness tokens."
-type = 3
-trigger = SubResource("Resource_unjhx")
+type = 4
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-effect = SubResource("Resource_qalgw")
+passive = SubResource("Resource_fv8e0")
+is_uninterruptable = false
 
 [resource]
 script = ExtResource("1_0ov6s")

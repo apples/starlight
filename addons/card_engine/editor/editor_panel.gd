@@ -197,7 +197,8 @@ func _on_visibility_changed():
 	if is_inside_tree() and visible and not is_loaded:
 		call_deferred("_on_reload_button_pressed")
 	if is_inside_tree() and visible:
-		card_details.card = card_details.card
+		if card_details:
+			card_details.card = card_details.card
 
 
 func _on_card_data_table_row_clicked(idx: int):

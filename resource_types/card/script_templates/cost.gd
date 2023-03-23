@@ -7,7 +7,7 @@ func get_mana_cost() -> String:
 	return ""
 
 # Determines if the cost can be paid
-func can_be_paid(battle_state: BattleState, card_instance: CardInstance, user_side: ZoneLocation.Side) -> bool:
+func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability_index: int, user_side: ZoneLocation.Side) -> bool:
 	# Cannot be paid unless controlled by user
 	if card_instance.location.side != user_side:
 		return false

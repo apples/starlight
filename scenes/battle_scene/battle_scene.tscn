@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://nm2eypux40v4"]
 
+[ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="1_6tg30"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
-[ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="2_aqa2u"]
 [ext_resource type="PackedScene" uid="uid://bcrmyin4iw0kk" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
 [ext_resource type="Resource" uid="uid://ccejnbeeab8k2" path="res://data/rulesets/default_rules.tres" id="3_qp2vo"]
 [ext_resource type="Script" path="res://objects/fiber/card_fiber.gd" id="4_yrerv"]
@@ -18,7 +18,7 @@
 script = ExtResource("1_vdvqa")
 
 [node name="BattleState" type="Node" parent="."]
-script = ExtResource("2_aqa2u")
+script = ExtResource("1_6tg30")
 rules = ExtResource("3_qp2vo")
 
 [node name="CardFiber" type="Node" parent="BattleState"]
@@ -102,7 +102,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4.28541)
 script = ExtResource("10_86xfy")
 
 [node name="OpponentHand" type="Node3D" parent="."]
-transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, -4.74425, 0.345208, -6.10019)
+transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, 0, 0, -16)
 script = ExtResource("10_86xfy")
 
 [node name="PlayerTokens" type="Node3D" parent="."]

@@ -6,7 +6,8 @@ const MainPanel = preload("res://addons/card_engine/editor/editor_panel.tscn")
 var panel
 
 func _enter_tree():
-	add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
+	if not Engine.has_singleton("CardDatabase"):
+		add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
 	panel = MainPanel.instantiate()
 	panel.visible = false
 	panel.edit_script_requested.connect(_edit_script)

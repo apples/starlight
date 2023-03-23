@@ -1,16 +1,18 @@
-[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://bdm7n54ewpcbb"]
+[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://bovce0bh3wuoi"]
 
-[ext_resource type="Script" path="res://data/cards/abilities/costs/tap_self_and_mana_cost.gd" id="1_1scbr"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_oyuk5"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_x08fc"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="2_daa42"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_53vh0"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_front_unit_attacks.gd" id="4_6wfvh"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="5_0b1f3"]
 
-[sub_resource type="Resource" id="Resource_quthf"]
-script = ExtResource("1_1scbr")
+[sub_resource type="Resource" id="Resource_73rnk"]
+script = ExtResource("1_x08fc")
 tap_self = true
 mana_amount = 0
+target_count = 0
+target_zones = 2
 
 [sub_resource type="Resource" id="Resource_w4t6d"]
 script = ExtResource("2_daa42")
@@ -26,13 +28,15 @@ description = "When your unit attacks, boost its power by 3!"
 type = 3
 trigger = SubResource("Resource_nd13n")
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_quthf")
+cost = SubResource("Resource_73rnk")
 effect = SubResource("Resource_w4t6d")
+is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_hoxj6"]
 script = ExtResource("5_0b1f3")
 kind = 0
 amount = 1
+amount_var = ""
 
 [sub_resource type="Resource" id="Resource_8rpfg"]
 script = ExtResource("3_53vh0")
@@ -41,6 +45,7 @@ description = "Gain a Darkness token."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 effect = SubResource("Resource_hoxj6")
+is_uninterruptable = false
 
 [resource]
 script = ExtResource("1_oyuk5")
@@ -51,7 +56,7 @@ card_name = "Scrat"
 artwork_path = "res://data/cards/artwork/scrat.png"
 mana = 2
 kind = 0
-unit_hp = 5
+unit_hp = 7
 level = 0
 ability0 = SubResource("Resource_sko2r")
 ability1 = SubResource("Resource_8rpfg")

@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="CardDeck" load_steps=4 format=3 uid="uid://dg0g6mtkn7mla"]
 
-[ext_resource type="Resource" uid="uid://bdm7n54ewpcbb" path="res://data/cards/carddata/amm93ovatw2w.tres" id="1_odjyo"]
+[ext_resource type="Resource" uid="uid://bovce0bh3wuoi" path="res://data/cards/carddata/amm93ovatw2w.tres" id="1_odjyo"]
 [ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="1_wsudd"]
-[ext_resource type="Resource" uid="uid://bcj0q51tq6sye" path="res://data/cards/carddata/i8bwz5vm54h6.tres" id="3_d43ct"]
+[ext_resource type="Resource" uid="uid://cx1yokgeuhi8x" path="res://data/cards/carddata/i8bwz5vm54h6.tres" id="3_d43ct"]
 
 [resource]
 script = ExtResource("1_wsudd")

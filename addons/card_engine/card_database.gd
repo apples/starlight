@@ -129,7 +129,7 @@ func create_script(script_key: String, filename: String) -> String:
 	return script_path
 
 func get_enum_options(prop: Dictionary) -> Array:
-	assert(prop.hint == PROPERTY_HINT_ENUM)
+	assert(prop.hint == PROPERTY_HINT_ENUM || prop.hint == PROPERTY_HINT_FLAGS)
 	var result := []
 	var option_strs = prop.hint_string.split(",")
 	for i in range(option_strs.size()):

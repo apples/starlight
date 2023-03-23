@@ -8,7 +8,13 @@ var source_location: ZoneLocation
 var task: CardTask
 var trigger_event: TriggerEvent
 
-var attack_bonus_damage: int = 0
+var variables: Dictionary = {}
+var targets: Array[ZoneLocation] = []
+var attack_info: AttackInfo = null
+
+class AttackInfo:
+	var bonus_damage: int = 0
+	var targets_destroyed: Array[UnitState] = []
 
 func _init(p_battle_state: BattleState, p_controller: ZoneLocation.Side, p_card_instance: CardInstance, p_ability_index: int):
 	battle_state = p_battle_state

@@ -47,7 +47,7 @@ class Task extends CardTask:
 			return done()
 		
 		# Calculate attack damage including modifiers
-		var damage_amount := amount + ability_instance.attack_bonus_damage
+		var damage_amount := amount + ability_instance.attack_info.bonus_damage
 		
 		# Debug info
 		info("target location: %s" % where)

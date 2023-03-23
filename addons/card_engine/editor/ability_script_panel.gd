@@ -40,6 +40,12 @@ extends Control
 @onready var properties: Control = %Properties
 @onready var clear_button: Button = %ClearButton
 @onready var edit_button: Button = %EditButton
+@onready var minimize_button: Button = %MinimizeButton
+@onready var minimize_hint = %MinimizeHint
+@onready var properties_inner_container = %PropertiesInnerContainer
+
+var ability_script_panel_scene := preload("res://addons/card_engine/editor/ability_script_panel.tscn")
+var script_kind: String = ""
 
 signal saved()
 signal edit_script_requested(script: Script)
@@ -47,39 +53,72 @@ signal cleared()
 
 var filtered_options: Array[String] = []
 
+var is_minimized: bool:
+	get:
+		return not properties_inner_container.visible
+	set(value):
+		if properties:
+			properties_inner_container.visible = not value
+			minimize_hint.visible = not properties_inner_container.visible
+			minimize_button.text = "◰" if value else "—"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if script_kind == "":
+		script_kind = script_key.split(".", true, 1)[0]
+	
 	script_path_popup.selected_id.connect(_on_script_path_popup_menu_id_pressed)
 	type_label.text = panel_label
 	_reset_script_text()
 	_reset_fields()
 
-func get_ability_script():
+func get_ability_part():
 	if is_array:
-		var arr = ability[script_key]
+		var arr = ability
+		for k in script_key.split("."):
+			arr = arr[k]
+		assert(arr != ability)
+		
 		if get_index() < arr.size():
-			return ability[script_key][get_index()]
+			return arr[get_index()]
 		else:
 			return null
 	else:
-		return ability[script_key]
+		var f = ability
+		for k in script_key.split("."):
+			f = f[k]
+		assert(f != ability)
+		return f
 
 func set_ability_script(value) -> void:
 	if is_array:
-		var arr = ability[script_key]
+		var arr = ability
+		for k in script_key.split("."):
+			arr = arr[k]
+		assert(arr != ability)
+		
 		if get_index() < arr.size():
 			arr[get_index()] = value
 		else:
 			assert(get_index() == arr.size())
 			arr.append(value)
 	else:
-		ability[script_key] = value
+		var f = ability
+		var pf
+		var kk: String
+		for k in script_key.split("."):
+			pf = f
+			kk = k
+			f = pf[kk]
+		
+		assert(pf)
+		pf[kk] = value
 
 func _reset_script_text():
 	if ability:
 		clear_button.disabled = false
-		if get_ability_script():
-			script_path_edit.text = get_ability_script().get_script().resource_path.get_file()
+		if get_ability_part():
+			script_path_edit.text = get_ability_part().get_script().resource_path.get_file()
 		else:
 			script_path_edit.text = ""
 	else:
@@ -98,10 +137,12 @@ func _update_filtered_options():
 			filtered_options.append(o)
 
 func _reset_fields():
-	if not ability or not get_ability_script():
+	if not ability or not get_ability_part():
 		properties_container.visible = false
 		edit_button.disabled = true
 		return
+	
+	is_minimized = false
 	
 	properties_container.visible = true
 	edit_button.disabled = false
@@ -111,18 +152,25 @@ func _reset_fields():
 		c.queue_free()
 		properties.remove_child(c)
 	
-	var script := get_ability_script().get_script() as Script
+	var ability_part = get_ability_part()
+	var script := ability_part.get_script() as Script
 	assert(script)
 	
 	for prop in script.get_script_property_list():
 		if not (prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
 			continue
 		
+		if prop.name.ends_with("_var"):
+			continue
+		
 		var label := Label.new()
 		label.text = "%s:" % prop.name
+		label.size_flags_vertical = Control.SIZE_FILL
 		properties.add_child(label)
 		
-		var current_value = get_ability_script()[prop.name]
+		var current_value = get_ability_part()[prop.name]
+		
+		var prop_control: Control
 		
 		match prop.type:
 			TYPE_INT:
@@ -138,14 +186,40 @@ func _reset_fields():
 						option_button.item_selected.connect(func (idx):
 							_set_property(prop.name, option_button.get_item_id(idx))
 						)
-						properties.add_child(option_button)
+						prop_control = option_button
+					PROPERTY_HINT_FLAGS:
+						var flags_container := GridContainer.new()
+						flags_container.columns = 2
+						
+						for option in CardDatabase.get_enum_options(prop):
+							var l = option[0]
+							var v = option[1]
+							assert(v > 0)
+							
+							var flag_check := CheckBox.new()
+							flag_check.button_pressed = current_value & v
+							flag_check.pressed.connect(func ():
+								var cur_v: int = get_ability_part()[prop.name]
+								if flag_check.button_pressed:
+									cur_v |= v
+								else:
+									cur_v &= ~v
+								_set_property(prop.name, cur_v))
+							flags_container.add_child(flag_check)
+							
+							var flag_label := Label.new()
+							flag_label.text = l
+							flags_container.add_child(flag_label)
+						
+						prop_control = flags_container
 					_:
 						var spinbox := SpinBox.new()
+						spinbox.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 						spinbox.value = current_value if current_value != null else 0
 						spinbox.value_changed.connect(func (new_value):
 							_set_property(prop.name, new_value)
 						)
-						properties.add_child(spinbox)
+						prop_control = spinbox
 			TYPE_STRING:
 				var lineedit := LineEdit.new()
 				lineedit.text = current_value
@@ -155,20 +229,91 @@ func _reset_fields():
 				lineedit.focus_exited.connect(func ():
 					_set_property(prop.name, lineedit.text)
 				)
-				properties.add_child(lineedit)
+				prop_control = lineedit
 			TYPE_BOOL:
 				var checkbox := CheckBox.new()
 				checkbox.button_pressed = current_value == true
 				checkbox.toggled.connect(func (new_value):
 					_set_property(prop.name, new_value)
 				)
-				properties.add_child(checkbox)
+				prop_control = checkbox
+			TYPE_OBJECT:
+				if prop.hint == PROPERTY_HINT_RESOURCE_TYPE:
+					match prop.hint_string:
+						"CardAbilityTrigger":
+							prop_control = _create_inner_panel(prop.name, "Trigger", "trigger")
+						"CardAbilityEffect":
+							prop_control = _create_inner_panel(prop.name, "Effect", "effect")
+				else:
+					assert(false)
+					push_error("Not supported!")
 			_:
 				assert(false)
 				push_error("Not supported!")
+		
+		var varprop_name: String = prop.name + "_var"
+		if varprop_name in ability_part:
+			var lineedit := LineEdit.new()
+			lineedit.tooltip_text = "Variable name"
+			lineedit.placeholder_text = "variable"
+			lineedit.text = ability_part[varprop_name]
+			lineedit.add_theme_constant_override("minimum_character_width", 15)
+			lineedit.text_changed.connect(func (new_value):
+				_set_property(varprop_name, new_value)
+			)
+			lineedit.text_submitted.connect(func (new_value):
+				_set_property(varprop_name, new_value)
+			)
+			lineedit.focus_exited.connect(func ():
+				_set_property(varprop_name, lineedit.text)
+			)
+			
+			var is_currently_variable: bool = ability_part[varprop_name] != ""
+			
+			var fixed_value_control := prop_control
+			var checkbox := CheckButton.new()
+			checkbox.button_pressed = is_currently_variable
+			checkbox.tooltip_text = "Toggle variable mode"
+			checkbox.toggled.connect(func (button_pressed):
+				fixed_value_control.visible = not button_pressed
+				lineedit.visible = button_pressed
+				if not button_pressed:
+					lineedit.text = ""
+					_set_property(varprop_name, ""))
+			
+			fixed_value_control.visible = not is_currently_variable
+			lineedit.visible = is_currently_variable
+			
+			var container := HBoxContainer.new()
+			container.add_child(fixed_value_control)
+			container.add_child(lineedit)
+			container.add_child(checkbox)
+			
+			prop_control = container
+		
+		if prop_control != null:
+			properties.add_child(prop_control)
+
+func _create_inner_panel(propname: String, label: String, kind: String) -> Control:
+	var panel := ability_script_panel_scene.instantiate()
+	panel.card = card
+	panel.ability = ability
+	panel.panel_label = label
+	panel.script_key = "%s.%s" % [script_key, propname]
+	panel.script_kind = kind
+	panel.options = CardDatabase.call("get_all_ability_%ss" % kind)
+	panel.saved.connect(_on_inner_panel_saved)
+	panel.edit_script_requested.connect(_on_inner_panel_edit_script_requested)
+	return panel
+
+func _on_inner_panel_saved():
+	saved.emit()
+
+func _on_inner_panel_edit_script_requested(script: Script):
+	edit_script_requested.emit(script)
 
 func _set_property(prop_name: String, value):
-	get_ability_script()[prop_name] = value
+	get_ability_part()[prop_name] = value
 	_save()
 
 func _on_choose_button_pressed():
@@ -211,8 +356,8 @@ func _set_new_script(o: String):
 	
 	# Setting the script without actually changing it would normally reset the
 	# field values too, so check here to make sure we keep existing values.
-	if get_ability_script():
-		var current = get_ability_script().get_script().resource_path
+	if get_ability_part():
+		var current = get_ability_part().get_script().resource_path
 		if current == o:
 			return
 	
@@ -289,7 +434,7 @@ func _on_new_button_pressed():
 	
 	var script_name := str if str.ends_with(".gd") else ("%s.gd" % str)
 	
-	var path := CardDatabase.create_script(script_key, script_name)
+	var path := CardDatabase.create_script(script_kind, script_name)
 	
 	options.append(path)
 	_set_new_script(path)
@@ -298,10 +443,10 @@ func _on_new_button_pressed():
 
 
 func _on_edit_button_pressed():
-	if get_ability_script() == null:
+	if get_ability_part() == null:
 		print("Null ability script")
 		return
-	var script := get_ability_script().get_script() as Script
+	var script := get_ability_part().get_script() as Script
 	if script == null:
 		print("Ability script has... no script...")
 		return
@@ -311,3 +456,7 @@ func _on_edit_button_pressed():
 
 
 
+
+
+func _on_minimize_button_pressed():
+	is_minimized = not is_minimized
