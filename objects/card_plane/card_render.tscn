@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cw86a2s64vsu2"]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://objects/card_plane/card_render.gd" id="1_m5yay"]
 [ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://objects/card_plane/images/frame.png" id="2_2x50j"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bb07j7tokq6g3" path="res://data/cards/artwork/screet.png" id="6_hu1ff"]
 [ext_resource type="PackedScene" uid="uid://dm4dt70ha1q8n" path="res://objects/card_plane/ability_panel.tscn" id="7_5rtdu"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="7_t606e"]
-[ext_resource type="Script" path="res://data/cards/abilities/costs/tap_self_and_mana_cost.gd" id="8_udrjk"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="8_udrjk"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="9_lk6wl"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="9_lohon"]
 

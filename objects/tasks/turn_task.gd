@@ -8,7 +8,7 @@ func start() -> void:
 func process_action(action: Dictionary) -> void:
 	assert("type" in action)
 	if "type" not in action:
-		push_error("Invalid payload: %s" % action)
+		print("Invalid payload: %s" % action)
 		goto(start)
 		return
 	var process_func_name: StringName = "process_%s" % action.type
@@ -27,7 +27,7 @@ func process_activate_ability(payload: Dictionary):
 	assert("ability_index" in payload)
 	
 	if "location" not in payload or "ability_index" not in payload:
-		push_error("Invalid payload: %s" % payload)
+		print("Invalid payload: %s" % payload)
 		goto(start)
 		return
 	
@@ -38,19 +38,19 @@ func process_activate_ability(payload: Dictionary):
 	var unit := battle_state.get_unit(location)
 	assert(unit != null)
 	if unit == null:
-		push_error("Unit not found at: %s" % location)
+		print("Unit not found at: %s" % location)
 		goto(start)
 		return
 	
 	var ability: CardAbility = unit.card_instance.card.get_ability(index)
 	assert(ability != null)
 	if ability == null:
-		push_error("Invalid ability index: %s" % index)
+		print("Invalid ability index: %s" % index)
 		goto(start)
 		return
 	
 	if ability.effect == null:
-		push_error("Ability has no effect! (index: %s)" % index)
+		print("Ability has no effect! (index: %s)" % index)
 		goto(start)
 		return
 	

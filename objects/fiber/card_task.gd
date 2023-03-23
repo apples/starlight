@@ -64,6 +64,9 @@ func _ready():
 	assert(fiber != null)
 	assert(battle_state != null)
 
+func _to_string():
+	return "<CardTask(%s)>" % [filename]
+
 func is_done() -> bool: return status == Status.DONE
 
 func can_run() -> bool:
@@ -156,7 +159,7 @@ func wait_for(task: CardTask, next: Callable, on_fail: Callable = Callable()) ->
 	assert(!_awaited_future, "Already awaiting something.")
 	status = Status.WAITING
 	if !task.is_inside_tree():
-		run_task(task)
+		fiber.run_task(task, self)
 	_set_awaiting_task(task)
 	_next_state = next.get_method()
 	_fail_state = on_fail.get_method() if on_fail.is_valid() else &"_default_fail_state"

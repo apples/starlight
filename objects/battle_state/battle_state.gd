@@ -11,8 +11,7 @@ var current_turn: ZoneLocation.Side = ZoneLocation.Side.Player
 
 var trigger_events: Array[TriggerEvent] = []
 var ability_stack: Array[AbilityInstance] = []
-var current_priority: ZoneLocation.Side = ZoneLocation.Side.Player
-var consecutive_passes: int = 0
+var passive_effects: Array[PassiveEffect] = []
 
 var _next_card_instance_id: int = 0:
 	get:
@@ -49,23 +48,32 @@ func get_unit(location: ZoneLocation) -> UnitState:
 func _remove_unit(location: ZoneLocation) -> void:
 	var state = get_side_state(location.side)
 	var zone = state.get_field_zone(location.zone)
-	if location.slot < zone.size():
-		zone[location.slot] = null
+	assert(location.slot < zone.size())
+	assert(zone[location.slot] != null)
+	zone[location.slot].exists = false
+	zone[location.slot] = null
 
 func _set_unit(location: ZoneLocation, unit: UnitState) -> void:
 	var state = get_side_state(location.side)
 	var zone = state.get_field_zone(location.zone)
 	assert(location.slot < zone.size())
-	if location.slot < zone.size():
-		zone[location.slot] = unit
+	assert(zone[location.slot] == null)
+	zone[location.slot] = unit
+	unit.exists = true
 
 
 func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 	var unit := get_unit(location)
 
 	if unit != null:
+		# Ascend exisitng unit
 		# TODO: verify requirements
 		var prev_card_instance = unit.card_instance
+		
+		# Tear down passives
+		_teardown_passive(prev_card_instance, 0)
+		_teardown_passive(prev_card_instance, 1)
+		
 		discard(prev_card_instance)
 		prev_card_instance.unit = null
 		if card_instance.location.zone == ZoneLocation.Zone.Hand:
@@ -74,12 +82,18 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		unit.card_instance = card_instance
 		card_instance.unit = unit
 		card_instance.location = location
+		
+		# Set up passives
+		_setup_passive(card_instance, 0)
+		_setup_passive(card_instance, 1)
+		
 		push_event(TriggerEvents.UnitAscended.new({
 			unit = unit,
 			from = prev_card_instance,
 			to = card_instance,
 		}))
 	else:
+		# Summon new unit
 		unit = UnitState.new()
 		_set_unit(location, unit)
 		if card_instance.location.zone == ZoneLocation.Zone.Hand:
@@ -88,6 +102,11 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		unit.card_instance = card_instance
 		card_instance.unit = unit
 		card_instance.location = location
+		
+		# Set up passives
+		_setup_passive(card_instance, 0)
+		_setup_passive(card_instance, 1)
+		
 		push_event(TriggerEvents.UnitSummoned.new({
 			unit = unit,
 			to = card_instance,
@@ -97,17 +116,55 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 
 	broadcast_message(MessageTypes.UnitSummoned.new({ location = location }))
 
-
 func destroy_unit(where: ZoneLocation):
 	var unit := get_unit(where)
 	var card_instance := unit.card_instance
-	_remove_unit(where)
-	discard(card_instance)
-	card_instance.unit = null
+	
 	push_event(TriggerEvents.UnitDestroyed.new({
 		unit = unit,
 		was = card_instance,
 	}))
+	
+	# Tear down passives
+	_teardown_passive(card_instance, 0)
+	_teardown_passive(card_instance, 1)
+	
+	card_instance.unit = null
+	
+	_remove_unit(where)
+	discard(card_instance)
+	
+
+func _teardown_passive(card_instance: CardInstance, ability_index: int):
+	var ability := card_instance.card.get_ability(ability_index)
+	
+	if ability == null or ability.type != CardAbility.CardAbilityType.PASSIVE:
+		return
+	
+	for i in range(passive_effects.size(), 0, -1):
+		var effect := passive_effects[i - 1]
+		if effect.unit.card_instance.is_same(card_instance) and effect.ability_index == ability_index:
+			passive_effects.remove_at(i - 1)
+	
+
+func _setup_passive(card_instance: CardInstance, ability_index: int):
+	var ability := card_instance.card.get_ability(ability_index)
+	
+	if ability == null or ability.type != CardAbility.CardAbilityType.PASSIVE:
+		return
+	
+	assert(ability.passive)
+	
+	var effect := PassiveEffect.new()
+	passive_effects.append(effect)
+	
+	effect.battle_state = self
+	effect.controller = card_instance.owner_side
+	effect.unit = card_instance.unit
+	effect.ability_index = ability_index
+	effect.source_location = card_instance.location
+
+
 
 func summon_starters(side: ZoneLocation.Side):
 	var side_state := get_side_state(side)
@@ -123,9 +180,15 @@ func discard(card_instance: CardInstance):
 	broadcast_message(MessageTypes.AddDiscard.new({ what = card_instance }))
 
 func push_event(e: TriggerEvent) -> void:
-	trigger_events.push_front(e)
 	info("push_event: ", e)
-	#broadcast_message({ type = "event", what = e })
+	trigger_events.push_front(e)
+	
+	for effect in passive_effects:
+		if effect.is_active():
+			var task := effect.get_ability().passive.task()
+			task.passive_effect = effect
+			task.trigger_event = e
+			fiber.run_task(task)
 
 func clear_events() -> void:
 	trigger_events.clear()
@@ -204,6 +267,10 @@ func perform_ability(controller: ZoneLocation.Side, card_instance: CardInstance,
 	ability_instance.source_location = card_instance.location
 	ability_instance.task =  TaskActivateAbility.new(card_instance, ability_instance)
 	
+	match card_instance.card.get_ability(ability_index).type:
+		CardAbility.CardAbilityType.ATTACK:
+			ability_instance.attack_info = AbilityInstance.AttackInfo.new()
+	
 	ability_stack.push_back(ability_instance)
 	fiber.run_task(ability_instance.task)
 	
@@ -213,7 +280,7 @@ func pop_ability():
 	assert(ability_stack.size() > 0)
 	ability_stack.pop_back()
 
-func deal_damage(where: ZoneLocation, amount: int):
+func deal_damage(where: ZoneLocation, amount: int) -> bool:
 	assert(where)
 	var unit := get_unit(where)
 	assert(unit)
@@ -226,11 +293,25 @@ func deal_damage(where: ZoneLocation, amount: int):
 	}))
 	if unit.damage >= unit.card_instance.card.unit_hp:
 		destroy_unit(where)
+		return true
+	return false
 
-func set_tapped(unit: UnitState, is_tapped: bool = true):
+func set_tapped(unit: UnitState, is_tapped: bool = true, for_mana: bool = false):
 	assert(unit)
+	if unit.is_tapped == is_tapped:
+		return
+	
 	unit.is_tapped = is_tapped
-	# TODO: broadcast message
+	
+	if is_tapped:
+		push_event(TriggerEvents.UnitTapped.new({
+			unit = unit,
+			for_mana = for_mana,
+		}))
+	else:
+		push_event(TriggerEvents.UnitUntapped.new({
+			unit = unit,
+		}))
 
 func get_tappable_units(controller: ZoneLocation.Side, exclude_uids: Array[int] = []) -> Array[ZoneLocation]:
 	var side_state := get_side_state(controller)
@@ -259,3 +340,14 @@ func gain_tokens(who: ZoneLocation.Side, kind: TokenType, amount: int):
 		amount_gained = amount,
 		total_amount = side_state.get_token_amount(kind),
 	}))
+
+
+func can_be_targeted(target_location: ZoneLocation, card_instance: CardInstance, ability_index: int) -> bool:
+	var ability := card_instance.card.get_ability(ability_index)
+	
+	match ability.type:
+		CardAbility.CardAbilityType.ATTACK:
+			if get_unit(target_location) == null:
+				return false
+	
+	return true

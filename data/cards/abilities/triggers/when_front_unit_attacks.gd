@@ -1,3 +1,4 @@
+@tool
 extends CardAbilityTrigger
 
 func handle_ability_activated(

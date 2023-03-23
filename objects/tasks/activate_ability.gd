@@ -15,7 +15,6 @@ func start() -> void:
 	# Assertions
 	
 	assert(ability)
-	assert(ability_instance.controller == battle_state.current_priority)
 	match ability.type:
 		CardAbility.CardAbilityType.ACTION,\
 		CardAbility.CardAbilityType.ATTACK,\
@@ -45,7 +44,7 @@ func start() -> void:
 	# Pay cost
 	
 	if ability.cost:
-		if not ability.cost.can_be_paid(battle_state, card_instance, ability_instance.controller):
+		if not ability.cost.can_be_paid(battle_state, card_instance, ability_instance.ability_index, ability_instance.controller):
 			assert(false)
 			return fail()
 		var cost_task := ability.cost.pay_task()
@@ -57,14 +56,16 @@ func start() -> void:
 	goto(response_window)
 
 func response_window() -> void:
+	if ability_instance.get_ability().is_uninterruptable:
+		return goto(run_effect)
+	
 	# Ask for response
 	
 	var response_task := TaskRequestTriggerResponse.new(ZoneLocation.flip(ability_instance.controller))
 	wait_for(response_task, run_effect)
 
 func run_effect() -> void:
-	var effect_task := ability_instance.get_ability().effect.create_task()
-	effect_task.ability_instance = ability_instance
+	var effect_task := ability_instance.get_ability().effect.create_task(ability_instance)
 	wait_for(effect_task, effect_done)
 
 func effect_done() -> void:

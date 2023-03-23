@@ -69,7 +69,6 @@ size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/AbilityEnabled/ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="GridContainer" type="HBoxContainer" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -81,6 +80,23 @@ text = "Type:"
 [node name="AbilityTypeOptionButton" type="OptionButton" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="Spacer" type="Control" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="IsUninterruptableContainer" type="HBoxContainer" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Suppresses the response window following this ability's activation."
+
+[node name="IsUninterruptableCheckButton" type="CheckButton" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/IsUninterruptableContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/IsUninterruptableContainer"]
+layout_mode = 2
+text = "Uninterruptable"
 
 [node name="ConditionsContainer" type="VBoxContainer" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -96,28 +112,24 @@ unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Trigger"
 script_key = "trigger"
-is_array = false
 
 [node name="AbilityScriptPanelCost" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Cost"
 script_key = "cost"
-is_array = false
 
 [node name="AbilityScriptPanelEffect" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Effect"
 script_key = "effect"
-is_array = false
 
 [node name="AbilityScriptPanelPassive" parent="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer" instance=ExtResource("1_u7yoq")]
 unique_name_in_owner = true
 layout_mode = 2
 panel_label = "Passive"
 script_key = "passive"
-is_array = false
 
 [node name="AbilityDisabled" type="CenterContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -134,6 +146,7 @@ text = "Not Enabled"
 [connection signal="text_changed" from="VBoxContainer/AbilityEnabled/VBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_changed" from="VBoxContainer/AbilityEnabled/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
 [connection signal="item_selected" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/AbilityTypeOptionButton" to="." method="_on_ability_type_option_button_item_selected"]
+[connection signal="toggled" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/GridContainer/IsUninterruptableContainer/IsUninterruptableCheckButton" to="." method="_on_is_uninterruptable_check_button_toggled"]
 [connection signal="pressed" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/ConditionsContainer/AddConditionButton" to="." method="_on_add_condition_button_pressed"]
 [connection signal="edit_script_requested" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_edit_script_requested"]
 [connection signal="saved" from="VBoxContainer/AbilityEnabled/ScrollContainer/VBoxContainer/AbilityScriptPanelTrigger" to="." method="_on_ability_script_panel_saved"]

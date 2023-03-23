@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://bi5lcnx1rltx8"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_05ogu"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_bewrn"]
+
+[sub_resource type="Resource" id="Resource_8f8hw"]
+script = ExtResource("1_05ogu")
+ability_name = "Starlight"
+description = "Draw 1 card.
+"
+type = 5
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_bewrn")
+uid = "0j8nc8ig84qr"
+cardset_name = "Darkness"
+cardset_idx = 2
+card_name = "Horse"
+artwork_path = ""
+mana = 0
+kind = 0
+unit_hp = 0
+level = 0
+ability0 = SubResource("Resource_8f8hw")

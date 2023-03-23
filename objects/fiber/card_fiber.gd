@@ -13,11 +13,17 @@ func _ready():
 	battle_state = get_parent() as BattleState
 
 # Starts a task. The task will be put on top of the stack.
-func run_task(task: CardTask):
+func run_task(task: CardTask, parent: CardTask = null):
+	assert(parent == null or parent.is_inside_tree())
 	assert(!task.is_inside_tree(), "Task already in tree!")
 	task.battle_state = battle_state
 	task.fiber = self
-	add_child(task)
+	if parent:
+		print("[CardFiber] running task %s under %s" % [task, parent])
+		parent.add_child(task)
+	else:
+		print("[CardFiber] running task %s under root" % [task])
+		add_child(task)
 
 # Executes the next step of the first pending task.
 func execute_one() -> bool:
@@ -33,6 +39,9 @@ func execute_one() -> bool:
 	is_executing = true
 	
 	var last_child = get_child(-1)
+	while last_child.get_child_count() > 0:
+		last_child = last_child.get_child(-1)
+	
 	assert(last_child is CardTask)
 	var task = last_child as CardTask
 	
@@ -40,6 +49,7 @@ func execute_one() -> bool:
 		task.run()
 	
 	if task.is_done():
+		assert(task.get_child_count() == 0)
 		task.queue_free()
 	
 	is_executing = false
