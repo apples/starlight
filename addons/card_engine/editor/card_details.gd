@@ -25,6 +25,7 @@ var design_note: CardEngineDesignNote
 var ability_clipboard: Resource
 
 func _ready():
+	$BottomPanelTabs.set_popup($PopupMenu)
 	_refresh()
 
 func _refresh():

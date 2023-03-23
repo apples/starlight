@@ -12,6 +12,7 @@ var data: Array[String] = []
 
 signal row_clicked(idx: int)
 signal show_in_filesystem_requested(path: String)
+signal delete_requested(cardfilepath: String)
 
 var right_click_index: int
 
@@ -65,3 +66,35 @@ func _on_data_table_popup_menu_id_pressed(id):
 	match id:
 		0: # Show in FileSystem
 			show_in_filesystem_requested.emit(data[right_click_index])
+		1: # Delete
+			_delete(data[right_click_index])
+
+
+func _delete(filepath: String):
+	var card := load(filepath)
+	
+	var dialog := ConfirmationDialog.new()
+	dialog.title = "Delete card"
+	dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+	var label := Label.new()
+	label.text = """
+	You are about to permanently delete the card:
+	%s
+	%s
+	This cannot be undone.
+	Are you sure?
+	""" % [filepath, card.card_name]
+	
+	dialog.add_child(label)
+	add_child(dialog)
+	
+	dialog.show()
+	
+	dialog.canceled.connect(func ():
+		remove_child(dialog))
+	
+	await dialog.confirmed
+	
+	remove_child(dialog)
+	
+	delete_requested.emit(filepath)

@@ -9,7 +9,9 @@ func handle_ability_activated(
 	user_side: ZoneLocation.Side
 ) -> bool:
 	var ability := e.ability_instance.get_ability()
+	
 	if ability.type == CardAbility.CardAbilityType.ATTACK:
 		if e.ability_instance.controller == user_side:
 			return true
+	
 	return false

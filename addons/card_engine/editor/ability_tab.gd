@@ -8,11 +8,11 @@ extends Control
 		card = value
 		_refresh()
 
-@export var ability_key: String:
+@export var ability_idx: int:
 	get:
-		return ability_key
+		return ability_idx
 	set(value):
-		ability_key = value
+		ability_idx = value
 		_refresh()
 
 @onready var cost := %AbilityScriptPanelCost
@@ -49,14 +49,20 @@ signal paste()
 func _ready():
 	_refresh()
 
+func _get_ability():
+	return card["ability%s" % ability_idx]
+
+func _set_ability(value):
+	card["ability%s" % ability_idx] = value
+
 func _refresh():
 	if not is_inside_tree():
 		return
 	
-	enable_checkbox.button_pressed = card != null and ability_key != "" and card[ability_key] != null
+	enable_checkbox.button_pressed = card != null and _get_ability() != null
 	
 	
-	if not card or ability_key == "" or card[ability_key] == null:
+	if not card or _get_ability() == null:
 		ability_enabled.visible = false
 		ability_disabled.visible = true
 		
@@ -83,7 +89,7 @@ func _refresh():
 	paste_button.disabled = true
 	paste_button.modulate.a = 0
 	
-	var ability: CardAbility = card[ability_key]
+	var ability: CardAbility = _get_ability()
 	
 	# Text
 	
@@ -136,6 +142,7 @@ func _refresh():
 		panel.options = CardDatabase.get_all_ability_conditions()
 		
 		if ability.conditions[i]:
+			variable_options = variable_options.duplicate()
 			variable_options.append_array(ability.conditions[i].get_output_variables())
 	
 	for i in range(ability.conditions.size(), conditions_container.get_child_count() - 1):
@@ -178,7 +185,7 @@ func _refresh():
 	_refresh_visibility()
 
 func _refresh_visibility():
-	var ability = card[ability_key]
+	var ability = _get_ability()
 	if ability == null:
 		return
 	
@@ -213,10 +220,10 @@ func _save():
 
 
 func _on_enable_check_box_toggled(button_pressed):
-	if button_pressed and card[ability_key] == null:
-		card[ability_key] = CardDatabase.ability_script.new()
+	if button_pressed and _get_ability() == null:
+		_set_ability(CardDatabase.ability_script.new())
 		_save()
-	elif not button_pressed and card[ability_key] != null:
+	elif not button_pressed and _get_ability() != null:
 		var confirm := ConfirmationDialog.new()
 		confirm.title = "Confirm"
 		var confirm_label := Label.new()
@@ -224,7 +231,7 @@ func _on_enable_check_box_toggled(button_pressed):
 		confirm.add_child(confirm_label)
 		confirm.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 		confirm.confirmed.connect(func ():
-			card[ability_key] = null
+			_set_ability(null)
 			_save())
 		confirm.canceled.connect(func ():
 			enable_checkbox.button_pressed = true)
@@ -233,12 +240,12 @@ func _on_enable_check_box_toggled(button_pressed):
 
 
 func _on_name_edit_text_changed(new_text):
-	card[ability_key].ability_name = new_text
+	_get_ability().ability_name = new_text
 	_save()
 
 
 func _on_description_edit_text_changed():
-	card[ability_key].description = description_edit.text
+	_get_ability().description = description_edit.text
 	_save()
 
 
@@ -249,7 +256,7 @@ func _on_ability_script_panel_edit_script_requested(script):
 func _on_ability_type_option_button_item_selected(index):
 	var type := ability_type_option_button.get_item_id(index)
 	
-	if card[ability_key].type == type:
+	if _get_ability().type == type:
 		return
 	
 	var CAT = CardDatabase.ability_script.CardAbilityType
@@ -259,24 +266,24 @@ func _on_ability_type_option_button_item_selected(index):
 			await _confirm_clear_script("trigger")
 			await _confirm_clear_script("cost")
 			await _confirm_clear_script("effect")
-			card[ability_key].trigger = null
-			card[ability_key].cost = null
-			card[ability_key].effect = null
+			_get_ability().trigger = null
+			_get_ability().cost = null
+			_get_ability().effect = null
 		CAT.TRIGGER:
 			await _confirm_clear_script("passive")
-			card[ability_key].passive = null
+			_get_ability().passive = null
 		_:
 			await _confirm_clear_script("trigger")
 			await _confirm_clear_script("passive")
-			card[ability_key].trigger = null
-			card[ability_key].passive = null
+			_get_ability().trigger = null
+			_get_ability().passive = null
 	
-	card[ability_key].type = type
+	_get_ability().type = type
 	_save()
 	_refresh_visibility()
 
 func _confirm_clear_script(key: String):
-	if card[ability_key][key] != null:
+	if _get_ability()[key] != null:
 		var dialog := ConfirmationDialog.new()
 		dialog.title = "Are you sure?"
 		dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
@@ -300,7 +307,7 @@ func _on_paste_button_pressed():
 
 
 func _on_add_condition_button_pressed():
-	var ability: CardAbility = card[ability_key]
+	var ability: CardAbility = _get_ability()
 	if ability.conditions.size() < conditions_container.get_child_count() - 1:
 		return
 	
@@ -308,7 +315,7 @@ func _on_add_condition_button_pressed():
 
 
 func _add_condition_panel():
-	var ability: CardAbility = card[ability_key]
+	var ability: CardAbility = _get_ability()
 	
 	var panel = ability_script_panel_condition_scene.instantiate()
 	panel.panel_label = "Condition%s" % (conditions_container.get_child_count() - 1)
@@ -318,6 +325,7 @@ func _add_condition_panel():
 	panel.ability = ability
 	panel.options = CardDatabase.get_all_ability_conditions()
 	panel.saved.connect(_on_ability_script_panel_saved)
+	panel.edit_script_requested.connect(_on_ability_script_panel_edit_script_requested)
 	panel.cleared.connect(func ():
 		if panel.get_index() < ability.conditions.size():
 			ability.conditions.remove_at(panel.get_index())
@@ -330,5 +338,5 @@ func _add_condition_panel():
 
 
 func _on_is_uninterruptable_check_button_toggled(button_pressed):
-	card[ability_key].is_uninterruptable = button_pressed
+	_get_ability().is_uninterruptable = button_pressed
 	_save()
