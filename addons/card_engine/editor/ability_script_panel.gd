@@ -86,7 +86,6 @@ func get_ability_part():
 		var arr = ability
 		for k in script_key.split("."):
 			arr = arr[k]
-		assert(arr != ability)
 		
 		if get_index() < arr.size():
 			return arr[get_index()]
@@ -104,7 +103,6 @@ func set_ability_part(value) -> void:
 		var arr = ability
 		for k in script_key.split("."):
 			arr = arr[k]
-		assert(arr != ability)
 		
 		if get_index() < arr.size():
 			arr[get_index()] = value

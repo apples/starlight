@@ -36,16 +36,22 @@ var is_error: bool = false:
 
 signal updated(me: Control)
 
+var _options: Array
+
 func _ready():
 	$HSeparator.visible = not hide_separator
+	_refresh()
 
 func _refresh():
+	option_button.clear()
+	for o in _options:
+		option_button.add_item(o[0], o[1])
 	option_button.select(option_button.get_item_index(value))
 
 func set_options(options: Array):
-	option_button.clear()
-	for o in options:
-		option_button.add_item(o[0], o[1])
+	_options = options
+	if is_inside_tree():
+		_refresh()
 
 func _on_option_button_item_selected(index):
 	value = option_button.get_item_id(index)

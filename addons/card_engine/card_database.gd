@@ -87,12 +87,14 @@ func get_all_files(dir_path: String, accum = null) -> Array[String]:
 	return results
  
 
-func get_design_note(card: Resource) -> CardEngineDesignNote:
+func get_design_note(card: Resource, no_create: bool = false) -> CardEngineDesignNote:
 	var card_filename := card.resource_path.get_file()
 	var notes_filename := design_notes_path.path_join(card_filename)
 	
 	var note: CardEngineDesignNote
 	if not FileAccess.file_exists(notes_filename):
+		if no_create:
+			return null
 		print("Creating new design notes at ", notes_filename)
 		note = CardEngineDesignNote.new()
 		ResourceSaver.save(note, notes_filename, ResourceSaver.FLAG_CHANGE_PATH)

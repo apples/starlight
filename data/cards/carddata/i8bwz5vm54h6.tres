@@ -15,31 +15,31 @@ target_count = 1
 target_zones = 2
 target_zones_var = ""
 
-[sub_resource type="Resource" id="Resource_8fliw"]
+[sub_resource type="Resource" id="Resource_rk68e"]
 script = ExtResource("4_pocai")
 kind = 0
-amount = 7
+amount = 2
 amount_var = "destroyed_unit_level"
 
-[sub_resource type="Resource" id="Resource_1idfo"]
+[sub_resource type="Resource" id="Resource_htegl"]
 script = ExtResource("2_alk6l")
-effect = SubResource("Resource_8fliw")
+effect = SubResource("Resource_rk68e")
 
 [sub_resource type="Resource" id="Resource_b5hrb"]
 script = ExtResource("2_3g7gi")
 amount = 3
 amount_var = ""
-effect = SubResource("Resource_1idfo")
+effect = SubResource("Resource_htegl")
 
 [sub_resource type="Resource" id="Resource_0k2tq"]
 script = ExtResource("3_t1uh2")
 ability_name = "Bite"
-description = "Bites. If kill, +3 Darkness bux."
+description = "Bites. If kill, gain Darkness bux equal to destroyed unit's level."
 type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 cost = SubResource("Resource_gtbho")
 effect = SubResource("Resource_b5hrb")
-is_uninterruptable = false
+is_uninterruptable = true
 
 [resource]
 script = ExtResource("1_a1xo7")
@@ -48,7 +48,7 @@ cardset_name = "Screet"
 cardset_idx = 1
 card_name = "Kainei, Avatar of the Queen of Darkness"
 artwork_path = "res://data/cards/artwork/screet.png"
-mana = 2
+mana = 1
 kind = 0
 unit_hp = 3
 level = 3

@@ -7,12 +7,13 @@ enum Kind {
 }
 
 enum Mana {
-	Holy,
-	Dark,
-	Flame,
-	Ice,
-	Zipzap,
-	Gust,
+	Colorless = 0,
+	Holy = 1,
+	Curse = 2,
+	Flame = 3,
+	Frost = 4,
+	Shock = 5,
+	Gale = 6,
 }
 
 @export var uid: String
