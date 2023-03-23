@@ -10,6 +10,7 @@ extends CardAbilityCost
 	"Own Front:4",
 	"Own Back:8"
 	) var target_zones: int = TargetZone.OPPONENT_FRONT
+@export var target_zones_var: String
 
 enum TargetZone {
 	OPPONENT_BACK = 1,

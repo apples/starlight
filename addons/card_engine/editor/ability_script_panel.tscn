@@ -1,13 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dejk6fuga3ldo"]
+[gd_scene load_steps=6 format=3 uid="uid://dejk6fuga3ldo"]
 
 [ext_resource type="Script" path="res://addons/card_engine/editor/ability_script_panel.gd" id="1_ttfmt"]
-[ext_resource type="Script" path="res://addons/card_engine/editor/popup_menu.gd" id="2_xhln7"]
+[ext_resource type="PackedScene" uid="uid://b88hs21jecmcs" path="res://addons/card_engine/editor/searchable_popup_menu.tscn" id="2_snfuk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4sytt"]
 bg_color = Color(0.270588, 0.439216, 0.584314, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1uyf"]
-bg_color = Color(0.0901961, 0.141176, 0.184314, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfp36"]
 bg_color = Color(0.270588, 0.439216, 0.584314, 1)
@@ -55,40 +52,8 @@ layout_mode = 2
 editable = false
 selecting_enabled = false
 
-[node name="ScriptPathPopupMenu" type="Window" parent="HBoxContainer/ScriptPathEdit"]
+[node name="ScriptPathPopupMenu" parent="HBoxContainer/ScriptPathEdit" instance=ExtResource("2_snfuk")]
 unique_name_in_owner = true
-size = Vector2i(100, 200)
-visible = false
-wrap_controls = true
-transient = true
-borderless = true
-popup_window = true
-script = ExtResource("2_xhln7")
-
-[node name="Panel" type="PanelContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu"]
-z_index = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_w1uyf")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel"]
-layout_mode = 2
-
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer"]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Items" type="VBoxContainer" parent="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer/ScrollContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [node name="ChooseButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
@@ -154,10 +119,9 @@ text = "(...)"
 [connection signal="pressed" from="HBoxContainer/MinimizeButton" to="." method="_on_minimize_button_pressed"]
 [connection signal="gui_input" from="HBoxContainer/ScriptPathEdit" to="." method="_on_script_path_edit_gui_input"]
 [connection signal="close_requested" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_script_path_popup_menu_close_requested"]
-[connection signal="close_requested" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" method="_on_close_requested"]
-[connection signal="selected_id" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_script_path_popup_menu_selected_id"]
-[connection signal="text_changed" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
-[connection signal="text_submitted" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu/Panel/VBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="search_changed" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_line_edit_text_changed"]
+[connection signal="search_submitted" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_line_edit_text_submitted"]
+[connection signal="selected_id" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_script_path_popup_menu_id_pressed"]
 [connection signal="pressed" from="HBoxContainer/ChooseButton" to="." method="_on_choose_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/NewButton" to="." method="_on_new_button_pressed"]

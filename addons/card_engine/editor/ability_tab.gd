@@ -123,6 +123,8 @@ func _refresh():
 	
 	# Conditions
 	
+	var variable_options: Array[String] = []
+	
 	for i in range(ability.conditions.size()):
 		var panel
 		if i >= conditions_container.get_child_count() - 1:
@@ -132,6 +134,9 @@ func _refresh():
 		panel.card = card
 		panel.ability = ability
 		panel.options = CardDatabase.get_all_ability_conditions()
+		
+		if ability.conditions[i]:
+			variable_options.append_array(ability.conditions[i].get_output_variables())
 	
 	for i in range(ability.conditions.size(), conditions_container.get_child_count() - 1):
 		conditions_container.get_child(i).queue_free()
@@ -142,17 +147,33 @@ func _refresh():
 	trigger.ability = ability
 	trigger.options = CardDatabase.get_all_ability_triggers()
 	
+	if ability[trigger.script_key]:
+		variable_options = variable_options.duplicate()
+		variable_options.append_array(ability[trigger.script_key].get_output_variables())
+	
 	cost.card = card
 	cost.ability = ability
 	cost.options = CardDatabase.get_all_ability_costs()
+	
+	if ability[cost.script_key]:
+		variable_options = variable_options.duplicate()
+		variable_options.append_array(ability[cost.script_key].get_output_variables())
 	
 	effect.card = card
 	effect.ability = ability
 	effect.options = CardDatabase.get_all_ability_effects()
 	
+	if ability[effect.script_key]:
+		variable_options = variable_options.duplicate()
+		variable_options.append_array(ability[effect.script_key].get_output_variables())
+	
 	passive.card = card
 	passive.ability = ability
 	passive.options = CardDatabase.get_all_ability_passives()
+	
+	if ability[passive.script_key]:
+		variable_options = variable_options.duplicate()
+		variable_options.append_array(ability[passive.script_key].get_output_variables())
 	
 	_refresh_visibility()
 

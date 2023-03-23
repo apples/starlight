@@ -45,6 +45,8 @@ extends Control
 @onready var properties_inner_container = %PropertiesInnerContainer
 
 var ability_script_panel_scene := preload("res://addons/card_engine/editor/ability_script_panel.tscn")
+var variable_property_control_scene := preload("res://addons/card_engine/editor/variable_property_control.tscn")
+
 var script_kind: String = ""
 
 signal saved()
@@ -52,6 +54,14 @@ signal edit_script_requested(script: Script)
 signal cleared()
 
 var filtered_options: Array[String] = []
+
+var variable_options: Array[String] = []:
+	get:
+		return variable_options
+	set(value):
+		variable_options = value
+		if is_inside_tree():
+			_reset_fields()
 
 var is_minimized: bool:
 	get:
@@ -67,7 +77,6 @@ func _ready():
 	if script_kind == "":
 		script_kind = script_key.split(".", true, 1)[0]
 	
-	script_path_popup.selected_id.connect(_on_script_path_popup_menu_id_pressed)
 	type_label.text = panel_label
 	_reset_script_text()
 	_reset_fields()
@@ -90,7 +99,7 @@ func get_ability_part():
 		assert(f != ability)
 		return f
 
-func set_ability_script(value) -> void:
+func set_ability_part(value) -> void:
 	if is_array:
 		var arr = ability
 		for k in script_key.split("."):
@@ -177,6 +186,7 @@ func _reset_fields():
 				match prop.hint:
 					PROPERTY_HINT_ENUM:
 						var option_button := OptionButton.new()
+						option_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 						for option in CardDatabase.get_enum_options(prop):
 							var l = option[0]
 							var v = option[1]
@@ -251,48 +261,19 @@ func _reset_fields():
 				assert(false)
 				push_error("Not supported!")
 		
-		var varprop_name: String = prop.name + "_var"
-		if varprop_name in ability_part:
-			var lineedit := LineEdit.new()
-			lineedit.tooltip_text = "Variable name"
-			lineedit.placeholder_text = "variable"
-			lineedit.text = ability_part[varprop_name]
-			lineedit.add_theme_constant_override("minimum_character_width", 15)
-			lineedit.text_changed.connect(func (new_value):
-				_set_property(varprop_name, new_value)
-			)
-			lineedit.text_submitted.connect(func (new_value):
-				_set_property(varprop_name, new_value)
-			)
-			lineedit.focus_exited.connect(func ():
-				_set_property(varprop_name, lineedit.text)
-			)
-			
-			var is_currently_variable: bool = ability_part[varprop_name] != ""
-			
-			var fixed_value_control := prop_control
-			var checkbox := CheckButton.new()
-			checkbox.button_pressed = is_currently_variable
-			checkbox.tooltip_text = "Toggle variable mode"
-			checkbox.toggled.connect(func (button_pressed):
-				fixed_value_control.visible = not button_pressed
-				lineedit.visible = button_pressed
-				if not button_pressed:
-					lineedit.text = ""
-					_set_property(varprop_name, ""))
-			
-			fixed_value_control.visible = not is_currently_variable
-			lineedit.visible = is_currently_variable
-			
-			var container := HBoxContainer.new()
-			container.add_child(fixed_value_control)
-			container.add_child(lineedit)
-			container.add_child(checkbox)
-			
-			prop_control = container
-		
 		if prop_control != null:
-			properties.add_child(prop_control)
+			var varprop_name: String = prop.name + "_var"
+			if varprop_name in ability_part:
+				var variable_property_control := variable_property_control_scene.instantiate()
+				properties.add_child(variable_property_control)
+				
+				variable_property_control.initialize(prop_control, ability_part[varprop_name])
+				variable_property_control.set_options(variable_options)
+				
+				variable_property_control.variable_changed.connect(func (new_value):
+					_set_property(varprop_name, new_value))
+			else:
+				properties.add_child(prop_control)
 
 func _create_inner_panel(propname: String, label: String, kind: String) -> Control:
 	var panel := ability_script_panel_scene.instantiate()
@@ -304,6 +285,9 @@ func _create_inner_panel(propname: String, label: String, kind: String) -> Contr
 	panel.options = CardDatabase.call("get_all_ability_%ss" % kind)
 	panel.saved.connect(_on_inner_panel_saved)
 	panel.edit_script_requested.connect(_on_inner_panel_edit_script_requested)
+	var vo := variable_options.duplicate()
+	vo.append_array(get_ability_part().get_output_variables())
+	panel.variable_options = vo
 	return panel
 
 func _on_inner_panel_saved():
@@ -346,7 +330,7 @@ func _on_script_path_edit_text_submitted(new_text):
 
 func _set_new_script(o: String):
 	if o == "":
-		set_ability_script(null)
+		set_ability_part(null)
 		_save()
 		_reset_script_text()
 		_reset_fields()
@@ -361,7 +345,7 @@ func _set_new_script(o: String):
 		if current == o:
 			return
 	
-	set_ability_script(load(o).new())
+	set_ability_part(load(o).new())
 	_save()
 	_reset_script_text()
 	_reset_fields()
