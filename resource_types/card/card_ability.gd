@@ -5,6 +5,7 @@ extends Resource
 enum CardAbilityType {
 	ACTION = 1,
 	ATTACK = 2,
+	DEFEND = 6,
 	TRIGGER = 3,
 	PASSIVE = 4,
 	STARLIGHT = 5,
@@ -25,3 +26,4 @@ enum CardAbilityAttributes {
 @export var passive: CardAbilityPassive = null
 @export var effect: CardAbilityEffect = null
 
+@export var is_uninterruptable: bool = false

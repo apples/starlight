@@ -1,3 +1,4 @@
+@tool
 extends CardAbilityTrigger
 
 @export var from_this_card: bool = true

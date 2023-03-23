@@ -29,6 +29,10 @@ class UnitTapped extends TriggerEvent:
 	var unit: UnitState
 	var for_mana: bool
 
+class UnitUntapped extends TriggerEvent:
+	func get_type(): return "unit_untapped"
+	var unit: UnitState
+
 class GainedTokens extends TriggerEvent:
 	func get_type(): return "gained_tokens"
 	var side: ZoneLocation.Side

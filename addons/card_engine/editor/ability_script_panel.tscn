@@ -18,7 +18,6 @@ bg_color = Color(0.145098, 0.156863, 0.176471, 1)
 [node name="AbilityScriptPanel" type="VBoxContainer"]
 theme_override_constants/separation = 0
 script = ExtResource("1_ttfmt")
-is_array = null
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -38,6 +37,12 @@ theme_override_constants/margin_bottom = 2
 [node name="TypeLabel" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="MinimizeButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Collapse properties"
+text = "⇱"
 
 [node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2
@@ -87,24 +92,28 @@ size_flags_vertical = 3
 
 [node name="ChooseButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "..."
+tooltip_text = "Find script"
+text = "…"
 
 [node name="ClearButton" type="Button" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Remove script"
 disabled = true
-text = "X"
+text = "⨉"
 
 [node name="NewButton" type="Button" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "+"
+tooltip_text = "Create script"
+text = "＋"
 
 [node name="EditButton" type="Button" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Edit script"
 disabled = true
-text = "E"
+text = "📜"
 
 [node name="PropertiesContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -123,11 +132,26 @@ theme_override_constants/margin_bottom = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vqake")
 
-[node name="Properties" type="GridContainer" parent="PropertiesContainer/MarginContainer/PanelContainer"]
+[node name="PropertiesInnerContainer" type="MarginContainer" parent="PropertiesContainer/MarginContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_top = 4
+
+[node name="Properties" type="GridContainer" parent="PropertiesContainer/MarginContainer/PanelContainer/PropertiesInnerContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 columns = 2
 
+[node name="MinimizeHint" type="MarginContainer" parent="PropertiesContainer/MarginContainer/PanelContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PropertiesContainer/MarginContainer/PanelContainer/MinimizeHint"]
+layout_mode = 2
+text = "(...)"
+
+[connection signal="pressed" from="HBoxContainer/MinimizeButton" to="." method="_on_minimize_button_pressed"]
 [connection signal="gui_input" from="HBoxContainer/ScriptPathEdit" to="." method="_on_script_path_edit_gui_input"]
 [connection signal="close_requested" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="." method="_on_script_path_popup_menu_close_requested"]
 [connection signal="close_requested" from="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" to="HBoxContainer/ScriptPathEdit/ScriptPathPopupMenu" method="_on_close_requested"]

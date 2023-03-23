@@ -34,6 +34,9 @@ extends Control
 @onready var conditions_container = %ConditionsContainer
 @onready var add_condition_button = %AddConditionButton
 
+@onready var is_uninterruptable_container = %IsUninterruptableContainer
+@onready var is_uninterruptable_check_button = %IsUninterruptableCheckButton
+
 var ability_script_panel_scene = preload("res://addons/card_engine/editor/ability_script_panel.tscn")
 var ability_script_panel_condition_scene = preload("res://addons/card_engine/editor/ability_script_panel_condition.tscn")
 
@@ -96,19 +99,27 @@ func _refresh():
 		if prop.name == "type":
 			type_prop = prop
 			break
-	if type_prop:
-		ability_type_option_button.clear()
-		for option in CardDatabase.get_enum_options(type_prop):
-			var l = option[0]
-			var v = option[1]
-			assert(v >= 0)
-			ability_type_option_button.add_item(l, v)
-		if card[ability_key]:
-			ability_type_option_button.select(ability_type_option_button.get_item_index(card[ability_key][type_prop.name]))
+	assert(type_prop != null)
 	
-	else:
-		ability_enabled.visible = false
-		ability_disabled.visible = true
+	ability_type_option_button.clear()
+	for option in CardDatabase.get_enum_options(type_prop):
+		var l = option[0]
+		var v = option[1]
+		assert(v >= 0)
+		ability_type_option_button.add_item(l, v)
+	ability_type_option_button.select(ability_type_option_button.get_item_index(ability[type_prop.name]))
+	
+	# Is Uninterruptable
+	
+	match ability.type:
+		CardAbility.CardAbilityType.ACTION, \
+		CardAbility.CardAbilityType.ATTACK, \
+		CardAbility.CardAbilityType.DEFEND, \
+		CardAbility.CardAbilityType.TRIGGER:
+			is_uninterruptable_container.visible = true
+			is_uninterruptable_check_button.button_pressed = ability.is_uninterruptable == true
+		_:
+			is_uninterruptable_container.visible = false
 	
 	# Conditions
 	
@@ -295,3 +306,8 @@ func _add_condition_panel():
 	conditions_container.move_child(add_condition_button, -1)
 	
 	return panel
+
+
+func _on_is_uninterruptable_check_button_toggled(button_pressed):
+	card[ability_key].is_uninterruptable = button_pressed
+	_save()

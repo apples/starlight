@@ -1,3 +1,4 @@
+@tool
 extends CardAbilityTrigger
 
 # Determines if the trigger can be activated based on the current event stack

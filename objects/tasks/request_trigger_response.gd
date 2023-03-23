@@ -102,8 +102,9 @@ func _check_ability(card_instance: CardInstance, ability_index: int) -> bool:
 		return false
 	if not ability.type == CardAbility.CardAbilityType.TRIGGER:
 		return false
-	if ability.cost and not ability.cost.can_be_paid(battle_state, card_instance, side):
+	if ability.cost and not ability.cost.can_be_paid(battle_state, card_instance, ability_index, side):
 		return false
 	if ability.trigger and not ability.trigger.can_activate(battle_state, card_instance, ability_index, side):
 		return false
+	
 	return true

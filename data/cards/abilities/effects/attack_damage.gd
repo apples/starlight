@@ -2,36 +2,35 @@
 extends CardAbilityEffect
 
 @export var amount: int = 0
+@export var effect: CardAbilityEffect
 
 func get_attack_damage() -> String:
 	return str(amount)
 
-func task() -> CardTask: return Task.new(amount)
-
 class Task extends CardTask:
-	var _amount: int
-	
-	func _init(amount: int):
-		_amount = amount
+	var amount: int
+	var effect: CardAbilityEffect
 	
 	func start() -> void:
-		info("amount = %s" % _amount)
-		var choose := ChooseTargetTask.new()
-		choose.allowed_locations = [
-			ZoneLocation.new(ZoneLocation.flip(ability_instance.controller), ZoneLocation.Zone.FrontRow, 0),
-			ZoneLocation.new(ZoneLocation.flip(ability_instance.controller), ZoneLocation.Zone.FrontRow, 1),
-		]
-		wait_for(choose, chosen)
-	
-	func chosen(where: ZoneLocation) -> void:
-		if not where:
-			info("cancelled by player")
+		info("amount = %s" % amount)
+		
+		var damage_amount := amount + ability_instance.attack_info.bonus_damage
+		
+		for target in ability_instance.targets:
+			info("target location: %s" % target)
+			info("total damage: %s" % damage_amount)
+			
+			var unit := battle_state.get_unit(target)
+			if not unit:
+				continue
+			
+			if battle_state.deal_damage(target, damage_amount):
+				ability_instance.attack_info.targets_destroyed.append(unit)
+		
+		
+		if effect == null:
 			return done()
 		
-		var damage_amount := _amount + ability_instance.attack_bonus_damage
+		var effect_task := effect.create_task(ability_instance)
 		
-		info("target location: %s" % where)
-		info("total damage: %s" % damage_amount)
-		
-		battle_state.deal_damage(where, damage_amount)
-		done()
+		become(effect_task)
