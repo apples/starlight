@@ -27,16 +27,10 @@ enum Mana {
 @export var unit_hp: int
 @export_enum("0", "1", "2", "3") var level: int
 
-@export var ability0: CardAbility
-@export var ability1: CardAbility
+@export var abilities: Array[CardAbility]
 
 func _to_string():
 	return "<%s>" % [card_name]
-
-func get_ability(ability_index: int) -> CardAbility:
-	assert(ability_index == 0 || ability_index == 1)
-	return self["ability%s" % ability_index]
-
 
 
 static func random_uid() -> String:

@@ -1,15 +1,6 @@
-[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://c8n12jjsmso87"]
+[gd_resource type="Resource" script_class="Card" load_steps=2 format=3 uid="uid://c8n12jjsmso87"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_0ov6s"]
-[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="2_eqgp3"]
-
-[sub_resource type="Resource" id="Resource_lyopv"]
-script = ExtResource("2_eqgp3")
-ability_name = "Shadow Advancement"
-description = "When this unit ascends: gain 2 Darkness tokens."
-type = 4
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-is_uninterruptable = false
 
 [resource]
 script = ExtResource("1_0ov6s")
@@ -22,4 +13,4 @@ mana = 2
 kind = 0
 unit_hp = 7
 level = 1
-ability0 = SubResource("Resource_lyopv")
+abilities = Array[Resource("res://resource_types/card/card_ability.gd")]([])

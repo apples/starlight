@@ -19,7 +19,8 @@ func uncover():
 		
 		assert(cl.custom_tag.begins_with("ability"))
 		var index := int(cl.custom_tag.trim_prefix("ability"))
-		assert(index == 0 || index == 1)
+		assert(index >= 0)
+		assert(index < card_instance.card.abilities.size())
 		
 		# Make sure index is allowed
 		
@@ -30,9 +31,9 @@ func uncover():
 		
 		# Check ability type
 		
-		var card_ability := card_instance.card.get_ability(index)
-		if not card_ability:
-			return false
+		var card_ability := card_instance.card.abilities[index]
+		assert(card_ability)
+		
 		if not card_ability.type in allowed_ability_types:
 			return false
 		
@@ -55,6 +56,8 @@ func _process_input(delta: float):
 		if cursor.current_cursor_location:
 			assert(cursor.current_cursor_location.custom_tag.begins_with("ability"))
 			var idx := int(cursor.current_cursor_location.custom_tag.trim_prefix("ability"))
-			assert(idx == 0 || idx == 1)
+			assert(idx >= 0)
+			assert(idx < card_instance.card.abilities.size())
+			
 			ability_chosen.emit(card_instance, idx)
 			battle_scene.pop_screen()

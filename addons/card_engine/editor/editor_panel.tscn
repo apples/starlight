@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://dunj7mka6qqgd"]
+[gd_scene load_steps=12 format=3 uid="uid://dunj7mka6qqgd"]
 
 [ext_resource type="Script" path="res://addons/card_engine/editor/editor_panel.gd" id="1_e0rvg"]
 [ext_resource type="Script" path="res://addons/card_engine/editor/data_table.gd" id="2_ic83h"]
 [ext_resource type="PackedScene" uid="uid://daqnnffluqgsa" path="res://addons/card_engine/editor/data_table_column.tscn" id="2_r8hdh"]
 [ext_resource type="PackedScene" uid="uid://bpuntfb77cqfe" path="res://addons/card_engine/editor/data_table_field_artwork.tscn" id="4_6tsuu"]
 [ext_resource type="Script" path="res://addons/card_engine/editor/card_details.gd" id="5_terov"]
-[ext_resource type="PackedScene" uid="uid://b5m1o5awdodjy" path="res://addons/card_engine/editor/ability_tab.tscn" id="6_r4tym"]
 
 [sub_resource type="SystemFont" id="SystemFont_5urc5"]
 
@@ -268,48 +267,41 @@ theme_override_constants/autohide = 0
 split_offset = 800
 script = ExtResource("5_terov")
 
-[node name="BottomPanelTabs" type="TabContainer" parent="Container/Split/CardDetails"]
+[node name="CardDetailsTabContainer" type="TabContainer" parent="Container/Split/CardDetails"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Design" type="VBoxContainer" parent="Container/Split/CardDetails/BottomPanelTabs"]
+[node name="Design" type="VBoxContainer" parent="Container/Split/CardDetails/CardDetailsTabContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Container/Split/CardDetails/BottomPanelTabs/Design"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Split/CardDetails/CardDetailsTabContainer/Design"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Container/Split/CardDetails/BottomPanelTabs/Design/HBoxContainer"]
+[node name="Label" type="Label" parent="Container/Split/CardDetails/CardDetailsTabContainer/Design/HBoxContainer"]
 layout_mode = 2
 text = "Notes"
 
-[node name="Control" type="Control" parent="Container/Split/CardDetails/BottomPanelTabs/Design/HBoxContainer"]
+[node name="Control" type="Control" parent="Container/Split/CardDetails/CardDetailsTabContainer/Design/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SaveIndicator" type="Label" parent="Container/Split/CardDetails/BottomPanelTabs/Design/HBoxContainer"]
+[node name="SaveIndicator" type="Label" parent="Container/Split/CardDetails/CardDetailsTabContainer/Design/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.384314, 0.384314, 0.384314, 1)
 theme_override_font_sizes/font_size = 10
 text = "saved"
 
-[node name="DesignNotesTextEdit" type="TextEdit" parent="Container/Split/CardDetails/BottomPanelTabs/Design"]
+[node name="DesignNotesTextEdit" type="TextEdit" parent="Container/Split/CardDetails/CardDetailsTabContainer/Design"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 placeholder_text = "design notes"
 
-[node name="Ability 0" parent="Container/Split/CardDetails/BottomPanelTabs" instance=ExtResource("6_r4tym")]
-unique_name_in_owner = true
+[node name="＋" type="Control" parent="Container/Split/CardDetails/CardDetailsTabContainer"]
 visible = false
 layout_mode = 2
-ability_idx = null
-
-[node name="Ability 1" parent="Container/Split/CardDetails/BottomPanelTabs" instance=ExtResource("6_r4tym")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-ability_idx = null
 
 [node name="CardPreviewContainer" type="MarginContainer" parent="Container/Split/CardDetails"]
 unique_name_in_owner = true
@@ -330,14 +322,8 @@ one_shot = true
 [connection signal="double_clicked" from="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns/DataTableColumnSet" to="." method="_on_data_table_column_set_double_clicked"]
 [connection signal="saved" from="Container/Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns/DataTableColumnId" to="." method="_on_data_table_column_id_saved"]
 [connection signal="id_pressed" from="Container/Split/PanelContainer/UpperPanel/CardDataTable/DataTablePopupMenu" to="Container/Split/PanelContainer/UpperPanel/CardDataTable" method="_on_data_table_popup_menu_id_pressed"]
-[connection signal="focus_exited" from="Container/Split/CardDetails/BottomPanelTabs/Design/DesignNotesTextEdit" to="Container/Split/CardDetails" method="_on_design_notes_text_edit_focus_exited"]
-[connection signal="text_changed" from="Container/Split/CardDetails/BottomPanelTabs/Design/DesignNotesTextEdit" to="Container/Split/CardDetails" method="_on_design_notes_text_edit_text_changed"]
-[connection signal="copy" from="Container/Split/CardDetails/BottomPanelTabs/Ability 0" to="Container/Split/CardDetails" method="_on_ability_copy"]
-[connection signal="edit_script_requested" from="Container/Split/CardDetails/BottomPanelTabs/Ability 0" to="." method="_on_ability_edit_script_requested"]
-[connection signal="paste" from="Container/Split/CardDetails/BottomPanelTabs/Ability 0" to="Container/Split/CardDetails" method="_on_ability_paste"]
-[connection signal="saved" from="Container/Split/CardDetails/BottomPanelTabs/Ability 0" to="Container/Split/CardDetails" method="_on_ability_saved"]
-[connection signal="copy" from="Container/Split/CardDetails/BottomPanelTabs/Ability 1" to="Container/Split/CardDetails" method="_on_ability_copy"]
-[connection signal="edit_script_requested" from="Container/Split/CardDetails/BottomPanelTabs/Ability 1" to="." method="_on_ability_edit_script_requested"]
-[connection signal="paste" from="Container/Split/CardDetails/BottomPanelTabs/Ability 1" to="Container/Split/CardDetails" method="_on_ability_paste"]
-[connection signal="saved" from="Container/Split/CardDetails/BottomPanelTabs/Ability 1" to="Container/Split/CardDetails" method="_on_ability_saved"]
+[connection signal="edit_script_requested" from="Container/Split/CardDetails" to="." method="_on_ability_edit_script_requested"]
+[connection signal="tab_selected" from="Container/Split/CardDetails/CardDetailsTabContainer" to="Container/Split/CardDetails" method="_on_card_details_tab_container_tab_selected"]
+[connection signal="focus_exited" from="Container/Split/CardDetails/CardDetailsTabContainer/Design/DesignNotesTextEdit" to="Container/Split/CardDetails" method="_on_design_notes_text_edit_focus_exited"]
+[connection signal="text_changed" from="Container/Split/CardDetails/CardDetailsTabContainer/Design/DesignNotesTextEdit" to="Container/Split/CardDetails" method="_on_design_notes_text_edit_text_changed"]
 [connection signal="timeout" from="Container/Split/CardDetails/NotesSaveTimer" to="Container/Split/CardDetails" method="_on_notes_save_timer_timeout"]
