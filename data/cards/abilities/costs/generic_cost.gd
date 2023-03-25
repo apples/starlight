@@ -82,8 +82,7 @@ class Task extends CardTask:
 	var target_count: int
 	var target_zones: int
 	
-	var _possible_targets: Array[ZoneLocation] = []
-	var _selected_targets: Array[ZoneLocation] = []
+	var _choose_multi_targets = preload("res://objects/tasks/choose_multi_targets.gd")
 	
 	func start() -> void:
 		var card_instance := ability_instance.card_instance
@@ -104,7 +103,7 @@ class Task extends CardTask:
 			battle_state.set_tapped(ability_instance.card_instance.unit)
 		
 		
-		# If there is no mana cost, short circuit
+		# If there is no mana cost, skip to target selection
 		if mana_amount == 0:
 			return target_selection()
 		
@@ -157,55 +156,25 @@ class Task extends CardTask:
 			battle_state.set_tapped(unit, true, true)
 		
 		return goto(target_selection)
-
+	
 	func target_selection() -> void:
-		# Target selection
+		var task = _choose_multi_targets.new()
+		task.who = ability_instance.controller
+		task.allowed_locations = _get_possible_target_locations(target_zones, ability_instance.controller)
 		
-		if target_count == 0 or target_zones == 0:
-			return done()
+		task.allowed_locations = task.allowed_locations.filter(func (location: ZoneLocation):
+			return battle_state.can_be_targeted(
+				location,
+				ability_instance.card_instance,
+				ability_instance.ability_index))
 		
-		_possible_targets = _get_possible_target_locations(target_zones, ability_instance.controller)
+		task.target_count = target_count
+		task.ability_instance = ability_instance
 		
-		_possible_targets = _possible_targets.filter(func (l: ZoneLocation):
-			return battle_state.can_be_targeted(l, ability_instance.card_instance, ability_instance.ability_index))
-		
-		if _possible_targets.size() < target_count:
-			print("Target selection no longer valid")
-			return fail()
-		
-		goto(pick_next_target)
+		wait_for(task, targets_chosen)
 	
-	func pick_next_target():
-		var m := MessageTypes.ChooseTarget.new()
-		m.future = Future.new()
-		m.allowed_locations = _possible_targets
-		battle_state.send_message_to(ability_instance.controller, m)
-		wait_for_future(m.future, next_target_chosen)
-	
-	func next_target_chosen(target: ZoneLocation) -> void:
-		if target == null:
-			return fail()
-		
-		var idx: int = -1
-		for i in range(_possible_targets.size()):
-			var t := _possible_targets[i]
-			if t.equals(target):
-				idx = i
-				break
-		
-		if idx == -1:
-			print("Invalid payload")
-			return fail()
-		
-		_possible_targets.remove_at(idx)
-		_selected_targets.append(target)
-		
-		if _selected_targets.size() < target_count:
-			return goto(pick_next_target)
-		
-		# Set targets in ability instance
-		
-		ability_instance.targets = _selected_targets
+	func targets_chosen(targets: Array[ZoneLocation]):
+		ability_instance.targets = targets
 		
 		done()
 	

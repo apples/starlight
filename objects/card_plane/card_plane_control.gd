@@ -48,8 +48,8 @@ func refresh():
 	if Engine.is_editor_hint():
 		return
 	
-	for i in range(card_render.ability_container.get_child_count()):
-		var ability_panel := card_render.ability_container.get_child(i)
+	for i in range(card_render.ability_panels.size()):
+		var ability_panel: Control = card_render.ability_panels[i]
 		var cl: CursorLocation
 		if i < cursor_locations.get_child_count():
 			cl = cursor_locations.get_child(i)
@@ -62,7 +62,7 @@ func refresh():
 		cl.size = ability_panel.size / cl.scale
 		cl.position = ability_panel.global_position
 	
-	for i in range(card_render.ability_container.get_child_count(), cursor_locations.get_child_count()):
+	for i in range(card_render.ability_panels.size(), cursor_locations.get_child_count()):
 		cursor_locations.get_child(i).queue_free()
 	
 	# Fix navigation links

@@ -91,10 +91,10 @@ func _delete(filepath: String):
 	dialog.show()
 	
 	dialog.canceled.connect(func ():
-		remove_child(dialog))
+		dialog.queue_free())
 	
 	await dialog.confirmed
 	
-	remove_child(dialog)
+	dialog.queue_free()
 	
 	delete_requested.emit(filepath)

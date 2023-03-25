@@ -2,18 +2,19 @@ class_name Card
 extends Resource
 
 enum Kind {
-	UNIT,
-	ORDER,
+	UNIT = 0,
+	ORDER = 1,
+	STELLA = 2,
 }
 
 enum Mana {
-	Colorless = 0,
-	Holy = 1,
-	Curse = 2,
-	Flame = 3,
-	Frost = 4,
-	Shock = 5,
-	Gale = 6,
+	COLORLESS = 0,
+	HOLY = 1,
+	CURSE = 2,
+	FLAME = 3,
+	FROST = 4,
+	SHOCK = 5,
+	GALE = 6,
 }
 
 @export var uid: String
@@ -22,7 +23,7 @@ enum Mana {
 @export var card_name: String
 @export_file("*.png") var artwork_path: String
 
-@export var mana: Mana = Mana.Holy
+@export var mana: Mana = Mana.HOLY
 @export var kind: Kind = Kind.UNIT
 @export var unit_hp: int
 @export_enum("0", "1", "2", "3") var level: int

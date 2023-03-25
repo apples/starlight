@@ -10,12 +10,15 @@ var discard: Array[CardInstance] = []
 var starlights: Array[CardInstance] = []
 var starters: Array[CardInstance] = []
 
+var stella: CardInstance
 var front_row: Array[UnitState] = [null, null]
 var back_row: Array[UnitState] = [null, null, null, null]
 
 var Zone := ZoneLocation.Zone
 
 var token_amounts: Dictionary = {}
+
+var stella_charge: int = 0
 
 func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	battle_state = bs
@@ -27,6 +30,8 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	agent.battle_state = bs
 	
 	var card_deck := agent.get_deck()
+	
+	stella = battle_state.create_card_instance(card_deck.stella_card, ZoneLocation.new(side, Zone.Stella), side)
 	
 	for card in card_deck.main_deck_cards:
 		deck.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Deck), side))

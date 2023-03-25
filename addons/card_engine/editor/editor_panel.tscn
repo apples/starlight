@@ -264,7 +264,7 @@ item_1/id = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/autohide = 0
-split_offset = 800
+split_offset = 880
 script = ExtResource("5_terov")
 
 [node name="CardDetailsTabContainer" type="TabContainer" parent="Container/Split/CardDetails"]
@@ -298,6 +298,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 placeholder_text = "design notes"
+editable = false
 
 [node name="＋" type="Control" parent="Container/Split/CardDetails/CardDetailsTabContainer"]
 visible = false

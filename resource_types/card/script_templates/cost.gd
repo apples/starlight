@@ -26,7 +26,7 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 	return true
 
 # The task which actually performs the payment
-class PayTask extends CardTask:
+class Task extends CardTask:
 	
 	# Start of cost execution
 	func start() -> void:

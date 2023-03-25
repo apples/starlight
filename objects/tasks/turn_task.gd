@@ -33,18 +33,26 @@ func process_activate_ability(payload: Dictionary):
 	
 	var location: ZoneLocation = payload.location
 	
-	var unit := battle_state.get_unit(location)
-	assert(unit != null)
-	if unit == null:
-		print("Unit not found at: %s" % location)
-		goto(start)
-		return
+	var card_instance := battle_state.get_card_at(location)
 	
 	var index: int = payload.ability_index
 	assert(index >= 0)
-	assert(index < unit.card_instance.card.abilities.size())
+	assert(index < card_instance.card.abilities.size())
 	
-	var ability: CardAbility = unit.card_instance.card.abilities[index]
+	if card_instance.card.kind == Card.Kind.STELLA:
+		return _process_activate_ability_stella(card_instance, index)
+	
+	_process_activate_ability_unit(card_instance, index)
+
+func _process_activate_ability_unit(card_instance: CardInstance, index: int):
+	var unit := card_instance.unit
+	assert(unit != null)
+	if unit == null:
+		print("Unit not found at: %s" % card_instance.location)
+		goto(start)
+		return
+	
+	var ability: CardAbility = card_instance.card.abilities[index]
 	assert(ability != null)
 	if ability == null:
 		print("Invalid ability index: %s" % index)
@@ -59,6 +67,24 @@ func process_activate_ability(payload: Dictionary):
 	var ability_instance := battle_state.perform_ability(battle_state.current_turn, unit.card_instance, index)
 	
 	wait_for(ability_instance.task, activate_ability_finished)
+
+func _process_activate_ability_stella(card_instance: CardInstance, index: int):
+	var ability: CardAbility = card_instance.card.abilities[index]
+	assert(ability != null)
+	if ability == null:
+		print("Invalid ability index: %s" % index)
+		goto(start)
+		return
+	
+	if ability.effect == null:
+		print("Ability has no effect! (index: %s)" % index)
+		goto(start)
+		return
+	
+	var ability_instance := battle_state.perform_ability(battle_state.current_turn, card_instance, index)
+	
+	wait_for(ability_instance.task, activate_ability_finished)
+
 
 func activate_ability_finished() -> void:
 	battle_state.clear_events()
