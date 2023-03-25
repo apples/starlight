@@ -14,6 +14,9 @@ class_name BattleScene extends Node
 @onready var player_tokens := $PlayerTokens
 @onready var opponent_tokens := $OpponentTokens
 
+@onready var player_stella = $PlayerStella
+@onready var opponent_stella = $OpponentStella
+
 @onready var card_preview := $UI/CardPreview
 
 var screen_layer_stack: Array[BattleScreenLayer] = []
@@ -48,6 +51,7 @@ func reconcile():
 func _reconcile_field(state: BattleSideState, field: BattleField):
 	_reconcile_field_row(state.front_row, field.front_row)
 	_reconcile_field_row(state.back_row, field.back_row)
+	_reconcile_card(field.stella, state.stella)
 
 func _reconcile_field_row(state_row: Array[UnitState], field_row: Array[CardPlane]):
 	for i in range(state_row.size()):
@@ -63,6 +67,14 @@ func _reconcile_field_slot(slot_card_plane: CardPlane, slot_unit: UnitState):
 		slot_card_plane.show_card = true
 		slot_card_plane.card = slot_unit.card_instance.card
 		slot_card_plane.is_tapped = slot_unit.is_tapped
+	else:
+		slot_card_plane.show_card = false
+		slot_card_plane.card = null
+
+func _reconcile_card(slot_card_plane: CardPlane, card_instance: CardInstance):
+	if card_instance:
+		slot_card_plane.show_card = true
+		slot_card_plane.card = card_instance.card
 	else:
 		slot_card_plane.show_card = false
 		slot_card_plane.card = null

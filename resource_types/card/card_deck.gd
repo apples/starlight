@@ -6,3 +6,5 @@ extends Resource
 @export var starter_unit_cards: Array[Card] = []
 
 @export var starlight_cards: Array[Card] = []
+
+@export var stella_card: Card = null

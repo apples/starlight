@@ -39,18 +39,13 @@ func _ready():
 func _refresh():
 	_save_notes()
 	
-	if card_preview_container.get_child_count() > 0:
-		var c := card_preview_container.get_child(0)
-		assert(c == card_control)
-		c.queue_free()
-		card_preview_container.remove_child(c)
-		card_control = null
-		design_note = null
-	
 	if card:
-		card_control = CardDatabase.config.card_control.instantiate()
-		card_control.card = card
-		card_preview_container.add_child(card_control)
+		if card_control:
+			card_control.card = card
+		else:
+			card_control = CardDatabase.config.card_control.instantiate()
+			card_control.card = card
+			card_preview_container.add_child(card_control)
 		
 		design_note = CardDatabase.get_design_note(card)
 		design_notes_text_edit.editable = true
@@ -71,6 +66,14 @@ func _refresh():
 		if prev_card != card:
 			tab_container.current_tab = 0
 	else:
+		if card_preview_container.get_child_count() > 0:
+			var c := card_preview_container.get_child(0)
+			assert(c == card_control)
+			c.queue_free()
+			card_preview_container.remove_child(c)
+			card_control = null
+		
+		design_note = null
 		design_notes_text_edit.editable = false
 		design_notes_text_edit.text = ""
 		
@@ -147,9 +150,9 @@ func _on_ability_delete(ability_tab):
 	confirm.confirmed.connect(func ():
 		card.abilities.remove_at(ability_tab.ability_idx)
 		_save()
-		remove_child(confirm))
+		confirm.queue_free())
 	confirm.canceled.connect(func ():
-		remove_child(confirm))
+		confirm.queue_free())
 	add_child(confirm)
 	confirm.show()
 
@@ -165,19 +168,36 @@ func _on_ability_paste(ability_tab):
 	
 	var confirm := ConfirmationDialog.new()
 	confirm.title = "Confirm Paste"
+	
+	var layout := VBoxContainer.new()
+	
 	var confirm_label := Label.new()
 	confirm_label.text = "Overwriting ability %s. Are you sure?" % ability_tab.ability_idx
-	confirm.add_child(confirm_label)
+	layout.add_child(confirm_label)
+	
+	var incl_desc := CheckBox.new()
+	incl_desc.text = "Include description"
+	layout.add_child(incl_desc)
+	
+	confirm.add_child(layout)
 	confirm.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 	confirm.canceled.connect(func ():
-		remove_child(confirm))
+		confirm.queue_free())
 	add_child(confirm)
 	confirm.show()
 	
 	await confirm.confirmed
-	remove_child(confirm)
+	confirm.queue_free()
+	
+	var include_description := incl_desc.button_pressed
+	var tmp_name = card.abilities[ability_tab.ability_idx].ability_name
+	var tmp_desc = card.abilities[ability_tab.ability_idx].description
 	
 	card.abilities[ability_tab.ability_idx] = ability_clipboard.duplicate(true)
+	if not include_description:
+		card.abilities[ability_tab.ability_idx].ability_name = tmp_name
+		card.abilities[ability_tab.ability_idx].description = tmp_desc
+	
 	ResourceSaver.save(card)
 	_on_ability_saved()
 	ability_tab._refresh()

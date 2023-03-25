@@ -26,7 +26,6 @@ enum TokenType {
 
 
 func info(a="", b="", c=""):
-	TokenType.find_key(1)
 	print("[BattleState] ", a, b, c)
 
 func create_card_instance(card: Card, location: ZoneLocation, owner_side: ZoneLocation.Side) -> CardInstance:
@@ -62,7 +61,7 @@ func _set_unit(location: ZoneLocation, unit: UnitState) -> void:
 	unit.exists = true
 
 
-func summon_unit(card_instance: CardInstance, location: ZoneLocation):
+func summon_unit(card_instance: CardInstance, location: ZoneLocation, suppress_trigger: bool = false):
 	var unit := get_unit(location)
 
 	if unit != null:
@@ -74,7 +73,7 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		for i in range(prev_card_instance.card.abilities.size()):
 			_teardown_passive(prev_card_instance, i)
 		
-		discard(prev_card_instance)
+		_discard(prev_card_instance)
 		prev_card_instance.unit = null
 		if card_instance.location.zone == ZoneLocation.Zone.Hand:
 			var hand_side_state = get_side_state(card_instance.location.side)
@@ -87,11 +86,12 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		for i in range(card_instance.card.abilities.size()):
 			_setup_passive(card_instance, i)
 		
-		push_event(TriggerEvents.UnitAscended.new({
-			unit = unit,
-			from = prev_card_instance,
-			to = card_instance,
-		}))
+		if not suppress_trigger:
+			push_event(TriggerEvents.UnitAscended.new({
+				unit = unit,
+				from = prev_card_instance,
+				to = card_instance,
+			}))
 	else:
 		# Summon new unit
 		unit = UnitState.new()
@@ -107,12 +107,13 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		for i in range(card_instance.card.abilities.size()):
 			_setup_passive(card_instance, i)
 		
-		push_event(TriggerEvents.UnitSummoned.new({
-			unit = unit,
-			to = card_instance,
-		}))
+		if not suppress_trigger:
+			push_event(TriggerEvents.UnitSummoned.new({
+				unit = unit,
+				to = card_instance,
+			}))
 	
-	print("Summoned %s" % card_instance)
+	info("Summoned %s" % card_instance)
 	
 	broadcast_message(MessageTypes.UnitSummoned.new({ location = location }))
 
@@ -132,8 +133,26 @@ func destroy_unit(where: ZoneLocation):
 	card_instance.unit = null
 	
 	_remove_unit(where)
-	discard(card_instance)
+	_discard(card_instance)
+
+func discard_unit(where: ZoneLocation):
+	var unit := get_unit(where)
+	var card_instance := unit.card_instance
 	
+	push_event(TriggerEvents.UnitDiscarded.new({
+		unit = unit,
+		was = card_instance,
+	}))
+	
+	# Tear down passives
+	for i in range(card_instance.card.abilities.size()):
+		_teardown_passive(card_instance, i)
+	
+	card_instance.unit = null
+	
+	_remove_unit(where)
+	_discard(card_instance)
+
 
 func _teardown_passive(card_instance: CardInstance, ability_index: int):
 	assert(ability_index >= 0)
@@ -168,7 +187,7 @@ func _setup_passive(card_instance: CardInstance, ability_index: int):
 	
 	effect.battle_state = self
 	effect.controller = card_instance.owner_side
-	effect.unit = card_instance.unit
+	effect.card_instance = card_instance
 	effect.ability_index = ability_index
 	effect.source_location = card_instance.location
 
@@ -177,10 +196,10 @@ func _setup_passive(card_instance: CardInstance, ability_index: int):
 func summon_starters(side: ZoneLocation.Side):
 	var side_state := get_side_state(side)
 	
-	summon_unit(side_state.starters[0], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 0))
-	summon_unit(side_state.starters[1], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 1))
+	summon_unit(side_state.starters[0], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 0), true)
+	summon_unit(side_state.starters[1], ZoneLocation.new(side, ZoneLocation.Zone.FrontRow, 1), true)
 
-func discard(card_instance: CardInstance):
+func _discard(card_instance: CardInstance):
 	var side := card_instance.owner_side
 	var side_state := get_side_state(side)
 	card_instance.location = ZoneLocation.new(side, ZoneLocation.Zone.Discard, side_state.discard.size())
@@ -220,6 +239,10 @@ func remove_from_hand(side: ZoneLocation.Side, handIndex: int, card: Card):
 	if (!success):
 		push_error("Card not found in hand (side = %s, handIndex = %s, card = %s)." % [side, handIndex, card])
 
+func init_stella(side: ZoneLocation.Side):
+	var state = get_side_state(side)
+	for i in range(state.stella.card.abilities.size()):
+		_setup_passive(state.stella, i)
 
 func shuffle_deck(side: ZoneLocation.Side):
 	var state = get_side_state(side)
@@ -265,6 +288,10 @@ func get_card_at(location: ZoneLocation) -> CardInstance:
 			return opponent.back_row[idx].card_instance if opponent.back_row[idx] else null
 		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Hand, var idx]:
 			return opponent.hand[idx]
+		[ZoneLocation.Side.Player, ZoneLocation.Zone.Stella, _]:
+			return player.stella
+		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Stella, _]:
+			return opponent.stella
 		_:
 			push_warning("Not implemented")
 	return null
@@ -293,7 +320,7 @@ func deal_damage(where: ZoneLocation, amount: int) -> bool:
 	var unit := get_unit(where)
 	assert(unit)
 	unit.damage += amount
-	print("deal_damage: to %s (%s / %s)" % [where, unit.damage, unit.card_instance.card.unit_hp])
+	info("deal_damage: to %s (%s / %s)" % [where, unit.damage, unit.card_instance.card.unit_hp])
 	broadcast_message(MessageTypes.UnitDamaged.new({
 		card_uid = unit.card_instance.uid,
 		location = unit.card_instance.location,
@@ -347,6 +374,17 @@ func gain_tokens(who: ZoneLocation.Side, kind: TokenType, amount: int):
 		kind = kind,
 		amount_gained = amount,
 		total_amount = side_state.get_token_amount(kind),
+	}))
+
+func stella_charge(who: ZoneLocation.Side, amount: int):
+	var side_state := get_side_state(who)
+	var actual_amount: int = max(amount, -side_state.stella_charge)
+	side_state.stella_charge += actual_amount
+	
+	push_event(TriggerEvents.StellaCharge.new({
+		side = who,
+		amount_gained = actual_amount,
+		total_amount = side_state.stella_charge,
 	}))
 
 

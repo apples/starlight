@@ -246,9 +246,9 @@ func _confirm_clear_script(key: String):
 		add_child(dialog)
 		dialog.show()
 		dialog.canceled.connect(func ():
-			remove_child(dialog))
+			dialog.queue_free())
 		await dialog.confirmed
-		remove_child(dialog)
+		dialog.queue_free()
 	
 
 func _on_delete_button_pressed():
@@ -286,6 +286,7 @@ func _add_condition_panel():
 		if panel.get_index() < ability.conditions.size():
 			ability.conditions.remove_at(panel.get_index())
 		conditions_container.remove_child(panel)
+		panel.queue_free()
 		_save())
 	conditions_container.add_child(panel)
 	conditions_container.move_child(add_condition_button, -1)

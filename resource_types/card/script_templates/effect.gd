@@ -8,17 +8,9 @@ extends CardAbilityEffect
 func get_attack_damage() -> String:
 	return str(amount)
 
-# Called when the engine needs to execute the task
-func task() -> CardTask:
-	return Task.new(amount)
-
 # The task which will perform the effect
 class Task extends CardTask:
 	var amount: int
-	
-	# Initialize with parameters from above
-	func _init(p_amount: int):
-		amount = p_amount
 	
 	# Start of effect execution
 	func start() -> void:

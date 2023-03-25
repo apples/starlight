@@ -1,22 +1,69 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://bovce0bh3wuoi"]
+[gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://bovce0bh3wuoi"]
 
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_m05o6"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_og70g"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_oyuk5"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_ic3tm"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="2_ltwcu"]
+
+[sub_resource type="Resource" id="Resource_nabes"]
+script = ExtResource("1_m05o6")
+tap_self = true
+mana_amount = 2
+target_count = 2
+target_zones = 3
+target_zones_var = ""
+
+[sub_resource type="Resource" id="Resource_ko08c"]
+script = ExtResource("2_ltwcu")
+kind = 0
+amount = 3
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_jothi"]
+script = ExtResource("2_ic3tm")
+amount = 8
+amount_var = ""
+effect = SubResource("Resource_ko08c")
 
 [sub_resource type="Resource" id="Resource_kobpo"]
 script = ExtResource("1_og70g")
-ability_name = ""
-description = ""
-type = 1
+ability_name = "adsfasdfasdf"
+description = "asdfasdfasdfdadfasdfasdf"
+type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_nabes")
+effect = SubResource("Resource_jothi")
 is_uninterruptable = false
 
-[sub_resource type="Resource" id="Resource_gucq4"]
+[sub_resource type="Resource" id="Resource_6e3ra"]
+script = ExtResource("1_m05o6")
+tap_self = true
+mana_amount = 2
+target_count = 2
+target_zones = 3
+target_zones_var = ""
+
+[sub_resource type="Resource" id="Resource_8113c"]
+script = ExtResource("2_ltwcu")
+kind = 0
+amount = 3
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_4oltb"]
+script = ExtResource("2_ic3tm")
+amount = 8
+amount_var = ""
+effect = SubResource("Resource_8113c")
+
+[sub_resource type="Resource" id="Resource_nchxk"]
 script = ExtResource("1_og70g")
-ability_name = ""
-description = ""
-type = 1
+ability_name = "adsfasdfasdf"
+description = "asdfasdfasdfdadfasdfasdf"
+type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_6e3ra")
+effect = SubResource("Resource_4oltb")
 is_uninterruptable = false
 
 [resource]
@@ -30,4 +77,4 @@ mana = 1
 kind = 0
 unit_hp = 7
 level = 0
-abilities = Array[ExtResource("1_og70g")]([SubResource("Resource_kobpo"), SubResource("Resource_gucq4")])
+abilities = Array[ExtResource("1_og70g")]([SubResource("Resource_kobpo"), SubResource("Resource_nchxk")])
