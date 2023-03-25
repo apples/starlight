@@ -21,7 +21,7 @@ func start() -> void:
 	
 	for unit in all_units:
 		var arr: Array = [unit.card_instance.uid]
-		for i in [0, 1]:
+		for i in range(unit.card_instance.card.abilities.size()):
 			if _check_ability(unit.card_instance, i):
 				arr.append(i)
 		if arr.size() > 1:
@@ -54,10 +54,18 @@ func action_chosen(trigger_action: Array) -> void:
 		return done(null, Result.FAILED)
 	
 	var uid: int = trigger_action[0]
-	var ability_index: int = trigger_action[1]
 	
-	assert(ability_index == 0 or ability_index == 1)
-	if ability_index != 0 and ability_index != 1:
+	assert(uid in battle_state.all_card_instances)
+	if not uid in battle_state.all_card_instances:
+		push_error("Invalid response")
+		return done(null, Result.FAILED)
+	
+	var card_instance: CardInstance = battle_state.all_card_instances[uid]
+	
+	var ability_index: int = trigger_action[1]
+	assert(ability_index >= 0)
+	assert(ability_index < card_instance.card.abilities.size())
+	if not (ability_index >= 0 and ability_index < card_instance.card.abilities.size()):
 		push_error("Invalid response")
 		return done(null, Result.FAILED)
 	
@@ -65,7 +73,7 @@ func action_chosen(trigger_action: Array) -> void:
 	
 	var chosen: Array = []
 	for choice in _available_triggers:
-		if choice[0] == uid and ability_index in choice:
+		if choice[0] == uid and ability_index in choice.slice(1):
 			chosen = choice
 			break
 	
@@ -76,8 +84,6 @@ func action_chosen(trigger_action: Array) -> void:
 	
 	
 	# Execute trigger
-	
-	var card_instance: CardInstance = battle_state.all_card_instances[uid]
 	
 	var ability_instance := battle_state.perform_ability(side, card_instance, ability_index)
 	
@@ -96,10 +102,12 @@ func pass_to_next() -> void:
 	done()
 
 func _check_ability(card_instance: CardInstance, ability_index: int) -> bool:
-	assert(ability_index == 0 || ability_index == 1)
-	var ability: CardAbility = card_instance.card.get_ability(ability_index)
-	if not ability:
-		return false
+	assert(ability_index >= 0)
+	assert(ability_index < card_instance.card.abilities.size())
+	
+	var ability: CardAbility = card_instance.card.abilities[ability_index]
+	assert(ability)
+	
 	if not ability.type == CardAbility.CardAbilityType.TRIGGER:
 		return false
 	if ability.cost and not ability.cost.can_be_paid(battle_state, card_instance, ability_index, side):

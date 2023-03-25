@@ -33,11 +33,7 @@ func _ready():
 	refresh()
 
 func refresh():
-	if not card_ability:
-		visible = false
-		return
-	
-	visible = true
+	assert(card_ability)
 	
 	if card_ability.type == CardAbility.CardAbilityType.STARLIGHT:
 		overlays.visible = false

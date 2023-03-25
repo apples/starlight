@@ -1,45 +1,111 @@
-[gd_resource type="Resource" script_class="Card" load_steps=12 format=3 uid="uid://cx1yokgeuhi8x"]
+[gd_resource type="Resource" script_class="Card" load_steps=24 format=3 uid="uid://cx1yokgeuhi8x"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_a1xo7"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_ix1e0"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3g7gi"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/if_attack_destroyed_unit.gd" id="2_alk6l"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_t1uh2"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="4_pocai"]
+[ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="4_m675n"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="4_ug2rh"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_tapped.gd" id="5_amcjp"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_front_unit_attacks.gd" id="7_a7lqk"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="7_up660"]
 
-[sub_resource type="Resource" id="Resource_gtbho"]
+[sub_resource type="Resource" id="Resource_18xss"]
 script = ExtResource("1_ix1e0")
 tap_self = true
-mana_amount = 1
+mana_amount = 0
 target_count = 1
 target_zones = 2
 target_zones_var = ""
 
-[sub_resource type="Resource" id="Resource_rk68e"]
-script = ExtResource("4_pocai")
-kind = 0
-amount = 2
-amount_var = "destroyed_unit_level"
-
-[sub_resource type="Resource" id="Resource_htegl"]
-script = ExtResource("2_alk6l")
-effect = SubResource("Resource_rk68e")
-
-[sub_resource type="Resource" id="Resource_b5hrb"]
+[sub_resource type="Resource" id="Resource_w0p8n"]
 script = ExtResource("2_3g7gi")
-amount = 3
+amount = 4
 amount_var = ""
-effect = SubResource("Resource_htegl")
 
-[sub_resource type="Resource" id="Resource_0k2tq"]
+[sub_resource type="Resource" id="Resource_atprm"]
 script = ExtResource("3_t1uh2")
 ability_name = "Bite"
-description = "Bites. If kill, gain Darkness bux equal to destroyed unit's level."
+description = "Bites"
 type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_gtbho")
-effect = SubResource("Resource_b5hrb")
-is_uninterruptable = true
+cost = SubResource("Resource_18xss")
+effect = SubResource("Resource_w0p8n")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_ytyu1"]
+script = ExtResource("3_t1uh2")
+ability_name = "Unbite"
+description = "does nothing"
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_a4ve3"]
+script = ExtResource("4_ug2rh")
+kind = 0
+amount = 1
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_4wmww"]
+script = ExtResource("5_amcjp")
+this_unit = true
+for_mana = true
+
+[sub_resource type="Resource" id="Resource_pn8tl"]
+script = ExtResource("4_m675n")
+trigger = SubResource("Resource_4wmww")
+effect = SubResource("Resource_a4ve3")
+
+[sub_resource type="Resource" id="Resource_memse"]
+script = ExtResource("3_t1uh2")
+ability_name = "loathe"
+description = "gain duk coin when tap"
+type = 4
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+passive = SubResource("Resource_pn8tl")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_nrilu"]
+script = ExtResource("1_ix1e0")
+tap_self = true
+mana_amount = 0
+target_count = 0
+target_zones = 2
+target_zones_var = ""
+
+[sub_resource type="Resource" id="Resource_uspdn"]
+script = ExtResource("7_up660")
+amount = 3
+
+[sub_resource type="Resource" id="Resource_78t7o"]
+script = ExtResource("7_a7lqk")
+
+[sub_resource type="Resource" id="Resource_ws3ky"]
+script = ExtResource("3_t1uh2")
+ability_name = "lil helper"
+description = "boost atk 3"
+type = 3
+trigger = SubResource("Resource_78t7o")
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_nrilu")
+effect = SubResource("Resource_uspdn")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_nponc"]
+script = ExtResource("4_ug2rh")
+kind = 0
+amount = 1
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_jfb0a"]
+script = ExtResource("3_t1uh2")
+ability_name = "free money"
+description = "its free"
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+effect = SubResource("Resource_nponc")
+is_uninterruptable = false
 
 [resource]
 script = ExtResource("1_a1xo7")
@@ -52,4 +118,4 @@ mana = 1
 kind = 0
 unit_hp = 3
 level = 3
-ability0 = SubResource("Resource_0k2tq")
+abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm"), SubResource("Resource_ytyu1"), SubResource("Resource_memse"), SubResource("Resource_ws3ky"), SubResource("Resource_jfb0a")])

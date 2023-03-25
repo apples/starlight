@@ -23,8 +23,11 @@ extends Node2D
 @onready var cardface: Control = $CardFace
 @onready var artwork: Sprite2D = $CardFace/Artwork
 @onready var name_label: Label = $CardFace/Name
-@onready var ability0: Control = %Ability0
-@onready var ability1: Control = %Ability1
+@onready var ability_container = %AbilityContainer
+
+
+var ability_panel_scene := preload("res://objects/card_plane/ability_panel.tscn")
+
 
 func _ready():
 	refresh()
@@ -38,12 +41,21 @@ func refresh():
 		else:
 			artwork.texture = load("res://data/cards/artwork/_missing.png")
 		name_label.text = card.card_name
-		ability0.card_ability = card.ability0
-		ability1.card_ability = card.ability1
+		
+		for i in range(card.abilities.size()):
+			if i < ability_container.get_child_count():
+				ability_container.get_child(i).card_ability = card.abilities[i]
+			else:
+				var ap = ability_panel_scene.instantiate()
+				ap.card_ability = card.abilities[i]
+				ability_container.add_child(ap)
+		
+		for i in range(card.abilities.size(), ability_container.get_child_count()):
+			ability_container.get_child(i).queue_free()
 	else:
 		background.texture = back_texture
 		cardface.visible = false
-		ability0.card_ability = null
-		ability1.card_ability = null
-	ability0.visible = ability0.card_ability != null
-	ability1.visible = ability1.card_ability != null
+		
+		for i in range(ability_container.get_child_count()):
+			ability_container.get_child(i).queue_free()
+	

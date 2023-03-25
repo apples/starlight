@@ -11,21 +11,29 @@ extends HSplitContainer
 
 @onready var card_preview_container := %CardPreviewContainer
 
-@onready var ability0 := %"Ability 0"
-@onready var ability1 := %"Ability 1"
-
 @onready var design_notes_text_edit = %DesignNotesTextEdit
 @onready var notes_save_timer = %NotesSaveTimer
 @onready var save_indicator = %SaveIndicator
+@onready var tab_container: TabContainer = %CardDetailsTabContainer
+
+var ability_tab_scene := preload("res://addons/card_engine/editor/ability_tab.tscn")
 
 var card_control: Control
-
 var design_note: CardEngineDesignNote
+var ability_clipboard: Resource:
+	get:
+		return ability_clipboard
+	set(value):
+		ability_clipboard = value
+		if is_inside_tree():
+			for i in range(_ability_tab_count()):
+				_ability_tab_get(i).enable_paste = ability_clipboard != null
 
-var ability_clipboard: Resource
+var prev_card
+
+signal edit_script_requested(script: Script)
 
 func _ready():
-	$BottomPanelTabs.set_popup($PopupMenu)
 	_refresh()
 
 func _refresh():
@@ -45,11 +53,58 @@ func _refresh():
 		card_preview_container.add_child(card_control)
 		
 		design_note = CardDatabase.get_design_note(card)
+		design_notes_text_edit.editable = true
 		design_notes_text_edit.text = design_note.text
+		
+		tab_container.set_tab_disabled(_get_plus_tab(), false)
+		
+		for i in card.abilities.size():
+			if i >= _ability_tab_count():
+				_ability_tab_append(i)
+			else:
+				_ability_tab_get(i).set_value(card, i)
+				_ability_tab_get(i).enable_paste = ability_clipboard != null
+		
+		for i in range(card.abilities.size(), _ability_tab_count()):
+			_ability_tab_get(i).queue_free()
+		
+		if prev_card != card:
+			tab_container.current_tab = 0
+	else:
+		design_notes_text_edit.editable = false
+		design_notes_text_edit.text = ""
+		
+		tab_container.set_tab_disabled(_get_plus_tab(), true)
+		tab_container.current_tab = 0
+		
+		for i in range(_ability_tab_count()):
+			_ability_tab_get(i).queue_free()
 	
-	ability0.card = card
-	ability1.card = card
+	prev_card = card
+	
 
+func _ability_tab_count() -> int:
+	return tab_container.get_tab_count() - 2
+
+func _ability_tab_get(i: int) -> Control:
+	return tab_container.get_tab_control(1 + i)
+
+func _get_plus_tab() -> int:
+	return tab_container.get_tab_count() - 1
+
+func _ability_tab_append(i: int):
+	assert(i == _ability_tab_count())
+	var tab := ability_tab_scene.instantiate()
+	tab.name = "Ability %s" % i
+	tab.set_value(card, i)
+	tab.enable_paste = ability_clipboard != null
+	tab.delete.connect(_on_ability_delete)
+	tab.copy.connect(_on_ability_copy)
+	tab.paste.connect(_on_ability_paste)
+	tab.saved.connect(_on_ability_saved)
+	tab.edit_script_requested.connect(_on_ability_edit_script_requested)
+	tab_container.add_child(tab)
+	tab_container.move_child(tab, 1 + i)
 
 func _on_ability_saved():
 	if card_control:
@@ -74,25 +129,70 @@ func _save_notes():
 	notes_save_timer.stop()
 	save_indicator.text = "saved"
 
+func _save():
+	ResourceSaver.save(card)
+	_refresh()
+
 
 func _on_design_notes_text_edit_focus_exited():
 	_save_notes()
 
+func _on_ability_delete(ability_tab):
+	var confirm := ConfirmationDialog.new()
+	confirm.title = "Confirm"
+	var confirm_label := Label.new()
+	confirm_label.text = "Deleting ability %s. Are you sure?" % ability_tab.ability_idx
+	confirm.add_child(confirm_label)
+	confirm.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+	confirm.confirmed.connect(func ():
+		card.abilities.remove_at(ability_tab.ability_idx)
+		_save()
+		remove_child(confirm))
+	confirm.canceled.connect(func ():
+		remove_child(confirm))
+	add_child(confirm)
+	confirm.show()
 
 func _on_ability_copy(ability_tab):
-	var ability: Resource = card[ability_tab.ability_key]
+	var ability: Resource = card.abilities[ability_tab.ability_idx]
 	assert(ability)
 	ability_clipboard = ability.duplicate(true)
 	print("Ability copied")
 
 
 func _on_ability_paste(ability_tab):
-	assert(card[ability_tab.ability_key] == null)
-	if ability_clipboard == null:
-		print("Ability clipboard empty!")
-		return
-	card[ability_tab.ability_key] = ability_clipboard.duplicate(true)
+	assert(ability_clipboard)
+	
+	var confirm := ConfirmationDialog.new()
+	confirm.title = "Confirm Paste"
+	var confirm_label := Label.new()
+	confirm_label.text = "Overwriting ability %s. Are you sure?" % ability_tab.ability_idx
+	confirm.add_child(confirm_label)
+	confirm.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+	confirm.canceled.connect(func ():
+		remove_child(confirm))
+	add_child(confirm)
+	confirm.show()
+	
+	await confirm.confirmed
+	remove_child(confirm)
+	
+	card.abilities[ability_tab.ability_idx] = ability_clipboard.duplicate(true)
 	ResourceSaver.save(card)
 	_on_ability_saved()
 	ability_tab._refresh()
 	print("Ability pasted")
+
+func _on_ability_edit_script_requested(script: Script):
+	edit_script_requested.emit(script)
+
+
+
+func _on_card_details_tab_container_tab_selected(tab: int):
+	# + tab
+	if tab == tab_container.get_tab_count() - 1:
+		var i := _ability_tab_count()
+		assert(i == card.abilities.size())
+		card.abilities.append(CardDatabase.ability_script.new())
+		_save()
+		tab_container.current_tab = 1 + i

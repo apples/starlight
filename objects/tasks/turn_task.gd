@@ -32,8 +32,6 @@ func process_activate_ability(payload: Dictionary):
 		return
 	
 	var location: ZoneLocation = payload.location
-	var index: int = payload.ability_index
-	assert(index == 0 or index == 1)
 	
 	var unit := battle_state.get_unit(location)
 	assert(unit != null)
@@ -42,7 +40,11 @@ func process_activate_ability(payload: Dictionary):
 		goto(start)
 		return
 	
-	var ability: CardAbility = unit.card_instance.card.get_ability(index)
+	var index: int = payload.ability_index
+	assert(index >= 0)
+	assert(index < unit.card_instance.card.abilities.size())
+	
+	var ability: CardAbility = unit.card_instance.card.abilities[index]
 	assert(ability != null)
 	if ability == null:
 		print("Invalid ability index: %s" % index)

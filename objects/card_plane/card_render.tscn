@@ -1,32 +1,20 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://kvf7e2omwxsr"]
 
 [ext_resource type="Script" path="res://objects/card_plane/card_render.gd" id="1_m5yay"]
 [ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://objects/card_plane/images/frame.png" id="2_2x50j"]
 [ext_resource type="Texture2D" uid="uid://scw7ioffqw1j" path="res://objects/card_plane/images/back.png" id="3_k2v5a"]
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="5_573gv"]
 [ext_resource type="Texture2D" uid="uid://bb07j7tokq6g3" path="res://data/cards/artwork/screet.png" id="6_hu1ff"]
-[ext_resource type="PackedScene" uid="uid://dm4dt70ha1q8n" path="res://objects/card_plane/ability_panel.tscn" id="7_5rtdu"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="7_t606e"]
-[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="8_udrjk"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="9_lk6wl"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="9_lohon"]
 
-[sub_resource type="Resource" id="Resource_iwpm8"]
-script = ExtResource("8_udrjk")
-tap_self = true
-mana_amount = 1
-
-[sub_resource type="Resource" id="Resource_piu31"]
-script = ExtResource("9_lk6wl")
-amount = 3
-
-[sub_resource type="Resource" id="Resource_73gvl"]
+[sub_resource type="Resource" id="Resource_dx2yn"]
 script = ExtResource("9_lohon")
-ability_name = "Bite"
-description = "bite"
-type = 2
-cost = SubResource("Resource_iwpm8")
-effect = SubResource("Resource_piu31")
+ability_name = "asdfasdfasdf"
+description = "asdfasdfasdf"
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_344ml"]
 script = ExtResource("7_t606e")
@@ -39,7 +27,7 @@ mana = 0
 kind = 0
 unit_hp = 3
 level = 0
-ability0 = SubResource("Resource_73gvl")
+abilities = Array[ExtResource("9_lohon")]([SubResource("Resource_dx2yn")])
 
 [node name="CardRender" type="Node2D"]
 script = ExtResource("1_m5yay")
@@ -54,15 +42,9 @@ texture = ExtResource("2_2x50j")
 [node name="CardFace" type="Control" parent="."]
 custom_minimum_size = Vector2(240, 336)
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 0
 offset_right = 240.0
 offset_bottom = 336.0
-grow_horizontal = 2
-grow_vertical = 2
 theme = ExtResource("5_573gv")
 
 [node name="Artwork" type="Sprite2D" parent="CardFace"]
@@ -80,21 +62,12 @@ theme_override_constants/line_spacing = -5
 text = "Kainei, Avatar of the Queen of Darkness"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CardFace"]
+[node name="AbilityContainer" type="VBoxContainer" parent="CardFace"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 8.0
 offset_top = 177.0
 offset_right = 232.0
 offset_bottom = 328.0
 theme_override_constants/separation = 1
-
-[node name="Ability0" parent="CardFace/VBoxContainer" instance=ExtResource("7_5rtdu")]
-unique_name_in_owner = true
-layout_mode = 2
-card_ability = SubResource("Resource_73gvl")
-
-[node name="Ability1" parent="CardFace/VBoxContainer" instance=ExtResource("7_5rtdu")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-card_ability = null
+alignment = 1

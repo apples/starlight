@@ -7,7 +7,7 @@ var ability_index: int
 var source_location: ZoneLocation
 
 func get_ability() -> CardAbility:
-	return unit.card_instance.card.get_ability(ability_index)
+	return unit.card_instance.card.abilities[ability_index]
 
 func is_active() -> bool:
 	assert(unit.exists)
