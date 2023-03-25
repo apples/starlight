@@ -71,8 +71,8 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		var prev_card_instance = unit.card_instance
 		
 		# Tear down passives
-		_teardown_passive(prev_card_instance, 0)
-		_teardown_passive(prev_card_instance, 1)
+		for i in range(prev_card_instance.card.abilities.size()):
+			_teardown_passive(prev_card_instance, i)
 		
 		discard(prev_card_instance)
 		prev_card_instance.unit = null
@@ -84,8 +84,8 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		card_instance.location = location
 		
 		# Set up passives
-		_setup_passive(card_instance, 0)
-		_setup_passive(card_instance, 1)
+		for i in range(card_instance.card.abilities.size()):
+			_setup_passive(card_instance, i)
 		
 		push_event(TriggerEvents.UnitAscended.new({
 			unit = unit,
@@ -104,16 +104,16 @@ func summon_unit(card_instance: CardInstance, location: ZoneLocation):
 		card_instance.location = location
 		
 		# Set up passives
-		_setup_passive(card_instance, 0)
-		_setup_passive(card_instance, 1)
+		for i in range(card_instance.card.abilities.size()):
+			_setup_passive(card_instance, i)
 		
 		push_event(TriggerEvents.UnitSummoned.new({
 			unit = unit,
 			to = card_instance,
 		}))
-
+	
 	print("Summoned %s" % card_instance)
-
+	
 	broadcast_message(MessageTypes.UnitSummoned.new({ location = location }))
 
 func destroy_unit(where: ZoneLocation):
@@ -126,8 +126,8 @@ func destroy_unit(where: ZoneLocation):
 	}))
 	
 	# Tear down passives
-	_teardown_passive(card_instance, 0)
-	_teardown_passive(card_instance, 1)
+	for i in range(card_instance.card.abilities.size()):
+		_teardown_passive(card_instance, i)
 	
 	card_instance.unit = null
 	
@@ -136,9 +136,13 @@ func destroy_unit(where: ZoneLocation):
 	
 
 func _teardown_passive(card_instance: CardInstance, ability_index: int):
-	var ability := card_instance.card.get_ability(ability_index)
+	assert(ability_index >= 0)
+	assert(ability_index < card_instance.card.abilities.size())
 	
-	if ability == null or ability.type != CardAbility.CardAbilityType.PASSIVE:
+	var ability := card_instance.card.abilities[ability_index]
+	
+	assert(ability != null)
+	if ability.type != CardAbility.CardAbilityType.PASSIVE:
 		return
 	
 	for i in range(passive_effects.size(), 0, -1):
@@ -148,8 +152,12 @@ func _teardown_passive(card_instance: CardInstance, ability_index: int):
 	
 
 func _setup_passive(card_instance: CardInstance, ability_index: int):
-	var ability := card_instance.card.get_ability(ability_index)
+	assert(ability_index >= 0)
+	assert(ability_index < card_instance.card.abilities.size())
 	
+	var ability := card_instance.card.abilities[ability_index]
+	
+	assert(ability != null)
 	if ability == null or ability.type != CardAbility.CardAbilityType.PASSIVE:
 		return
 	
@@ -267,7 +275,7 @@ func perform_ability(controller: ZoneLocation.Side, card_instance: CardInstance,
 	ability_instance.source_location = card_instance.location
 	ability_instance.task =  TaskActivateAbility.new(card_instance, ability_instance)
 	
-	match card_instance.card.get_ability(ability_index).type:
+	match card_instance.card.abilities[ability_index].type:
 		CardAbility.CardAbilityType.ATTACK:
 			ability_instance.attack_info = AbilityInstance.AttackInfo.new()
 	
@@ -343,7 +351,11 @@ func gain_tokens(who: ZoneLocation.Side, kind: TokenType, amount: int):
 
 
 func can_be_targeted(target_location: ZoneLocation, card_instance: CardInstance, ability_index: int) -> bool:
-	var ability := card_instance.card.get_ability(ability_index)
+	assert(ability_index >= 0)
+	assert(ability_index < card_instance.card.abilities.size())
+	
+	var ability := card_instance.card.abilities[ability_index]
+	assert(ability)
 	
 	match ability.type:
 		CardAbility.CardAbilityType.ATTACK:

@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dm4dt70ha1q8n"]
+[gd_scene load_steps=9 format=3 uid="uid://drp7gbrv7ff86"]
 
-[ext_resource type="Script" path="res://objects/card_plane/ability.gd" id="1_v8red"]
+[ext_resource type="Script" path="res://objects/card_plane/ability_panel.gd" id="1_xs14d"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_p4qpi"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_dwtj0"]
 [ext_resource type="Texture2D" uid="uid://b6yyo8lo0mep" path="res://objects/card_plane/images/frame_ability.png" id="4_42y8b"]
@@ -10,18 +10,21 @@
 [sub_resource type="Resource" id="Resource_w0dk3"]
 script = ExtResource("2_p4qpi")
 amount = 3
+amount_var = ""
 
 [sub_resource type="Resource" id="Resource_skvku"]
 script = ExtResource("3_dwtj0")
 ability_name = "Bite"
 description = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
 type = 2
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 effect = SubResource("Resource_w0dk3")
+is_uninterruptable = false
 
-[node name="Ability1" type="MarginContainer"]
+[node name="AbilityPanel" type="MarginContainer"]
 offset_right = 224.0
 offset_bottom = 74.0
-script = ExtResource("1_v8red")
+script = ExtResource("1_xs14d")
 card_ability = SubResource("Resource_skvku")
 
 [node name="Frame" type="NinePatchRect" parent="."]

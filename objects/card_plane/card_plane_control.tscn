@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dvx53oob87xe4"]
+[gd_scene load_steps=6 format=3 uid="uid://dvx53oob87xe4"]
 
 [ext_resource type="Script" path="res://objects/card_plane/card_plane_control.gd" id="1_37i78"]
-[ext_resource type="PackedScene" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
+[ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="3_6nsie"]
 [ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_7gcy2"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_texturerect.gd" id="4_peau8"]
-[ext_resource type="PackedScene" uid="uid://cyr4o4b07vyay" path="res://objects/card_ability_cursor_location/card_ability_cursor_location.tscn" id="6_vvfj4"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_a3llo"]
 viewport_path = NodePath("SubViewport")
@@ -12,8 +11,8 @@ viewport_path = NodePath("SubViewport")
 [node name="CardPlaneControl" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 288.0
-offset_bottom = 404.0
+offset_right = 240.0
+offset_bottom = 336.0
 size_flags_vertical = 4
 script = ExtResource("1_37i78")
 
@@ -28,6 +27,7 @@ unique_name_in_owner = true
 card = null
 
 [node name="Sprite" type="TextureRect" parent="."]
+unique_name_in_owner = true
 texture_filter = 2
 material = ExtResource("3_7gcy2")
 layout_mode = 1
@@ -41,32 +41,8 @@ expand_mode = 1
 stretch_mode = 4
 script = ExtResource("4_peau8")
 
-[node name="CardAbilityCursorLocation0" parent="Sprite" node_paths=PackedStringArray("down") instance=ExtResource("6_vvfj4")]
+[node name="CursorLocations" type="Control" parent="Sprite"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_horizontal = 2
-grow_vertical = 2
-layers = 65
-custom_tag = "ability0"
-down = NodePath("../CardAbilityCursorLocation1")
-
-[node name="CardAbilityCursorLocation1" parent="Sprite" node_paths=PackedStringArray("up") instance=ExtResource("6_vvfj4")]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 7.0
-offset_top = 296.0
-offset_right = -6.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-layers = 65
-custom_tag = "ability1"
-up = NodePath("../CardAbilityCursorLocation0")
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

@@ -26,4 +26,4 @@ func negate():
 	task.cancel()
 
 func get_ability() -> CardAbility:
-	return card_instance.card.get_ability(ability_index)
+	return card_instance.card.abilities[ability_index]

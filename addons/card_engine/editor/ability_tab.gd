@@ -1,35 +1,18 @@
 @tool
 extends Control
 
-@export var card: Resource:
-	get:
-		return card
-	set(value):
-		card = value
-		_refresh()
-
-@export var ability_idx: int:
-	get:
-		return ability_idx
-	set(value):
-		ability_idx = value
-		_refresh()
-
 @onready var cost := %AbilityScriptPanelCost
 @onready var trigger := %AbilityScriptPanelTrigger
 @onready var effect := %AbilityScriptPanelEffect
 @onready var passive := %AbilityScriptPanelPassive
 
-@onready var enable_checkbox := %EnableCheckBox
-@onready var ability_enabled := %AbilityEnabled
-@onready var ability_disabled := %AbilityDisabled
-
 @onready var ability_type_option_button: OptionButton = %AbilityTypeOptionButton
 @onready var name_edit = %NameEdit
 @onready var description_edit = %DescriptionEdit
 
-@onready var copy_button: Button = %CopyButton
-@onready var paste_button: Button = %PasteButton
+@onready var delete_button = %DeleteButton
+@onready var copy_button = %CopyButton
+@onready var paste_button = %PasteButton
 
 @onready var conditions_container = %ConditionsContainer
 @onready var add_condition_button = %AddConditionButton
@@ -40,54 +23,43 @@ extends Control
 var ability_script_panel_scene = preload("res://addons/card_engine/editor/ability_script_panel.tscn")
 var ability_script_panel_condition_scene = preload("res://addons/card_engine/editor/ability_script_panel_condition.tscn")
 
+var card: Resource
+var ability_idx: int
+
+var enable_paste: bool:
+	get:
+		return enable_paste
+	set(value):
+		enable_paste = value
+		if paste_button:
+			paste_button.disabled = not enable_paste
+
 signal saved()
 signal edit_script_requested(script: Script)
+signal delete(ability_tab)
 signal copy(ability_tab)
-signal paste()
+signal paste(ability_tab)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_refresh()
 
-func _get_ability():
-	return card["ability%s" % ability_idx]
+func set_value(p_card: Resource, p_idx: int):
+	card = p_card
+	ability_idx = p_idx
+	_refresh()
 
-func _set_ability(value):
-	card["ability%s" % ability_idx] = value
+func _get_ability():
+	return card.abilities[ability_idx]
 
 func _refresh():
 	if not is_inside_tree():
 		return
 	
-	enable_checkbox.button_pressed = card != null and _get_ability() != null
+	assert(card)
+	assert(_get_ability())
 	
-	
-	if not card or _get_ability() == null:
-		ability_enabled.visible = false
-		ability_disabled.visible = true
-		
-		cost.ability = null
-		trigger.ability = null
-		effect.ability = null
-		passive.ability = null
-		
-		for i in range(conditions_container.get_child_count() - 1):
-			conditions_container.get_child(i).queue_free()
-		
-		copy_button.disabled = true
-		copy_button.modulate.a = 0
-		paste_button.disabled = card == null
-		paste_button.modulate.a = 1
-		
-		return
-	
-	ability_enabled.visible = true
-	ability_disabled.visible = false
-	
-	copy_button.disabled = false
-	copy_button.modulate.a = 1
-	paste_button.disabled = true
-	paste_button.modulate.a = 0
+	paste_button.disabled = not enable_paste
 	
 	var ability: CardAbility = _get_ability()
 	
@@ -219,25 +191,6 @@ func _save():
 	saved.emit()
 
 
-func _on_enable_check_box_toggled(button_pressed):
-	if button_pressed and _get_ability() == null:
-		_set_ability(CardDatabase.ability_script.new())
-		_save()
-	elif not button_pressed and _get_ability() != null:
-		var confirm := ConfirmationDialog.new()
-		confirm.title = "Confirm"
-		var confirm_label := Label.new()
-		confirm_label.text = "Deleting ability. Are you sure?"
-		confirm.add_child(confirm_label)
-		confirm.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
-		confirm.confirmed.connect(func ():
-			_set_ability(null)
-			_save())
-		confirm.canceled.connect(func ():
-			enable_checkbox.button_pressed = true)
-		add_child(confirm)
-		confirm.show()
-
 
 func _on_name_edit_text_changed(new_text):
 	_get_ability().ability_name = new_text
@@ -298,6 +251,9 @@ func _confirm_clear_script(key: String):
 		remove_child(dialog)
 	
 
+func _on_delete_button_pressed():
+	delete.emit(self)
+
 func _on_copy_button_pressed():
 	copy.emit(self)
 
@@ -340,3 +296,4 @@ func _add_condition_panel():
 func _on_is_uninterruptable_check_button_toggled(button_pressed):
 	_get_ability().is_uninterruptable = button_pressed
 	_save()
+

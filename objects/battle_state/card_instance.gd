@@ -6,7 +6,7 @@ var location: ZoneLocation
 var owner_side: ZoneLocation.Side
 var unit: UnitState
 
-var ability_scratch: Array[Dictionary] = [{}, {}]
+var ability_scratch: Array[Dictionary] = []
 
 func _init(c: Card, id: int, l: ZoneLocation, o: ZoneLocation.Side):
 	card = c
@@ -14,6 +14,7 @@ func _init(c: Card, id: int, l: ZoneLocation, o: ZoneLocation.Side):
 	location = l
 	owner_side = o
 	unit = null
+	ability_scratch.resize(card.abilities.size())
 
 func _to_string():
 	return "<%s, %s, %s>" % [card, uid, location]

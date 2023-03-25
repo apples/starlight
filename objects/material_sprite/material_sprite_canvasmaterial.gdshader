@@ -5,4 +5,5 @@ render_mode blend_mix,unshaded;
 
 void fragment() {
 	COLOR = texture2DAA(TEXTURE, UV);
+	COLOR.a = round(COLOR.a);
 }

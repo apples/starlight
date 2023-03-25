@@ -81,7 +81,8 @@ func _choose_unit_action_ability_chosen(card_instance: CardInstance, index: int)
 	if index == -1:
 		return
 	
-	assert(index == 0 or index == 1)
+	assert(index >= 0)
+	assert(index < card_instance.card.abilities.size())
 	print("Activating ability%s on %s" % [index, card_instance])
 	
 	emit_signal("player_action", { type = "activate_ability", location = card_instance.location, ability_index = index })
