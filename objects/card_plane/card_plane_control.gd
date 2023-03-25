@@ -22,8 +22,8 @@ extends Control
 		location = value
 		refresh()
 
-@onready var sprite := $Sprite
-@onready var viewport := $SubViewport
+@onready var sprite = $Sprite
+@onready var viewport = $SubViewport
 @onready var card_render: CardRender = %CardRender
 @onready var cursor_locations = %CursorLocations
 
@@ -55,12 +55,12 @@ func refresh():
 			cl = cursor_locations.get_child(i)
 		else:
 			cl = card_ability_cursor_location.instantiate()
-			cl.layers = CursorLocation.LAYER_BATTLE | CursorLocation.LAYER_CARD_ABILITIES
 			cursor_locations.add_child(cl)
 		
 		cl.custom_tag = "ability%s" % i
-		cl.track_control = ability_panel
-		cl.scale *= sprite.scale
+		cl.scale = Vector2(0.5, 0.5) * sprite.size / sprite.texture.get_size()
+		cl.size = ability_panel.size / cl.scale
+		cl.position = ability_panel.global_position
 	
 	for i in range(card_render.ability_container.get_child_count(), cursor_locations.get_child_count()):
 		cursor_locations.get_child(i).queue_free()
