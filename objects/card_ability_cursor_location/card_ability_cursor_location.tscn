@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cyr4o4b07vyay"]
 
-[ext_resource type="Script" path="res://objects/card_ability_cursor_location/card_ability_cursor_location.gd" id="1_kqjkn"]
+[ext_resource type="Script" path="res://objects/cursor_location/cursor_location.gd" id="1_ffqbe"]
 [ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="2_otp6b"]
 [ext_resource type="Texture2D" uid="uid://drlvmestbp05o" path="res://objects/card_ability_cursor_location/images/card_ability_cursor.png" id="3_5xfec"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_texturerect.gd" id="4_7gmc1"]
@@ -14,7 +14,8 @@ theme_override_constants/margin_left = -16
 theme_override_constants/margin_top = -16
 theme_override_constants/margin_right = -16
 theme_override_constants/margin_bottom = -16
-script = ExtResource("1_kqjkn")
+script = ExtResource("1_ffqbe")
+layers = 65
 
 [node name="MaterialTextureRect" type="NinePatchRect" parent="."]
 texture_filter = 2
