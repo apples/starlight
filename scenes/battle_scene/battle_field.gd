@@ -1,5 +1,6 @@
 class_name BattleField extends Node3D
 
+var stella: CardPlane
 var front_row: Array[CardPlane] = []
 var back_row: Array[CardPlane] = []
 
@@ -20,6 +21,9 @@ func _ready():
 			continue
 		row.resize(idx + 1)
 		row[idx] = x
+	
+	stella = $Stella
+	stella.location = ZoneLocation.new(side, ZoneLocation.Zone.Stella)
 	
 	for i in range(back_row.size()):
 		back_row[i].location = ZoneLocation.new(side, ZoneLocation.Zone.BackRow, i)
@@ -55,4 +59,17 @@ func _ready():
 			else:
 				left.left = cursor_location
 				cursor_location.right = left
-
+	
+	if !flip_cursor_dirs:
+		front_row[1].cursor_location.right = stella.cursor_location
+		stella.cursor_location.left = front_row[1].cursor_location
+		
+		back_row[3].cursor_location.up = stella.cursor_location
+		stella.cursor_location.down = back_row[3].cursor_location
+	else:
+		front_row[1].cursor_location.left = stella.cursor_location
+		stella.cursor_location.right = front_row[1].cursor_location
+		
+		back_row[3].cursor_location.down = stella.cursor_location
+		stella.cursor_location.up = back_row[3].cursor_location
+	

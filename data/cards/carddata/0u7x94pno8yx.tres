@@ -6,7 +6,7 @@
 script = ExtResource("1_0ov6s")
 uid = "0u7x94pno8yx"
 cardset_name = "Darkness"
-cardset_idx = 1
+cardset_idx = 2
 card_name = "Lily, Darkness Heiress"
 artwork_path = ""
 mana = 2

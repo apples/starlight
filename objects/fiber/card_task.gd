@@ -72,6 +72,17 @@ func is_done() -> bool: return status == Status.DONE
 func can_run() -> bool:
 	return _awaited_future == null or _awaited_future.is_fulfilled
 
+func info(what: String, from_task: bool = true):
+	var s := "INFO: " if from_task else ""
+	if ability_instance:
+		var n := ability_instance.card_instance.card.card_name
+		print("[CardTask] (%s) %s: %s%s" % [n, filename, s, what])
+	elif "passive_effect" in self and self.passive_effect:
+		var n = self.passive_effect.card_instance.card.card_name
+		print("[CardTask] (%s) %s: %s%s" % [n, filename, s, what])
+	else:
+		print("[CardTask] %s: %s%s" % [filename, s, what])
+
 func run() -> void:
 	if is_done():
 		push_error("Attempted to run a CardTask which is already done.")
@@ -80,7 +91,7 @@ func run() -> void:
 	_did_update_state = false
 	
 	if !_awaited_future:
-		print("[CardTask] %s: Running state \"%s\"" % [filename, _next_state])
+		info("Running state \"%s\"" % [_next_state], false)
 		self.call(_next_state)
 	else:
 		assert(_awaited_future.is_fulfilled, "Waiting tasks must not be run!")
@@ -98,7 +109,7 @@ func run() -> void:
 			if _awaited_task_result != Result.SUCCESS:
 				state = _fail_state
 		_awaited_future = null
-		print("[CardTask] %s: Running state \"%s\"" % [filename, state])
+		info("Running state \"%s\"" % [state], false)
 		_call_with_optional_argument(state, value)
 	
 	assert(_did_update_state, "Must call wait_for(), done(), or goto().")
@@ -131,12 +142,12 @@ func _impossible_state(x):
 
 func _set_awaited_future(future: Future):
 	assert(!_awaited_future, "Already awaiting something.")
-	print("[CardTask] <await> %s: %s" % [filename, future])
+	info("<await> %s" % [future], false)
 	_awaited_future = future
 
 func _set_awaiting_task(task: CardTask):
 	assert(!_awaited_future, "Already awaiting something.")
-	print("[CardTask] <await> %s: %s" % [filename, task.filename])
+	info("<await> %s" % [task.filename], false)
 	_awaited_future = task._result_future
 
 func run_task(task: CardTask) -> void:
@@ -197,10 +208,6 @@ func cancel() -> void:
 	if _awaited_task != null and _awaited_task.status != Status.DONE:
 		_awaited_task.cancel()
 	done(null, Result.CANCELLED)
-
-func info(what: String):
-	print("[CardTask] %s: INFO: %s" % [filename, what])
-
 
 func assign_props(from: Object) -> void:
 	for prop in from.get_script().get_script_property_list():

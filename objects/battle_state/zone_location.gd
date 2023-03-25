@@ -14,6 +14,7 @@ enum Zone {
 	Starlight,
 	Banish,
 	Floating,
+	Stella,
 }
 
 var side: ZoneLocation.Side

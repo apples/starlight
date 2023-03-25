@@ -401,6 +401,12 @@ func _on_new_button_pressed():
 		for c in forbidden:
 			if str.contains(c):
 				return "Cannot contain %s" % c
+		
+		var script_name := str if str.ends_with(".gd") else ("%s.gd" % str)
+		var path := CardDatabase.get_script_path(script_kind, script_name)
+		if FileAccess.file_exists(path):
+			return "File already exists"
+		
 		return ""
 	
 	add_child(dialog)

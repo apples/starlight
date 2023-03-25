@@ -24,6 +24,11 @@ class UnitDestroyed extends TriggerEvent:
 	var unit: UnitState
 	var was: CardInstance
 
+class UnitDiscarded extends TriggerEvent:
+	func get_type(): return "unit_discarded"
+	var unit: UnitState
+	var was: CardInstance
+
 class UnitTapped extends TriggerEvent:
 	func get_type(): return "unit_tapped"
 	var unit: UnitState
@@ -37,5 +42,11 @@ class GainedTokens extends TriggerEvent:
 	func get_type(): return "gained_tokens"
 	var side: ZoneLocation.Side
 	var kind: BattleState.TokenType
+	var amount_gained: int
+	var total_amount: int
+
+class StellaCharge extends TriggerEvent:
+	func get_type(): return "stella_charge"
+	var side: ZoneLocation.Side
 	var amount_gained: int
 	var total_amount: int

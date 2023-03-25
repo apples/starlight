@@ -1,6 +1,9 @@
 class_name RootBattleTask extends CardTask
 
 func start():
+	battle_state.init_stella(ZoneLocation.Side.Player)
+	battle_state.init_stella(ZoneLocation.Side.Opponent)
+	
 	battle_state.shuffle_deck(ZoneLocation.Side.Player)
 	battle_state.shuffle_deck(ZoneLocation.Side.Opponent)
 	

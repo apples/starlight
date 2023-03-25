@@ -103,17 +103,19 @@ func get_design_note(card: Resource, no_create: bool = false) -> CardEngineDesig
 	
 	return note
 
+func get_script_path(script_key: String, filename: String) -> String:
+	var path_key := "ability_%ss_path" % script_key
+	assert(path_key in self)
+	return (self[path_key] as String).path_join(filename)
 
 func create_script(script_key: String, filename: String) -> String:
 	var template_key := script_key + "_template_path"
 	assert(template_key in config)
-	var path_key := "ability_%ss_path" % script_key
-	assert(path_key in self)
 	
 	var template_path := config[template_key] as String
 	assert(FileAccess.file_exists(template_path))
 	
-	var script_path := (self[path_key] as String).path_join(filename)
+	var script_path := get_script_path(script_key, filename)
 	
 	if FileAccess.file_exists(script_path):
 		return script_path

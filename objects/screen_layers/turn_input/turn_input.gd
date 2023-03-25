@@ -44,7 +44,10 @@ func _process_input(delta: float):
 				[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
 				[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
 					if card_plane.card:
-						_choose_unit_action(card_plane)
+						_choose_card_action(card_plane)
+				[ZoneLocation.Side.Player, ZoneLocation.Zone.Stella, _]:
+					if card_plane.card:
+						_choose_card_action(card_plane)
 
 func _choose_summon_location(card_instance: CardInstance):
 	var screen := battle_scene.push_screen(choose_field_location_scene)
@@ -55,14 +58,15 @@ func _choose_summon_location(card_instance: CardInstance):
 		emit_signal("player_action", { type = "play_unit", card = card_instance, where = location })
 		battle_scene.pop_screen()
 
-func _choose_unit_action(card_plane: CardPlane):
-	assert(card_plane.card && card_plane.card.kind == Card.Kind.UNIT)
+func _choose_card_action(card_plane: CardPlane):
+	var card := card_plane.card
+	assert(card_plane.card)
 	battle_scene.push_screen(choose_unit_action_scene, func (screen):
 		screen.card_plane = card_plane
-		screen.action_chosen.connect(self._choose_unit_action_decided)
+		screen.action_chosen.connect(self._choose_card_action_decided)
 	)
 
-func _choose_unit_action_decided(action: Dictionary):
+func _choose_card_action_decided(action: Dictionary):
 	if action == null:
 		return
 	print("Action chosen: ", action)
@@ -74,10 +78,10 @@ func _choose_unit_action_decided(action: Dictionary):
 					CardAbility.CardAbilityType.ACTION,
 					CardAbility.CardAbilityType.ATTACK,
 				])
-				screen.ability_chosen.connect(self._choose_unit_action_ability_chosen)
+				screen.ability_chosen.connect(self._choose_card_action_ability_chosen)
 			)
 
-func _choose_unit_action_ability_chosen(card_instance: CardInstance, index: int):
+func _choose_card_action_ability_chosen(card_instance: CardInstance, index: int):
 	if index == -1:
 		return
 	
