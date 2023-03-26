@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Card" load_steps=25 format=3 uid="uid://wus6fey2x03q"]
+[gd_resource type="Resource" script_class="Card" load_steps=28 format=3 uid="uid://wus6fey2x03q"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="1_32gan"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ekay0"]
@@ -59,6 +59,14 @@ conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd
 passive = SubResource("Resource_6o8qj")
 is_uninterruptable = false
 
+[sub_resource type="Resource" id="Resource_4c0v7"]
+script = ExtResource("6_0ue26")
+charge_cost = 3
+target_discard = 0
+target_units = 0
+target_zones = 2
+target_zones_var = ""
+
 [sub_resource type="Resource" id="Resource_spits"]
 script = ExtResource("7_yr72p")
 amount = 1
@@ -69,8 +77,17 @@ ability_name = ""
 description = "▼3: draw 1."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_4c0v7")
 effect = SubResource("Resource_spits")
 is_uninterruptable = true
+
+[sub_resource type="Resource" id="Resource_c7cws"]
+script = ExtResource("6_0ue26")
+charge_cost = 5
+target_discard = 0
+target_units = 0
+target_zones = 2
+target_zones_var = ""
 
 [sub_resource type="Resource" id="Resource_koef4"]
 script = ExtResource("1_ekay0")
@@ -78,14 +95,24 @@ ability_name = ""
 description = "▼5: gain 1 colorless mana counter."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_c7cws")
 is_uninterruptable = true
+
+[sub_resource type="Resource" id="Resource_sdvh2"]
+script = ExtResource("6_0ue26")
+charge_cost = 7
+target_discard = 1
+target_units = 0
+target_zones = 2
+target_zones_var = ""
 
 [sub_resource type="Resource" id="Resource_vwdxg"]
 script = ExtResource("1_ekay0")
 ability_name = ""
-description = "▼7: target a card in your graveyard; return that target to your hand."
+description = "▼7: target a card in your GY; return that target to your hand."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_sdvh2")
 is_uninterruptable = true
 
 [sub_resource type="Resource" id="Resource_eqj2k"]
@@ -102,7 +129,7 @@ script = ExtResource("8_ydvdr")
 [sub_resource type="Resource" id="Resource_low11"]
 script = ExtResource("1_ekay0")
 ability_name = ""
-description = "▼10: target a unit on your opponent's back row; send that unit to the graveyard."
+description = "▼10, target a unit on your opponent's back row: send that unit to the GY."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 cost = SubResource("Resource_eqj2k")

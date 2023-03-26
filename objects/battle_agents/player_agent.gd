@@ -22,7 +22,9 @@ func handle_message(message: BattleAgent.Message):
 		call(handler, message)
 
 func handle_take_turn(message: MessageTypes.TakeTurn):
-	var screen = battle_scene.push_screen(turn_input_screen_scene)
+	var screen = battle_scene.push_screen(turn_input_screen_scene, func (screen):
+		screen.available_abilities = message.available_abilities
+		screen.available_summons = message.available_summons)
 	var action = await screen.player_action
 	
 	message.action_future.fulfill(action)

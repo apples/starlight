@@ -8,8 +8,8 @@ extends BattleScreenLayer
 
 signal player_action(action: Dictionary)
 
-func _process(delta: float):
-	_process_input(delta)
+var available_abilities: Dictionary = {}
+var available_summons: Array[int] = []
 
 func uncover():
 	super.uncover()
@@ -31,6 +31,9 @@ func cover():
 	cursor.enabled = false
 	battle_scene.set_preview_card(null)
 
+func _process(delta: float):
+	_process_input(delta)
+
 func _process_input(delta: float):
 	if Input.is_action_just_pressed("confirm"):
 		if cursor.current_cursor_location:
@@ -40,7 +43,9 @@ func _process_input(delta: float):
 					var card_instance := battle_state.player.hand[idx]
 					match card_instance.card.kind:
 						Card.Kind.UNIT:
-							_choose_summon_location(card_instance)
+							if card_instance.uid in available_summons:
+								_choose_summon_location(card_instance)
+						# TODO: ORDER cards
 				[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
 				[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
 					if card_plane.card:
@@ -72,14 +77,17 @@ func _choose_card_action_decided(action: Dictionary):
 	print("Action chosen: ", action)
 	match action.type:
 		"ability":
-			battle_scene.push_screen(choose_card_ability_scene, func (screen):
-				screen.card_instance = battle_state.get_card_at(action.where)
-				screen.allowed_ability_types.append_array([
-					CardAbility.CardAbilityType.ACTION,
-					CardAbility.CardAbilityType.ATTACK,
-				])
-				screen.ability_chosen.connect(self._choose_card_action_ability_chosen)
-			)
+			var card_instance := battle_state.get_card_at(action.where)
+			if card_instance.uid in available_abilities:
+				battle_scene.push_screen(choose_card_ability_scene, func (screen):
+					screen.card_instance = card_instance
+					screen.allowed_ability_types.append_array([
+						CardAbility.CardAbilityType.ACTION,
+						CardAbility.CardAbilityType.ATTACK,
+					])
+					screen.allowed_ability_indices = available_abilities[card_instance.uid]
+					screen.ability_chosen.connect(self._choose_card_action_ability_chosen)
+				)
 
 func _choose_card_action_ability_chosen(card_instance: CardInstance, index: int):
 	if index == -1:

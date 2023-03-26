@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://cgt3saq0ax7c7"]
 
 [ext_resource type="Script" path="res://objects/screen_layers/choose_card_ability/choose_card_ability.gd" id="1_r5x1b"]
 [ext_resource type="PackedScene" uid="uid://bllqus03x44j5" path="res://objects/card_cursor/card_cursor.tscn" id="2_6tnq7"]
