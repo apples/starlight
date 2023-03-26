@@ -155,9 +155,6 @@ func discard_unit(where: ZoneLocation):
 
 
 func _teardown_passive(card_instance: CardInstance, ability_index: int):
-	assert(ability_index >= 0)
-	assert(ability_index < card_instance.card.abilities.size())
-	
 	var ability := card_instance.card.abilities[ability_index]
 	
 	assert(ability != null)
@@ -166,7 +163,7 @@ func _teardown_passive(card_instance: CardInstance, ability_index: int):
 	
 	for i in range(passive_effects.size(), 0, -1):
 		var effect := passive_effects[i - 1]
-		if effect.unit.card_instance.is_same(card_instance) and effect.ability_index == ability_index:
+		if effect.card_instance.is_same(card_instance) and effect.ability_index == ability_index:
 			passive_effects.remove_at(i - 1)
 	
 
@@ -212,10 +209,7 @@ func push_event(e: TriggerEvent) -> void:
 	
 	for effect in passive_effects:
 		if effect.is_active():
-			var task := effect.get_ability().passive.task()
-			task.passive_effect = effect
-			task.trigger_event = e
-			fiber.run_task(task)
+			effect.get_ability().passive.process_trigger_event(effect, e, self)
 
 func clear_events() -> void:
 	trigger_events.clear()
@@ -401,3 +395,88 @@ func can_be_targeted(target_location: ZoneLocation, card_instance: CardInstance,
 				return false
 	
 	return true
+
+## Returns a dictionary of available activated abilities for the given side.
+## The dictionary is formatted as follows:
+## [code]
+## {
+##     [uid: int]: Array[ability_index: int]
+## }
+## [/code]
+func get_available_activations(side: ZoneLocation.Side) -> Dictionary:
+	var side_state := get_side_state(side)
+	
+	var results := {}
+	
+	var check_card := func (card_instance: CardInstance):
+		var ability_indices: Array[int] = []
+		for i in range(card_instance.card.abilities.size()):
+			if can_be_activated(card_instance, i, side):
+				ability_indices.append(i)
+		if ability_indices.size() > 0:
+			return ability_indices
+		return null
+	
+	# Stella
+	var stella = check_card.call(side_state.stella)
+	if stella:
+		results[side_state.stella.uid] = stella
+	
+	var process_cards = func (cards: Array[CardInstance]):
+		for ci in cards:
+			if not ci:
+				continue
+			var ab = check_card.call(ci)
+			if ab:
+				results[ci.uid] = ab
+	
+	var process_units = func (units: Array[UnitState]):
+		for u in units:
+			if not u:
+				continue
+			var ci = u.card_instance
+			var ab = check_card.call(ci)
+			if ab:
+				results[ci.uid] = ab
+	
+	process_units.call(side_state.front_row)
+	process_units.call(side_state.back_row)
+	process_cards.call(side_state.hand)
+	
+	return results
+
+## Determines whether the specified ability can currently be activated by the specified user
+func can_be_activated(card_instance: CardInstance, ability_index: int, side: ZoneLocation.Side) -> bool:
+	assert(card_instance)
+	var ability := card_instance.card.abilities[ability_index]
+	assert(ability)
+	
+	# Unit cards must be on the field
+	if card_instance.card.kind == Card.Kind.UNIT and card_instance.unit == null:
+		return false
+	
+	match ability.type:
+		CardAbility.CardAbilityType.ACTION,\
+		CardAbility.CardAbilityType.ATTACK:
+			for cond in ability.conditions:
+				if not cond.is_met(self, card_instance, ability_index):
+					return false
+			if ability.cost and not ability.cost.can_be_paid(self, card_instance, ability_index, side):
+				return false
+		_:
+			return false
+	
+	return true
+
+## Returns an array of summonable (from hand) cards for the given side.
+func get_available_summons(side: ZoneLocation.Side) -> Array[int]:
+	var side_state := get_side_state(side)
+	
+	var results: Array[int] = []
+	
+	for card_instance in side_state.hand:
+		if card_instance.card.kind != Card.Kind.UNIT:
+			continue
+		results.append(card_instance.uid)
+	
+	return results
