@@ -1,8 +1,19 @@
 class_name TurnTask extends CardTask
 
 func start() -> void:
+	
+	var available_abilities: Dictionary = battle_state.get_available_activations(battle_state.current_turn)
+	
+	var available_summons := battle_state.get_available_summons(battle_state.current_turn)
+	
 	var action_future := Future.new()
-	battle_state.send_message_to(battle_state.current_turn, MessageTypes.TakeTurn.new({ action_future = action_future }))
+	battle_state.send_message_to(
+		battle_state.current_turn,
+		MessageTypes.TakeTurn.new({
+			action_future = action_future,
+			available_abilities = available_abilities,
+			available_summons = available_summons,
+		}))
 	wait_for_future(action_future, process_action)
 
 func process_action(action: Dictionary) -> void:

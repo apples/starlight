@@ -33,6 +33,8 @@ class ChooseTarget extends BattleAgent.Message:
 class TakeTurn extends BattleAgent.Message:
 	func get_type(): return "take_turn"
 	var action_future: CardTask.Future
+	var available_abilities: Dictionary = {} ## { [uid: int]: [ability_index: int] }
+	var available_summons: Array[int] = []
 
 class RequestResponse extends BattleAgent.Message:
 	func get_type(): return "request_response"
