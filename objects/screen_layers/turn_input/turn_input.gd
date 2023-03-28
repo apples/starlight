@@ -14,11 +14,13 @@ func uncover():
 	
 	battle_scene.set_preview_card(null)
 	
-	CursorLocation.filter_enable(get_tree(), CursorLocation.LAYER_HAND | CursorLocation.LAYER_FIELD, func (cl: CursorLocation):
+	CardCursor.set_criteria(CursorLocation.LAYER_HAND | CursorLocation.LAYER_FIELD, func (cl: CursorLocation):
 		if !cl.location:
 			return false
 		return true
 	)
+	
+	battle_scene.set_screen_label("Your Turn")
 
 func _choose_summon_location(card_instance: CardInstance):
 	var screen := battle_scene.push_screen(choose_field_location_scene)

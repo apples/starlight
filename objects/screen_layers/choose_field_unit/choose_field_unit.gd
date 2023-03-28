@@ -10,7 +10,7 @@ func _ready():
 func uncover():
 	super.uncover()
 	
-	var results := CursorLocation.filter_enable(get_tree(), CursorLocation.LAYER_BATTLE, func (cl: CursorLocation):
+	var results := CardCursor.set_criteria(CursorLocation.LAYER_BATTLE, func (cl: CursorLocation):
 		if !cl.location:
 			return false
 		for allowed in allowed_locations:
@@ -19,6 +19,8 @@ func uncover():
 					return true
 		return false
 	)
+	
+	battle_scene.set_screen_label("Choose Target")
 	
 	if results.size() == 0:
 		push_warning("No possible targets")
