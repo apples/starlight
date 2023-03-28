@@ -80,3 +80,8 @@ func refresh():
 			cl.down = ability_overlays.get_child(i + 1).cursor_location
 		else:
 			cl.down = null
+
+
+func _on_sub_viewport_size_changed():
+	if not Engine.is_editor_hint():
+		print("wtf")

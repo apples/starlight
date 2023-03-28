@@ -12,7 +12,7 @@ func _ready():
 func uncover():
 	super.uncover()
 	
-	var results := CursorLocation.filter_enable(get_tree(), CursorLocation.LAYER_CARD_ABILITIES, func (cl: CursorLocation):
+	var results := CardCursor.set_criteria(CursorLocation.LAYER_CARD_ABILITIES, func (cl: CursorLocation):
 		# Get index from cursor location
 		
 		assert(cl.custom_tag.begins_with("ability"))
@@ -37,6 +37,8 @@ func uncover():
 		
 		return true
 	)
+	
+	battle_scene.set_screen_label("Choose Ability to Activate")
 	
 	if results.size() > 0:
 		CardCursor.current_cursor_location = results[0]

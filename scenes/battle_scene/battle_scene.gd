@@ -16,6 +16,9 @@ class_name BattleScene extends Node
 
 @onready var card_preview := $UI/CardPreview
 
+@onready var screen_label_container = %ScreenLabelContainer
+@onready var screen_label = %ScreenLabel
+
 var screen_layer_stack: Array[BattleScreenLayer] = []
 
 # Called when the node enters the scene tree for the first time.
@@ -187,3 +190,10 @@ func get_card_plane(location: ZoneLocation) -> CardPlane:
 
 func _on_card_cursor_cursor_location_changed(cursor_location: CursorLocation):
 	pass
+
+
+func set_screen_label(str: String):
+	screen_label_container.visible = str != ""
+	screen_label.text = str
+	screen_label.animate()
+

@@ -78,10 +78,13 @@ static func filter_enable(tree: SceneTree, layer: int, filter: Callable) -> Arra
 	var results: Array[CursorLocation] = []
 	for cl in tree.get_nodes_in_group("cursor_location"):
 		var cursor_location := cl as CursorLocation
-		if (cursor_location.layers & layer) == 0:
-			cursor_location.enabled = false
-		else:
-			cursor_location.enabled = filter.call(cursor_location)
-			if cursor_location.enabled:
-				results.append(cursor_location)
+		cursor_location.enabled = matches(cursor_location, layer, filter)
+		if cursor_location.enabled:
+			results.append(cursor_location)
 	return results
+
+static func matches(cursor_location: CursorLocation, layer: int, filter: Callable) -> bool:
+	if (cursor_location.layers & layer) == 0:
+		return false
+	else:
+		return filter.call(cursor_location)

@@ -2,6 +2,8 @@ extends Node
 
 var agents: Array[CardCursorAgent] = []
 
+var _criteria
+
 var current_cursor_location: CursorLocation = null:
 	get:
 		return current_cursor_location
@@ -36,7 +38,12 @@ func get_current_agent() -> CardCursorAgent:
 
 func add_location(location: CursorLocation):
 	if location.enabled:
-		enabled_cursor_locations.append(location)
+		if _criteria:
+			if not CursorLocation.matches(location, _criteria[0], _criteria[1]):
+				location.enabled = false
+		if location.enabled:
+			enabled_cursor_locations.append(location)
+	
 	location.enabled_changed.connect(_on_location_enabled_changed)
 	location.confirmed.connect(_on_location_confirmed)
 	location.made_current.connect(_on_location_made_current)
@@ -151,3 +158,7 @@ func _unhandled_input(event):
 			var agent := get_current_agent()
 			if agent:
 				agent.cancel()
+
+func set_criteria(layer: int, filter: Callable) -> Array[CursorLocation]:
+	_criteria = [layer, filter]
+	return CursorLocation.filter_enable(get_tree(), layer, filter)

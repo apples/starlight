@@ -8,7 +8,7 @@ func _ready():
 func uncover():
 	super.uncover()
 	
-	var results := CursorLocation.filter_enable(get_tree(), CursorLocation.LAYER_BATTLE, func (cl: CursorLocation):
+	var results := CardCursor.set_criteria(CursorLocation.LAYER_BATTLE, func (cl: CursorLocation):
 		if !cl.location:
 			return false
 		match cl.location.tuple():
@@ -18,6 +18,8 @@ func uncover():
 				return unit == null
 		return false
 	)
+	
+	battle_scene.set_screen_label("Choose Location")
 	
 	if results.size() == 0:
 		emit_signal("location_picked", null)
