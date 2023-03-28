@@ -23,6 +23,7 @@ func pick_next_target():
 	var m := MessageTypes.ChooseTarget.new()
 	m.future = Future.new()
 	m.allowed_locations = allowed_locations
+	m.source_location = ability_instance.source_location
 	battle_state.send_message_to(ability_instance.controller, m)
 	wait_for_future(m.future, next_target_chosen)
 
