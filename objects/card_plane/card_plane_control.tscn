@@ -18,6 +18,7 @@ script = ExtResource("1_37i78")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
+snap_2d_vertices_to_pixel = true
 canvas_item_default_texture_filter = 0
 size = Vector2i(240, 336)
 render_target_update_mode = 1
@@ -46,3 +47,5 @@ unique_name_in_owner = true
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[connection signal="size_changed" from="SubViewport" to="." method="_on_sub_viewport_size_changed"]

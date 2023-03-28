@@ -11,16 +11,19 @@ func uncover():
 	
 	control_root.global_position = get_viewport().get_camera_3d().unproject_position(card_plane.action_root.global_position)
 	
-	var results := CursorLocation.filter_enable(
-		get_tree(), CursorLocation.LAYER_ACTIONS, func (cl: CursorLocation):
+	var results := CardCursor.set_criteria(
+		CursorLocation.LAYER_ACTIONS, func (cl: CursorLocation):
 		return true
 	)
+	
+	battle_scene.set_screen_label("Choose Unit Action")
 	
 	if results.size() == 0:
 		emit_signal("action_chosen", null)
 		remove_screen()
 	else:
 		results[0].make_current()
+	
 
 
 func _on_card_cursor_agent_confirmed(cursor_location: CursorLocation):
