@@ -1,7 +1,5 @@
 extends BattleScreenLayer
 
-@onready var cursor := $CardCursor
-
 @export var choose_field_location_scene: PackedScene = preload("res://objects/screen_layers/choose_field_location/choose_field_location.tscn")
 @export var choose_unit_action_scene: PackedScene = preload("res://objects/screen_layers/choose_unit_action/choose_unit_action.tscn")
 @export var choose_card_ability_scene: PackedScene = preload("res://objects/screen_layers/choose_card_ability/choose_card_ability.tscn")
@@ -21,38 +19,6 @@ func uncover():
 			return false
 		return true
 	)
-	cursor.enabled = true
-	
-	if cursor.current_cursor_location:
-		battle_scene.set_preview_card(battle_state.get_card_at(cursor.current_cursor_location.location))
-
-func cover():
-	super.cover()
-	cursor.enabled = false
-	battle_scene.set_preview_card(null)
-
-func _process(delta: float):
-	_process_input(delta)
-
-func _process_input(delta: float):
-	if Input.is_action_just_pressed("confirm"):
-		if cursor.current_cursor_location:
-			var card_plane: CardPlane = cursor.current_cursor_location.get_parent()
-			match card_plane.location.tuple():
-				[ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, var idx]:
-					var card_instance := battle_state.player.hand[idx]
-					match card_instance.card.kind:
-						Card.Kind.UNIT:
-							if card_instance.uid in available_summons:
-								_choose_summon_location(card_instance)
-						# TODO: ORDER cards
-				[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
-				[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
-					if card_plane.card:
-						_choose_card_action(card_plane)
-				[ZoneLocation.Side.Player, ZoneLocation.Zone.Stella, _]:
-					if card_plane.card:
-						_choose_card_action(card_plane)
 
 func _choose_summon_location(card_instance: CardInstance):
 	var screen := battle_scene.push_screen(choose_field_location_scene)
@@ -100,8 +66,32 @@ func _choose_card_action_ability_chosen(card_instance: CardInstance, index: int)
 	emit_signal("player_action", { type = "activate_ability", location = card_instance.location, ability_index = index })
 	battle_scene.pop_screen()
 
-func _on_card_cursor_cursor_location_changed(cursor_location: CursorLocation):
+func _on_card_cursor_agent_confirmed(cursor_location: CursorLocation):
+	var card_plane: CardPlane = cursor_location.get_parent()
+	match card_plane.location.tuple():
+		[ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, var idx]:
+			var card_instance := battle_state.player.hand[idx]
+			match card_instance.card.kind:
+				Card.Kind.UNIT:
+					if card_instance.uid in available_summons:
+						_choose_summon_location(card_instance)
+				# TODO: ORDER cards
+		[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
+		[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
+			if card_plane.card:
+				_choose_card_action(card_plane)
+		[ZoneLocation.Side.Player, ZoneLocation.Zone.Stella, _]:
+			if card_plane.card:
+				_choose_card_action(card_plane)
+
+
+func _on_card_cursor_agent_cancelled():
+	pass
+
+
+
+func _on_card_cursor_agent_cursor_location_changed(cursor_location):
 	if cursor_location:
-		battle_scene.set_preview_card(battle_state.get_card_at(cursor_location.location))
-	else:
-		battle_scene.set_preview_card(null)
+		var parent = cursor_location.get_parent()
+		if "card" in parent:
+			battle_scene.set_preview_card(parent.card)

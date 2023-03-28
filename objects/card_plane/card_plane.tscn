@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bcrmyin4iw0kk"]
+[gd_scene load_steps=10 format=3 uid="uid://bcrmyin4iw0kk"]
 
-[ext_resource type="PackedScene" uid="uid://cw86a2s64vsu2" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
+[ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane.gd" id="1_q5tqm"]
 [ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_material.gdshader" id="3_0imkw"]
 [ext_resource type="PackedScene" uid="uid://jj4n3ey7ocix" path="res://objects/cursor_location/cursor_location.tscn" id="5_580d1"]
@@ -28,12 +28,16 @@ shader_parameter/sprite_filter_trilinear = true
 shader_parameter/texture2DAA_bias = 1.0
 shader_parameter/texture_albedo = SubResource("ViewportTexture_c2f4v")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_84lxg"]
+size = Vector3(2.4, 3.36, 0.01)
+
 [node name="CardPlane" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 script = ExtResource("1_q5tqm")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
+handle_input_locally = false
 canvas_item_default_texture_filter = 0
 size = Vector2i(240, 336)
 render_target_update_mode = 1
@@ -72,3 +76,11 @@ text = "-6"
 font = ExtResource("6_a2h0i")
 font_size = 190
 outline_size = 60
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_84lxg")
+
+[connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]

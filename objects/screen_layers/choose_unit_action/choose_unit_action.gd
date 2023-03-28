@@ -1,9 +1,6 @@
 extends BattleScreenLayer
 
-@onready var cursor := $ActionCursor
 @onready var control_root := %ControlRoot
-@onready var ability_control := %Ability
-@onready var retreat_control := %Retreat
 
 var card_plane: CardPlane = null
 
@@ -19,20 +16,22 @@ func uncover():
 		return true
 	)
 	
-	if results.size() > 0:
-		cursor.enabled = true
-		cursor.current_cursor_location = results[0]
-	else:
+	if results.size() == 0:
 		emit_signal("action_chosen", null)
 		remove_screen()
+	else:
+		results[0].make_current()
 
-func _process(delta: float):
-	if Input.is_action_just_pressed("confirm"):
-		if cursor.current_cursor_location:
-			remove_screen()
-			emit_signal("action_chosen", {
-				type = cursor.current_cursor_location.custom_tag,
-				where = card_plane.location})
-		else:
-			remove_screen()
-			emit_signal("action_chosen", null)
+
+func _on_card_cursor_agent_confirmed(cursor_location: CursorLocation):
+	assert(is_ancestor_of(cursor_location))
+	remove_screen()
+	emit_signal("action_chosen", {
+		type = cursor_location.custom_tag,
+		where = card_plane.location})
+
+
+func _on_card_cursor_agent_cancelled():
+	remove_screen()
+	emit_signal("action_chosen", null)
+
