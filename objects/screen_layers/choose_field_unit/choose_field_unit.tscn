@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://dbyiolx82nx2g"]
+[gd_scene load_steps=5 format=3 uid="uid://dbyiolx82nx2g"]
 
 [ext_resource type="Script" path="res://objects/screen_layers/choose_field_unit/choose_field_unit.gd" id="1_65nab"]
 [ext_resource type="Script" path="res://objects/card_cursor_agent/card_cursor_agent.gd" id="2_5h6sc"]
+[ext_resource type="PackedScene" uid="uid://n0ysjd07thkm" path="res://objects/arrow_path/arrow_path.tscn" id="3_ldv6e"]
+
+[sub_resource type="Curve3D" id="Curve3D_1ubcy"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, -1.01347, -0.0287198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.117532, -0.249932, 0, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+up_vector_enabled = false
 
 [node name="ChooseFieldUnit" type="Node3D"]
 script = ExtResource("1_65nab")
@@ -9,4 +19,10 @@ script = ExtResource("1_65nab")
 [node name="CardCursorAgent" type="Node" parent="."]
 script = ExtResource("2_5h6sc")
 
+[node name="ArrowPath" parent="." instance=ExtResource("3_ldv6e")]
+visible = false
+curve = SubResource("Curve3D_1ubcy")
+height = 4.0
+
 [connection signal="confirmed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_confirmed"]
+[connection signal="cursor_location_changed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_cursor_location_changed"]

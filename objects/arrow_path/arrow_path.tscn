@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://n0ysjd07thkm"]
+
+[ext_resource type="Script" path="res://objects/arrow_path/arrow_path.gd" id="1_6ec8p"]
+[ext_resource type="Texture2D" uid="uid://dm1hnlvum7fd4" path="res://objects/arrow_path/arrow.png" id="2_1wf0o"]
+[ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="3_5n3kr"]
+
+[sub_resource type="Curve3D" id="Curve3D_2kuhm"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, -1.01347, -0.0287198, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, -0.117532, -0.249932, 0, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+up_vector_enabled = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xin3m"]
+render_priority = 1
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = ExtResource("2_1wf0o")
+texture_filter = 0
+texture_repeat = false
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_nnfdi"]
+
+[node name="ArrowPath" type="Path3D"]
+curve = SubResource("Curve3D_2kuhm")
+script = ExtResource("1_6ec8p")
+material = SubResource("StandardMaterial3D_xin3m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ImmediateMesh_nnfdi")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+font = ExtResource("3_5n3kr")
+font_size = 19
+outline_size = 4
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

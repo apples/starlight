@@ -156,9 +156,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -640.0
-offset_top = 48.0
+offset_top = 30.0
 offset_right = 640.0
-offset_bottom = 98.0
+offset_bottom = 94.0
 grow_horizontal = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/ScreenLabelContainer"]
