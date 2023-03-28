@@ -14,9 +14,6 @@ class_name BattleScene extends Node
 @onready var player_tokens := $PlayerTokens
 @onready var opponent_tokens := $OpponentTokens
 
-@onready var player_stella = $PlayerStella
-@onready var opponent_stella = $OpponentStella
-
 @onready var card_preview := $UI/CardPreview
 
 var screen_layer_stack: Array[BattleScreenLayer] = []
@@ -33,6 +30,8 @@ func _ready():
 		o.down = p
 	
 	card_preview.visible = false
+	
+	CardCursor.cursor_location_changed.connect(_on_card_cursor_cursor_location_changed)
 
 func _process(delta: float):
 	fiber.execute_one()
@@ -152,13 +151,13 @@ func pop_screen():
 	if screen_layer_stack.size() > 0:
 		screen_layer_stack[-1].uncover()
 
-func set_preview_card(card_instance: CardInstance):
-	if not card_instance:
+func set_preview_card(card: Card):
+	if not card:
 		card_preview.visible = false
 		return
 	
 	card_preview.visible = true
-	card_preview.card = card_instance.card
+	card_preview.card = card
 
 
 func get_card_plane(location: ZoneLocation) -> CardPlane:
@@ -184,3 +183,7 @@ func get_card_plane(location: ZoneLocation) -> CardPlane:
 	assert(location.slot >= 0 && location.slot < row.size())
 	
 	return row[location.slot]
+
+
+func _on_card_cursor_cursor_location_changed(cursor_location: CursorLocation):
+	pass

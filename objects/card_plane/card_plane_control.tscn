@@ -41,7 +41,7 @@ expand_mode = 1
 stretch_mode = 4
 script = ExtResource("4_peau8")
 
-[node name="CursorLocations" type="Control" parent="Sprite"]
+[node name="AbilityOverlays" type="Control" parent="Sprite"]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_right = 40.0
