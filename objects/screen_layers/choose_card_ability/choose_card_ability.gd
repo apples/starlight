@@ -1,7 +1,5 @@
 extends BattleScreenLayer
 
-@onready var cursor := $Cursor
-
 var card_instance: CardInstance = null
 var allowed_ability_types: Array[CardAbility.CardAbilityType] = []
 var allowed_ability_indices: Variant = null
@@ -41,23 +39,18 @@ func uncover():
 	)
 	
 	if results.size() > 0:
-		cursor.enabled = true
-		cursor.current_cursor_location = results[0]
-		battle_scene.set_preview_card(card_instance)
+		CardCursor.current_cursor_location = results[0]
+		battle_scene.set_preview_card(card_instance.card)
 	else:
 		emit_signal("location_picked", null)
 		battle_scene.pop_screen()
 
-func _process(delta: float):
-	_process_input(delta)
 
-func _process_input(delta: float):
-	if Input.is_action_just_pressed("confirm"):
-		if cursor.current_cursor_location:
-			assert(cursor.current_cursor_location.custom_tag.begins_with("ability"))
-			var idx := int(cursor.current_cursor_location.custom_tag.trim_prefix("ability"))
-			assert(idx >= 0)
-			assert(idx < card_instance.card.abilities.size())
-			
-			ability_chosen.emit(card_instance, idx)
-			battle_scene.pop_screen()
+func _on_card_cursor_agent_confirmed(cursor_location):
+	assert(cursor_location.custom_tag.begins_with("ability"))
+	var idx := int(cursor_location.custom_tag.trim_prefix("ability"))
+	assert(idx >= 0)
+	assert(idx < card_instance.card.abilities.size())
+	
+	ability_chosen.emit(card_instance, idx)
+	battle_scene.pop_screen()

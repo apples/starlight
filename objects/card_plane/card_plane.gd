@@ -114,3 +114,18 @@ func _refresh_tween_to(where: float):
 		.set_ease(Tween.EASE_IN_OUT)
 	current_tween_target = tween_target
 	current_tween.tween_property(sprite, "rotation_degrees", Vector3(0,0,where), tween_duration)
+
+
+func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
+	if not cursor_location.enabled:
+		return
+	
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			get_viewport().set_input_as_handled()
+			cursor_location.confirm()
+
+
+func _on_area_3d_mouse_entered():
+	if cursor_location.enabled:
+		cursor_location.make_current()

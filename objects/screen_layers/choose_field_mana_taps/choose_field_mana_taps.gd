@@ -1,7 +1,5 @@
 extends BattleScreenLayer
 
-@onready var cursor: CardCursor = $CardCursor
-
 signal locations_picked(location: ZoneLocation)
 
 var available_locations: Array[ZoneLocation] = []
@@ -27,29 +25,19 @@ func uncover():
 		return false
 	)
 	
-	if results.size() >= amount:
-		cursor.enabled = true
-		cursor.current_cursor_location = results[0]
-	else:
+	if results.size() < amount:
 		push_warning("No possible targets")
 		locations_picked.emit(null)
 		battle_scene.pop_screen()
 
 
-func _process(delta: float):
-	_process_input(delta)
 
-
-func _process_input(delta: float):
-	if Input.is_action_just_pressed("confirm"):
-		if cursor.current_cursor_location:
-			var card_plane: CardPlane = cursor.current_cursor_location.get_parent()
-			_chosen.append(card_plane.location)
-			cursor.disable_current()
-			
-			if _chosen.size() >= amount:
-				locations_picked.emit(_chosen)
-				battle_scene.pop_screen()
-			else:
-				assert(cursor.current_cursor_location)
-
+func _on_card_cursor_agent_confirmed(cursor_location):
+	_chosen.append(cursor_location.location)
+	cursor_location.enabled = false
+	
+	if _chosen.size() >= amount:
+		locations_picked.emit(_chosen)
+		battle_scene.pop_screen()
+	else:
+		assert(CardCursor.current_cursor_location)

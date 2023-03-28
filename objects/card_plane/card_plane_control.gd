@@ -25,7 +25,7 @@ extends Control
 @onready var sprite = $Sprite
 @onready var viewport = $SubViewport
 @onready var card_render: CardRender = %CardRender
-@onready var cursor_locations = %CursorLocations
+@onready var ability_overlays = %AbilityOverlays
 
 var card_ability_cursor_location := preload("res://objects/card_ability_cursor_location/card_ability_cursor_location.tscn")
 
@@ -50,31 +50,33 @@ func refresh():
 	
 	for i in range(card_render.ability_panels.size()):
 		var ability_panel: Control = card_render.ability_panels[i]
-		var cl: CursorLocation
-		if i < cursor_locations.get_child_count():
-			cl = cursor_locations.get_child(i)
+		var ability_overlay: Control
+		if i < ability_overlays.get_child_count():
+			ability_overlay = ability_overlays.get_child(i)
 		else:
-			cl = card_ability_cursor_location.instantiate()
-			cursor_locations.add_child(cl)
+			ability_overlay = card_ability_cursor_location.instantiate()
+			ability_overlays.add_child(ability_overlay)
 		
+		var cl: CursorLocation = ability_overlay.cursor_location
 		cl.custom_tag = "ability%s" % i
-		cl.scale = Vector2(0.5, 0.5) * sprite.size / sprite.texture.get_size()
-		cl.size = ability_panel.size / cl.scale
-		cl.position = ability_panel.global_position
+		
+		ability_overlay.scale = Vector2(0.5, 0.5) * sprite.size / sprite.texture.get_size()
+		ability_overlay.size = ability_panel.size / ability_overlay.scale
+		ability_overlay.position = ability_panel.global_position
 	
-	for i in range(card_render.ability_panels.size(), cursor_locations.get_child_count()):
-		cursor_locations.get_child(i).queue_free()
+	for i in range(card_render.ability_panels.size(), ability_overlays.get_child_count()):
+		ability_overlays.get_child(i).queue_free()
 	
 	# Fix navigation links
-	for i in range(cursor_locations.get_child_count()):
-		var cl := cursor_locations.get_child(i)
+	for i in range(ability_overlays.get_child_count()):
+		var cl: CursorLocation = ability_overlays.get_child(i).cursor_location
 		
 		if i > 0:
-			cl.up = cursor_locations.get_child(i - 1)
+			cl.up = ability_overlays.get_child(i - 1).cursor_location
 		else:
 			cl.up = null
 		
-		if i < cursor_locations.get_child_count() - 1:
-			cl.down = cursor_locations.get_child(i + 1)
+		if i < ability_overlays.get_child_count() - 1:
+			cl.down = ability_overlays.get_child(i + 1).cursor_location
 		else:
 			cl.down = null
