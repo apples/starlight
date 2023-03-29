@@ -13,7 +13,7 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 		return false
 	
 	# Check self tap
-	var self_unit := battle_state.get_unit(card_instance.location)
+	var self_unit := battle_state.unit_get(card_instance.location)
 	
 	# Short circuit if not a unit
 	if not self_unit:
@@ -40,7 +40,7 @@ class Task extends CardTask:
 		
 		# Perform self-tap
 		
-		var self_unit := battle_state.get_unit(ability_instance.card_instance.location)
+		var self_unit := battle_state.unit_get(ability_instance.card_instance.location)
 		assert(not self_unit.is_tapped)
 		if self_unit.is_tapped:
 			push_error("Invalid payload: Unit already tapped")

@@ -30,7 +30,7 @@ func process_action(action: Dictionary) -> void:
 		goto(start)
 
 func process_play_unit(action: Dictionary) -> void:
-	battle_state.summon_unit(action.card, action.where)
+	battle_state.unit_summon(action.card, action.where)
 	goto(start)
 
 func process_activate_ability(payload: Dictionary):
@@ -50,10 +50,14 @@ func process_activate_ability(payload: Dictionary):
 	assert(index >= 0)
 	assert(index < card_instance.card.abilities.size())
 	
-	if card_instance.card.kind == Card.Kind.STELLA:
-		return _process_activate_ability_stella(card_instance, index)
+	match card_instance.card.kind:
+		Card.Kind.UNIT:
+			return _process_activate_ability_unit(card_instance, index)
+		Card.Kind.GRACE:
+			return _process_activate_ability_grace(card_instance, index)
+		Card.Kind.STELLA:
+			return _process_activate_ability_stella(card_instance, index)
 	
-	_process_activate_ability_unit(card_instance, index)
 
 func _process_activate_ability_unit(card_instance: CardInstance, index: int):
 	var unit := card_instance.unit
@@ -75,7 +79,24 @@ func _process_activate_ability_unit(card_instance: CardInstance, index: int):
 		goto(start)
 		return
 	
-	var ability_instance := battle_state.perform_ability(battle_state.current_turn, unit.card_instance, index)
+	var ability_instance := battle_state.ability_perform(battle_state.current_turn, unit.card_instance, index)
+	
+	wait_for(ability_instance.task, activate_ability_finished)
+
+func _process_activate_ability_grace(card_instance: CardInstance, index: int):
+	var ability: CardAbility = card_instance.card.abilities[index]
+	assert(ability != null)
+	if ability == null:
+		print("Invalid ability index: %s" % index)
+		goto(start)
+		return
+	
+	if ability.effect == null:
+		print("Ability has no effect! (index: %s)" % index)
+		goto(start)
+		return
+	
+	var ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
 	
 	wait_for(ability_instance.task, activate_ability_finished)
 
@@ -92,13 +113,13 @@ func _process_activate_ability_stella(card_instance: CardInstance, index: int):
 		goto(start)
 		return
 	
-	var ability_instance := battle_state.perform_ability(battle_state.current_turn, card_instance, index)
+	var ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
 	
 	wait_for(ability_instance.task, activate_ability_finished)
 
 
 func activate_ability_finished() -> void:
-	battle_state.clear_events()
+	battle_state.trigger_events_clear()
 	goto(start)
 
 #func process_retreat(_payload):

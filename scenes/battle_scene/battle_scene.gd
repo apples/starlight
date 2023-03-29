@@ -93,7 +93,7 @@ func _reconcile_hand(state: BattleSideState, hand: Node3D, hidden: bool):
 				CursorLocation.LAYER_HAND | \
 				(CursorLocation.LAYER_PLAYER if hand == player_hand else CursorLocation.LAYER_OPPONENT)
 			hand.add_child(card_plane)
-		card_plane.card = state.hand[i].card if not hidden else null
+		card_plane.card = state.hand.get_card(i).card if not hidden else null
 		card_plane.location = ZoneLocation.new(state.side, ZoneLocation.Zone.Hand, i)
 		var cursor_location = card_plane.cursor_location
 		if i > 0:

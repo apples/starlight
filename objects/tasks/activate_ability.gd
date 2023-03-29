@@ -39,9 +39,13 @@ func start() -> void:
 	# Push Trigger Event
 	
 	activation_event = TriggerEvents.AbilityActivated.new({ ability_instance = ability_instance })
-	battle_state.push_event(activation_event)
+	battle_state.trigger_event_push(activation_event)
 	
 	# Pay cost
+	
+	# Discard as part of cost for cards held in hand
+	if ability_instance.source_location.zone == ZoneLocation.Zone.Hand:
+		battle_state.discard_hand_card(ability_instance.card_instance)
 	
 	if ability.cost:
 		if not ability.cost.can_be_paid(battle_state, card_instance, ability_instance.ability_index, ability_instance.controller):
@@ -74,7 +78,7 @@ func effect_done() -> void:
 	
 	# Push event
 	
-	battle_state.push_event(TriggerEvents.AbilityPerformed.new({
+	battle_state.trigger_event_push(TriggerEvents.AbilityPerformed.new({
 		ability_instance = ability_instance
 	}))
 	
@@ -84,6 +88,5 @@ func effect_done() -> void:
 	wait_for(response_task, pop_stack)
 
 func pop_stack() -> void:
-	assert(battle_state.ability_stack.back() == ability_instance)
-	battle_state.pop_ability()
+	battle_state.ability_pop(ability_instance)
 	done()

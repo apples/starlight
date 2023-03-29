@@ -19,7 +19,7 @@ func uncover():
 			return false
 		for allowed in allowed_locations:
 			if cl.location.equals(allowed):
-				if battle_state.get_unit(cl.location):
+				if battle_state.unit_get(cl.location):
 					return true
 		return false
 	)
@@ -44,9 +44,13 @@ func uncover():
 func _on_card_cursor_agent_confirmed(cursor_location):
 	battle_scene.pop_screen()
 	var card_plane: CardPlane = cursor_location.get_parent()
-	emit_signal("location_picked", card_plane.location)
+	location_picked.emit(card_plane.location)
 
 
 func _on_card_cursor_agent_cursor_location_changed(cursor_location):
 	if cursor_location:
 		arrow_path.end = cursor_location.global_position
+
+
+func _on_card_cursor_agent_cancelled():
+	location_picked.emit(null)

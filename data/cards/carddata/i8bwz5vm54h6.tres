@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="Card" load_steps=24 format=3 uid="uid://cx1yokgeuhi8x"]
+[gd_resource type="Resource" script_class="Card" load_steps=24 format=3 uid="uid://dxd6df7bcc34w"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_a1xo7"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_ix1e0"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3g7gi"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3ue7v"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_t1uh2"]
 [ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="4_m675n"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="4_ug2rh"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_tapped.gd" id="5_amcjp"]
-[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_front_unit_attacks.gd" id="7_a7lqk"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_an_attack_is_declared.gd" id="7_na2so"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="7_up660"]
 
 [sub_resource type="Resource" id="Resource_18xss"]
@@ -18,9 +18,9 @@ target_count = 1
 target_zones = 2
 target_zones_var = ""
 
-[sub_resource type="Resource" id="Resource_w0p8n"]
-script = ExtResource("2_3g7gi")
-amount = 4
+[sub_resource type="Resource" id="Resource_afj1w"]
+script = ExtResource("2_3ue7v")
+amount = 3
 amount_var = ""
 
 [sub_resource type="Resource" id="Resource_atprm"]
@@ -30,7 +30,7 @@ description = "Bites"
 type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 cost = SubResource("Resource_18xss")
-effect = SubResource("Resource_w0p8n")
+effect = SubResource("Resource_afj1w")
 is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_ytyu1"]
@@ -78,15 +78,16 @@ target_zones_var = ""
 script = ExtResource("7_up660")
 amount = 3
 
-[sub_resource type="Resource" id="Resource_78t7o"]
-script = ExtResource("7_a7lqk")
+[sub_resource type="Resource" id="Resource_j7g8t"]
+script = ExtResource("7_na2so")
+from_zone = 4
 
 [sub_resource type="Resource" id="Resource_ws3ky"]
 script = ExtResource("3_t1uh2")
 ability_name = "lil helper"
 description = "boost atk 3"
 type = 3
-trigger = SubResource("Resource_78t7o")
+trigger = SubResource("Resource_j7g8t")
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 cost = SubResource("Resource_nrilu")
 effect = SubResource("Resource_uspdn")
