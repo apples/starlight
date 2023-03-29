@@ -19,8 +19,8 @@ config/icon="res://icon.svg"
 
 Settings="*res://singletons/settings.gd"
 FullscreenToggle="*res://singletons/fullscreen_toggle.gd"
-CardDatabase="*res://addons/card_engine/card_database.gd"
 CardCursor="*res://singletons/card_cursor.gd"
+CardDatabase="*res://addons/card_engine/card_database.gd"
 
 [debug]
 
