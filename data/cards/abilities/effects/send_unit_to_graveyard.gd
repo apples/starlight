@@ -7,8 +7,8 @@ class Task extends CardTask:
 	# Start of effect execution
 	func start() -> void:
 		for target in ability_instance.targets:
-			var unit := battle_state.get_unit(target)
+			var unit := battle_state.unit_get(target)
 			if unit:
-				battle_state.discard_unit(target)
+				battle_state.unit_discard(target)
 		
 		done()

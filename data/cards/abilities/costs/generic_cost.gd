@@ -30,7 +30,7 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 	# Tap self
 	
 	if tap_self:
-		var self_unit := battle_state.get_unit(card_instance.location)
+		var self_unit := battle_state.unit_get(card_instance.location)
 		
 		# Short circuit if not a unit
 		if not self_unit:
@@ -69,7 +69,7 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 		var possible_locations := Task._get_possible_target_locations(target_zones, user_side)
 		
 		possible_locations = possible_locations.filter(func (l: ZoneLocation):
-			return battle_state.can_be_targeted(l, card_instance, ability_index))
+			return battle_state.ability_can_target_location(card_instance, ability_index, l))
 		
 		if possible_locations.size() < target_count:
 			return false
@@ -95,7 +95,7 @@ class Task extends CardTask:
 		# Perform self-tap
 		
 		if tap_self:
-			var self_unit := battle_state.get_unit(ability_instance.card_instance.location)
+			var self_unit := battle_state.unit_get(ability_instance.card_instance.location)
 			assert(not self_unit.is_tapped)
 			if self_unit.is_tapped:
 				push_error("Invalid payload: Unit already tapped")
@@ -145,7 +145,7 @@ class Task extends CardTask:
 			if not unit_is_tappable:
 				print("Invalid payload: unit_location is not tappable")
 				return fail()
-			var unit := battle_state.get_unit(unit_location)
+			var unit := battle_state.unit_get(unit_location)
 			assert(unit)
 			if not unit:
 				print("Invalid payload: no unit at unit_location")
@@ -163,10 +163,10 @@ class Task extends CardTask:
 		task.allowed_locations = _get_possible_target_locations(target_zones, ability_instance.controller)
 		
 		task.allowed_locations = task.allowed_locations.filter(func (location: ZoneLocation):
-			return battle_state.can_be_targeted(
-				location,
+			return battle_state.ability_can_target_location(
 				ability_instance.card_instance,
-				ability_instance.ability_index))
+				ability_instance.ability_index,
+				location))
 		
 		task.target_count = target_count
 		task.ability_instance = ability_instance

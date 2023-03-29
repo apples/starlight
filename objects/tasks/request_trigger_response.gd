@@ -85,7 +85,7 @@ func action_chosen(trigger_action: Array) -> void:
 	
 	# Execute trigger
 	
-	var ability_instance := battle_state.perform_ability(side, card_instance, ability_index)
+	var ability_instance := battle_state.ability_perform(side, card_instance, ability_index)
 	
 	return become(ability_instance.task)
 

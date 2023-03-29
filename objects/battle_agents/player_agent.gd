@@ -61,6 +61,7 @@ func handle_request_response(message: MessageTypes.RequestResponse):
 func _request_response_choose_ability(message: MessageTypes.RequestResponse, where: ZoneLocation):
 	if not where:
 		message.action_future.fulfill([])
+		return
 	
 	var card_instance := battle_state.get_card_at(where)
 	
@@ -89,6 +90,9 @@ func _request_response_choose_ability(message: MessageTypes.RequestResponse, whe
 		var ci_idx = await screen.ability_chosen
 		assert(ci_idx.size() == 2)
 		var ability_index: int = ci_idx[1]
+		if ability_index == -1:
+			handle_request_response(message)
+			return
 		assert(ability_index in screen.allowed_ability_indices)
 		message.action_future.fulfill([trigger[0], ability_index])
 	)

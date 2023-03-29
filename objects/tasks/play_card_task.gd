@@ -27,7 +27,7 @@ func play_unit_card() -> void:
 
 	var location = ZoneLocation.new(side, ZoneLocation.Zone.BackRow, availableBenchIndex)
 
-	battle_state.summon_unit(card_instance, location)
+	battle_state.unit_summon(card_instance, location)
 
 	return done()
 

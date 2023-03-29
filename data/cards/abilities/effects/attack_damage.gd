@@ -21,7 +21,7 @@ class Task extends CardTask:
 			info("target location: %s" % target)
 			info("total damage: %s" % damage_amount)
 			
-			var unit := battle_state.get_unit(target)
+			var unit := battle_state.unit_get(target)
 			if not unit:
 				continue
 			

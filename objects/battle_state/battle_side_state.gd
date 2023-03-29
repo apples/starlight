@@ -4,10 +4,11 @@ var battle_state: BattleState
 var agent: BattleAgent
 var side: ZoneLocation.Side
 
-var deck: Array[CardInstance] = []
-var hand: Array[CardInstance] = []
-var discard: Array[CardInstance] = []
-var starlights: Array[CardInstance] = []
+var deck: CardZoneArray = null
+var hand: CardZoneArray = null
+var discard: CardZoneArray = null
+var banish: CardZoneArray = null
+var starlights: CardZoneArray = null
 var starters: Array[CardInstance] = []
 
 var stella: CardInstance
@@ -27,6 +28,12 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	
 	print("Initting %s" % s)
 	
+	deck = CardZoneArray.new(side, ZoneLocation.Zone.Deck)
+	hand = CardZoneArray.new(side, ZoneLocation.Zone.Hand)
+	discard = CardZoneArray.new(side, ZoneLocation.Zone.Discard)
+	banish = CardZoneArray.new(side, ZoneLocation.Zone.Banish)
+	starlights = CardZoneArray.new(side, ZoneLocation.Zone.Starlight)
+	
 	agent.battle_state = bs
 	
 	var card_deck := agent.get_deck()
@@ -34,9 +41,9 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	stella = battle_state.create_card_instance(card_deck.stella_card, ZoneLocation.new(side, Zone.Stella), side)
 	
 	for card in card_deck.main_deck_cards:
-		deck.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Deck), side))
+		deck.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
 	for card in card_deck.starlight_cards:
-		starlights.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Starlight, starlights.size()), side))
+		starlights.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
 	for card in card_deck.starter_unit_cards:
 		starters.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
 	
@@ -50,13 +57,6 @@ func get_field_zone(zone: ZoneLocation.Zone) -> Array[UnitState]:
 		_:
 			push_error("Zone is non-field: %s" % zone)
 			return front_row
-
-func remove_from_hand(card_instance: CardInstance):
-	var idx := hand.find(card_instance)
-	assert(idx != -1, "Card not found in hand.")
-	hand.remove_at(idx)
-	for i in range(hand.size()):
-		hand[i].location.slot = i
 
 func get_all_units() -> Array[UnitState]:
 	var results: Array[UnitState] = []

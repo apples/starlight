@@ -72,12 +72,14 @@ func _on_card_cursor_agent_confirmed(cursor_location: CursorLocation):
 	var card_plane: CardPlane = cursor_location.get_parent()
 	match card_plane.location.tuple():
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, var idx]:
-			var card_instance := battle_state.player.hand[idx]
+			var card_instance := battle_state.player.hand.get_card(idx)
 			match card_instance.card.kind:
 				Card.Kind.UNIT:
 					if card_instance.uid in available_summons:
 						_choose_summon_location(card_instance)
-				# TODO: ORDER cards
+				Card.Kind.GRACE:
+					if card_instance.uid in available_abilities:
+						_play_hand_card(card_plane.location)
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
 			if card_plane.card:
@@ -86,6 +88,10 @@ func _on_card_cursor_agent_confirmed(cursor_location: CursorLocation):
 			if card_plane.card:
 				_choose_card_action(card_plane)
 
+func _play_hand_card(location: ZoneLocation):
+	
+	player_action.emit({ type = "activate_ability", location = location, ability_index = 0 })
+	battle_scene.pop_screen()
 
 func _on_card_cursor_agent_cancelled():
 	pass
