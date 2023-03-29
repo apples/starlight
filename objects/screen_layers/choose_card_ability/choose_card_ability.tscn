@@ -9,4 +9,5 @@ script = ExtResource("1_r5x1b")
 [node name="CardCursorAgent" type="Node" parent="."]
 script = ExtResource("2_lbsrr")
 
+[connection signal="cancelled" from="CardCursorAgent" to="." method="_on_card_cursor_agent_cancelled"]
 [connection signal="confirmed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_confirmed"]

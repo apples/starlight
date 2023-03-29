@@ -44,7 +44,7 @@ func uncover():
 		CardCursor.current_cursor_location = results[0]
 		battle_scene.set_preview_card(card_instance.card)
 	else:
-		emit_signal("location_picked", null)
+		ability_chosen.emit(null, -1)
 		battle_scene.pop_screen()
 
 
@@ -55,4 +55,9 @@ func _on_card_cursor_agent_confirmed(cursor_location):
 	assert(idx < card_instance.card.abilities.size())
 	
 	ability_chosen.emit(card_instance, idx)
+	battle_scene.pop_screen()
+
+
+func _on_card_cursor_agent_cancelled():
+	ability_chosen.emit(null, -1)
 	battle_scene.pop_screen()

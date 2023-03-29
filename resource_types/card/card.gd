@@ -3,7 +3,7 @@ extends Resource
 
 enum Kind {
 	UNIT = 0,
-	ORDER = 1,
+	GRACE = 1,
 	STELLA = 2,
 }
 

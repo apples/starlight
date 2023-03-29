@@ -205,7 +205,7 @@ func _reset_fields():
 							assert(v > 0)
 							
 							var flag_check := CheckBox.new()
-							flag_check.button_pressed = current_value & v
+							flag_check.button_pressed = current_value & v if current_value != null else false
 							flag_check.pressed.connect(func ():
 								var cur_v: int = get_ability_part()[prop.name]
 								if flag_check.button_pressed:
