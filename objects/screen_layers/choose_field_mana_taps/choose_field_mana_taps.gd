@@ -20,7 +20,7 @@ func uncover():
 			return false
 		for allowed in available_locations:
 			if cl.location.equals(allowed):
-				if battle_state.get_unit(cl.location):
+				if battle_state.unit_get(cl.location):
 					return true
 		return false
 	)

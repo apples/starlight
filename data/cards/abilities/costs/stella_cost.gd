@@ -49,7 +49,7 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 		var possible_locations := Task._get_possible_target_locations(target_zones, user_side)
 		
 		possible_locations = possible_locations.filter(func (l: ZoneLocation):
-			return battle_state.can_be_targeted(l, card_instance, ability_index))
+			return battle_state.ability_can_target_location(card_instance, ability_index, l))
 		
 		if possible_locations.size() < target_units:
 			return false
@@ -96,10 +96,10 @@ class Task extends CardTask:
 		task.allowed_locations = _get_possible_target_locations(target_zones, ability_instance.controller)
 		
 		task.allowed_locations = task.allowed_locations.filter(func (location: ZoneLocation):
-			return battle_state.can_be_targeted(
-				location,
+			return battle_state.ability_can_target_location(
 				ability_instance.card_instance,
-				ability_instance.ability_index))
+				ability_instance.ability_index,
+				location))
 		
 		task.target_count = target_units
 		task.ability_instance = ability_instance
