@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://nm2eypux40v4"]
+[gd_scene load_steps=20 format=3 uid="uid://nm2eypux40v4"]
 
 [ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="1_6tg30"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://objects/battle_agents/player_agent.gd" id="5_rmg7w"]
 [ext_resource type="Resource" uid="uid://dg0g6mtkn7mla" path="res://data/decks/test_deck.tres" id="6_e4m36"]
 [ext_resource type="Script" path="res://objects/battle_agents/dummy_agent.gd" id="7_kgpwf"]
+[ext_resource type="Texture2D" uid="uid://byxua6i70e7ih" path="res://scenes/battle_scene/images/skybox/panorama_image.png" id="8_17qup"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_hand.gd" id="10_86xfy"]
 [ext_resource type="Script" path="res://objects/token_display/token_display.gd" id="11_wuxep"]
@@ -15,6 +16,24 @@
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="13_41ud0"]
 [ext_resource type="PackedScene" uid="uid://dvx53oob87xe4" path="res://objects/card_plane/card_plane_control.tscn" id="13_wngi3"]
 [ext_resource type="Script" path="res://scenes/battle_scene/screen_label.gd" id="15_is1p8"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_u5qp7"]
+panorama = ExtResource("8_17qup")
+
+[sub_resource type="Sky" id="Sky_gc2mt"]
+sky_material = SubResource("PanoramaSkyMaterial_u5qp7")
+
+[sub_resource type="Environment" id="Environment_ieniw"]
+background_mode = 2
+sky = SubResource("Sky_gc2mt")
+tonemap_mode = 3
+tonemap_exposure = 0.5
+tonemap_white = 0.5
+glow_enabled = true
+glow_normalized = true
+glow_strength = 2.0
+glow_bloom = 0.03
+glow_blend_mode = 1
 
 [node name="BattleScene" type="Node3D"]
 script = ExtResource("1_vdvqa")
@@ -38,6 +57,9 @@ deck = ExtResource("6_e4m36")
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.408426, 0.912791, 0, -0.912791, 0.408426, 4.76837e-07, 23.4694, 6.16592)
 fov = 40.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ieniw")
 
 [node name="PlayerField" type="Node3D" parent="."]
 script = ExtResource("8_tbdo0")
