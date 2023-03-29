@@ -1,13 +1,14 @@
-[gd_resource type="Resource" script_class="CardDeck" load_steps=5 format=3 uid="uid://dg0g6mtkn7mla"]
+[gd_resource type="Resource" script_class="CardDeck" load_steps=6 format=3 uid="uid://dg0g6mtkn7mla"]
 
 [ext_resource type="Resource" uid="uid://bovce0bh3wuoi" path="res://data/cards/carddata/amm93ovatw2w.tres" id="1_odjyo"]
 [ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="1_wsudd"]
-[ext_resource type="Resource" uid="uid://cx1yokgeuhi8x" path="res://data/cards/carddata/i8bwz5vm54h6.tres" id="3_d43ct"]
+[ext_resource type="Resource" uid="uid://c7l4ewmtxcety" path="res://data/cards/carddata/qgc1y40lroi8.tres" id="2_4lciw"]
+[ext_resource type="Resource" uid="uid://dxd6df7bcc34w" path="res://data/cards/carddata/i8bwz5vm54h6.tres" id="3_d43ct"]
 [ext_resource type="Resource" uid="uid://wus6fey2x03q" path="res://data/cards/carddata/rwbfh03mfy1p.tres" id="4_4rr8f"]
 
 [resource]
 script = ExtResource("1_wsudd")
-main_deck_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct"), ExtResource("3_d43ct")])
+main_deck_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct")])
 starter_unit_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("3_d43ct"), ExtResource("1_odjyo")])
 starlight_cards = Array[Resource("res://resource_types/card/card.gd")]([])
 stella_card = ExtResource("4_4rr8f")
