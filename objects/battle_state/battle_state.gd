@@ -112,7 +112,7 @@ func send_message_to(side: ZoneLocation.Side, m: BattleAgent.Message):
 func get_card_at(location: ZoneLocation) -> CardInstance:
 	match location.tuple():
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, var idx]:
-			return player.hand[idx]
+			return player.hand.get_card(idx)
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, var idx]:
 			return player.back_row[idx].card_instance if player.back_row[idx] else null
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, var idx]:
@@ -122,7 +122,7 @@ func get_card_at(location: ZoneLocation) -> CardInstance:
 		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.BackRow, var idx]:
 			return opponent.back_row[idx].card_instance if opponent.back_row[idx] else null
 		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Hand, var idx]:
-			return opponent.hand[idx]
+			return opponent.hand.get_card(idx)
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.Stella, _]:
 			return player.stella
 		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Stella, _]:
