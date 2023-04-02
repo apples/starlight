@@ -1,19 +1,21 @@
 extends MarginContainer
 
-@onready var cursor_location = %CursorLocation
+@onready var group = %Group
+
+@onready var click_target = %ClickTarget
 
 
 func _on_gui_input(event):
-	if not cursor_location.enabled:
+	if not click_target.enabled:
 		return
 	
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			get_viewport().set_input_as_handled()
-			cursor_location.confirm()
+			click_target.confirm()
 
 
 func _on_mouse_entered():
-	if cursor_location.enabled:
-		cursor_location.make_current()
+	if click_target.enabled:
+		click_target.make_current()
 

@@ -10,12 +10,15 @@ extends BattleAgent
 @export var choose_card_ability_scene: PackedScene = preload("res://objects/screen_layers/choose_card_ability/choose_card_ability.tscn")
 @export var choose_field_unit: PackedScene = preload("res://objects/screen_layers/choose_field_unit/choose_field_unit.tscn")
 
+signal message_received(message: BattleAgent.Message)
+
 func get_deck() -> CardDeck:
 	if deck: return deck
 	return CardDeck.new()
 
 func handle_message(message: BattleAgent.Message):
 	print("player_agent got message: %s" % message)
+	message_received.emit(message)
 	var handler: StringName = "handle_%s" % message.type
 	if self.has_method(handler):
 		print("player_agent message handler: %s" % handler)

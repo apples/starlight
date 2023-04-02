@@ -33,6 +33,13 @@ func create_card_instance(card: Card, location: ZoneLocation, owner_side: ZoneLo
 	all_card_instances[ci.uid] = ci
 	return ci
 
+## Gets the card instance for the given uid. Returns null if uid is 0.
+func get_card_instance(uid: int) -> CardInstance:
+	if uid == 0:
+		return null
+	assert(uid in all_card_instances)
+	return all_card_instances[uid]
+
 ## Declares a winner and immediately halts the gameplay fiber.
 func declare_winner(side: ZoneLocation.Side):
 	fiber.stop_all_tasks()
@@ -94,9 +101,6 @@ func draw_card(side: ZoneLocation.Side) -> void:
 	
 	var card_instance := state.deck.get_card(state.deck.size() - 1)
 	_move_card(card_instance, ZoneLocation.new(side, ZoneLocation.Zone.Hand))
-	
-	send_message_to(side, MessageTypes.CardDrawn.new({ side = side, card_instance = card_instance }))
-	send_message_to(ZoneLocation.flip(side), MessageTypes.CardDrawn.new({ side = side, card_instance = null }))
 
 ## Broadcast a message to all agents.
 func broadcast_message(m: BattleAgent.Message):
@@ -154,12 +158,17 @@ func deal_damage(where: ZoneLocation, amount: int) -> bool:
 
 ## Sets a unit to be tapped or untapped, depending on is_tapped.
 ## If the unit state does not change, no trigger events are emitted.
-func set_tapped(unit: UnitState, is_tapped: bool = true, for_mana: bool = false):
+func unit_set_tapped(unit: UnitState, is_tapped: bool = true, for_mana: bool = false):
 	assert(unit)
 	if unit.is_tapped == is_tapped:
 		return
 	
 	unit.is_tapped = is_tapped
+	
+	broadcast_message(MessageTypes.UnitTappedChanged.new({
+		location = unit.card_instance.location,
+		is_tapped = is_tapped,
+	}))
 	
 	if is_tapped:
 		trigger_event_push(TriggerEvents.UnitTapped.new({
@@ -170,6 +179,7 @@ func set_tapped(unit: UnitState, is_tapped: bool = true, for_mana: bool = false)
 		trigger_event_push(TriggerEvents.UnitUntapped.new({
 			unit = unit,
 		}))
+	
 
 ## Gets a list of untapped units on the given side, excluding cards with the specified UIDs. 
 func get_tappable_units(controller: ZoneLocation.Side, exclude_uids: Array[int] = []) -> Array[ZoneLocation]:
@@ -452,6 +462,11 @@ func _remove_unit(location: ZoneLocation) -> void:
 	assert(zone[location.slot] != null)
 	zone[location.slot].exists = false
 	zone[location.slot] = null
+	
+	broadcast_message(MessageTypes.UnitRemoved.new({
+		location = location,
+	}))
+	
 
 func _discard(card_instance: CardInstance):
 	_move_card(card_instance, ZoneLocation.new(card_instance.owner_side, ZoneLocation.Zone.Discard))
@@ -461,9 +476,29 @@ func _move_card(card_instance: CardInstance, new_location: ZoneLocation):
 	if card_instance.location.equals(new_location):
 		return
 	
+	var from := card_instance.location.duplicate()
+	
 	_float_card(card_instance)
 	
 	_drop_card(card_instance, new_location)
+	
+	var to := card_instance.location.duplicate()
+	
+	var owner_side := card_instance.owner_side
+	
+	var is_hidden = from.is_hidden() and to.is_hidden()
+	
+	send_message_to(owner_side, MessageTypes.CardMoved.new({
+		uid = card_instance.uid,
+		from = from,
+		to = to,
+	}))
+	send_message_to(ZoneLocation.flip(owner_side), MessageTypes.CardMoved.new({
+		uid = 0 if is_hidden else card_instance.uid,
+		from = from,
+		to = to,
+	}))
+
 
 func _float_card(card_instance: CardInstance):
 	var side := card_instance.location.side

@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbyiolx82nx2g"]
+[gd_scene load_steps=5 format=3 uid="uid://dx48u1letj7m4"]
 
 [ext_resource type="Script" path="res://objects/screen_layers/choose_field_unit/choose_field_unit.gd" id="1_65nab"]
-[ext_resource type="Script" path="res://objects/card_cursor_agent/card_cursor_agent.gd" id="2_5h6sc"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_agent.gd" id="2_0jwry"]
 [ext_resource type="PackedScene" uid="uid://n0ysjd07thkm" path="res://objects/arrow_path/arrow_path.tscn" id="3_ldv6e"]
 
-[sub_resource type="Curve3D" id="Curve3D_7mm72"]
+[sub_resource type="Curve3D" id="Curve3D_j0sxl"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, -1.01347, -0.0287198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.117532, -0.249932, 0, 0, 0),
@@ -16,14 +16,14 @@ up_vector_enabled = false
 [node name="ChooseFieldUnit" type="Node3D"]
 script = ExtResource("1_65nab")
 
-[node name="CardCursorAgent" type="Node" parent="."]
-script = ExtResource("2_5h6sc")
+[node name="ClickTargetAgent" type="Node" parent="."]
+script = ExtResource("2_0jwry")
 
 [node name="ArrowPath" parent="." instance=ExtResource("3_ldv6e")]
 visible = false
-curve = SubResource("Curve3D_7mm72")
+curve = SubResource("Curve3D_j0sxl")
 height = 4.0
 
-[connection signal="cancelled" from="CardCursorAgent" to="." method="_on_card_cursor_agent_cancelled"]
-[connection signal="confirmed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_confirmed"]
-[connection signal="cursor_location_changed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_cursor_location_changed"]
+[connection signal="cancelled" from="ClickTargetAgent" to="." method="_on_click_target_agent_cancelled"]
+[connection signal="click_target_changed" from="ClickTargetAgent" to="." method="_on_click_target_agent_click_target_changed"]
+[connection signal="confirmed" from="ClickTargetAgent" to="." method="_on_click_target_agent_confirmed"]

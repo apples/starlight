@@ -15,15 +15,6 @@ class_name CardPlane extends Node3D
 		show_card = value
 		refresh()
 
-@export var location: ZoneLocation = null:
-	get:
-		return location
-	set(value):
-		location = value
-		refresh()
-
-@export_flags("Battle", "Player", "Opponent", "Field", "Hand", "Actions") var cursor_layers: int = 0
-
 @export var is_tapped: bool = false:
 	get:
 		return is_tapped
@@ -34,21 +25,27 @@ class_name CardPlane extends Node3D
 @export var tween_target: float = -90.0
 @export var tween_duration: float = 0.5
 
-@onready var subviewport := $SubViewport
-@onready var card_render := $SubViewport/CardRender
-@onready var sprite := $Sprite
-@onready var cursor_location := %CursorLocation
-@onready var action_root := %ActionRoot
-@onready var toast_label := %ToastLabel as Label3D
+var location: ZoneLocation = null:
+	get:
+		return location
+	set(value):
+		location = value
+		refresh()
 
-var current_tween_target: float = 0
-var current_tween: Tween
+var _current_tap_tween_target: float = 0
+var _current_tap_tween: Tween
 
 var _toast_queue: Array[String] = []
 var _toast_tween: Tween
 
+@onready var subviewport := $SubViewport
+@onready var card_render := $SubViewport/CardRender
+@onready var sprite := $Sprite
+@onready var click_target := %ClickTarget
+@onready var action_root := %ActionRoot
+@onready var toast_label := %ToastLabel as Label3D
+
 func _ready():
-	cursor_location.layers = cursor_layers
 	toast_label.visible = false
 	refresh()
 
@@ -87,16 +84,16 @@ func refresh():
 	if not is_inside_tree():
 		return
 	
-	cursor_location.location = location
+	click_target.location = location
 	
 	if show_card:
 		card_render.card = card
 		subviewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 		sprite.visible = true
 		
-		if is_tapped and current_tween_target != tween_target:
+		if is_tapped and _current_tap_tween_target != tween_target:
 			_refresh_tween_to(tween_target)
-		elif !is_tapped and current_tween_target == tween_target:
+		elif !is_tapped and _current_tap_tween_target == tween_target:
 			_refresh_tween_to(0)
 	else:
 		sprite.visible = false
@@ -106,26 +103,36 @@ func toast(str: String):
 	_toast_queue.append(str)
 	print("TOASTING %s" % str)
 
+
+func reset():
+	show_card = false
+	card = null
+	is_tapped = false
+	if _current_tap_tween:
+		_current_tap_tween.kill()
+	sprite.rotation_degrees = Vector3(0,0,0)
+
+
 func _refresh_tween_to(where: float):
-	if current_tween:
-		current_tween.stop()
-	current_tween = create_tween()\
+	if _current_tap_tween:
+		_current_tap_tween.kill()
+	_current_tap_tween = create_tween()\
 		.set_trans(Tween.TRANS_ELASTIC)\
 		.set_ease(Tween.EASE_IN_OUT)
-	current_tween_target = tween_target
-	current_tween.tween_property(sprite, "rotation_degrees", Vector3(0,0,where), tween_duration)
+	_current_tap_tween_target = tween_target
+	_current_tap_tween.tween_property(sprite, "rotation_degrees", Vector3(0,0,where), tween_duration)
 
 
 func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
-	if not cursor_location.enabled:
+	if not click_target.enabled:
 		return
 	
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			get_viewport().set_input_as_handled()
-			cursor_location.confirm()
+			click_target.confirm()
 
 
 func _on_area_3d_mouse_entered():
-	if cursor_location.enabled:
-		cursor_location.make_current()
+	if click_target.enabled:
+		click_target.make_current()
