@@ -18,5 +18,8 @@ func start():
 
 func start_first_turn():
 	battle_state.current_turn = ZoneLocation.Side.Player
-	run_task(TurnTask.new())
-	done()
+	wait_for(TurnTask.new(), next_turn)
+
+func next_turn():
+	battle_state.current_turn = ZoneLocation.flip(battle_state.current_turn)
+	wait_for(TurnTask.new(), next_turn)

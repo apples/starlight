@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccum1sstgasr2"]
+
+[ext_resource type="PackedScene" uid="uid://23vj6q0ji8tk" path="res://objects/click_target/click_target_control.tscn" id="1_cmcdc"]
+[ext_resource type="Script" path="res://objects/screen_layers/overlay_dialog/dialog_button.gd" id="1_k8nf5"]
+[ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_kukh8"]
+[ext_resource type="Texture2D" uid="uid://drlvmestbp05o" path="res://objects/card_ability_click_target/images/card_ability_cursor.png" id="4_486oc"]
+[ext_resource type="Script" path="res://objects/material_sprite/material_texturerect.gd" id="5_s4i87"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_opuxx"]
+bg_color = Color(0.6, 0.278431, 0.6, 1)
+
+[node name="DialogButton" type="MarginContainer"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1_k8nf5")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_opuxx")
+
+[node name="ClickTarget" parent="PanelContainer" instance=ExtResource("1_cmcdc")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MaterialTextureRect" type="NinePatchRect" parent="PanelContainer/ClickTarget"]
+texture_filter = 2
+material = ExtResource("3_kukh8")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_486oc")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource("5_s4i87")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "asdf"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="confirmed" from="PanelContainer/ClickTarget" to="." method="_on_click_target_confirmed"]

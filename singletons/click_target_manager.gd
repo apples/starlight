@@ -154,24 +154,22 @@ func navigate(nav_dir: String) -> bool:
 
 
 func _unhandled_input(event):
-	if not get_current_agent():
-		return
-	
-	var nav_dir: String = ""
-	
-	if event.is_action_pressed("up"):
-		nav_dir = "nav_up"
-	elif event.is_action_pressed("down"):
-		nav_dir = "nav_down"
-	elif event.is_action_pressed("left"):
-		nav_dir = "nav_left"
-	elif event.is_action_pressed("right"):
-		nav_dir = "nav_right"
-	
-	if nav_dir != "":
-		get_viewport().set_input_as_handled()
-		navigate(nav_dir)
-		# TODO: play bonk sfx
+	if get_current_agent():
+		var nav_dir: String = ""
+		
+		if event.is_action_pressed("up"):
+			nav_dir = "nav_up"
+		elif event.is_action_pressed("down"):
+			nav_dir = "nav_down"
+		elif event.is_action_pressed("left"):
+			nav_dir = "nav_left"
+		elif event.is_action_pressed("right"):
+			nav_dir = "nav_right"
+		
+		if nav_dir != "":
+			get_viewport().set_input_as_handled()
+			navigate(nav_dir)
+			# TODO: play bonk sfx
 	
 	
 	if event.is_action_pressed("confirm"):
@@ -180,11 +178,10 @@ func _unhandled_input(event):
 			current_click_target.confirm()
 	
 	if event.is_action_pressed("cancel"):
-		if current_click_target:
+		var agent := get_current_agent()
+		if agent:
 			get_viewport().set_input_as_handled()
-			var agent := get_current_agent()
-			if agent:
-				agent.cancel()
+			agent.cancel()
 
 func _on_group_click_target_added(click_target: ClickTarget):
 	if click_target.enabled:

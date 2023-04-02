@@ -1,13 +1,14 @@
 extends BattleScreenLayer
 
-@export var choose_field_location_scene: PackedScene = preload("res://objects/screen_layers/choose_field_location/choose_field_location.tscn")
-@export var choose_unit_action_scene: PackedScene = preload("res://objects/screen_layers/choose_unit_action/choose_unit_action.tscn")
-@export var choose_card_ability_scene: PackedScene = preload("res://objects/screen_layers/choose_card_ability/choose_card_ability.tscn")
 
 signal player_action(action: Dictionary)
 
 var available_abilities: Dictionary = {}
 var available_summons: Array[int] = []
+
+var choose_unit_action_scene: PackedScene = preload("res://objects/screen_layers/choose_unit_action/choose_unit_action.tscn")
+var choose_card_ability_scene: PackedScene = preload("res://objects/screen_layers/choose_card_ability/choose_card_ability.tscn")
+var overlay_dialog_scene: PackedScene = preload("res://objects/screen_layers/overlay_dialog/overlay_dialog.tscn")
 
 func uncover():
 	super.uncover()
@@ -22,14 +23,9 @@ func uncover():
 	
 	battle_scene.set_screen_label("Your Turn")
 
-func _choose_summon_location(card_instance: CardInstance):
-	var screen := battle_scene.push_screen(choose_field_location_scene)
-	
-	var location = await screen.location_picked
-	
-	if location:
-		emit_signal("player_action", { type = "play_unit", card = card_instance, where = location })
-		battle_scene.pop_screen()
+func _play_unit(card_instance: CardInstance):
+	battle_scene.pop_screen()
+	emit_signal("player_action", { type = "play_unit", uid = card_instance.uid })
 
 func _choose_card_action(card_plane: CardPlane):
 	var card := card_plane.card
@@ -65,7 +61,7 @@ func _choose_card_action_ability_chosen(card_instance: CardInstance, index: int)
 	assert(index < card_instance.card.abilities.size())
 	print("Activating ability%s on %s" % [index, card_instance])
 	
-	emit_signal("player_action", { type = "activate_ability", location = card_instance.location, ability_index = index })
+	emit_signal("player_action", { type = "activate_ability", uid = card_instance.uid, ability_index = index })
 	battle_scene.pop_screen()
 
 func _on_click_target_agent_confirmed(click_target):
@@ -76,10 +72,10 @@ func _on_click_target_agent_confirmed(click_target):
 			match card_instance.card.kind:
 				Card.Kind.UNIT:
 					if card_instance.uid in available_summons:
-						_choose_summon_location(card_instance)
+						_play_unit(card_instance)
 				Card.Kind.GRACE:
 					if card_instance.uid in available_abilities:
-						_play_hand_card(card_plane.location)
+						_play_hand_card(card_instance)
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
 			if card_plane.card:
@@ -88,13 +84,19 @@ func _on_click_target_agent_confirmed(click_target):
 			if card_plane.card:
 				_choose_card_action(card_plane)
 
-func _play_hand_card(location: ZoneLocation):
-	
-	player_action.emit({ type = "activate_ability", location = location, ability_index = 0 })
+func _play_hand_card(card_instance: CardInstance):
 	battle_scene.pop_screen()
+	player_action.emit({ type = "activate_ability", uid = card_instance.uid, ability_index = 0 })
 
 func _on_click_target_agent_cancelled():
-	pass
+	battle_scene.push_screen(overlay_dialog_scene, func (screen):
+		screen.text = "End Turn?"
+		screen.options = ["Yes", "No"] as Array[String]
+		var response = await screen.action_chosen
+		if response == "Yes":
+			battle_scene.pop_screen()
+			player_action.emit({ type = "end_turn" })
+	)
 
 
 

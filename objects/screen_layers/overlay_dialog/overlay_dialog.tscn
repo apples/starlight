@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://bb7ea0cl8fbk0"]
+
+[ext_resource type="Script" path="res://objects/screen_layers/overlay_dialog/overlay_dialog.gd" id="1_g8c7i"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_agent.gd" id="2_1vxxw"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_group.gd" id="3_nqhbe"]
+[ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="3_wsrlk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_octvm"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.960784)
+
+[node name="OverlayDialog" type="Node3D"]
+script = ExtResource("1_g8c7i")
+
+[node name="ClickTargetAgent" type="Node" parent="."]
+script = ExtResource("2_1vxxw")
+
+[node name="ControlRoot" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("3_wsrlk")
+script = ExtResource("3_nqhbe")
+layers = 33
+
+[node name="CenterContainer" type="CenterContainer" parent="ControlRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="ControlRoot/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_octvm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlRoot/CenterContainer/Panel"]
+layout_mode = 2
+
+[node name="TextLabel" type="Label" parent="ControlRoot/CenterContainer/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+horizontal_alignment = 1
+
+[node name="ButtonContainer" type="HBoxContainer" parent="ControlRoot/CenterContainer/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+script = ExtResource("3_nqhbe")
+layers = 32
+
+[connection signal="cancelled" from="ClickTargetAgent" to="." method="_on_click_target_agent_cancelled"]

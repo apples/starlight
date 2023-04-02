@@ -2,6 +2,8 @@ extends BattleScreenLayer
 
 signal location_picked(location: ZoneLocation)
 
+var allowed_locations: Array[ZoneLocation] = []
+
 func _ready():
 	pass
 
@@ -11,11 +13,9 @@ func uncover():
 	var results := ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_BATTLE, func (cl: ClickTarget):
 		if !cl.location:
 			return false
-		match cl.location.tuple():
-			[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
-			[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
-				var unit := battle_state.unit_get(cl.location)
-				return unit == null
+		for allowed in allowed_locations:
+			if cl.location.equals(allowed):
+				return true
 		return false
 	)
 	

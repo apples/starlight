@@ -4,11 +4,13 @@ extends BattleAgent
 
 @export var battle_scene: BattleScene
 
-@export var turn_input_screen_scene: PackedScene = preload("res://objects/screen_layers/turn_input/turn_input.tscn")
-@export var choose_target_screen_scene: PackedScene = preload("res://objects/screen_layers/choose_field_unit/choose_field_unit.tscn")
-@export var choose_field_mana_taps: PackedScene = preload("res://objects/screen_layers/choose_field_mana_taps/choose_field_mana_taps.tscn")
-@export var choose_card_ability_scene: PackedScene = preload("res://objects/screen_layers/choose_card_ability/choose_card_ability.tscn")
-@export var choose_field_unit: PackedScene = preload("res://objects/screen_layers/choose_field_unit/choose_field_unit.tscn")
+var turn_input_screen_scene = preload("res://objects/screen_layers/turn_input/turn_input.tscn")
+var choose_target_screen_scene = preload("res://objects/screen_layers/choose_field_unit/choose_field_unit.tscn")
+var choose_field_mana_taps = preload("res://objects/screen_layers/choose_field_mana_taps/choose_field_mana_taps.tscn")
+var choose_card_ability_scene = preload("res://objects/screen_layers/choose_card_ability/choose_card_ability.tscn")
+var choose_field_unit = preload("res://objects/screen_layers/choose_field_unit/choose_field_unit.tscn")
+var choose_field_location = preload("res://objects/screen_layers/choose_field_location/choose_field_location.tscn")
+var overlay_dialog = preload("res://objects/screen_layers/overlay_dialog/overlay_dialog.tscn")
 
 signal message_received(message: BattleAgent.Message)
 
@@ -103,3 +105,20 @@ func _request_response_choose_ability(message: MessageTypes.RequestResponse, whe
 func handle_unit_damaged(message: MessageTypes.UnitDamaged):
 	var card_plane := battle_scene.get_card_plane(message.location)
 	card_plane.toast("-%s" % message.amount)
+
+func handle_choose_field_location(message: MessageTypes.ChooseFieldLocation):
+	battle_scene.push_screen(choose_field_location, func (screen):
+		screen.allowed_locations = message.allowed_locations
+		
+		var location = await screen.location_picked
+		
+		message.future.fulfill(location))
+
+func handle_declare_winner(message: MessageTypes.DeclareWinner):
+	battle_scene.push_screen(overlay_dialog, func (screen):
+		match message.winner:
+			ZoneLocation.Side.Player:
+				screen.text = "YOU WIN! CONGRATIONS!"
+			ZoneLocation.Side.Opponent:
+				screen.text = "You lose. Better luck next time, kid."
+	)

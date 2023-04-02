@@ -378,6 +378,26 @@ func unit_discard(where: ZoneLocation):
 	
 	_remove_unit(where)
 
+## Returns a list of possible summon locations for the given card instance.
+func unit_get_summon_locations(card_instance: CardInstance) -> Array[ZoneLocation]:
+	var side := card_instance.owner_side
+	var side_state := get_side_state(side)
+	
+	var results: Array[ZoneLocation] = []
+	
+	var process_row := func (row: Array[UnitState], zone: ZoneLocation.Zone):
+		for i in range(row.size()):
+			if card_instance.card.level == 0 and row[i] == null:
+				results.append(ZoneLocation.new(side, zone, i))
+			if card_instance.card.level > 0 and row[i] != null:
+				if row[i].card_instance.card.level == card_instance.card.level + 1:
+					results.append(ZoneLocation.new(side, zone, i))
+	
+	process_row.call(side_state.front_row, ZoneLocation.Zone.FrontRow)
+	process_row.call(side_state.back_row, ZoneLocation.Zone.BackRow)
+	
+	return results
+
 ## Returns a dictionary of available activated abilities for the given side.
 ## The dictionary is formatted as follows:
 ##
@@ -436,6 +456,8 @@ func get_available_summons(side: ZoneLocation.Side) -> Array[int]:
 	
 	for card_instance in side_state.hand:
 		if card_instance.card.kind != Card.Kind.UNIT:
+			continue
+		if unit_get_summon_locations(card_instance).size() == 0:
 			continue
 		results.append(card_instance.uid)
 	
