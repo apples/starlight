@@ -239,6 +239,9 @@ func ability_perform(controller: ZoneLocation.Side, card_instance: CardInstance,
 	ability_stack.push_back(ability_instance)
 	fiber.run_task(ability_instance.task)
 	
+	if card_instance.location.zone == ZoneLocation.Zone.Hand:
+		card_reveal(card_instance)
+	
 	return ability_instance
 
 ## Pops the given ability from the stack. Assumes the given ability is the one on top of the stack.
@@ -284,6 +287,10 @@ func ability_can_be_activated_by(card_instance: CardInstance, ability_index: int
 			return false
 	
 	return true
+
+## Temporarily reveals the card to both players.
+func card_reveal(card_instance: CardInstance):
+	broadcast_message(MessageTypes.CardRevealed.new({ uid = card_instance.uid }))
 
 ## Returns the unit at the given location, or null if there is no unit.
 func unit_get(location: ZoneLocation) -> UnitState:

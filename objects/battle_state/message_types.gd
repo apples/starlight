@@ -22,6 +22,10 @@ class CardMoved extends BattleAgent.Message:
 	var from: ZoneLocation
 	var to: ZoneLocation
 
+class CardRevealed extends BattleAgent.Message:
+	func get_type(): return "card_revealed"
+	var uid: int
+
 class Alert extends BattleAgent.Message:
 	func get_type(): return "alert"
 	var text: String

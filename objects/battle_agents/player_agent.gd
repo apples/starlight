@@ -4,6 +4,8 @@ extends BattleAgent
 
 @export var battle_scene: BattleScene
 
+var hold_messages: bool = false
+
 var turn_input_screen_scene = preload("res://objects/screen_layers/turn_input/turn_input.tscn")
 var choose_target_screen_scene = preload("res://objects/screen_layers/choose_field_unit/choose_field_unit.tscn")
 var choose_field_mana_taps = preload("res://objects/screen_layers/choose_field_mana_taps/choose_field_mana_taps.tscn")
@@ -11,14 +13,25 @@ var choose_card_ability_scene = preload("res://objects/screen_layers/choose_card
 var choose_field_unit = preload("res://objects/screen_layers/choose_field_unit/choose_field_unit.tscn")
 var choose_field_location = preload("res://objects/screen_layers/choose_field_location/choose_field_location.tscn")
 var overlay_dialog = preload("res://objects/screen_layers/overlay_dialog/overlay_dialog.tscn")
+var reveal_card = preload("res://objects/screen_layers/reveal_card/reveal_card.tscn")
 
 signal message_received(message: BattleAgent.Message)
+
+var _held_messages: Array[BattleAgent.Message] = []
+
+func _process(delta):
+	if not hold_messages and _held_messages.size() > 0:
+		_actually_handle_message(_held_messages.pop_front())
 
 func get_deck() -> CardDeck:
 	if deck: return deck
 	return CardDeck.new()
 
 func handle_message(message: BattleAgent.Message):
+	_held_messages.append(message)
+
+func _actually_handle_message(message: BattleAgent.Message):
+	assert(not hold_messages)
 	print("player_agent got message: %s" % message)
 	message_received.emit(message)
 	var handler: StringName = "handle_%s" % message.type
@@ -122,3 +135,12 @@ func handle_declare_winner(message: MessageTypes.DeclareWinner):
 			ZoneLocation.Side.Opponent:
 				screen.text = "You lose. Better luck next time, kid."
 	)
+
+func handle_card_revealed(message: MessageTypes.CardRevealed):
+	var card_instance := battle_state.get_card_instance(message.uid)
+	
+	battle_scene.push_screen(reveal_card, func (screen):
+		hold_messages = true
+		screen.card_instance = card_instance
+		await screen.done
+		hold_messages = false)
