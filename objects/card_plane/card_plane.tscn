@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bcrmyin4iw0kk"]
+[gd_scene load_steps=10 format=3 uid="uid://cp1inby5ax2i"]
 
 [ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane.gd" id="1_q5tqm"]
 [ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_material.gdshader" id="3_0imkw"]
-[ext_resource type="PackedScene" uid="uid://jj4n3ey7ocix" path="res://objects/cursor_location/cursor_location.tscn" id="5_580d1"]
+[ext_resource type="PackedScene" uid="uid://7xeqhx6uvn0d" path="res://objects/click_target/click_target.tscn" id="5_580d1"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_3d.gd" id="6_74fw4"]
 [ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="6_a2h0i"]
 
@@ -54,9 +54,8 @@ texture_filter = 1
 texture = SubResource("ViewportTexture_c2f4v")
 script = ExtResource("6_74fw4")
 
-[node name="CursorLocation" parent="." instance=ExtResource("5_580d1")]
+[node name="ClickTarget" parent="." instance=ExtResource("5_580d1")]
 unique_name_in_owner = true
-layers = 0
 
 [node name="ActionRoot" type="Node3D" parent="."]
 unique_name_in_owner = true

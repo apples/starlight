@@ -15,7 +15,7 @@ extends Control
 		show_card = value
 		refresh()
 
-@export var location: ZoneLocation = null:
+var location: ZoneLocation = null:
 	get:
 		return location
 	set(value):
@@ -27,7 +27,7 @@ extends Control
 @onready var card_render: CardRender = %CardRender
 @onready var ability_overlays = %AbilityOverlays
 
-var card_ability_cursor_location := preload("res://objects/card_ability_cursor_location/card_ability_cursor_location.tscn")
+var card_ability_click_target := preload("res://objects/card_ability_click_target/card_ability_click_target.tscn")
 
 func _ready():
 	refresh()
@@ -54,10 +54,10 @@ func refresh():
 		if i < ability_overlays.get_child_count():
 			ability_overlay = ability_overlays.get_child(i)
 		else:
-			ability_overlay = card_ability_cursor_location.instantiate()
+			ability_overlay = card_ability_click_target.instantiate()
 			ability_overlays.add_child(ability_overlay)
 		
-		var cl: CursorLocation = ability_overlay.cursor_location
+		var cl = ability_overlay.click_target
 		cl.custom_tag = "ability%s" % i
 		
 		ability_overlay.scale = Vector2(0.5, 0.5) * sprite.size / sprite.texture.get_size()
@@ -67,19 +67,6 @@ func refresh():
 	for i in range(card_render.ability_panels.size(), ability_overlays.get_child_count()):
 		ability_overlays.get_child(i).queue_free()
 	
-	# Fix navigation links
-	for i in range(ability_overlays.get_child_count()):
-		var cl: CursorLocation = ability_overlays.get_child(i).cursor_location
-		
-		if i > 0:
-			cl.up = ability_overlays.get_child(i - 1).cursor_location
-		else:
-			cl.up = null
-		
-		if i < ability_overlays.get_child_count() - 1:
-			cl.down = ability_overlays.get_child(i + 1).cursor_location
-		else:
-			cl.down = null
 
 
 func _on_sub_viewport_size_changed():

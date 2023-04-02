@@ -1,12 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqsfauc7352ff"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://objects/screen_layers/choose_field_location/choose_field_location.gd" id="1_ehy6p"]
-[ext_resource type="Script" path="res://objects/card_cursor_agent/card_cursor_agent.gd" id="2_dgxog"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_agent.gd" id="2_dgxog"]
 
 [node name="ChooseFieldLocation" type="Node3D"]
 script = ExtResource("1_ehy6p")
 
-[node name="CardCursorAgent" type="Node" parent="."]
+[node name="ClickTargetAgent" type="Node" parent="."]
 script = ExtResource("2_dgxog")
 
-[connection signal="confirmed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_confirmed"]
+[connection signal="confirmed" from="ClickTargetAgent" to="." method="_on_click_target_agent_confirmed"]

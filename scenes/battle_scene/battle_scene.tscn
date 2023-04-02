@@ -1,8 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://nm2eypux40v4"]
+[gd_scene load_steps=21 format=3 uid="uid://nm2eypux40v4"]
 
 [ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="1_6tg30"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
-[ext_resource type="PackedScene" uid="uid://bcrmyin4iw0kk" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
+[ext_resource type="PackedScene" uid="uid://cp1inby5ax2i" path="res://objects/card_plane/card_plane.tscn" id="2_mdxbd"]
 [ext_resource type="Resource" uid="uid://ccejnbeeab8k2" path="res://data/rulesets/default_rules.tres" id="3_qp2vo"]
 [ext_resource type="Script" path="res://objects/fiber/card_fiber.gd" id="4_yrerv"]
 [ext_resource type="Script" path="res://objects/battle_agents/player_agent.gd" id="5_rmg7w"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://byxua6i70e7ih" path="res://scenes/battle_scene/images/skybox/panorama_image.png" id="8_17qup"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_hand.gd" id="10_86xfy"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_group.gd" id="10_kcui6"]
 [ext_resource type="Script" path="res://objects/token_display/token_display.gd" id="11_wuxep"]
 [ext_resource type="Texture2D" uid="uid://csbup4415o24m" path="res://scenes/battle_scene/images/field.png" id="12_ivm3m"]
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="13_41ud0"]
@@ -56,86 +57,102 @@ deck = ExtResource("6_e4m36")
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.408426, 0.912791, 0, -0.912791, 0.408426, 4.76837e-07, 23.4694, 6.16592)
+current = true
 fov = 40.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ieniw")
 
+[node name="PlayerDeckGroup" type="Node3D" parent="." node_paths=PackedStringArray("nav_left")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("10_kcui6")
+nav_left = NodePath("../PlayerField/BackRow")
+
+[node name="PlayerDeck" parent="PlayerDeckGroup" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(0.965926, -0.258819, -1.13133e-08, 0, -4.37114e-08, 1, -0.258819, -0.965926, -4.2222e-08, 8, 0, 1)
+
+[node name="OpponentHand" type="Node3D" parent="."]
+transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, 0, 0, -16)
+script = ExtResource("10_86xfy")
+
+[node name="Group" type="Node3D" parent="OpponentHand"]
+script = ExtResource("10_kcui6")
+layers = 21
+
+[node name="OpponentField" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -12)
+script = ExtResource("8_tbdo0")
+side = 1
+
+[node name="BackRow" type="Node3D" parent="OpponentField"]
+script = ExtResource("10_kcui6")
+layers = 13
+
+[node name="BackRow3" parent="OpponentField/BackRow" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, 0)
+
+[node name="BackRow2" parent="OpponentField/BackRow" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 0)
+
+[node name="BackRow1" parent="OpponentField/BackRow" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 0)
+
+[node name="BackRow0" parent="OpponentField/BackRow" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, 0)
+
+[node name="FrontRow" type="Node3D" parent="OpponentField"]
+script = ExtResource("10_kcui6")
+layers = 13
+
+[node name="Stella" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, -4)
+
+[node name="FrontRow1" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
+
+[node name="FrontRow0" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
+
 [node name="PlayerField" type="Node3D" parent="."]
 script = ExtResource("8_tbdo0")
 
-[node name="BackRow0" parent="PlayerField" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, 0)
-cursor_layers = 11
+[node name="FrontRow" type="Node3D" parent="PlayerField"]
+script = ExtResource("10_kcui6")
+layers = 11
 
-[node name="BackRow1" parent="PlayerField" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 0)
-cursor_layers = 11
-
-[node name="BackRow2" parent="PlayerField" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 0)
-cursor_layers = 11
-
-[node name="BackRow3" parent="PlayerField" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, 0)
-cursor_layers = 11
-
-[node name="FrontRow0" parent="PlayerField" instance=ExtResource("2_mdxbd")]
+[node name="FrontRow0" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
-cursor_layers = 11
 
-[node name="FrontRow1" parent="PlayerField" instance=ExtResource("2_mdxbd")]
+[node name="FrontRow1" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
-cursor_layers = 11
 
-[node name="Stella" parent="PlayerField" instance=ExtResource("2_mdxbd")]
+[node name="Stella" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, -4)
-cursor_layers = 11
 
-[node name="OpponentField" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.04907e-06, 0, -12)
-script = ExtResource("8_tbdo0")
-side = 1
-flip_cursor_dirs = true
+[node name="BackRow" type="Node3D" parent="PlayerField" node_paths=PackedStringArray("nav_right")]
+script = ExtResource("10_kcui6")
+layers = 11
+nav_right = NodePath("../../PlayerDeckGroup")
 
-[node name="BackRow0" parent="OpponentField" instance=ExtResource("2_mdxbd")]
+[node name="BackRow0" parent="PlayerField/BackRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, 0)
-cursor_layers = 13
 
-[node name="BackRow1" parent="OpponentField" instance=ExtResource("2_mdxbd")]
+[node name="BackRow1" parent="PlayerField/BackRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 0)
-cursor_layers = 13
 
-[node name="BackRow2" parent="OpponentField" instance=ExtResource("2_mdxbd")]
+[node name="BackRow2" parent="PlayerField/BackRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 0)
-cursor_layers = 13
 
-[node name="BackRow3" parent="OpponentField" instance=ExtResource("2_mdxbd")]
+[node name="BackRow3" parent="PlayerField/BackRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, 0)
-cursor_layers = 13
-
-[node name="FrontRow0" parent="OpponentField" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
-cursor_layers = 13
-
-[node name="FrontRow1" parent="OpponentField" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
-cursor_layers = 13
-
-[node name="Stella" parent="OpponentField" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 2.13163e-14, -3.82137e-15, 3.82137e-15, 4.37114e-08, 1, 2.13163e-14, -1, 4.37114e-08, 4.5, 0, -4)
-cursor_layers = 13
-
-[node name="PlayerDeck" parent="." instance=ExtResource("2_mdxbd")]
-transform = Transform3D(0.965926, -0.258819, -1.13133e-08, 0, -4.37114e-08, 1, -0.258819, -0.965926, -4.2222e-08, 8, 0, 1)
 
 [node name="PlayerHand" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4.28541)
 script = ExtResource("10_86xfy")
 
-[node name="OpponentHand" type="Node3D" parent="."]
-transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, 0, 0, -16)
-script = ExtResource("10_86xfy")
+[node name="Group" type="Node3D" parent="PlayerHand"]
+script = ExtResource("10_kcui6")
+layers = 19
 
 [node name="PlayerTokens" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5187, 0.365876, -6.07163)
@@ -198,3 +215,5 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 76
 script = ExtResource("15_is1p8")
+
+[connection signal="message_received" from="BattleState/PlayerAgent" to="." method="_on_player_agent_message_received"]

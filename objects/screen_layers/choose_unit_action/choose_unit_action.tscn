@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://eqmee1xcu67d"]
+[gd_scene load_steps=8 format=3 uid="uid://deugvibttq0a6"]
 
 [ext_resource type="Script" path="res://objects/screen_layers/choose_unit_action/choose_unit_action.gd" id="1_fivxi"]
-[ext_resource type="Script" path="res://objects/card_cursor_agent/card_cursor_agent.gd" id="2_x3sti"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_agent.gd" id="2_x3sti"]
 [ext_resource type="PackedScene" uid="uid://31toqqjcrn7u" path="res://objects/screen_layers/choose_unit_action/action_panel.tscn" id="3_7bw1v"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_group.gd" id="3_rhya2"]
 
 [sub_resource type="Gradient" id="Gradient_04fpr"]
 interpolation_mode = 2
@@ -21,13 +22,15 @@ texture = SubResource("GradientTexture2D_l0bqh")
 [node name="ChooseUnitAction" type="Node3D"]
 script = ExtResource("1_fivxi")
 
-[node name="CardCursorAgent" type="Node" parent="."]
+[node name="ClickTargetAgent" type="Node" parent="."]
 script = ExtResource("2_x3sti")
 
 [node name="ControlRoot" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("3_rhya2")
+layers = 33
 
 [node name="CenterContainer" type="CenterContainer" parent="ControlRoot"]
 layout_mode = 0
@@ -45,12 +48,14 @@ layout_mode = 2
 
 [node name="Ability" parent="ControlRoot/CenterContainer/HBoxContainer" instance=ExtResource("3_7bw1v")]
 layout_mode = 2
+custom_tag = "ability"
 
 [node name="Retreat" parent="ControlRoot/CenterContainer/HBoxContainer" instance=ExtResource("3_7bw1v")]
 layout_mode = 2
+custom_tag = "retreat"
 
 [node name="MarginContainer" type="MarginContainer" parent="ControlRoot/CenterContainer"]
 layout_mode = 2
 
-[connection signal="cancelled" from="CardCursorAgent" to="." method="_on_card_cursor_agent_cancelled"]
-[connection signal="confirmed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_confirmed"]
+[connection signal="cancelled" from="ClickTargetAgent" to="." method="_on_click_target_agent_cancelled"]
+[connection signal="confirmed" from="ClickTargetAgent" to="." method="_on_click_target_agent_confirmed"]

@@ -45,6 +45,6 @@ class Task extends CardTask:
 		if self_unit.is_tapped:
 			push_error("Invalid payload: Unit already tapped")
 			return fail()
-		battle_state.set_tapped(ability_instance.card_instance.unit)
+		battle_state.unit_set_tapped(ability_instance.card_instance.unit)
 		
 		done()

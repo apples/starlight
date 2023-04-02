@@ -14,7 +14,7 @@ func _ready():
 func uncover():
 	super.uncover()
 	
-	var results := CardCursor.set_criteria(CursorLocation.LAYER_BATTLE, func (cl: CursorLocation):
+	var results := ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_BATTLE, func (cl: ClickTarget):
 		if !cl.location:
 			return false
 		for allowed in allowed_locations:
@@ -41,16 +41,16 @@ func uncover():
 			arrow_path.visible = false
 
 
-func _on_card_cursor_agent_confirmed(cursor_location):
+func _on_click_target_agent_confirmed(click_target):
 	battle_scene.pop_screen()
-	var card_plane: CardPlane = cursor_location.get_parent()
+	var card_plane: CardPlane = click_target.get_parent()
 	location_picked.emit(card_plane.location)
 
 
-func _on_card_cursor_agent_cursor_location_changed(cursor_location):
-	if cursor_location:
-		arrow_path.end = cursor_location.global_position
+func _on_click_target_agent_click_target_changed(click_target):
+	if click_target:
+		arrow_path.end = click_target.global_position
 
 
-func _on_card_cursor_agent_cancelled():
+func _on_click_target_agent_cancelled():
 	location_picked.emit(null)

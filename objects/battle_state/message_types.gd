@@ -16,10 +16,11 @@ class DeckShuffled extends BattleAgent.Message:
 	func get_type(): return "deck_shuffled"
 	var side: ZoneLocation.Side
 
-class CardDrawn extends BattleAgent.Message:
-	func get_type(): return "card_drawn"
-	var side: ZoneLocation.Side
-	var card_instance: CardInstance # TODO: use net-friendly ID
+class CardMoved extends BattleAgent.Message:
+	func get_type(): return "card_moved"
+	var uid: int
+	var from: ZoneLocation
+	var to: ZoneLocation
 
 class Alert extends BattleAgent.Message:
 	func get_type(): return "alert"
@@ -53,3 +54,12 @@ class UnitDamaged extends BattleAgent.Message:
 	var card_uid: int
 	var location: ZoneLocation
 	var amount: int
+
+class UnitTappedChanged extends BattleAgent.Message:
+	func get_type(): return "unit_tapped_changed"
+	var location: ZoneLocation
+	var is_tapped: bool
+
+class UnitRemoved extends BattleAgent.Message:
+	func get_type(): return "unit_removed"
+	var location: ZoneLocation

@@ -15,7 +15,7 @@ func uncover():
 	
 	assert(amount > 0, "Required mana tap amount must be greater than zero")
 	
-	var results := CardCursor.set_criteria(CursorLocation.LAYER_BATTLE, func (cl: CursorLocation):
+	var results := ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_BATTLE, func (cl: ClickTarget):
 		if !cl.location:
 			return false
 		for allowed in available_locations:
@@ -36,9 +36,9 @@ func _update_label():
 	battle_scene.set_screen_label("Choose Mana Source (%s/%s)" % [_chosen.size() / amount])
 
 
-func _on_card_cursor_agent_confirmed(cursor_location):
-	_chosen.append(cursor_location.location)
-	cursor_location.enabled = false
+func _on_click_target_agent_confirmed(click_target):
+	_chosen.append(click_target.location)
+	click_target.enabled = false
 	
 	_update_label()
 	
@@ -46,4 +46,4 @@ func _on_card_cursor_agent_confirmed(cursor_location):
 		locations_picked.emit(_chosen)
 		battle_scene.pop_screen()
 	else:
-		assert(CardCursor.current_cursor_location)
+		assert(ClickTargetManager.current_click_target)

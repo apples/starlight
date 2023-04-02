@@ -12,7 +12,7 @@ func _ready():
 func uncover():
 	super.uncover()
 	
-	var results := CardCursor.set_criteria(CursorLocation.LAYER_CARD_ABILITIES, func (cl: CursorLocation):
+	var results := ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_CARD_ABILITIES, func (cl: ClickTarget):
 		# Get index from cursor location
 		
 		assert(cl.custom_tag.begins_with("ability"))
@@ -41,16 +41,16 @@ func uncover():
 	battle_scene.set_screen_label("Choose Ability to Activate")
 	
 	if results.size() > 0:
-		CardCursor.current_cursor_location = results[0]
+		results[0].make_current()
 		battle_scene.set_preview_card(card_instance.card)
 	else:
 		battle_scene.pop_screen()
 		ability_chosen.emit(null, -1)
 
 
-func _on_card_cursor_agent_confirmed(cursor_location):
-	assert(cursor_location.custom_tag.begins_with("ability"))
-	var idx := int(cursor_location.custom_tag.trim_prefix("ability"))
+func _on_click_target_agent_confirmed(click_target):
+	assert(click_target.custom_tag.begins_with("ability"))
+	var idx := int(click_target.custom_tag.trim_prefix("ability"))
 	assert(idx >= 0)
 	assert(idx < card_instance.card.abilities.size())
 	
@@ -58,6 +58,6 @@ func _on_card_cursor_agent_confirmed(cursor_location):
 	ability_chosen.emit(card_instance, idx)
 
 
-func _on_card_cursor_agent_cancelled():
+func _on_click_target_agent_cancelled():
 	battle_scene.pop_screen()
 	ability_chosen.emit(null, -1)

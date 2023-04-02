@@ -1,14 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjisatde2vivp"]
+[gd_scene load_steps=3 format=3 uid="uid://2bwrt3bbhjeg"]
 
 [ext_resource type="Script" path="res://objects/screen_layers/turn_input/turn_input.gd" id="1_ey2wu"]
-[ext_resource type="Script" path="res://objects/card_cursor_agent/card_cursor_agent.gd" id="2_0di5i"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_agent.gd" id="2_0di5i"]
 
 [node name="TurnInput" type="Node3D"]
 script = ExtResource("1_ey2wu")
 
-[node name="CardCursorAgent" type="Node" parent="."]
+[node name="ClickTargetAgent" type="Node" parent="."]
 script = ExtResource("2_0di5i")
 
-[connection signal="cancelled" from="CardCursorAgent" to="." method="_on_card_cursor_agent_cancelled"]
-[connection signal="confirmed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_confirmed"]
-[connection signal="cursor_location_changed" from="CardCursorAgent" to="." method="_on_card_cursor_agent_cursor_location_changed"]
+[connection signal="cancelled" from="ClickTargetAgent" to="." method="_on_click_target_agent_cancelled"]
+[connection signal="click_target_changed" from="ClickTargetAgent" to="." method="_on_click_target_agent_click_target_changed"]
+[connection signal="confirmed" from="ClickTargetAgent" to="." method="_on_click_target_agent_confirmed"]

@@ -23,23 +23,19 @@ var screen_layer_stack: Array[BattleScreenLayer] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	fiber.run_task(RootBattleTask.new())
+	reconcile()
 	
-	assert(player_field.front_row.size() == opponent_field.front_row.size())
-	for i in range(player_field.front_row.size()):
-		var p := player_field.front_row[i].cursor_location
-		var o := opponent_field.front_row[opponent_field.front_row.size() - i - 1].cursor_location
-		p.up = o
-		o.down = p
+	fiber.run_task(RootBattleTask.new())
 	
 	card_preview.visible = false
 	
-	CardCursor.cursor_location_changed.connect(_on_card_cursor_cursor_location_changed)
 
 func _process(delta: float):
 	fiber.execute_one()
-	reconcile()
+	#reconcile()
 
+## Completely re-syncs the visual state with the BattleState.
+## Should only be called on initialization.
 func reconcile():
 	var player_state := battle_state.get_side_state(ZoneLocation.Side.Player)
 	var opponent_state := battle_state.get_side_state(ZoneLocation.Side.Opponent)
@@ -81,39 +77,11 @@ func _reconcile_card(slot_card_plane: CardPlane, card_instance: CardInstance):
 		slot_card_plane.show_card = false
 		slot_card_plane.card = null
 
-func _reconcile_hand(state: BattleSideState, hand: Node3D, hidden: bool):
+func _reconcile_hand(state: BattleSideState, hand: BattleHand, hidden: bool):
+	hand.clear()
+	
 	for i in range(state.hand.size()):
-		var card_plane: CardPlane = null
-		if i < hand.get_child_count():
-			card_plane = hand.get_child(i)
-		else:
-			card_plane = card_plane_scene.instantiate()
-			card_plane.cursor_layers = \
-				CursorLocation.LAYER_BATTLE | \
-				CursorLocation.LAYER_HAND | \
-				(CursorLocation.LAYER_PLAYER if hand == player_hand else CursorLocation.LAYER_OPPONENT)
-			hand.add_child(card_plane)
-		card_plane.card = state.hand.get_card(i).card if not hidden else null
-		card_plane.location = ZoneLocation.new(state.side, ZoneLocation.Zone.Hand, i)
-		var cursor_location = card_plane.cursor_location
-		if i > 0:
-			var left_slot := hand.get_child(i - 1) as CardPlane
-			left_slot.cursor_location.right = cursor_location
-			cursor_location.left = left_slot.cursor_location
-		else:
-			cursor_location.left = null
-		if i == state.hand.size() - 1:
-			cursor_location.right = null
-		if state.side == ZoneLocation.Side.Player:
-			cursor_location.up = player_field.back_row[1].cursor_location
-	
-	if hand.get_child_count() > 0 and state.side == ZoneLocation.Side.Player:
-		for card_plane in player_field.back_row:
-			var cl := card_plane.cursor_location
-			cl.down = hand.get_child((hand.get_child_count() - 1) / 2).cursor_location
-	
-	for i in range(state.hand.size(), hand.get_child_count()):
-		hand.get_child(i).queue_free()
+		hand.add_card(state.hand.get_card(i))
 
 func _reconcile_tokens(side_state: BattleSideState, tokens):
 	tokens.set_amounts(side_state.token_amounts)
@@ -188,12 +156,68 @@ func get_card_plane(location: ZoneLocation) -> CardPlane:
 	return row[location.slot]
 
 
-func _on_card_cursor_cursor_location_changed(cursor_location: CursorLocation):
-	pass
-
 
 func set_screen_label(str: String):
 	screen_label_container.visible = str != ""
 	screen_label.text = str
 	screen_label.animate()
+
+
+func get_hand(side: ZoneLocation.Side) -> BattleHand:
+	match side:
+		ZoneLocation.Side.Player:
+			return player_hand
+		ZoneLocation.Side.Opponent:
+			return opponent_hand
+	return null
+
+func get_field(side: ZoneLocation.Side):
+	match side:
+		ZoneLocation.Side.Player:
+			return player_field
+		ZoneLocation.Side.Opponent:
+			return opponent_field
+	return null
+
+func _on_player_agent_message_received(message: BattleAgent.Message):
+	var handler := "_handle_%s" % message.get_type()
+	if self.has_method(handler):
+		self.call(handler, message)
+
+
+func _handle_card_moved(message: MessageTypes.CardMoved):
+	var card_instance := battle_state.get_card_instance(message.uid)
+	var card: Card = card_instance.card if card_instance else null
+	
+	match message.from.tuple():
+		[var side, ZoneLocation.Zone.Hand, var slot]:
+			get_hand(side).remove_card(slot)
+		[_, ZoneLocation.Zone.FrontRow, _]:
+			var card_plane := get_card_plane(message.from)
+			card_plane.card = null
+			card_plane.show_card = false
+		[_, ZoneLocation.Zone.BackRow, _]:
+			var card_plane := get_card_plane(message.from)
+			card_plane.card = null
+			card_plane.show_card = false
+	
+	match message.to.tuple():
+		[var side, ZoneLocation.Zone.Hand, var slot]:
+			get_hand(side).add_card(card_instance)
+		[_, ZoneLocation.Zone.FrontRow, _]:
+			var card_plane := get_card_plane(message.to)
+			card_plane.card = card
+			card_plane.show_card = true
+		[_, ZoneLocation.Zone.BackRow, _]:
+			var card_plane := get_card_plane(message.to)
+			card_plane.card = card
+			card_plane.show_card = true
+
+
+func _handle_unit_tapped_changed(message: MessageTypes.UnitTappedChanged):
+	get_card_plane(message.location).is_tapped = message.is_tapped
+
+
+func _handle_unit_removed(message: MessageTypes.UnitRemoved):
+	get_card_plane(message.location).reset()
 
