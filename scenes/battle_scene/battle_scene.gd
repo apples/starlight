@@ -19,6 +19,8 @@ class_name BattleScene extends Node
 @onready var screen_label_container = %ScreenLabelContainer
 @onready var screen_label = %ScreenLabel
 
+@onready var ui = $UI
+
 var screen_layer_stack: Array[BattleScreenLayer] = []
 
 # Called when the node enters the scene tree for the first time.
@@ -104,7 +106,7 @@ func push_screen(screen_scene, init: Callable = func(a): pass) -> BattleScreenLa
 	if init:
 		init.call(screen)
 	
-	add_child(screen)
+	ui.add_child(screen)
 	screen.uncover()
 	
 	return screen
@@ -116,7 +118,7 @@ func pop_screen():
 	
 	var screen = screen_layer_stack.pop_back()
 	print("pop_screen: %s" % screen.name)
-	remove_child(screen)
+	ui.remove_child(screen)
 	screen.queue_free()
 	
 	if screen_layer_stack.size() > 0:

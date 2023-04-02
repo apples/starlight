@@ -1,7 +1,22 @@
 class_name TurnTask extends CardTask
 
+var _summoning_card: CardInstance
+
 func start() -> void:
+	var side_state := battle_state.get_side_state(battle_state.current_turn)
 	
+	# Untap, Upkeep, Draw
+	for unit in side_state.front_row:
+		if unit:
+			battle_state.unit_set_tapped(unit, false)
+	for unit in side_state.back_row:
+		if unit:
+			battle_state.unit_set_tapped(unit, false)
+	battle_state.draw_card(battle_state.current_turn)
+	
+	goto(neutral)
+
+func neutral() -> void:
 	var available_abilities: Dictionary = battle_state.get_available_activations(battle_state.current_turn)
 	
 	var available_summons := battle_state.get_available_summons(battle_state.current_turn)
@@ -20,31 +35,66 @@ func process_action(action: Dictionary) -> void:
 	assert("type" in action)
 	if "type" not in action:
 		print("Invalid payload: %s" % action)
-		goto(start)
+		goto(neutral)
 		return
 	var process_func_name: StringName = "process_%s" % action.type
 	if self.has_method(process_func_name):
 		self.call(process_func_name, action)
 	else:
 		print("Unknown action type: %s" % action)
-		goto(start)
+		goto(neutral)
 
 func process_play_unit(action: Dictionary) -> void:
-	battle_state.unit_summon(action.card, action.where)
-	goto(start)
+	if not _require(action, ["uid"]):
+		return goto(neutral)
+	
+	var card_instance := battle_state.get_card_instance(action.uid)
+	
+	assert(card_instance)
+	if not card_instance:
+		print("Invalid payload: %s" % action)
+		return goto(neutral)
+	
+	_summoning_card = card_instance
+	
+	var allowed_locations := battle_state.unit_get_summon_locations(card_instance)
+	
+	var location_future := Future.new()
+	battle_state.send_message_to(
+		battle_state.current_turn,
+		MessageTypes.ChooseFieldLocation.new({
+			future = location_future,
+			allowed_locations = allowed_locations,
+		}))
+	
+	wait_for_future(location_future, _process_play_unit_location_chosen)
 
-func process_activate_ability(payload: Dictionary):
-	assert("location" in payload)
-	assert("ability_index" in payload)
+func _process_play_unit_location_chosen(location: ZoneLocation) -> void:
+	var allowed_locations := battle_state.unit_get_summon_locations(_summoning_card)
 	
-	if "location" not in payload or "ability_index" not in payload:
+	var found := false
+	for al in allowed_locations:
+		if al.equals(location):
+			found = true
+			break
+	assert(found)
+	if not found:
+		print("Invalid payload: %s" % location)
+		return goto(neutral)
+	
+	battle_state.unit_summon(_summoning_card, location)
+	goto(neutral)
+
+func process_activate_ability(payload: Dictionary) -> void:
+	if not _require(payload, ["uid", "ability_index"]):
+		return goto(neutral)
+	
+	var card_instance := battle_state.get_card_instance(payload.uid)
+	
+	assert(card_instance)
+	if not card_instance:
 		print("Invalid payload: %s" % payload)
-		goto(start)
-		return
-	
-	var location: ZoneLocation = payload.location
-	
-	var card_instance := battle_state.get_card_at(location)
+		return goto(neutral)
 	
 	var index: int = payload.ability_index
 	assert(index >= 0)
@@ -64,19 +114,19 @@ func _process_activate_ability_unit(card_instance: CardInstance, index: int):
 	assert(unit != null)
 	if unit == null:
 		print("Unit not found at: %s" % card_instance.location)
-		goto(start)
+		goto(neutral)
 		return
 	
 	var ability: CardAbility = card_instance.card.abilities[index]
 	assert(ability != null)
 	if ability == null:
 		print("Invalid ability index: %s" % index)
-		goto(start)
+		goto(neutral)
 		return
 	
 	if ability.effect == null:
 		print("Ability has no effect! (index: %s)" % index)
-		goto(start)
+		goto(neutral)
 		return
 	
 	var ability_instance := battle_state.ability_perform(battle_state.current_turn, unit.card_instance, index)
@@ -88,12 +138,12 @@ func _process_activate_ability_grace(card_instance: CardInstance, index: int):
 	assert(ability != null)
 	if ability == null:
 		print("Invalid ability index: %s" % index)
-		goto(start)
+		goto(neutral)
 		return
 	
 	if ability.effect == null:
 		print("Ability has no effect! (index: %s)" % index)
-		goto(start)
+		goto(neutral)
 		return
 	
 	var ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
@@ -105,12 +155,12 @@ func _process_activate_ability_stella(card_instance: CardInstance, index: int):
 	assert(ability != null)
 	if ability == null:
 		print("Invalid ability index: %s" % index)
-		goto(start)
+		goto(neutral)
 		return
 	
 	if ability.effect == null:
 		print("Ability has no effect! (index: %s)" % index)
-		goto(start)
+		goto(neutral)
 		return
 	
 	var ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
@@ -120,11 +170,22 @@ func _process_activate_ability_stella(card_instance: CardInstance, index: int):
 
 func activate_ability_finished() -> void:
 	battle_state.trigger_events_clear()
-	goto(start)
+	goto(neutral)
+
+func process_end_turn(_payload):
+	done()
+
+func _require(payload: Dictionary, props: Array[StringName]) -> bool:
+	for p in props:
+		assert(p in payload)
+		if not p in payload:
+			print("Invalid payload: %s" % payload)
+			return false
+	return true
 
 #func process_retreat(_payload):
 #	push_error("Not implemented")
-#	goto(start)
+#	goto(neutral)
 #
 #func process_pass(_payload):
 #	end_turn()

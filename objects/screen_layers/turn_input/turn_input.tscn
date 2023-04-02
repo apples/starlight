@@ -9,6 +9,15 @@ script = ExtResource("1_ey2wu")
 [node name="ClickTargetAgent" type="Node" parent="."]
 script = ExtResource("2_0di5i")
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [connection signal="cancelled" from="ClickTargetAgent" to="." method="_on_click_target_agent_cancelled"]
 [connection signal="click_target_changed" from="ClickTargetAgent" to="." method="_on_click_target_agent_click_target_changed"]
 [connection signal="confirmed" from="ClickTargetAgent" to="." method="_on_click_target_agent_confirmed"]
