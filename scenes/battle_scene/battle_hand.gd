@@ -47,6 +47,11 @@ func remove_card(slot: int):
 	
 	card_plane.queue_free()
 	group.remove_child(card_plane)
+	
+	for i in range(group.get_child_count()):
+		var c := group.get_child(i)
+		if c.location.slot > slot:
+			c.location.slot -= 1
 
 func clear():
 	while group.get_child_count() > 0:

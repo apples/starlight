@@ -32,6 +32,11 @@ class ChooseTarget extends BattleAgent.Message:
 	var source_location: ZoneLocation
 	var future: CardTask.Future
 
+class ChooseFieldLocation extends BattleAgent.Message:
+	func get_type(): return "choose_field_location"
+	var allowed_locations: Array[ZoneLocation]
+	var future: CardTask.Future
+
 class TakeTurn extends BattleAgent.Message:
 	func get_type(): return "take_turn"
 	var action_future: CardTask.Future

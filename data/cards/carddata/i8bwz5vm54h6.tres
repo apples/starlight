@@ -118,5 +118,5 @@ artwork_path = "res://data/cards/artwork/screet.png"
 mana = 1
 kind = 0
 unit_hp = 3
-level = 3
+level = 0
 abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm"), SubResource("Resource_ytyu1"), SubResource("Resource_memse"), SubResource("Resource_ws3ky"), SubResource("Resource_jfb0a")])
