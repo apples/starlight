@@ -11,8 +11,8 @@ func uncover():
 	
 	control_root.global_position = get_viewport().get_camera_3d().unproject_position(card_plane.action_root.global_position)
 	
-	var results := CardCursor.set_criteria(
-		CursorLocation.LAYER_ACTIONS, func (cl: CursorLocation):
+	var results := ClickTargetManager.set_criteria(
+		ClickTargetGroup.LAYER_ACTIONS, func (cl: ClickTarget):
 		return true
 	)
 	
@@ -23,18 +23,17 @@ func uncover():
 		remove_screen()
 	else:
 		results[0].make_current()
-	
 
 
-func _on_card_cursor_agent_confirmed(cursor_location: CursorLocation):
-	assert(is_ancestor_of(cursor_location))
+func _on_click_target_agent_confirmed(click_target):
+	assert(is_ancestor_of(click_target))
 	remove_screen()
 	emit_signal("action_chosen", {
-		type = cursor_location.custom_tag,
+		type = click_target.custom_tag,
 		where = card_plane.location})
 
 
-func _on_card_cursor_agent_cancelled():
+func _on_click_target_agent_cancelled():
 	remove_screen()
 	emit_signal("action_chosen", null)
 

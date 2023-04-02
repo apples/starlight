@@ -8,7 +8,7 @@ func _ready():
 func uncover():
 	super.uncover()
 	
-	var results := CardCursor.set_criteria(CursorLocation.LAYER_BATTLE, func (cl: CursorLocation):
+	var results := ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_BATTLE, func (cl: ClickTarget):
 		if !cl.location:
 			return false
 		match cl.location.tuple():
@@ -22,9 +22,9 @@ func uncover():
 	battle_scene.set_screen_label("Choose Location")
 	
 	if results.size() == 0:
-		emit_signal("location_picked", null)
+		location_picked.emit(null)
 		battle_scene.pop_screen()
 
-func _on_card_cursor_agent_confirmed(cursor_location):
+func _on_click_target_agent_confirmed(click_target):
 	battle_scene.pop_screen()
-	emit_signal("location_picked", cursor_location.location)
+	emit_signal("location_picked", click_target.location)

@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://cyr4o4b07vyay"]
+[gd_scene load_steps=7 format=3 uid="uid://dt300s8fpa3uv"]
 
-[ext_resource type="Script" path="res://objects/card_ability_cursor_location/card_ability_cursor_location.gd" id="1_skwwl"]
+[ext_resource type="Script" path="res://objects/card_ability_click_target/card_ability_click_target.gd" id="1_skwwl"]
 [ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="2_otp6b"]
-[ext_resource type="PackedScene" uid="uid://don14bjmc1bg6" path="res://objects/cursor_location/cursor_location_control.tscn" id="2_xpqk7"]
-[ext_resource type="Texture2D" uid="uid://drlvmestbp05o" path="res://objects/card_ability_cursor_location/images/card_ability_cursor.png" id="3_5xfec"]
+[ext_resource type="PackedScene" uid="uid://23vj6q0ji8tk" path="res://objects/click_target/click_target_control.tscn" id="2_xpqk7"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_group.gd" id="2_yrerx"]
+[ext_resource type="Texture2D" uid="uid://drlvmestbp05o" path="res://objects/card_ability_click_target/images/card_ability_cursor.png" id="3_5xfec"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_texturerect.gd" id="4_7gmc1"]
 
-[node name="CardAbilityCursorLocation" type="MarginContainer"]
+[node name="CardAbilityClickTarget" type="MarginContainer"]
 offset_right = 32.0
 offset_bottom = 32.0
 scale = Vector2(0.5, 0.5)
@@ -17,12 +18,18 @@ theme_override_constants/margin_right = -16
 theme_override_constants/margin_bottom = -16
 script = ExtResource("1_skwwl")
 
-[node name="CursorLocation" parent="." instance=ExtResource("2_xpqk7")]
+[node name="Group" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-layers = 65
+mouse_filter = 2
+script = ExtResource("2_yrerx")
+layers = 64
 
-[node name="MaterialTextureRect" type="NinePatchRect" parent="CursorLocation"]
+[node name="ClickTarget" parent="Group" instance=ExtResource("2_xpqk7")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="MaterialTextureRect" type="NinePatchRect" parent="Group/ClickTarget"]
 texture_filter = 2
 material = ExtResource("2_otp6b")
 layout_mode = 1

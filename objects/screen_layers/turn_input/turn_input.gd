@@ -14,7 +14,7 @@ func uncover():
 	
 	battle_scene.set_preview_card(null)
 	
-	CardCursor.set_criteria(CursorLocation.LAYER_HAND | CursorLocation.LAYER_FIELD, func (cl: CursorLocation):
+	ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_HAND | ClickTargetGroup.LAYER_FIELD, func (cl: ClickTarget):
 		if !cl.location:
 			return false
 		return true
@@ -68,8 +68,8 @@ func _choose_card_action_ability_chosen(card_instance: CardInstance, index: int)
 	emit_signal("player_action", { type = "activate_ability", location = card_instance.location, ability_index = index })
 	battle_scene.pop_screen()
 
-func _on_card_cursor_agent_confirmed(cursor_location: CursorLocation):
-	var card_plane: CardPlane = cursor_location.get_parent()
+func _on_click_target_agent_confirmed(click_target):
+	var card_plane: CardPlane = click_target.get_parent()
 	match card_plane.location.tuple():
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.Hand, var idx]:
 			var card_instance := battle_state.player.hand.get_card(idx)
@@ -93,13 +93,13 @@ func _play_hand_card(location: ZoneLocation):
 	player_action.emit({ type = "activate_ability", location = location, ability_index = 0 })
 	battle_scene.pop_screen()
 
-func _on_card_cursor_agent_cancelled():
+func _on_click_target_agent_cancelled():
 	pass
 
 
 
-func _on_card_cursor_agent_cursor_location_changed(cursor_location):
-	if cursor_location:
-		var parent = cursor_location.get_parent()
+func _on_click_target_agent_click_target_changed(click_target):
+	if click_target:
+		var parent = click_target.get_parent()
 		if "card" in parent:
 			battle_scene.set_preview_card(parent.card)
