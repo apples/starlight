@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dntmlwcdhvpee"]
+
+[ext_resource type="Script" path="res://objects/screen_layers/reveal_card/reveal_card.gd" id="1_rugv6"]
+[ext_resource type="Script" path="res://objects/click_target/click_target_agent.gd" id="2_swqr8"]
+[ext_resource type="PackedScene" uid="uid://cp1inby5ax2i" path="res://objects/card_plane/card_plane.tscn" id="3_bj0yx"]
+
+[node name="RevealCard" type="Node3D"]
+script = ExtResource("1_rugv6")
+
+[node name="ClickTargetAgent" type="Node" parent="."]
+script = ExtResource("2_swqr8")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.39208, 0.919931, 0, -0.919931, 0.39208, 0, 16.2394, 2.59124)
+
+[node name="CardPlane" parent="Pivot" instance=ExtResource("3_bj0yx")]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

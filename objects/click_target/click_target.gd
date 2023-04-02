@@ -37,12 +37,11 @@ func _ready():
 			break
 		parent = parent.get_parent()
 	
-	if not group:
-		group = ClickTargetManager.default_group
-	
-	group.add_target(self)
-	
-	tree_exiting.connect(_on_tree_exiting)
+	if group:
+		group.add_target(self)
+		tree_exiting.connect(_on_tree_exiting)
+	else:
+		queue_free()
 
 func confirm():
 	confirmed.emit(self)

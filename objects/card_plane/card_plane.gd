@@ -124,7 +124,7 @@ func _refresh_tween_to(where: float):
 
 
 func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
-	if not click_target.enabled:
+	if click_target == null or not click_target.enabled:
 		return
 	
 	if event is InputEventMouseButton:
@@ -134,5 +134,5 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 
 
 func _on_area_3d_mouse_entered():
-	if click_target.enabled:
+	if click_target != null and click_target.enabled:
 		click_target.make_current()
