@@ -2,15 +2,25 @@
 extends CardAbilityCost
 
 @export var tap_self: bool = true
+
 @export var mana_amount: int = 0
-@export var target_count: int = 0
+
+@export var once_per_turn: bool = false
+
+@export var unit_target_count: int = 0
+
 @export_flags( \
 	"Opponent Back:1",
 	"Opponent Front:2",
 	"Own Front:4",
 	"Own Back:8"
-	) var target_zones: int = TargetZone.OPPONENT_FRONT
-@export var target_zones_var: String
+	) var unit_target_zones: int = TargetZone.OPPONENT_FRONT
+
+@export var discard_target_count: int = 0
+
+@export_flags("Own:1", "Opponent:2") var discard_target_sides: int = 1
+
+@export var stella_charge_cost: int = 0
 
 enum TargetZone {
 	OPPONENT_BACK = 1,
@@ -19,6 +29,19 @@ enum TargetZone {
 	OWN_BACK = 8,
 }
 
+enum DiscardSide {
+	OPPONENT = 1,
+	OWN = 2,
+}
+
+func get_property_display(prop: StringName) -> bool:
+	match prop:
+		&"unit_target_zones":
+			return unit_target_count != 0
+		&"discard_target_sides":
+			return discard_target_count != 0
+	return true
+
 func get_mana_cost() -> String:
 	return str(mana_amount) if mana_amount != 0 else ""
 
@@ -26,6 +49,8 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 	# Cannot be paid unless controlled by user
 	if card_instance.location.side != user_side:
 		return false
+	
+	var side_state := battle_state.get_side_state(user_side)
 	
 	# Tap self
 	
@@ -43,7 +68,6 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 	# Mana cost
 	
 	if mana_amount > 0:
-		var side_state := battle_state.get_side_state(user_side)
 		var all_units := side_state.get_all_units()
 		
 		# Short circuit if there aren't enough units
@@ -63,26 +87,61 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 		if count < mana_amount:
 			return false
 	
-	# Targets
+	# Once per turn
 	
-	if target_count and target_zones:
-		var possible_locations := Task._get_possible_target_locations(target_zones, user_side)
+	if once_per_turn:
+		var turn_scratch := card_instance.ability_scratch[ability_index].for_turn
+		if "once_per_turn_used" in turn_scratch and turn_scratch["once_per_turn_used"]:
+			return false
+	
+	# Unit targets
+	
+	if unit_target_count > 0:
+		if unit_target_zones == 0:
+			return false
+		
+		var possible_locations := Task._get_possible_unit_target_locations(unit_target_zones, user_side)
 		
 		possible_locations = possible_locations.filter(func (l: ZoneLocation):
 			return battle_state.ability_can_target_location(card_instance, ability_index, l))
 		
-		if possible_locations.size() < target_count:
+		if possible_locations.size() < unit_target_count:
 			return false
+	
+	# Discard targets
+	
+	if discard_target_count > 0:
+		var total := 0
+		
+		if discard_target_sides & DiscardSide.OPPONENT:
+			total += battle_state.get_side_state(ZoneLocation.flip(user_side)).discard.size()
+		
+		if discard_target_sides & DiscardSide.OWN:
+			total += side_state.discard.size()
+		
+		if total < discard_target_count:
+			return false
+	
+	# Stella charge
+	
+	if side_state.stella_charge < stella_charge_cost:
+		return false
 	
 	return true
 
 class Task extends CardTask:
 	var tap_self: bool
 	var mana_amount: int
-	var target_count: int
-	var target_zones: int
-	
+	var once_per_turn: bool
+	var unit_target_count: int
+	var unit_target_zones: int
+	var discard_target_count: int
+	var discard_target_sides: int
+	var stella_charge_cost: int
+
 	var _choose_multi_targets = preload("res://objects/tasks/choose_multi_targets.gd")
+	
+	var _chosen_mana_sources: Array[UnitState] = []
 	
 	func start() -> void:
 		var card_instance := ability_instance.card_instance
@@ -92,40 +151,25 @@ class Task extends CardTask:
 			push_error("Ability can only be used by owner")
 			return fail()
 		
-		# Perform self-tap
-		
-		if tap_self:
-			var self_unit := battle_state.unit_get(ability_instance.card_instance.location)
-			assert(not self_unit.is_tapped)
-			if self_unit.is_tapped:
-				push_error("Invalid payload: Unit already tapped")
-				return fail()
-			battle_state.unit_set_tapped(ability_instance.card_instance.unit)
-		
+		# Mana cost
 		
 		# If there is no mana cost, skip to target selection
 		if mana_amount == 0:
-			return target_selection()
-		
-		# Mana cost
+			return unit_target_selection()
 		
 		var tappable := battle_state.get_tappable_units(ability_instance.controller, [card_instance.uid])
 		
 		# Request taps
-		var m := MessageTypes.RequestManaTaps.new()
-		m.action_future = Future.new()
-		m.amount = mana_amount
-		m.available_locations = tappable
+		var m := MessageTypes.RequestManaTaps.new({
+			action_future = Future.new(),
+			amount = mana_amount,
+			available_locations = tappable,
+		})
 		battle_state.send_message_to(ability_instance.controller, m)
 		
-		wait_for_future(m.action_future, taps_chosen)
+		wait_for_future(m.action_future, mana_taps_chosen)
 	
-	func taps_chosen(chosen_locations: Array[ZoneLocation]) -> void:
-		
-		# Perform mana taps
-		
-		var units: Array[UnitState] = []
-		
+	func mana_taps_chosen(chosen_locations: Array[ZoneLocation]) -> void:
 		var card_instance := ability_instance.card_instance
 		var tappable := battle_state.get_tappable_units(ability_instance.controller, [card_instance.uid])
 		
@@ -150,17 +194,14 @@ class Task extends CardTask:
 			if not unit:
 				print("Invalid payload: no unit at unit_location")
 				return fail()
-			units.append(unit)
+			_chosen_mana_sources.append(unit)
 		
-		for unit in units:
-			battle_state.unit_set_tapped(unit, true, true)
-		
-		return goto(target_selection)
+		return goto(unit_target_selection)
 	
-	func target_selection() -> void:
+	func unit_target_selection() -> void:
 		var task = _choose_multi_targets.new()
 		task.who = ability_instance.controller
-		task.allowed_locations = _get_possible_target_locations(target_zones, ability_instance.controller)
+		task.allowed_locations = _get_possible_unit_target_locations(unit_target_zones, ability_instance.controller)
 		
 		task.allowed_locations = task.allowed_locations.filter(func (location: ZoneLocation):
 			return battle_state.ability_can_target_location(
@@ -168,17 +209,44 @@ class Task extends CardTask:
 				ability_instance.ability_index,
 				location))
 		
-		task.target_count = target_count
+		task.target_count = unit_target_count
 		task.ability_instance = ability_instance
 		
-		wait_for(task, targets_chosen)
+		wait_for(task, unit_targets_chosen)
 	
-	func targets_chosen(targets: Array[ZoneLocation]):
+	func unit_targets_chosen(targets: Array[ZoneLocation]) -> void:
 		ability_instance.targets = targets
+		
+		finish()
+	
+	func finish() -> void:
+		# Perform self-tap
+		
+		if tap_self:
+			var self_unit := battle_state.unit_get(ability_instance.card_instance.location)
+			assert(not self_unit.is_tapped)
+			if self_unit.is_tapped:
+				push_error("Invalid payload: Unit already tapped")
+				return fail()
+			battle_state.unit_set_tapped(ability_instance.card_instance.unit)
+		
+		# Perform mana taps
+		
+		for unit in _chosen_mana_sources:
+			battle_state.unit_set_tapped(unit, true, true)
+		
+		# Once per turn
+		
+		if once_per_turn:
+			ability_instance.scratch.for_turn["once_per_turn_used"] = true
+		
+		# Stella charge
+		
+		battle_state.stella_charge(ability_instance.controller, -stella_charge_cost)
 		
 		done()
 	
-	static func _get_possible_target_locations(target_zones: int, user_side: ZoneLocation.Side) -> Array[ZoneLocation]:
+	static func _get_possible_unit_target_locations(target_zones: int, user_side: ZoneLocation.Side) -> Array[ZoneLocation]:
 		var possible_locations: Array[ZoneLocation] = []
 		
 		if target_zones & TargetZone.OPPONENT_BACK:
@@ -199,3 +267,4 @@ class Task extends CardTask:
 					user_side, ZoneLocation.Zone.BackRow, i))
 		
 		return possible_locations
+	

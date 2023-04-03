@@ -64,7 +64,6 @@ fov = 40.0
 environment = SubResource("Environment_ieniw")
 
 [node name="PlayerDeckGroup" type="Node3D" parent="." node_paths=PackedStringArray("nav_left")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("10_kcui6")
 nav_left = NodePath("../PlayerField/BackRow")
 

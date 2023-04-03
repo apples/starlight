@@ -16,7 +16,8 @@ func handle_message(message: BattleAgent.Message):
 
 func handle_take_turn(message: MessageTypes.TakeTurn):
 	if message.available_summons.size() > 0:
-		message.action_future.fulfill({ type = "play_unit", uid = message.available_summons.pick_random() })
+		var uid = message.available_summons.pick_random()
+		message.action_future.fulfill({ type = "play_unit", uid = uid })
 		return
 	
 	if message.available_abilities.size() > 0:

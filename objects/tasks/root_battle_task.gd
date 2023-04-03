@@ -21,5 +21,5 @@ func start_first_turn():
 	wait_for(TurnTask.new(), next_turn)
 
 func next_turn():
-	battle_state.current_turn = ZoneLocation.flip(battle_state.current_turn)
+	battle_state.setup_next_turn()
 	wait_for(TurnTask.new(), next_turn)

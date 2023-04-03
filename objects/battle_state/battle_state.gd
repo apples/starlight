@@ -45,6 +45,15 @@ func declare_winner(side: ZoneLocation.Side):
 	fiber.stop_all_tasks()
 	broadcast_message(MessageTypes.DeclareWinner.new({ winner = side }))
 
+func setup_next_turn():
+	current_turn = ZoneLocation.flip(current_turn)
+	
+	# Clear scratch
+	for uid in all_card_instances:
+		var card_instance: CardInstance = all_card_instances[uid]
+		for scratch in card_instance.ability_scratch:
+			scratch.for_turn = {}
+
 ## Summons each player's starter units. Only called at the start of the battle.
 func summon_starters(side: ZoneLocation.Side):
 	var side_state := get_side_state(side)

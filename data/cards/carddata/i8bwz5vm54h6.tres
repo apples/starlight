@@ -1,22 +1,20 @@
-[gd_resource type="Resource" script_class="Card" load_steps=24 format=3 uid="uid://dxd6df7bcc34w"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://dxd6df7bcc34w"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_a1xo7"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_ix1e0"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3ue7v"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_t1uh2"]
-[ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="4_m675n"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="4_ug2rh"]
-[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_tapped.gd" id="5_amcjp"]
-[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_an_attack_is_declared.gd" id="7_na2so"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="7_up660"]
 
-[sub_resource type="Resource" id="Resource_18xss"]
+[sub_resource type="Resource" id="Resource_l4jsq"]
 script = ExtResource("1_ix1e0")
 tap_self = true
 mana_amount = 0
-target_count = 1
-target_zones = 2
-target_zones_var = ""
+once_per_turn = false
+unit_target_count = 1
+unit_target_zones = 2
+discard_target_count = 0
+discard_target_sides = 1
+stella_charge_cost = 0
 
 [sub_resource type="Resource" id="Resource_afj1w"]
 script = ExtResource("2_3ue7v")
@@ -29,83 +27,8 @@ ability_name = "Bites"
 description = "Bites"
 type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_18xss")
+cost = SubResource("Resource_l4jsq")
 effect = SubResource("Resource_afj1w")
-is_uninterruptable = false
-
-[sub_resource type="Resource" id="Resource_ytyu1"]
-script = ExtResource("3_t1uh2")
-ability_name = "Unbite"
-description = "does nothing"
-type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-is_uninterruptable = false
-
-[sub_resource type="Resource" id="Resource_a4ve3"]
-script = ExtResource("4_ug2rh")
-kind = 0
-amount = 1
-amount_var = ""
-
-[sub_resource type="Resource" id="Resource_4wmww"]
-script = ExtResource("5_amcjp")
-this_unit = true
-for_mana = true
-
-[sub_resource type="Resource" id="Resource_pn8tl"]
-script = ExtResource("4_m675n")
-trigger = SubResource("Resource_4wmww")
-effect = SubResource("Resource_a4ve3")
-
-[sub_resource type="Resource" id="Resource_memse"]
-script = ExtResource("3_t1uh2")
-ability_name = "loathe"
-description = "gain duk coin when tap"
-type = 4
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-passive = SubResource("Resource_pn8tl")
-is_uninterruptable = false
-
-[sub_resource type="Resource" id="Resource_nrilu"]
-script = ExtResource("1_ix1e0")
-tap_self = true
-mana_amount = 0
-target_count = 0
-target_zones = 2
-target_zones_var = ""
-
-[sub_resource type="Resource" id="Resource_uspdn"]
-script = ExtResource("7_up660")
-amount = 3
-
-[sub_resource type="Resource" id="Resource_j7g8t"]
-script = ExtResource("7_na2so")
-from_zone = 4
-
-[sub_resource type="Resource" id="Resource_ws3ky"]
-script = ExtResource("3_t1uh2")
-ability_name = "lil helper"
-description = "boost atk 3"
-type = 3
-trigger = SubResource("Resource_j7g8t")
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_nrilu")
-effect = SubResource("Resource_uspdn")
-is_uninterruptable = false
-
-[sub_resource type="Resource" id="Resource_nponc"]
-script = ExtResource("4_ug2rh")
-kind = 0
-amount = 1
-amount_var = ""
-
-[sub_resource type="Resource" id="Resource_jfb0a"]
-script = ExtResource("3_t1uh2")
-ability_name = "free money"
-description = "its free"
-type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-effect = SubResource("Resource_nponc")
 is_uninterruptable = false
 
 [resource]
@@ -119,4 +42,4 @@ mana = 1
 kind = 0
 unit_hp = 3
 level = 0
-abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm"), SubResource("Resource_ytyu1"), SubResource("Resource_memse"), SubResource("Resource_ws3ky"), SubResource("Resource_jfb0a")])
+abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm")])
