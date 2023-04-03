@@ -7,6 +7,7 @@ var ability_index: int
 var source_location: ZoneLocation
 var task: CardTask
 var trigger_event: TriggerEvent
+var scratch: CardInstance.Scratch
 
 var variables: Dictionary = {}
 var targets: Array[ZoneLocation] = []

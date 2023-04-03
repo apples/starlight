@@ -45,7 +45,7 @@ shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = null
 shader_parameter/sprite_filter_trilinear = true
 shader_parameter/texture2DAA_bias = 1.0
-shader_parameter/texture_albedo = SubResource("ViewportTexture_c2f4v")
+shader_parameter/texture_albedo = ExtResource("5_p4qor")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_84lxg"]
 size = Vector3(2.4, 3.36, 0.01)
