@@ -5,7 +5,7 @@ extends CardAbilityTrigger
 # This is a dynamically detected function:
 # The format is `handle_<event>`
 # The various trigger events can be found in: "res://objects/battle_state/trigger_events.gd"
-# Scratch data can be stored in `card_instance.ability_scratch[ability_index]`
+# Scratch data can be stored in `scratch.for_turn`
 # Scratch data will be available to the ability's effect task
 # The handlers are executed for trigger events in order from newest to oldest
 # The first handler which returns `true` will stop older events from being handled

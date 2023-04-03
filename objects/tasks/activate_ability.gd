@@ -26,15 +26,16 @@ func start() -> void:
 		CardAbility.CardAbilityType.PASSIVE:
 			assert(false)
 	
-	# Check scratch
+	# Check scratch trigger_event
 	
 	var scratch := ability_instance.card_instance.ability_scratch[ability_instance.ability_index]
-	if "trigger_event" in scratch:
-		ability_instance.trigger_event = scratch.trigger_event
+	if "trigger_event" in scratch.for_mechanics:
+		ability_instance.trigger_event = scratch.for_mechanics["trigger_event"]
+	scratch.for_mechanics.erase("trigger_event")
 	
-	# Clear scratch
+	# Store scratch in easy place for ability scripts to access
 	
-	ability_instance.card_instance.ability_scratch[ability_instance.ability_index] = {}
+	ability_instance.scratch = scratch
 	
 	# Push Trigger Event
 	

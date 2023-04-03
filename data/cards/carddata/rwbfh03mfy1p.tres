@@ -6,134 +6,146 @@
 [ext_resource type="Script" path="res://data/cards/abilities/effects/stella_charge.gd" id="1_oj4qw"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_summoned.gd" id="2_7ycrf"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_destroyed.gd" id="5_2ne08"]
-[ext_resource type="Script" path="res://data/cards/abilities/costs/stella_cost.gd" id="6_0ue26"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="6_iocn4"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/draw.gd" id="7_yr72p"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/send_unit_to_graveyard.gd" id="8_ydvdr"]
 
-[sub_resource type="Resource" id="Resource_nsxju"]
+[sub_resource type="Resource" id="Resource_wajiw"]
 script = ExtResource("1_oj4qw")
 amount = 1
 amount_var = ""
 
-[sub_resource type="Resource" id="Resource_tihgb"]
+[sub_resource type="Resource" id="Resource_6phx7"]
 script = ExtResource("2_7ycrf")
 own_unit = true
 opponent_unit = false
 
-[sub_resource type="Resource" id="Resource_iy2f0"]
+[sub_resource type="Resource" id="Resource_w8jbi"]
 script = ExtResource("1_32gan")
-trigger = SubResource("Resource_tihgb")
-effect = SubResource("Resource_nsxju")
+trigger = SubResource("Resource_6phx7")
+effect = SubResource("Resource_wajiw")
 
-[sub_resource type="Resource" id="Resource_xkpkx"]
+[sub_resource type="Resource" id="Resource_ggx1y"]
 script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▲1 when you summon a unit."
 type = 4
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-passive = SubResource("Resource_iy2f0")
+passive = SubResource("Resource_w8jbi")
 is_uninterruptable = false
 
-[sub_resource type="Resource" id="Resource_sj60p"]
+[sub_resource type="Resource" id="Resource_1igp4"]
 script = ExtResource("1_oj4qw")
 amount = 1
 amount_var = ""
 
-[sub_resource type="Resource" id="Resource_blwfp"]
+[sub_resource type="Resource" id="Resource_nbasb"]
 script = ExtResource("5_2ne08")
 this_unit = false
 other_own_unit = true
 opponent_unit = false
 
-[sub_resource type="Resource" id="Resource_6o8qj"]
+[sub_resource type="Resource" id="Resource_vyo6p"]
 script = ExtResource("1_32gan")
-trigger = SubResource("Resource_blwfp")
-effect = SubResource("Resource_sj60p")
+trigger = SubResource("Resource_nbasb")
+effect = SubResource("Resource_1igp4")
 
-[sub_resource type="Resource" id="Resource_35am6"]
+[sub_resource type="Resource" id="Resource_1w428"]
 script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▲1 when your unit is destroyed."
 type = 4
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-passive = SubResource("Resource_6o8qj")
+passive = SubResource("Resource_vyo6p")
 is_uninterruptable = false
 
-[sub_resource type="Resource" id="Resource_4c0v7"]
-script = ExtResource("6_0ue26")
-charge_cost = 3
-target_discard = 0
-target_units = 0
-target_zones = 2
-target_zones_var = ""
+[sub_resource type="Resource" id="Resource_ufv0k"]
+script = ExtResource("6_iocn4")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+discard_target_count = 0
+discard_target_sides = 1
+stella_charge_cost = 3
 
-[sub_resource type="Resource" id="Resource_spits"]
+[sub_resource type="Resource" id="Resource_nbnlu"]
 script = ExtResource("7_yr72p")
 amount = 1
 
-[sub_resource type="Resource" id="Resource_hg464"]
+[sub_resource type="Resource" id="Resource_meys7"]
 script = ExtResource("1_ekay0")
 ability_name = ""
-description = "▼3: draw 1."
+description = "▼3, tap, draw 1."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_4c0v7")
-effect = SubResource("Resource_spits")
+cost = SubResource("Resource_ufv0k")
+effect = SubResource("Resource_nbnlu")
 is_uninterruptable = true
 
-[sub_resource type="Resource" id="Resource_c7cws"]
-script = ExtResource("6_0ue26")
-charge_cost = 5
-target_discard = 0
-target_units = 0
-target_zones = 2
-target_zones_var = ""
+[sub_resource type="Resource" id="Resource_n764j"]
+script = ExtResource("6_iocn4")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+discard_target_count = 0
+discard_target_sides = 1
+stella_charge_cost = 5
 
-[sub_resource type="Resource" id="Resource_koef4"]
+[sub_resource type="Resource" id="Resource_578ff"]
 script = ExtResource("1_ekay0")
 ability_name = ""
-description = "▼5: gain 1 colorless mana counter."
+description = "▼5, tap, gain 1 colorless mana counter."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_c7cws")
+cost = SubResource("Resource_n764j")
 is_uninterruptable = true
 
-[sub_resource type="Resource" id="Resource_sdvh2"]
-script = ExtResource("6_0ue26")
-charge_cost = 7
-target_discard = 1
-target_units = 0
-target_zones = 2
-target_zones_var = ""
+[sub_resource type="Resource" id="Resource_dxdam"]
+script = ExtResource("6_iocn4")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+discard_target_count = 0
+discard_target_sides = 1
+stella_charge_cost = 7
 
-[sub_resource type="Resource" id="Resource_vwdxg"]
+[sub_resource type="Resource" id="Resource_h3p4h"]
 script = ExtResource("1_ekay0")
 ability_name = ""
-description = "▼7: target a card in your GY; return that target to your hand."
+description = "▼7, tap, target a card in your GY; return that target to your hand."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_sdvh2")
+cost = SubResource("Resource_dxdam")
 is_uninterruptable = true
 
-[sub_resource type="Resource" id="Resource_eqj2k"]
-script = ExtResource("6_0ue26")
-charge_cost = 10
-target_discard = 0
-target_units = 1
-target_zones = 1
-target_zones_var = ""
+[sub_resource type="Resource" id="Resource_lluy6"]
+script = ExtResource("6_iocn4")
+tap_self = false
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+discard_target_count = 0
+discard_target_sides = 1
+stella_charge_cost = 10
 
-[sub_resource type="Resource" id="Resource_yrxep"]
+[sub_resource type="Resource" id="Resource_ys0ej"]
 script = ExtResource("8_ydvdr")
 
-[sub_resource type="Resource" id="Resource_low11"]
+[sub_resource type="Resource" id="Resource_a8h23"]
 script = ExtResource("1_ekay0")
 ability_name = ""
-description = "▼10, target a unit on your opponent's back row: send that unit to the GY."
+description = "▼10, tap, target a unit on your opponent's back row; send that unit to the GY."
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_eqj2k")
-effect = SubResource("Resource_yrxep")
+cost = SubResource("Resource_lluy6")
+effect = SubResource("Resource_ys0ej")
 is_uninterruptable = true
 
 [resource]
@@ -147,4 +159,4 @@ mana = 2
 kind = 2
 unit_hp = 0
 level = 0
-abilities = Array[ExtResource("1_ekay0")]([SubResource("Resource_xkpkx"), SubResource("Resource_35am6"), SubResource("Resource_hg464"), SubResource("Resource_koef4"), SubResource("Resource_vwdxg"), SubResource("Resource_low11")])
+abilities = Array[ExtResource("1_ekay0")]([SubResource("Resource_ggx1y"), SubResource("Resource_1w428"), SubResource("Resource_meys7"), SubResource("Resource_578ff"), SubResource("Resource_h3p4h"), SubResource("Resource_a8h23")])

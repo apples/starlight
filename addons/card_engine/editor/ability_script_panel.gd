@@ -72,6 +72,8 @@ var is_minimized: bool:
 			minimize_hint.visible = not properties_inner_container.visible
 			minimize_button.text = "◰" if value else "—"
 
+var _property_controls: Dictionary = {}
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if script_kind == "":
@@ -158,6 +160,8 @@ func _reset_fields():
 		var c := properties.get_child(0)
 		c.queue_free()
 		properties.remove_child(c)
+	
+	_property_controls = {}
 	
 	var ability_part = get_ability_part()
 	var script := ability_part.get_script() as Script
@@ -259,19 +263,39 @@ func _reset_fields():
 				assert(false)
 				push_error("Not supported!")
 		
-		if prop_control != null:
-			var varprop_name: String = prop.name + "_var"
-			if varprop_name in ability_part:
-				var variable_property_control := variable_property_control_scene.instantiate()
-				properties.add_child(variable_property_control)
-				
-				variable_property_control.initialize(prop_control, ability_part[varprop_name])
-				variable_property_control.set_options(variable_options)
-				
-				variable_property_control.variable_changed.connect(func (new_value):
-					_set_property(varprop_name, new_value))
-			else:
-				properties.add_child(prop_control)
+		if prop_control == null:
+			var error_label := Label.new()
+			error_label.text = "(not supported)"
+			error_label.size_flags_vertical = Control.SIZE_FILL
+			properties.add_child(error_label)
+		
+		var varprop_name: String = prop.name + "_var"
+		if varprop_name in ability_part:
+			var variable_property_control := variable_property_control_scene.instantiate()
+			properties.add_child(variable_property_control)
+			
+			variable_property_control.initialize(prop_control, ability_part[varprop_name])
+			variable_property_control.set_options(variable_options)
+			
+			variable_property_control.variable_changed.connect(func (new_value):
+				_set_property(varprop_name, new_value))
+			
+			prop_control = variable_property_control
+		else:
+			properties.add_child(prop_control)
+		
+		_property_controls[prop.name] = [label, prop_control]
+	
+	_update_visibility()
+
+func _update_visibility():
+	var ability_part = get_ability_part()
+	if not ability_part.has_method("get_property_display"):
+		return
+	for prop in _property_controls:
+		var v = ability_part.get_property_display(prop)
+		for c in _property_controls[prop]:
+			c.visible = v
 
 func _create_inner_panel(propname: String, label: String, kind: String) -> Control:
 	var panel := ability_script_panel_scene.instantiate()
@@ -297,6 +321,7 @@ func _on_inner_panel_edit_script_requested(script: Script):
 func _set_property(prop_name: String, value):
 	get_ability_part()[prop_name] = value
 	_save()
+	_update_visibility()
 
 func _on_choose_button_pressed():
 	_open_search()
