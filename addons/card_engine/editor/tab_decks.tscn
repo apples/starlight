@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://bn7cdw72sm4a0"]
+
+[ext_resource type="Script" path="res://addons/card_engine/editor/tab_decks.gd" id="1_jcud1"]
+[ext_resource type="PackedScene" uid="uid://vhq3sslgpwvu" path="res://addons/card_engine/editor/option_search.tscn" id="2_8yut8"]
+
+[node name="Decks" type="VBoxContainer"]
+script = ExtResource("1_jcud1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Deck:"
+
+[node name="DeckPathEdit" parent="HBoxContainer" instance=ExtResource("2_8yut8")]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="DeckCards" type="HFlowContainer" parent="HSplitContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="CardListContainer" type="VBoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="SearchGridContainer" type="GridContainer" parent="HSplitContainer/CardListContainer"]
+layout_mode = 2
+
+[node name="SetSearchLabel" type="Label" parent="HSplitContainer/CardListContainer/SearchGridContainer"]
+layout_mode = 2
+text = "Set:"
+
+[node name="SetLineEdit" type="LineEdit" parent="HSplitContainer/CardListContainer/SearchGridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NameSearchLabel" type="Label" parent="HSplitContainer/CardListContainer/SearchGridContainer"]
+layout_mode = 2
+
+[node name="NameLineEdit" type="LineEdit" parent="HSplitContainer/CardListContainer/SearchGridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CardList" type="VBoxContainer" parent="HSplitContainer/CardListContainer"]
+layout_mode = 2
+
+[connection signal="opened" from="HBoxContainer/DeckPathEdit" to="." method="_on_deck_path_edit_opened"]
+[connection signal="search_changed" from="HBoxContainer/DeckPathEdit" to="." method="_on_deck_path_edit_search_changed"]
+[connection signal="selected_id" from="HBoxContainer/DeckPathEdit" to="." method="_on_deck_path_edit_selected_id"]
