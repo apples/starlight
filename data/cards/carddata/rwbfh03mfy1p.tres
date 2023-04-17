@@ -159,4 +159,5 @@ mana = 2
 kind = 2
 unit_hp = 0
 level = 0
+mana_value = 0
 abilities = Array[ExtResource("1_ekay0")]([SubResource("Resource_ggx1y"), SubResource("Resource_1w428"), SubResource("Resource_meys7"), SubResource("Resource_578ff"), SubResource("Resource_h3p4h"), SubResource("Resource_a8h23")])
