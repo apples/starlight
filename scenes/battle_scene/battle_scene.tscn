@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://ccejnbeeab8k2" path="res://data/rulesets/default_rules.tres" id="3_qp2vo"]
 [ext_resource type="Script" path="res://objects/fiber/card_fiber.gd" id="4_yrerv"]
 [ext_resource type="Script" path="res://objects/battle_agents/player_agent.gd" id="5_rmg7w"]
-[ext_resource type="Resource" uid="uid://dg0g6mtkn7mla" path="res://data/decks/test_deck.tres" id="6_e4m36"]
+[ext_resource type="Resource" uid="uid://c5ghbhv4ruu1m" path="res://data/decks/test_deck.tres" id="6_e4m36"]
 [ext_resource type="Script" path="res://objects/battle_agents/dummy_agent.gd" id="7_kgpwf"]
 [ext_resource type="Texture2D" uid="uid://byxua6i70e7ih" path="res://scenes/battle_scene/images/skybox/panorama_image.png" id="8_17qup"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]

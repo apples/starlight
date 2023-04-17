@@ -28,6 +28,7 @@ enum Mana {
 @export var kind: Kind = Kind.UNIT
 @export var unit_hp: int
 @export_enum("0", "1", "2", "3") var level: int
+@export_enum("0", "1", "2", "3") var mana_value: int
 
 @export var abilities: Array[CardAbility]
 

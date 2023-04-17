@@ -28,4 +28,5 @@ mana = 1
 kind = 1
 unit_hp = 0
 level = 0
+mana_value = 0
 abilities = Array[ExtResource("1_1a5v1")]([SubResource("Resource_7oj2k")])

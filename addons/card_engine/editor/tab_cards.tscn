@@ -216,6 +216,12 @@ header_text = "Level"
 resource_key = "level"
 is_editable = true
 
+[node name="DataTableColumnManaValue" parent="Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_ohnvg")]
+layout_mode = 2
+header_text = "Mana Value"
+resource_key = "mana_value"
+is_editable = true
+
 [node name="DataTableColumnArtwork" parent="Split/PanelContainer/UpperPanel/CardDataTable/VBoxContainer/Columns" instance=ExtResource("2_ohnvg")]
 layout_mode = 2
 size_flags_horizontal = 3
