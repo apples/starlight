@@ -61,7 +61,7 @@ is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_ufv0k"]
 script = ExtResource("6_iocn4")
-tap_self = true
+tap_self = false
 mana_amount = 0
 once_per_turn = false
 unit_target_count = 0
@@ -86,7 +86,7 @@ is_uninterruptable = true
 
 [sub_resource type="Resource" id="Resource_n764j"]
 script = ExtResource("6_iocn4")
-tap_self = true
+tap_self = false
 mana_amount = 0
 once_per_turn = false
 unit_target_count = 0
@@ -106,7 +106,7 @@ is_uninterruptable = true
 
 [sub_resource type="Resource" id="Resource_dxdam"]
 script = ExtResource("6_iocn4")
-tap_self = true
+tap_self = false
 mana_amount = 0
 once_per_turn = false
 unit_target_count = 0

@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://btykxgdjps0se"]
+
+[ext_resource type="Script" path="res://addons/card_engine/editor/deck_card_item.gd" id="1_a1gmw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1tn0r"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="DeckCardItem" type="PanelContainer"]
+offset_right = 159.0
+offset_bottom = 65.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1tn0r")
+script = ExtResource("1_a1gmw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CardPlaneContainer" type="MarginContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CountLabel" type="Label" parent="VBoxContainer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+text = "1"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonMinus" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+
+[node name="ButtonPlus" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonMinus" to="." method="_on_button_minus_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonPlus" to="." method="_on_button_plus_pressed"]
