@@ -19,12 +19,12 @@ effect = SubResource("Resource_ko08c")
 
 [sub_resource type="Resource" id="Resource_kobpo"]
 script = ExtResource("1_og70g")
-ability_name = "adsfasdfasdf"
+ability_name = "horse"
 description = "asdfasdfasdfdadfasdfasdf"
 type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 effect = SubResource("Resource_jothi")
-is_uninterruptable = false
+is_uninterruptable = true
 
 [sub_resource type="Resource" id="Resource_8113c"]
 script = ExtResource("2_ltwcu")

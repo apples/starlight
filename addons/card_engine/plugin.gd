@@ -3,16 +3,16 @@ extends EditorPlugin
 
 const MainPanel = preload("res://addons/card_engine/editor/editor_panel.tscn")
 
-var panel
+var cards_panel
 
 func _enter_tree():
 	add_autoload_singleton("CardDatabase", "res://addons/card_engine/card_database.gd")
-	panel = MainPanel.instantiate()
-	panel.visible = false
-	panel.edit_script_requested.connect(_edit_script)
-	panel.show_in_filesystem_requested.connect(_show_in_filesystem)
-	panel.plugin = self
-	get_editor_interface().get_editor_main_screen().add_child(panel)
+	cards_panel = MainPanel.instantiate()
+	cards_panel.visible = false
+	cards_panel.edit_script_requested.connect(_edit_script)
+	cards_panel.show_in_filesystem_requested.connect(_show_in_filesystem)
+	cards_panel.plugin = self
+	get_editor_interface().get_editor_main_screen().add_child(cards_panel)
 	_make_visible(false)
 	add_custom_type(
 		"CardEngineConfig",
@@ -28,8 +28,8 @@ func _enter_tree():
 	)
 
 func _exit_tree():
-	if panel:
-		panel.queue_free()
+	if cards_panel:
+		cards_panel.queue_free()
 	remove_autoload_singleton("CardDatabase")
 	remove_custom_type("CardEngineConfig")
 	remove_custom_type("CardEngineDesignNote")
@@ -40,8 +40,8 @@ func _has_main_screen():
 
 
 func _make_visible(visible):
-	if panel:
-		panel.visible = visible
+	if cards_panel:
+		cards_panel.visible = visible
 
 
 func _get_plugin_name():
@@ -101,7 +101,7 @@ func delete_card(path: String):
 			ol.text = o
 			scroll_layout.add_child(ol)
 		
-		panel.add_child(dialog)
+		cards_panel.add_child(dialog)
 		dialog.show()
 		
 		await _delete_card_dialog_closed

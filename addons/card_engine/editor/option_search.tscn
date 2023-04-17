@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://vhq3sslgpwvu"]
+
+[ext_resource type="PackedScene" uid="uid://b88hs21jecmcs" path="res://addons/card_engine/editor/searchable_popup_menu.tscn" id="1_0y3f8"]
+[ext_resource type="Script" path="res://addons/card_engine/editor/option_search.gd" id="1_4pj4b"]
+
+[node name="OptionSearch" type="LineEdit"]
+custom_minimum_size = Vector2(260, 0)
+editable = false
+selecting_enabled = false
+script = ExtResource("1_4pj4b")
+
+[node name="PopupMenu" parent="." instance=ExtResource("1_0y3f8")]
+unique_name_in_owner = true
+
+[connection signal="close_requested" from="PopupMenu" to="." method="_on_popup_menu_close_requested"]
+[connection signal="search_changed" from="PopupMenu" to="." method="_on_popup_menu_search_changed"]
+[connection signal="search_submitted" from="PopupMenu" to="." method="_on_popup_menu_search_submitted"]
+[connection signal="selected_id" from="PopupMenu" to="." method="_on_popup_menu_selected_id"]

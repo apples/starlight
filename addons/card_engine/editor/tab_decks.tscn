@@ -1,0 +1,213 @@
+[gd_scene load_steps=6 format=3 uid="uid://bn7cdw72sm4a0"]
+
+[ext_resource type="Script" path="res://addons/card_engine/editor/tab_decks.gd" id="1_jcud1"]
+[ext_resource type="PackedScene" uid="uid://vhq3sslgpwvu" path="res://addons/card_engine/editor/option_search.tscn" id="2_8yut8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhmpu"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rmlgm"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.145098, 0.168627, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qrirk"]
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+
+[node name="Decks" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jcud1")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hhmpu")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "Deck:"
+
+[node name="DeckPathEdit" parent="PanelContainer/HBoxContainer" instance=ExtResource("2_8yut8")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "Zoom"
+
+[node name="ZoomMinus" type="Button" parent="PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+text = "-"
+
+[node name="ZoomLabel" type="Label" parent="PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "100%"
+
+[node name="ZoomPlus" type="Button" parent="PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+text = "+"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 600
+
+[node name="DeckPanel" type="PanelContainer" parent="HSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rmlgm")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/DeckPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/DeckPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Stella:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_scroll_mode = 0
+
+[node name="StellaContainer" type="HBoxContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Starlights:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_scroll_mode = 0
+
+[node name="StarlightsContainer" type="HBoxContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer3/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Starters:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_scroll_mode = 0
+
+[node name="StartersContainer" type="HBoxContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer2/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Main Deck:"
+
+[node name="DeckCards" type="HFlowContainer" parent="HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SearchPanel" type="PanelContainer" parent="HSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rmlgm")
+
+[node name="CardListContainer" type="VBoxContainer" parent="HSplitContainer/SearchPanel"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/SearchPanel/CardListContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qrirk")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="SearchGridContainer" type="GridContainer" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="SetSearchLabel" type="Label" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer/SearchGridContainer"]
+layout_mode = 2
+text = "Set:"
+
+[node name="SetOptionButton" type="OptionButton" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer/SearchGridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "ALL_SETS"
+popup/item_0/id = 0
+popup/item_1/text = "Darkness"
+popup/item_1/id = 1
+popup/item_2/text = "Screet"
+popup/item_2/id = 2
+
+[node name="NameSearchLabel" type="Label" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer/SearchGridContainer"]
+layout_mode = 2
+text = "Name:"
+
+[node name="NameLineEdit" type="LineEdit" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer/SearchGridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/minimum_character_width = 10
+placeholder_text = "Filter by name"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "(right-click to
+add to starters)"
+
+[node name="CardListScroll" type="ScrollContainer" parent="HSplitContainer/SearchPanel/CardListContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CardSearchList" type="HFlowContainer" parent="HSplitContainer/SearchPanel/CardListContainer/CardListScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="opened" from="PanelContainer/HBoxContainer/DeckPathEdit" to="." method="_on_deck_path_edit_opened"]
+[connection signal="search_changed" from="PanelContainer/HBoxContainer/DeckPathEdit" to="." method="_on_deck_path_edit_search_changed"]
+[connection signal="selected_id" from="PanelContainer/HBoxContainer/DeckPathEdit" to="." method="_on_deck_path_edit_selected_id"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/ZoomMinus" to="." method="_on_zoom_minus_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/ZoomPlus" to="." method="_on_zoom_plus_pressed"]
+[connection signal="item_selected" from="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer/SearchGridContainer/SetOptionButton" to="." method="_on_set_option_button_item_selected"]
+[connection signal="text_changed" from="HSplitContainer/SearchPanel/CardListContainer/PanelContainer/HBoxContainer/SearchGridContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]

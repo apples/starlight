@@ -38,13 +38,17 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	
 	var card_deck := agent.get_deck()
 	
-	stella = battle_state.create_card_instance(card_deck.stella_card, ZoneLocation.new(side, Zone.Stella), side)
+	stella = battle_state.create_card_instance(CardDatabase.load_from_key(card_deck.stella_card_key), ZoneLocation.new(side, Zone.Stella), side)
 	
-	for card in card_deck.main_deck_cards:
-		deck.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
-	for card in card_deck.starlight_cards:
+	for card_count in card_deck.main_deck_cards:
+		var card := CardDatabase.load_from_key(card_count.card_key)
+		for i in range(card_count.count):
+			deck.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
+	for card_key in card_deck.starlight_card_keys:
+		var card := CardDatabase.load_from_key(card_key)
 		starlights.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
-	for card in card_deck.starter_unit_cards:
+	for card_key in card_deck.starter_unit_card_keys:
+		var card := CardDatabase.load_from_key(card_key)
 		starters.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
 	
 	deck.shuffle()
