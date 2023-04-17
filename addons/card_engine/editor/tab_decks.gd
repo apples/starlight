@@ -23,7 +23,6 @@ var set_filter: String = ""
 @onready var zoom_label = %ZoomLabel
 @onready var zoom_minus = %ZoomMinus
 @onready var zoom_plus = %ZoomPlus
-@onready var cache_clear_timer = %CacheClearTimer
 
 var deck_card_item_scene = preload("res://addons/card_engine/editor/deck_card_item.tscn")
 
