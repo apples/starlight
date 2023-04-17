@@ -10,6 +10,8 @@ var config: CardEngineConfig:
 
 var card_script: Script
 var ability_script: Script
+var card_deck_script: Script
+var card_count_script: Script
 
 var data_root: String
 var cards_path: String
@@ -19,12 +21,18 @@ var ability_triggers_path: String
 var ability_conditionss_path: String
 var ability_passives_path: String
 var design_notes_path: String
+var decks_path: String
 
+func _ready():
+	if FileAccess.file_exists("res://card_engine_config.tres"):
+		config = load("res://card_engine_config.tres")
 
 func reset():
 	if config == null:
 		card_script = null
 		ability_script = null
+		card_deck_script = null
+		card_count_script = null
 		data_root = ""
 		cards_path = ""
 		ability_effects_path = ""
@@ -33,9 +41,12 @@ func reset():
 		ability_passives_path = ""
 		ability_costs_path = ""
 		design_notes_path = ""
+		decks_path = ""
 	else:
 		card_script = config.card_script
 		ability_script = config.ability_script
+		card_deck_script = config.card_deck_script
+		card_count_script = config.card_count_script
 		data_root = config.data_root
 		cards_path = data_root.path_join(config.cards_path)
 		ability_effects_path = data_root.path_join(config.ability_effects_path)
@@ -44,12 +55,13 @@ func reset():
 		ability_passives_path = data_root.path_join(config.ability_passives_path)
 		ability_costs_path = data_root.path_join(config.ability_costs_path)
 		design_notes_path = data_root.path_join(config.design_notes_path)
-
-
+		decks_path = data_root.path_join(config.decks_path)
 
 func get_all_cards() -> Array[String]:
 	return get_all_files(cards_path)
 
+func get_all_decks() -> Array[String]:
+	return get_all_files(decks_path)
 
 func get_all_ability_costs() -> Array[String]:
 	return get_all_files(ability_costs_path)
@@ -157,3 +169,7 @@ func get_mana_types():
 	
 	print("Mana property not found!")
 	return []
+
+func load_from_key(key: String) -> Resource:
+	var uid := key.split(":")[0]
+	return load(cards_path.path_join("%s.tres" % uid))

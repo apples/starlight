@@ -5,6 +5,7 @@ enum Kind {
 	UNIT = 0,
 	GRACE = 1,
 	STELLA = 2,
+	STARLIGHT = 3,
 }
 
 enum Mana {

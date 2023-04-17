@@ -1,14 +1,21 @@
-[gd_resource type="Resource" script_class="CardDeck" load_steps=6 format=3 uid="uid://dg0g6mtkn7mla"]
+[gd_resource type="Resource" script_class="CardDeck" load_steps=5 format=3 uid="uid://c5ghbhv4ruu1m"]
 
-[ext_resource type="Resource" uid="uid://bovce0bh3wuoi" path="res://data/cards/carddata/amm93ovatw2w.tres" id="1_odjyo"]
-[ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="1_wsudd"]
-[ext_resource type="Resource" uid="uid://c7l4ewmtxcety" path="res://data/cards/carddata/qgc1y40lroi8.tres" id="2_4lciw"]
-[ext_resource type="Resource" uid="uid://dxd6df7bcc34w" path="res://data/cards/carddata/i8bwz5vm54h6.tres" id="3_d43ct"]
-[ext_resource type="Resource" uid="uid://wus6fey2x03q" path="res://data/cards/carddata/rwbfh03mfy1p.tres" id="4_4rr8f"]
+[ext_resource type="Script" path="res://resource_types/card/card_count.gd" id="1_6wbhq"]
+[ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="1_8w8dl"]
+
+[sub_resource type="Resource" id="Resource_xpiay"]
+script = ExtResource("1_6wbhq")
+card_key = "amm93ovatw2w:0"
+count = 20
+
+[sub_resource type="Resource" id="Resource_fnj3j"]
+script = ExtResource("1_6wbhq")
+card_key = "i8bwz5vm54h6:0"
+count = 20
 
 [resource]
-script = ExtResource("1_wsudd")
-main_deck_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct"), ExtResource("2_4lciw"), ExtResource("3_d43ct")])
-starter_unit_cards = Array[Resource("res://resource_types/card/card.gd")]([ExtResource("3_d43ct"), ExtResource("1_odjyo")])
-starlight_cards = Array[Resource("res://resource_types/card/card.gd")]([])
-stella_card = ExtResource("4_4rr8f")
+script = ExtResource("1_8w8dl")
+main_deck_cards = Array[ExtResource("1_6wbhq")]([SubResource("Resource_xpiay"), SubResource("Resource_fnj3j")])
+starter_unit_card_keys = Array[String](["amm93ovatw2w:0", "i8bwz5vm54h6:0"])
+starlight_card_keys = Array[String]([])
+stella_card_key = "rwbfh03mfy1p:0"
