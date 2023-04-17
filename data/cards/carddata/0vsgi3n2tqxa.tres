@@ -22,4 +22,5 @@ mana = 2
 kind = 0
 unit_hp = 3
 level = 0
+mana_value = 0
 abilities = Array[ExtResource("2_4w2gm")]([SubResource("Resource_emvt7")])
