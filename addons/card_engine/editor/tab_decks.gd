@@ -23,8 +23,10 @@ var set_filter: String = ""
 @onready var zoom_label = %ZoomLabel
 @onready var zoom_minus = %ZoomMinus
 @onready var zoom_plus = %ZoomPlus
+@onready var no_deck_container = %NoDeckContainer
 
 var deck_card_item_scene = preload("res://addons/card_engine/editor/deck_card_item.tscn")
+var new_deck_scene = preload("res://addons/card_engine/editor/new_deck_dialog.tscn")
 
 #@export var main_deck_cards: Array[CardCount] = []
 #@export var starter_unit_card_keys: Array[String] = []
@@ -79,7 +81,10 @@ func _reconcile():
 	if not loaded_deck:
 		for c in deck_cards.get_children():
 			c.queue_free()
+		no_deck_container.visible = true
 		return
+	
+	no_deck_container.visible = false
 	
 	_reconcile_stella()
 	_reconcile_starlights()
@@ -314,3 +319,30 @@ func _apply_zoom(amount: float):
 	_refresh_search()
 	zoom_minus.disabled = zoom <= 0.25
 	zoom_plus.disabled = zoom >= 2
+
+
+func _on_new_button_pressed():
+	var dialog: ConfirmationDialog = new_deck_scene.instantiate()
+	add_child(dialog)
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.show()
+	
+	await dialog.confirmed
+	
+	var filename: String = dialog.line_edit.text
+	if not filename.ends_with(".tres"):
+		filename += ".tres"
+	
+	assert(filename.is_valid_filename())
+	
+	var fullpath := CardDatabase.decks_path.path_join(filename)
+	
+	assert(not FileAccess.file_exists(fullpath))
+	
+	var deck: Resource = CardDatabase.card_deck_script.new()
+	
+	ResourceSaver.save(deck, fullpath, ResourceSaver.FLAG_CHANGE_PATH)
+	
+	_load_deck(fullpath)
+	
+	all_decks = CardDatabase.get_all_decks()
