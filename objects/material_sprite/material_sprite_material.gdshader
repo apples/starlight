@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,unshaded,alpha_to_coverage;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,alpha_to_coverage,shadows_disabled;
 uniform float alpha_scissor_threshold : hint_range(0,1);
 uniform float alpha_antialiasing_edge : hint_range(0,1);
 uniform vec4 albedo : source_color;

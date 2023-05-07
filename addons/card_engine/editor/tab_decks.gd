@@ -218,7 +218,7 @@ func _refresh_search():
 				continue
 			var c = load(f)
 			if (c.card_name as String).to_lower().contains(search_name):
-				result_cards.append(f)
+				result_paths.append(f)
 				result_cards.append(c)
 		_cached_searches[cache_key] = result_paths
 	
