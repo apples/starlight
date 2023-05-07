@@ -13,7 +13,6 @@ var all_decks: Array[String] = []
 var set_filter: String = ""
 
 @onready var deck_path_edit = %DeckPathEdit
-@onready var deck_path_popup_menu = %DeckPathPopupMenu
 
 func _ready():
 	if visible:

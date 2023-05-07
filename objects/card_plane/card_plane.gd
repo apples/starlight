@@ -41,13 +41,17 @@ var _toast_tween: Tween
 @onready var subviewport := $SubViewport
 @onready var card_render := $SubViewport/CardRender
 @onready var sprite := $Sprite
-@onready var click_target := %ClickTarget
+@onready var click_target: ClickTarget = %ClickTarget
 @onready var action_root := %ActionRoot
 @onready var toast_label := %ToastLabel as Label3D
 
 func _ready():
-	toast_label.visible = false
 	refresh()
+	
+	if Engine.is_editor_hint():
+		return
+	
+	toast_label.visible = false
 
 func _process(delta):
 	if Engine.is_editor_hint():
@@ -84,6 +88,10 @@ func refresh():
 	if not is_inside_tree():
 		return
 	
+	if Engine.is_editor_hint():
+		_editor_refresh()
+		return
+	
 	click_target.location = location
 	
 	if show_card:
@@ -98,6 +106,11 @@ func refresh():
 	else:
 		sprite.visible = false
 
+func _editor_refresh():
+	assert(Engine.is_editor_hint())
+	
+	card_render.card = card
+	subviewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 
 func toast(str: String):
 	_toast_queue.append(str)
