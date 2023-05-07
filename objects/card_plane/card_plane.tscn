@@ -68,6 +68,7 @@ card = null
 material_override = SubResource("ShaderMaterial_ieiuw")
 cast_shadow = 0
 transparent = false
+double_sided = false
 alpha_cut = 1
 texture_filter = 1
 texture = SubResource("ViewportTexture_c2f4v")

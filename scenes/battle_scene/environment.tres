@@ -1,0 +1,28 @@
+[gd_resource type="Environment" load_steps=6 format=3 uid="uid://bii3ud25vjalr"]
+
+[ext_resource type="Texture2D" uid="uid://byxua6i70e7ih" path="res://scenes/battle_scene/images/skybox/panorama_image.png" id="1_ih0yi"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2v38v"]
+seed = 30
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ltlsl"]
+in_3d_space = true
+noise = SubResource("FastNoiseLite_2v38v")
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_u5qp7"]
+panorama = ExtResource("1_ih0yi")
+
+[sub_resource type="Sky" id="Sky_gc2mt"]
+sky_material = SubResource("PanoramaSkyMaterial_u5qp7")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_gc2mt")
+glow_normalized = true
+glow_strength = 1.62
+glow_blend_mode = 1
+glow_hdr_threshold = 0.5
+glow_hdr_scale = 1.0
+glow_map_strength = 1.0
+glow_map = SubResource("NoiseTexture2D_ltlsl")
