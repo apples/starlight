@@ -12,13 +12,11 @@ extends Node2D
 		return card
 	set(value):
 		card = value
-		if is_inside_tree():
-			refresh()
+		refresh()
 
 @export var poke: bool:
 	set(_v):
-		if is_inside_tree():
-			refresh()
+		refresh()
 
 @onready var background: Sprite2D = $Background
 @onready var typical_cardface: Control = $TypicalCardFace
@@ -35,6 +33,15 @@ func _ready():
 	refresh()
 
 func refresh():
+	if not is_inside_tree():
+		return
+	
+	if get_tree().edited_scene_root == self:
+		return
+	
+	if get_tree().edited_scene_root.is_ancestor_of(self):
+		return
+	
 	if card:
 		if prev_card != card:
 			_cleanup(typical_cardface.get_node("AbilityContainer"))
