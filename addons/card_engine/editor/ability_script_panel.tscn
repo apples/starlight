@@ -54,6 +54,7 @@ selecting_enabled = false
 
 [node name="ScriptPathPopupMenu" parent="HBoxContainer/ScriptPathEdit" instance=ExtResource("2_snfuk")]
 unique_name_in_owner = true
+wrap_controls = false
 
 [node name="ChooseButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2

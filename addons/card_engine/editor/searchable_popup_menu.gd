@@ -1,5 +1,5 @@
 @tool
-extends Window
+extends Popup
 
 @onready var panel := $Panel
 @onready var items := %Items
