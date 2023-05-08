@@ -5,13 +5,8 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1uyf"]
 bg_color = Color(0.0901961, 0.141176, 0.184314, 1)
 
-[node name="SearchablePopupMenu" type="Window"]
+[node name="SearchablePopupMenu" type="Popup"]
 size = Vector2i(100, 200)
-visible = false
-wrap_controls = true
-transient = true
-borderless = true
-popup_window = true
 script = ExtResource("1_j0qul")
 
 [node name="Panel" type="PanelContainer" parent="."]
@@ -28,6 +23,8 @@ layout_mode = 2
 
 [node name="LineEdit" type="LineEdit" parent="Panel/VBoxContainer"]
 layout_mode = 2
+caret_blink = true
+caret_blink_interval = 0.5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2

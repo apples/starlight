@@ -11,6 +11,7 @@ script = ExtResource("1_4pj4b")
 
 [node name="PopupMenu" parent="." instance=ExtResource("1_0y3f8")]
 unique_name_in_owner = true
+visible = false
 
 [connection signal="close_requested" from="PopupMenu" to="." method="_on_popup_menu_close_requested"]
 [connection signal="search_changed" from="PopupMenu" to="." method="_on_popup_menu_search_changed"]

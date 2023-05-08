@@ -327,14 +327,14 @@ func _on_choose_button_pressed():
 	_open_search()
 
 func _open_search():
-	script_path_popup.show()
 	var edit_pos := script_path_edit.get_screen_position()
 	var edit_xform := script_path_edit.get_global_transform_with_canvas()
 	var edit_size := edit_xform.get_scale() * script_path_edit.size
 	script_path_popup.position = edit_pos
-	script_path_popup.size.x = edit_size.x
+	script_path_popup.size = Vector2i(edit_size.x, edit_size.y * 10)
 	script_path_popup.edit.text = ""
 	script_path_popup.edit.call_deferred("grab_focus")
+	script_path_popup.popup()
 	_update_filtered_options()
 
 

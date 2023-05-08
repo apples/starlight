@@ -1,43 +1,12 @@
-[gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://bovce0bh3wuoi"]
+[gd_resource type="Resource" script_class="Card" load_steps=16 format=3 uid="uid://bovce0bh3wuoi"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_1pd1v"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_og70g"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_oyuk5"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/if_attack_destroyed_unit.gd" id="2_4ysg1"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_ic3tm"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/gain_token.gd" id="2_ltwcu"]
-
-[sub_resource type="Resource" id="Resource_pllc7"]
-script = ExtResource("1_1pd1v")
-tap_self = true
-mana_amount = 1
-once_per_turn = false
-unit_target_count = 1
-unit_target_zones = 2
-discard_target_count = 0
-discard_target_sides = 1
-stella_charge_cost = 0
-
-[sub_resource type="Resource" id="Resource_ko08c"]
-script = ExtResource("2_ltwcu")
-kind = 0
-amount = 3
-amount_var = ""
-
-[sub_resource type="Resource" id="Resource_jothi"]
-script = ExtResource("2_ic3tm")
-amount = 8
-amount_var = ""
-effect = SubResource("Resource_ko08c")
-
-[sub_resource type="Resource" id="Resource_kobpo"]
-script = ExtResource("1_og70g")
-ability_name = "horse"
-description = "asdfasdfasdfdadfasdfasdf"
-type = 2
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-cost = SubResource("Resource_pllc7")
-effect = SubResource("Resource_jothi")
-is_uninterruptable = true
+[ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="5_vuahj"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_an_attack_is_declared.gd" id="5_xfxmt"]
 
 [sub_resource type="Resource" id="Resource_5f0bv"]
 script = ExtResource("1_1pd1v")
@@ -50,26 +19,55 @@ discard_target_count = 0
 discard_target_sides = 1
 stella_charge_cost = 0
 
-[sub_resource type="Resource" id="Resource_8113c"]
-script = ExtResource("2_ltwcu")
-kind = 0
-amount = 3
-amount_var = ""
+[sub_resource type="Resource" id="Resource_egley"]
+script = ExtResource("2_4ysg1")
 
 [sub_resource type="Resource" id="Resource_4oltb"]
 script = ExtResource("2_ic3tm")
 amount = 8
 amount_var = ""
-effect = SubResource("Resource_8113c")
+effect = SubResource("Resource_egley")
 
 [sub_resource type="Resource" id="Resource_nchxk"]
 script = ExtResource("1_og70g")
-ability_name = "adsfasdfasdf"
-description = "asdfasdfasdfdadfasdfasdf"
+ability_name = "Nibble"
+description = "
+
+"
 type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 cost = SubResource("Resource_5f0bv")
 effect = SubResource("Resource_4oltb")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_fjwe5"]
+script = ExtResource("1_1pd1v")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+discard_target_count = 0
+discard_target_sides = 1
+stella_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_c2a8o"]
+script = ExtResource("5_vuahj")
+amount = 3
+
+[sub_resource type="Resource" id="Resource_3j1oo"]
+script = ExtResource("5_xfxmt")
+from_zone = 4
+
+[sub_resource type="Resource" id="Resource_iwwih"]
+script = ExtResource("1_og70g")
+ability_name = "Boost"
+description = "When your front unit attacks: that attack deals +3 damage."
+type = 3
+trigger = SubResource("Resource_3j1oo")
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_fjwe5")
+effect = SubResource("Resource_c2a8o")
 is_uninterruptable = false
 
 [resource]
@@ -84,4 +82,4 @@ kind = 0
 unit_hp = 7
 level = 0
 mana_value = 0
-abilities = Array[ExtResource("1_og70g")]([SubResource("Resource_kobpo"), SubResource("Resource_nchxk")])
+abilities = Array[ExtResource("1_og70g")]([SubResource("Resource_nchxk"), SubResource("Resource_iwwih")])
