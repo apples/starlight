@@ -36,7 +36,7 @@ var zoom: float = 1:
 	set(value):
 		zoom = value
 		if card_plane_container:
-			card_plane_container.custom_minimum_size = Vector2(zoom, zoom) * CardDatabase.config.card_size_pixels
+			card_plane_container.custom_minimum_size = Vector2(zoom, zoom) * Vector2(CardDatabase.config.card_size_pixels)
 
 func _ready():
 	card_plane_control_scene = CardDatabase.config.card_control
@@ -44,7 +44,7 @@ func _ready():
 	card_plane_control.card = card
 	count_label.text = str(count)
 	card_plane_container.add_child(card_plane_control)
-	card_plane_container.custom_minimum_size = Vector2(zoom, zoom) * CardDatabase.config.card_size_pixels
+	card_plane_container.custom_minimum_size = Vector2(zoom, zoom) * Vector2(CardDatabase.config.card_size_pixels)
 
 
 func _on_button_minus_pressed():
