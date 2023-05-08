@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardEngineConfig" load_steps=7 format=3 uid="uid://bi7uu80a2f5g2"]
+[gd_resource type="Resource" script_class="CardEngineConfig" load_steps=8 format=3 uid="uid://bi7uu80a2f5g2"]
 
 [ext_resource type="PackedScene" uid="uid://ccb62u8ib4n0u" path="res://objects/card_plane/card_plane_control_no_nav.tscn" id="1_bjcun"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_s7g2i"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_77hgf"]
 [ext_resource type="Script" path="res://resource_types/card/card_count.gd" id="3_golwd"]
 [ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="4_5pooe"]
+[ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="5_hdo2k"]
 
 [resource]
 script = ExtResource("1_vcn21")
@@ -28,4 +29,8 @@ trigger_template_path = "res://resource_types/card/script_templates/trigger.gd"
 conditions_template_path = "res://resource_types/card/script_templates/condition.gd"
 passive_template_path = "res://resource_types/card/script_templates/passive.gd"
 card_control = ExtResource("1_bjcun")
-card_size_pixels = Vector2(240, 336)
+card_render = ExtResource("5_hdo2k")
+card_size_pixels = Vector2i(240, 336)
+card_print_dpi = 300.0
+card_print_size_in = Vector2(2.5, 3.5)
+card_print_bleed_in = Vector2(0.25, 0.25)

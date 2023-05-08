@@ -21,7 +21,6 @@ render_target_update_mode = 1
 
 [node name="CardRender" parent="SubViewport" instance=ExtResource("2_rt0ip")]
 unique_name_in_owner = true
-card = null
 
 [node name="Sprite" type="TextureRect" parent="."]
 texture_filter = 2
