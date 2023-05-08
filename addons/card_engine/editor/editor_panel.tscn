@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://dunj7mka6qqgd"]
+[gd_scene load_steps=10 format=3 uid="uid://dunj7mka6qqgd"]
 
 [ext_resource type="Script" path="res://addons/card_engine/editor/editor_panel.gd" id="1_e0rvg"]
 [ext_resource type="PackedScene" uid="uid://ddtiu0a15nihn" path="res://addons/card_engine/editor/tab_cards.tscn" id="2_7udbo"]
 [ext_resource type="PackedScene" uid="uid://bn7cdw72sm4a0" path="res://addons/card_engine/editor/tab_decks.tscn" id="3_skjf5"]
+[ext_resource type="PackedScene" uid="uid://dgmrblnk3qv1d" path="res://addons/card_engine/editor/print_cards_tab.tscn" id="4_hy5sx"]
 
 [sub_resource type="SystemFont" id="SystemFont_5urc5"]
 
@@ -45,5 +46,9 @@ theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_km5s5")
 layout_mode = 2
 
 [node name="Decks" parent="TabContainer" instance=ExtResource("3_skjf5")]
+visible = false
+layout_mode = 2
+
+[node name="Print" parent="TabContainer" instance=ExtResource("4_hy5sx")]
 visible = false
 layout_mode = 2

@@ -23,5 +23,10 @@ class_name CardEngineConfig extends Resource
 @export_file var passive_template_path: String
 
 @export var card_control: PackedScene
+@export var card_render: PackedScene
 
-@export var card_size_pixels: Vector2
+@export var card_size_pixels: Vector2i
+
+@export var card_print_dpi: float
+@export var card_print_size_in: Vector2
+@export var card_print_bleed_in: Vector2
