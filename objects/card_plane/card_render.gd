@@ -36,11 +36,12 @@ func refresh():
 	if not is_inside_tree():
 		return
 	
-	if get_tree().edited_scene_root == self:
-		return
-	
-	if get_tree().edited_scene_root.is_ancestor_of(self):
-		return
+	if Engine.is_editor_hint():
+		if get_tree().edited_scene_root == self:
+			return
+		
+		if get_tree().edited_scene_root.is_ancestor_of(self):
+			return
 	
 	if card:
 		if prev_card != card:
