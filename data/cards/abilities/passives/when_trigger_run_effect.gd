@@ -5,6 +5,10 @@ extends CardAbilityPassive
 @export var effect: CardAbilityEffect
 
 func process_trigger_event(passive_effect: PassiveEffect, trigger_event: TriggerEvent, battle_state: BattleState) -> void:
+	if trigger == null:
+		print_debug("when_trigger_run_effect: trigger is null (card: %s, ability_index: %s)" % [passive_effect.card_instance.card, passive_effect.ability_index])
+		return
+	
 	if trigger.can_activate_single(
 		trigger_event,
 		battle_state,

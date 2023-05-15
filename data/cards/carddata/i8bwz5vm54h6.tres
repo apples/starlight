@@ -1,11 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://dxd6df7bcc34w"]
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://dxd6df7bcc34w"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_a1xo7"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_ix1e0"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3ue7v"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/gain_float_mana.gd" id="2_wt7dj"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_t1uh2"]
-[ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="4_nsnso"]
 
 [sub_resource type="Resource" id="Resource_l4jsq"]
 script = ExtResource("1_ix1e0")
@@ -39,18 +38,6 @@ cost = SubResource("Resource_l4jsq")
 effect = SubResource("Resource_afj1w")
 is_uninterruptable = false
 
-[sub_resource type="Resource" id="Resource_d6lk7"]
-script = ExtResource("4_nsnso")
-
-[sub_resource type="Resource" id="Resource_l3uae"]
-script = ExtResource("3_t1uh2")
-ability_name = "Mana Trigger"
-description = "this unit taps for two mana"
-type = 4
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-passive = SubResource("Resource_d6lk7")
-is_uninterruptable = false
-
 [resource]
 script = ExtResource("1_a1xo7")
 uid = "i8bwz5vm54h6"
@@ -63,4 +50,4 @@ kind = 0
 unit_hp = 3
 level = 0
 mana_value = 0
-abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm"), SubResource("Resource_l3uae")])
+abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm")])
