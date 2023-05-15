@@ -80,6 +80,6 @@ artwork_path = "res://data/cards/artwork/scrat.png"
 mana = 1
 kind = 0
 unit_hp = 7
-level = 0
+level = 1
 mana_value = 0
 abilities = Array[ExtResource("1_og70g")]([SubResource("Resource_nchxk"), SubResource("Resource_iwwih")])

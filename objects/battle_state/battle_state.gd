@@ -406,7 +406,7 @@ func unit_get_summon_locations(card_instance: CardInstance) -> Array[ZoneLocatio
 			if card_instance.card.level == 0 and row[i] == null:
 				results.append(ZoneLocation.new(side, zone, i))
 			if card_instance.card.level > 0 and row[i] != null:
-				if row[i].card_instance.card.level == card_instance.card.level + 1:
+				if row[i].card_instance.card.level == card_instance.card.level - 1:
 					results.append(ZoneLocation.new(side, zone, i))
 	
 	process_row.call(side_state.front_row, ZoneLocation.Zone.FrontRow)

@@ -15,4 +15,3 @@ func is_active() -> bool:
 		if not condition.is_met(battle_state, card_instance, ability_index):
 			return false
 	return true
-
