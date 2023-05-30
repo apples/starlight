@@ -1,0 +1,33 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=3 uid="uid://dkgng066s4kxx"]
+
+[ext_resource type="Texture2D" uid="uid://codbktymlibe7" path="res://objects/character/spritesheets/ranch.png" id="1_1aq80"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7b7nm"]
+atlas = ExtResource("1_1aq80")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yrtu"]
+atlas = ExtResource("1_1aq80")
+region = Rect2(32, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7b7nm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7b7nm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yrtu")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 15.0
+}]

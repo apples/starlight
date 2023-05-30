@@ -60,21 +60,20 @@ func _finish_job(job):
 			image.convert(Image.FORMAT_RGBA8)
 			
 			var filename = "%s_%s_%s.png" % [job.card.cardset_name, job.card.cardset_idx, (job.card.card_name as String).replace(" ", "_")]
-			var path = "res://.renders/".path_join(filename)
+			var path = "res://.renders/images/".path_join(filename)
 			image.save_png(path)
 			
 			vp.queue_free()
 			
-			var file_list = FileAccess.open("res://.renders/.cardlist.txt", FileAccess.READ_WRITE)
+			var file_list = FileAccess.open("res://.renders/cardlist.txt", FileAccess.READ_WRITE)
 			file_list.seek_end()
 			file_list.store_line(filename)
 			file_list.close()
 
 func _on_button_pressed():
-	if not DirAccess.dir_exists_absolute("res://.renders"):
-		DirAccess.make_dir_absolute("res://.renders")
+	DirAccess.make_dir_recursive_absolute("res://.renders/images")
 	
-	var file_list = FileAccess.open("res://.renders/.cardlist.txt", FileAccess.WRITE)
+	var file_list = FileAccess.open("res://.renders/cardlist.txt", FileAccess.WRITE)
 	file_list.close()
 	
 	for path in CardDatabase.get_all_cards():
