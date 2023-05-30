@@ -48,9 +48,9 @@ func handle_request_mana_taps(message: MessageTypes.RequestManaTaps):
 	message.action_future.fulfill(chosen)
 
 func handle_request_response(message: MessageTypes.RequestResponse):
-	var trigger: Array = message.available_triggers.pick_random()
+	var trigger: Dictionary = message.available_triggers.pick_random()
 	
-	var ability: int = trigger.slice(1).pick_random()
+	var ability: int = trigger.available_trigger_abilities.pick_random()
 	
 	message.action_future.fulfill([trigger[0], ability])
 

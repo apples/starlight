@@ -53,7 +53,7 @@ func _ready():
 	
 	toast_label.visible = false
 
-func _process(delta):
+func _process(_delta):
 	if Engine.is_editor_hint():
 		return
 	
@@ -112,9 +112,9 @@ func _editor_refresh():
 	card_render.card = card
 	subviewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 
-func toast(str: String):
-	_toast_queue.append(str)
-	print("TOASTING %s" % str)
+func toast(text: String):
+	_toast_queue.append(text)
+	print("TOASTING %s" % text)
 
 
 func reset():
@@ -136,7 +136,7 @@ func _refresh_tween_to(where: float):
 	_current_tap_tween.tween_property(sprite, "rotation_degrees", Vector3(0,0,where), tween_duration)
 
 
-func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
+func _on_area_3d_input_event(_camera, event, _position, _normal, _shape_idx):
 	if click_target == null or not click_target.enabled:
 		return
 	

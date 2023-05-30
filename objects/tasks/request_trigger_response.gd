@@ -3,7 +3,7 @@ class_name TaskRequestTriggerResponse extends CardTask
 var side: ZoneLocation.Side = ZoneLocation.Side.Player
 var is_second_priority: bool = false
 
-var _available_triggers: Array[Array] = []
+var _available_triggers: Array[Dictionary] = []
 
 func _init(s: ZoneLocation.Side):
 	side = s
@@ -20,12 +20,12 @@ func start() -> void:
 	_available_triggers = []
 	
 	for unit in all_units:
-		var arr: Array = [unit.card_instance.uid]
+		var d: Dictionary = { card_uid = unit.card_instance.uid, available_trigger_abilities = [] }
 		for i in range(unit.card_instance.card.abilities.size()):
 			if _check_ability(unit.card_instance, i):
-				arr.append(i)
-		if arr.size() > 1:
-			_available_triggers.append(arr)
+				d.available_trigger_abilities.append(i)
+		if not d.available_trigger_abilities.is_empty():
+			_available_triggers.append(d)
 	
 	# If no possible triggers, skip response window
 	if _available_triggers.size() == 0:
@@ -71,23 +71,22 @@ func action_chosen(trigger_action: Array) -> void:
 	
 	# Find choice in the list
 	
-	var chosen: Array = []
+	var chosen: Dictionary
 	for choice in _available_triggers:
-		if choice[0] == uid and ability_index in choice.slice(1):
+		if choice.card_uid == uid and ability_index in choice.available_trigger_abilities:
 			chosen = choice
 			break
 	
-	assert(chosen != [])
-	if chosen == []:
-		push_error("Invalid choice")
+	assert(chosen != {})
+	if chosen == {}:
+		push_error("Invalid choice, this is a bug!")
 		return done(null, Result.FAILED)
-	
 	
 	# Execute trigger
 	
-	var ability_instance := battle_state.ability_perform(side, card_instance, ability_index)
+	var new_ability_instance := battle_state.ability_perform(side, card_instance, ability_index)
 	
-	return become(ability_instance.task)
+	return become(new_ability_instance.task)
 
 
 func pass_to_next() -> void:
@@ -108,11 +107,17 @@ func _check_ability(card_instance: CardInstance, ability_index: int) -> bool:
 	var ability: CardAbility = card_instance.card.abilities[ability_index]
 	assert(ability)
 	
+	print("_check_ability(%s)" % [ability])
+	
 	if not ability.type == CardAbility.CardAbilityType.TRIGGER:
+		print("    not a trigger")
 		return false
 	if ability.cost and not ability.cost.can_be_paid(battle_state, card_instance, ability_index, side):
+		print("    cannot pay cost")
 		return false
 	if ability.trigger and not ability.trigger.can_activate(battle_state, card_instance, ability_index, side):
+		print("    cannot be activated")
 		return false
 	
+	print("    check passed")
 	return true

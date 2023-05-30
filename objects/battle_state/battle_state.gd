@@ -68,7 +68,7 @@ func discard_hand_card(card_instance: CardInstance):
 
 ## Pushes a trigger event to the stack. 
 func trigger_event_push(e: TriggerEvent) -> void:
-	_info("trigger_event_push: ", e)
+	_info("[color=red]trigger_event_push[/color]: ", e)
 	trigger_events.push_front(e)
 	
 	for effect in passive_effects:
@@ -483,7 +483,7 @@ func get_available_summons(side: ZoneLocation.Side) -> Array[int]:
 # ===============
 
 func _info(a="", b="", c=""):
-	print("[BattleState] ", a, b, c)
+	print_rich("[color=magenta][lb]BattleState[rb][/color] ", a, b, c)
 
 func _set_unit(location: ZoneLocation, unit: UnitState) -> void:
 	var state = get_side_state(location.side)

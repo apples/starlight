@@ -24,7 +24,7 @@ enum Mana {
 @export var card_name: String
 @export_file("*.png") var artwork_path: String
 
-@export var mana: Mana = Mana.HOLY
+@export var mana: Mana = Mana.COLORLESS
 @export var kind: Kind = Kind.UNIT
 @export var unit_hp: int
 @export_enum("0", "1", "2", "3") var level: int
@@ -42,13 +42,13 @@ static func random_uid() -> String:
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 	var num := (rng.randi() << 31) ^ rng.randi()
-	var str := ""
+	var new_uid := ""
 	
 	while num >= 36:
 		var c := num % base
-		str = chars[c] + str
+		new_uid = chars[c] + new_uid
 		num /= base
 	
-	str = str.lpad(12, "0")
+	new_uid = new_uid.lpad(12, "0")
 	
-	return str
+	return new_uid

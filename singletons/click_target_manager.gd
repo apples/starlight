@@ -23,15 +23,16 @@ var current_click_target: ClickTarget = null:
 
 signal click_target_changed(click_target: ClickTarget)
 
-var _criteria
-
 func add_agent(agent: ClickTargetAgent):
 	agents.append(agent)
 	agent.last_click_target = current_click_target
+	agent.criteria_changed.connect(_on_agent_criteria_changed.bind(agent))
+	_apply_current_agent_criteria()
 
 func remove_agent(agent: ClickTargetAgent):
 	assert(agent in agents)
 	agents.remove_at(agents.find(agent))
+	_apply_current_agent_criteria()
 	if agents.size() > 0:
 		if agents.back().last_click_target and agents.back().last_click_target.enabled:
 			current_click_target = agents.back().last_click_target
@@ -74,15 +75,16 @@ func dissolve_current_target():
 				return
 	reset_current_target()
 
+func apply_criteria(group_layer_mask: int, target_filter: Callable) -> void:
+	for g in groups:
+		for t in g.targets:
+			t.enabled = g.matches(group_layer_mask) and (target_filter.call(t) if target_filter else true)
 
-func set_criteria(group_layer_mask: int, target_filter: Callable) -> Array[ClickTarget]:
-	_criteria = [group_layer_mask, target_filter]
-	
+func get_enabled_click_targets() -> Array[ClickTarget]:
 	var results: Array[ClickTarget] = []
 	
 	for g in groups:
 		for t in g.targets:
-			t.enabled = g.matches(group_layer_mask) and target_filter.call(t)
 			if t.enabled:
 				results.append(t)
 	
@@ -185,8 +187,11 @@ func _unhandled_input(event):
 
 func _on_group_click_target_added(click_target: ClickTarget):
 	if click_target.enabled:
-		if _criteria:
-			if not click_target.group.matches(_criteria[0]) or not _criteria[1].call(click_target):
+		var agent := get_current_agent()
+		if agent and agent.criteria:
+			if not click_target.group.matches(agent.criteria.group_layer_mask):
+				click_target.enabled = false
+			elif agent.criteria.target_filter and not agent.criteria.target_filter.call(click_target):
 				click_target.enabled = false
 	
 	click_target.enabled_changed.connect(_on_click_target_enabled_changed)
@@ -214,3 +219,14 @@ func _on_click_target_confirmed(click_target: ClickTarget):
 func _on_click_target_made_current(click_target: ClickTarget):
 	if click_target.enabled:
 		current_click_target = click_target
+
+func _on_agent_criteria_changed(agent: ClickTargetAgent) -> void:
+	if agent == get_current_agent():
+		_apply_current_agent_criteria()
+
+func _apply_current_agent_criteria() -> void:
+	var agent := get_current_agent()
+	if agent and agent.criteria:
+		apply_criteria(agent.criteria.group_layer_mask, agent.criteria.target_filter)
+	else:
+		apply_criteria(ClickTargetGroup.LAYER_ALL, Callable())

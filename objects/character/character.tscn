@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5qpypicylxus"]
+
+[ext_resource type="SpriteFrames" uid="uid://dkgng066s4kxx" path="res://objects/character/spritesheets/ranch_frames.tres" id="1_4ia4p"]
+[ext_resource type="Script" path="res://objects/character/character.gd" id="1_qo7l4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b0hqy"]
+radius = 7.9
+
+[node name="Character" type="CharacterBody2D"]
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("1_qo7l4")
+move_speed = 150.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b0hqy")
+
+[node name="SpriteAnchor" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Sprite" type="AnimatedSprite2D" parent="SpriteAnchor"]
+unique_name_in_owner = true
+position = Vector2(0, -8)
+sprite_frames = ExtResource("1_4ia4p")
+autoplay = "default"

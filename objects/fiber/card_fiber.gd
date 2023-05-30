@@ -16,13 +16,15 @@ func _ready():
 func run_task(task: CardTask, parent: CardTask = null):
 	assert(parent == null or parent.is_inside_tree())
 	assert(!task.is_inside_tree(), "Task already in tree!")
+	var task_name := (task.get_script() as Script).resource_path.get_file()
+	task.name = task_name if task_name else "unknown_task"
 	task.battle_state = battle_state
 	task.fiber = self
 	if parent:
-		print("[CardFiber] running task %s under %s" % [task, parent])
+		print_rich("[color=green][lb]CardFiber[rb][/color] running task [i]%s[/i] under %s" % [task, parent])
 		parent.add_child(task)
 	else:
-		print("[CardFiber] running task %s under root" % [task])
+		print_rich("[color=green][lb]CardFiber[rb][/color] running task [i]%s[/i] under root" % [task])
 		add_child(task)
 
 # Executes the next step of the first pending task.

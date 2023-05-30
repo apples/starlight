@@ -6,12 +6,12 @@ signal done()
 
 @onready var card_plane = %CardPlane
 
+@onready var click_target_agent: ClickTargetAgent = $ClickTargetAgent
+
 func uncover():
 	super.uncover()
 	
-	var results := ClickTargetManager.set_criteria(0, func (cl: ClickTarget):
-		return false
-	)
+	click_target_agent.set_criteria({ group_layer_mask = ClickTargetGroup.LAYER_NONE })
 	
 	battle_scene.set_screen_label("")
 	

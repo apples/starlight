@@ -1,9 +1,9 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://buraluh2x3tka"]
 
-[ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_canvasmaterial.gdshader" id="1_ph3ky"]
+[ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_canvasmaterial.gdshader" id="1_kyfcw"]
 
 [resource]
 resource_local_to_scene = true
-shader = ExtResource("1_ph3ky")
+shader = ExtResource("1_kyfcw")
 shader_parameter/sprite_filter_trilinear = true
 shader_parameter/texture2DAA_bias = 0.8

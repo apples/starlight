@@ -37,13 +37,13 @@ func shuffle() -> void:
 	for i in range(_card_instances.size()):
 		_card_instances[i].location.slot = i
 
-func _iter_init(arg) -> bool:
+func _iter_init(_arg) -> bool:
 	_iter_idx = 0
 	return _iter_idx < _card_instances.size()
 
-func _iter_next(arg) -> bool:
+func _iter_next(_arg) -> bool:
 	_iter_idx += 1
 	return _iter_idx < _card_instances.size()
 
-func _iter_get(arg) -> CardInstance:
+func _iter_get(_arg) -> CardInstance:
 	return _card_instances[_iter_idx]

@@ -11,6 +11,8 @@ var _dialog_button := preload("res://objects/screen_layers/overlay_dialog/dialog
 @onready var text_label = %TextLabel
 @onready var button_container = %ButtonContainer
 
+@onready var click_target_agent: ClickTargetAgent = $ClickTargetAgent
+
 func _ready():
 	text_label.text = text
 	for o in options:
@@ -22,12 +24,15 @@ func _ready():
 func uncover():
 	super.uncover()
 	
-	var results := ClickTargetManager.set_criteria(
-		ClickTargetGroup.LAYER_ACTIONS, func (cl: ClickTarget):
-		return self.is_ancestor_of(cl)
-	)
+	click_target_agent.set_criteria({
+		group_layer_mask = ClickTargetGroup.LAYER_ACTIONS,
+		target_filter = func (cl: ClickTarget):
+			return self.is_ancestor_of(cl)
+	})
 	
 	battle_scene.set_screen_label("")
+	
+	var results := click_target_agent.get_enabled_click_targets()
 	
 	if results.size() > 0:
 		results[0].make_current()

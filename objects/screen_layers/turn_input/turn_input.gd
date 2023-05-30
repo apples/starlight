@@ -10,16 +10,18 @@ var choose_unit_action_scene: PackedScene = preload("res://objects/screen_layers
 var choose_card_ability_scene: PackedScene = preload("res://objects/screen_layers/choose_card_ability/choose_card_ability.tscn")
 var overlay_dialog_scene: PackedScene = preload("res://objects/screen_layers/overlay_dialog/overlay_dialog.tscn")
 
+@onready var click_target_agent: ClickTargetAgent = $ClickTargetAgent
+
 func uncover():
 	super.uncover()
 	
 	battle_scene.set_preview_card(null)
 	
-	ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_HAND | ClickTargetGroup.LAYER_FIELD, func (cl: ClickTarget):
-		if !cl.location:
-			return false
-		return true
-	)
+	click_target_agent.set_criteria({
+		group_layer_mask = ClickTargetGroup.LAYER_HAND | ClickTargetGroup.LAYER_FIELD,
+		target_filter = func (cl: ClickTarget):
+			return cl.location != null
+	})
 	
 	battle_scene.set_screen_label("Your Turn")
 

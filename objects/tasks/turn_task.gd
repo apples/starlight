@@ -109,7 +109,7 @@ func process_activate_ability(payload: Dictionary) -> void:
 			return _process_activate_ability_stella(card_instance, index)
 	
 
-func _process_activate_ability_unit(card_instance: CardInstance, index: int):
+func _process_activate_ability_unit(card_instance: CardInstance, index: int) -> void:
 	var unit := card_instance.unit
 	assert(unit != null)
 	if unit == null:
@@ -129,11 +129,11 @@ func _process_activate_ability_unit(card_instance: CardInstance, index: int):
 		goto(neutral)
 		return
 	
-	var ability_instance := battle_state.ability_perform(battle_state.current_turn, unit.card_instance, index)
+	var new_ability_instance := battle_state.ability_perform(battle_state.current_turn, unit.card_instance, index)
 	
-	wait_for(ability_instance.task, activate_ability_finished)
+	wait_for(new_ability_instance.task, activate_ability_finished)
 
-func _process_activate_ability_grace(card_instance: CardInstance, index: int):
+func _process_activate_ability_grace(card_instance: CardInstance, index: int) -> void:
 	var ability: CardAbility = card_instance.card.abilities[index]
 	assert(ability != null)
 	if ability == null:
@@ -146,11 +146,11 @@ func _process_activate_ability_grace(card_instance: CardInstance, index: int):
 		goto(neutral)
 		return
 	
-	var ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
+	var new_ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
 	
-	wait_for(ability_instance.task, activate_ability_finished)
+	wait_for(new_ability_instance.task, activate_ability_finished)
 
-func _process_activate_ability_stella(card_instance: CardInstance, index: int):
+func _process_activate_ability_stella(card_instance: CardInstance, index: int) -> void:
 	var ability: CardAbility = card_instance.card.abilities[index]
 	assert(ability != null)
 	if ability == null:
@@ -163,9 +163,9 @@ func _process_activate_ability_stella(card_instance: CardInstance, index: int):
 		goto(neutral)
 		return
 	
-	var ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
+	var new_ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
 	
-	wait_for(ability_instance.task, activate_ability_finished)
+	wait_for(new_ability_instance.task, activate_ability_finished)
 
 
 func activate_ability_finished() -> void:

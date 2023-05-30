@@ -23,6 +23,9 @@ func _init(p_battle_state: BattleState, p_controller: ZoneLocation.Side, p_card_
 	card_instance = p_card_instance
 	ability_index = p_ability_index
 
+func _to_string() -> String:
+	return "<AbilityInstance: controller = %s, card_instance = %s, ability = %s>" % [controller, card_instance, get_ability()]
+
 func negate():
 	task.cancel()
 

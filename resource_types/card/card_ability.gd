@@ -27,3 +27,6 @@ enum CardAbilityAttributes {
 @export var effect: CardAbilityEffect = null
 
 @export var is_uninterruptable: bool = false
+
+func _to_string() -> String:
+	return "<CardAbility(%s)>" % [ability_name]
