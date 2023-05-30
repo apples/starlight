@@ -76,12 +76,12 @@ func info(what: String, from_task: bool = true):
 	var s := "INFO: " if from_task else ""
 	if ability_instance:
 		var n := ability_instance.card_instance.card.card_name
-		print("[CardTask] (%s) %s: %s%s" % [n, filename, s, what])
+		print_rich("[color=cyan][lb]CardTask[rb][/color] (%s) %s: %s%s" % [n, filename, s, what])
 	elif "passive_effect" in self and self.passive_effect:
 		var n = self.passive_effect.card_instance.card.card_name
-		print("[CardTask] (%s) %s: %s%s" % [n, filename, s, what])
+		print_rich("[color=cyan][lb]CardTask[rb][/color] (%s) %s: %s%s" % [n, filename, s, what])
 	else:
-		print("[CardTask] %s: %s%s" % [filename, s, what])
+		print_rich("[color=cyan][lb]CardTask[rb][/color] %s: %s%s" % [filename, s, what])
 
 func run() -> void:
 	if is_done():
@@ -176,10 +176,10 @@ func wait_for(task: CardTask, next: Callable, on_fail: Callable = Callable()) ->
 	_fail_state = on_fail.get_method() if on_fail.is_valid() else &"_default_fail_state"
 	_did_update_state = true
 
-func become(task: CardTask):
+func become(task: CardTask) -> void:
 	wait_for(task, self._become_done, self._become_done)
 
-func _become_done(value):
+func _become_done(value) -> void:
 	done(value, _awaited_task_result)
 
 func goto(next: Callable) -> void:

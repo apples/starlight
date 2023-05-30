@@ -29,12 +29,12 @@ func handle_ability_activated(
 	if ability.type == CardAbility.CardAbilityType.ATTACK:
 		match e.ability_instance.source_location.tuple():
 			[opponent_side, ZoneLocation.Zone.BackRow, _]:
-				return from_zone & TargetZone.OPPONENT_BACK
+				return from_zone & TargetZone.OPPONENT_BACK != 0
 			[opponent_side, ZoneLocation.Zone.FrontRow, _]:
-				return from_zone & TargetZone.OPPONENT_FRONT
+				return from_zone & TargetZone.OPPONENT_FRONT != 0
 			[user_side, ZoneLocation.Zone.FrontRow, _]:
-				return from_zone & TargetZone.OWN_FRONT
+				return from_zone & TargetZone.OWN_FRONT != 0
 			[user_side, ZoneLocation.Zone.BackRow, _]:
-				return from_zone & TargetZone.OWN_BACK
+				return from_zone & TargetZone.OWN_BACK != 0
 	
 	return false

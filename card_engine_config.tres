@@ -1,15 +1,15 @@
 [gd_resource type="Resource" script_class="CardEngineConfig" load_steps=8 format=3 uid="uid://bi7uu80a2f5g2"]
 
-[ext_resource type="PackedScene" uid="uid://ccb62u8ib4n0u" path="res://objects/card_plane/card_plane_control_no_nav.tscn" id="1_bjcun"]
-[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_s7g2i"]
-[ext_resource type="Script" path="res://addons/card_engine/resource_types/card_engine_config.gd" id="1_vcn21"]
-[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_77hgf"]
-[ext_resource type="Script" path="res://resource_types/card/card_count.gd" id="3_golwd"]
-[ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="4_5pooe"]
-[ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="5_hdo2k"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_rfiki"]
+[ext_resource type="PackedScene" uid="uid://ccb62u8ib4n0u" path="res://objects/card_plane/card_plane_control_no_nav.tscn" id="2_ighby"]
+[ext_resource type="Script" path="res://resource_types/card/card_count.gd" id="3_cfj1v"]
+[ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="4_3wfb5"]
+[ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="5_orf0f"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="6_p2w8p"]
+[ext_resource type="Script" path="res://addons/card_engine/resource_types/card_engine_config.gd" id="7_e82cn"]
 
 [resource]
-script = ExtResource("1_vcn21")
+script = ExtResource("7_e82cn")
 data_root = "res://data"
 cards_path = "cards/carddata"
 ability_costs_path = "cards/abilities/costs"
@@ -19,17 +19,17 @@ ability_conditions_path = "cards/abilities/conditions"
 ability_passives_path = "cards/abilities/passives"
 design_notes_path = "cards/design_notes"
 decks_path = "decks"
-card_script = ExtResource("2_77hgf")
-ability_script = ExtResource("1_s7g2i")
-card_deck_script = ExtResource("4_5pooe")
-card_count_script = ExtResource("3_golwd")
+card_script = ExtResource("6_p2w8p")
+ability_script = ExtResource("1_rfiki")
+card_deck_script = ExtResource("4_3wfb5")
+card_count_script = ExtResource("3_cfj1v")
 cost_template_path = "res://resource_types/card/script_templates/cost.gd"
 effect_template_path = "res://resource_types/card/script_templates/effect.gd"
 trigger_template_path = "res://resource_types/card/script_templates/trigger.gd"
 conditions_template_path = "res://resource_types/card/script_templates/condition.gd"
 passive_template_path = "res://resource_types/card/script_templates/passive.gd"
-card_control = ExtResource("1_bjcun")
-card_render = ExtResource("5_hdo2k")
+card_control = ExtResource("2_ighby")
+card_render = ExtResource("5_orf0f")
 card_size_pixels = Vector2i(240, 336)
 card_print_dpi = 300.0
 card_print_size_in = Vector2(2.5, 3.5)

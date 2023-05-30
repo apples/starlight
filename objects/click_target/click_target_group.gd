@@ -1,6 +1,7 @@
 class_name ClickTargetGroup extends Node
 
 enum {
+	LAYER_NONE = 0,
 	LAYER_BATTLE = 1,
 	LAYER_PLAYER = 2,
 	LAYER_OPPONENT = 4,
@@ -8,6 +9,7 @@ enum {
 	LAYER_HAND = 16,
 	LAYER_ACTIONS = 32,
 	LAYER_CARD_ABILITIES = 64,
+	LAYER_ALL = ~0,
 }
 
 @export_flags("Battle", "Player", "Opponent", "Field", "Hand", "Actions", "Card Abilities") var layers: int = LAYER_BATTLE

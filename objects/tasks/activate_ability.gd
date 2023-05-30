@@ -10,7 +10,6 @@ func _init(ci: CardInstance, ai: AbilityInstance):
 
 func start() -> void:
 	var ability := ability_instance.get_ability()
-	var card := ability_instance.card_instance.card
 	
 	# Assertions
 	

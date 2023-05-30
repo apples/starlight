@@ -6,17 +6,18 @@ var card_plane: CardPlane = null
 
 signal action_chosen(action: Dictionary)
 
+@onready var click_target_agent: ClickTargetAgent = $ClickTargetAgent
+
 func uncover():
 	super.uncover()
 	
 	control_root.global_position = get_viewport().get_camera_3d().unproject_position(card_plane.action_root.global_position)
 	
-	var results := ClickTargetManager.set_criteria(
-		ClickTargetGroup.LAYER_ACTIONS, func (cl: ClickTarget):
-		return true
-	)
+	click_target_agent.set_criteria({ group_layer_mask = ClickTargetGroup.LAYER_ACTIONS })
 	
 	battle_scene.set_screen_label("Choose Unit Action")
+	
+	var results := click_target_agent.get_enabled_click_targets()
 	
 	if results.size() == 0:
 		emit_signal("action_chosen", null)

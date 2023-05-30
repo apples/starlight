@@ -43,13 +43,13 @@ func _bake():
 	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 	
 	var add_step := func (dist: float):
-		var xform := curve.sample_baked_with_rotation(dist)
+		var pos := curve.sample_baked(dist)
 		var u := (dist - (length - width)) / width
 		
 		mesh.surface_set_uv(Vector2(u, 0))
-		mesh.surface_add_vertex(xform * Vector3(-width/2.0, 0, 0))
+		mesh.surface_add_vertex(pos + Vector3(-width/2.0, 0, 0))
 		mesh.surface_set_uv(Vector2(u, 1))
-		mesh.surface_add_vertex(xform * Vector3(width/2.0, 0, 0))
+		mesh.surface_add_vertex(pos + Vector3(width/2.0, 0, 0))
 	
 	for i in range(int(length / curve.bake_interval)):
 		var dist := i * curve.bake_interval

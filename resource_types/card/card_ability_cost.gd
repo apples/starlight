@@ -5,6 +5,7 @@ extends Resource
 func get_mana_cost() -> String:
 	return ""
 
+@warning_ignore("unused_parameter")
 func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability_index: int, user_side: ZoneLocation.Side) -> bool:
 	push_error("CardAbilityCost: can_be_paid() not implemented")
 	return false
