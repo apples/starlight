@@ -67,8 +67,7 @@ func handle_request_response(message: MessageTypes.RequestResponse):
 	var screen = battle_scene.push_screen(choose_field_unit, func (screen):
 		var available_locations: Array[ZoneLocation] = []
 		for trigger in message.available_triggers:
-			var card_uid: int = trigger[0]
-			var card: CardInstance = battle_state.all_card_instances[card_uid]
+			var card: CardInstance = battle_state.all_card_instances[trigger.card_uid]
 			assert(card)
 			available_locations.append(card.location)
 		screen.allowed_locations = available_locations
@@ -87,7 +86,7 @@ func _request_response_choose_ability(message: MessageTypes.RequestResponse, whe
 	
 	var trigger_index := -1
 	for i in range(message.available_triggers.size()):
-		if message.available_triggers[i][0] == card_instance.uid:
+		if message.available_triggers[i].card_uid == card_instance.uid:
 			trigger_index = i
 			break
 	
@@ -103,8 +102,8 @@ func _request_response_choose_ability(message: MessageTypes.RequestResponse, whe
 			CardAbility.CardAbilityType.TRIGGER,
 		])
 		screen.allowed_ability_indices = []
-		for i in range(1, trigger.size()):
-			screen.allowed_ability_indices.append(trigger[i])
+		for i in trigger.available_trigger_abilities.size():
+			screen.allowed_ability_indices.append(trigger.available_trigger_abilities[i])
 		var ci_idx = await screen.ability_chosen
 		assert(ci_idx.size() == 2)
 		var ability_index: int = ci_idx[1]
@@ -112,7 +111,7 @@ func _request_response_choose_ability(message: MessageTypes.RequestResponse, whe
 			handle_request_response(message)
 			return
 		assert(ability_index in screen.allowed_ability_indices)
-		message.action_future.fulfill([trigger[0], ability_index])
+		message.action_future.fulfill([trigger.card_uid, ability_index])
 	)
 
 func handle_unit_damaged(message: MessageTypes.UnitDamaged):

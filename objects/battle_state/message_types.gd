@@ -50,7 +50,7 @@ class TakeTurn extends BattleAgent.Message:
 class RequestResponse extends BattleAgent.Message:
 	func get_type(): return "request_response"
 	var action_future: CardTask.Future
-	var available_triggers: Array[Array]
+	var available_triggers: Array[Dictionary] ## Array[{ card_uid: int, available_trigger_abilities: Array[int] }]
 
 class RequestManaTaps extends BattleAgent.Message:
 	func get_type(): return "request_mana_taps"

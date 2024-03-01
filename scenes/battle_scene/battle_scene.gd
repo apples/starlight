@@ -20,8 +20,11 @@ class_name BattleScene extends Node
 @onready var screen_label = %ScreenLabel
 
 @onready var ui = $UI
+@onready var fiber_debug: PanelContainer = %FiberDebug
 
 var screen_layer_stack: Array[BattleScreenLayer] = []
+
+var _is_debugging: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,7 +36,16 @@ func _ready():
 	
 
 func _process(delta: float):
-	fiber.execute_one()
+	if Input.is_action_just_pressed("fiber_debug_toggle"):
+		_is_debugging = not _is_debugging
+		fiber_debug.visible = _is_debugging
+	
+	if _is_debugging:
+		if Input.is_action_just_pressed("fiber_debug_step"):
+			fiber.execute_one()
+	else:
+		fiber.execute_one()
+	
 	#reconcile()
 
 ## Completely re-syncs the visual state with the BattleState.

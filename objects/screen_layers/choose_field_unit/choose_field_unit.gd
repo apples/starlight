@@ -8,23 +8,29 @@ var target_from
 
 @onready var arrow_path = $ArrowPath
 
+@onready var click_target_agent: ClickTargetAgent = $ClickTargetAgent
+
 func _ready():
 	pass
 
 func uncover():
 	super.uncover()
 	
-	var results := ClickTargetManager.set_criteria(ClickTargetGroup.LAYER_BATTLE, func (cl: ClickTarget):
-		if !cl.location:
+	click_target_agent.set_criteria({
+		group_layer_mask = ClickTargetGroup.LAYER_BATTLE,
+		target_filter = func (cl: ClickTarget):
+			if !cl.location:
+				return false
+			for allowed in allowed_locations:
+				if cl.location.equals(allowed):
+					if battle_state.unit_get(cl.location):
+						return true
 			return false
-		for allowed in allowed_locations:
-			if cl.location.equals(allowed):
-				if battle_state.unit_get(cl.location):
-					return true
-		return false
-	)
+	})
 	
 	battle_scene.set_screen_label("Choose Target")
+	
+	var results := click_target_agent.get_enabled_click_targets()
 	
 	if results.size() == 0:
 		push_warning("No possible targets")

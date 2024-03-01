@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://nm2eypux40v4"]
+[gd_scene load_steps=19 format=3 uid="uid://nm2eypux40v4"]
 
 [ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="1_6tg30"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
@@ -17,6 +17,7 @@
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="13_41ud0"]
 [ext_resource type="PackedScene" uid="uid://dvx53oob87xe4" path="res://objects/card_plane/card_plane_control.tscn" id="13_wngi3"]
 [ext_resource type="Script" path="res://scenes/battle_scene/screen_label.gd" id="15_is1p8"]
+[ext_resource type="PackedScene" uid="uid://cnuiopilm334g" path="res://scenes/battle_scene/debugging/fiber_debug.tscn" id="18_mexf0"]
 
 [node name="BattleScene" type="Node3D"]
 script = ExtResource("1_vdvqa")
@@ -196,5 +197,11 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 76
 script = ExtResource("15_is1p8")
+
+[node name="FiberDebug" parent="UI" node_paths=PackedStringArray("fiber") instance=ExtResource("18_mexf0")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+fiber = NodePath("../../BattleState/CardFiber")
 
 [connection signal="message_received" from="BattleState/PlayerAgent" to="." method="_on_player_agent_message_received"]
