@@ -40,7 +40,7 @@ project/assembly_name="Starlight"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/card_engine/plugin.cfg", "res://addons/noise_maker/plugin.cfg")
+enabled=PackedStringArray("res://addons/card_engine/plugin.cfg", "res://addons/cider_wiki/plugin.cfg", "res://addons/noise_maker/plugin.cfg")
 
 [file_customization]
 
@@ -48,6 +48,10 @@ folder_colors={
 "res://data/": "green",
 "res://objects/": "red"
 }
+
+[godot_idea_board]
+
+directory_path="res://addons/godot-idea-board/savedata/"
 
 [importer_defaults]
 

@@ -162,8 +162,8 @@ func get_card_plane(location: ZoneLocation) -> CardPlane:
 		ZoneLocation.Zone.BackRow:
 			row = field.back_row
 		_:
-			assert(false)
 			push_error("Not supported")
+			breakpoint
 	
 	assert(location.slot >= 0 && location.slot < row.size())
 	

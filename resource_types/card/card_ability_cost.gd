@@ -18,5 +18,5 @@ func pay_task(ability_instance: AbilityInstance) -> CardTask:
 	
 	return task
 
-func get_output_variables() -> Array[String]:
+func get_variable_names() -> Array[String]:
 	return []

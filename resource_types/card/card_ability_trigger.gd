@@ -20,5 +20,5 @@ func can_activate_single(e: TriggerEvent, battle_state: BattleState, card_instan
 	
 	return false
 
-func get_output_variables() -> Array[String]:
+func get_variable_names() -> Array[String]:
 	return []

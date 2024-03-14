@@ -36,6 +36,11 @@ func start() -> void:
 	
 	ability_instance.scratch = scratch
 	
+	# Condition variables
+	
+	for cond: CardAbilityCondition in ability_instance.get_ability().conditions:
+		ability_instance.variables.merge(cond.compute_variables(ability_instance))
+	
 	# Push Trigger Event
 	
 	activation_event = TriggerEvents.AbilityActivated.new({ ability_instance = ability_instance })
@@ -49,7 +54,7 @@ func start() -> void:
 	
 	if ability.cost:
 		if not ability.cost.can_be_paid(battle_state, card_instance, ability_instance.ability_index, ability_instance.controller):
-			assert(false)
+			breakpoint
 			return fail()
 		var cost_task := ability.cost.pay_task(ability_instance)
 		return wait_for(cost_task, response_window)

@@ -14,6 +14,8 @@ func _ready():
 func uncover():
 	super.uncover()
 	
+	battle_scene.set_preview_card(card_instance.card)
+	
 	click_target_agent.set_criteria({
 		group_layer_mask = ClickTargetGroup.LAYER_CARD_ABILITIES,
 		target_filter = func (cl: ClickTarget):
@@ -48,7 +50,6 @@ func uncover():
 	
 	if results.size() > 0:
 		results[0].make_current()
-		battle_scene.set_preview_card(card_instance.card)
 	else:
 		print("choose_card_ability.gd: No available abilities on card.")
 		battle_scene.pop_screen()

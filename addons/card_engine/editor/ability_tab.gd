@@ -42,6 +42,8 @@ signal paste(ability_tab)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if Engine.is_editor_hint() and (EditorInterface.get_edited_scene_root() == self or EditorInterface.get_edited_scene_root().is_ancestor_of(self)):
+		return
 	_refresh()
 
 func set_value(p_card: Resource, p_idx: int):
@@ -112,10 +114,11 @@ func _refresh():
 		panel.card = card
 		panel.ability = ability
 		panel.options = CardDatabase.get_all_ability_conditions()
+		panel.variable_options = variable_options
 		
 		if ability.conditions[i]:
 			variable_options = variable_options.duplicate()
-			variable_options.append_array(ability.conditions[i].get_output_variables())
+			variable_options.append_array(ability.conditions[i].get_variable_names())
 	
 	for i in range(ability.conditions.size(), conditions_container.get_child_count() - 1):
 		conditions_container.get_child(i).queue_free()
@@ -125,34 +128,38 @@ func _refresh():
 	trigger.card = card
 	trigger.ability = ability
 	trigger.options = CardDatabase.get_all_ability_triggers()
+	trigger.variable_options = variable_options
 	
 	if ability[trigger.script_key]:
 		variable_options = variable_options.duplicate()
-		variable_options.append_array(ability[trigger.script_key].get_output_variables())
+		variable_options.append_array(ability[trigger.script_key].get_variable_names())
 	
 	cost.card = card
 	cost.ability = ability
 	cost.options = CardDatabase.get_all_ability_costs()
+	cost.variable_options = variable_options
 	
 	if ability[cost.script_key]:
 		variable_options = variable_options.duplicate()
-		variable_options.append_array(ability[cost.script_key].get_output_variables())
+		variable_options.append_array(ability[cost.script_key].get_variable_names())
 	
 	effect.card = card
 	effect.ability = ability
 	effect.options = CardDatabase.get_all_ability_effects()
+	effect.variable_options = variable_options
 	
 	if ability[effect.script_key]:
 		variable_options = variable_options.duplicate()
-		variable_options.append_array(ability[effect.script_key].get_output_variables())
+		variable_options.append_array(ability[effect.script_key].get_variable_names())
 	
 	passive.card = card
 	passive.ability = ability
 	passive.options = CardDatabase.get_all_ability_passives()
+	passive.variable_options = variable_options
 	
 	if ability[passive.script_key]:
 		variable_options = variable_options.duplicate()
-		variable_options.append_array(ability[passive.script_key].get_output_variables())
+		variable_options.append_array(ability[passive.script_key].get_variable_names())
 	
 	_refresh_visibility()
 
@@ -182,6 +189,7 @@ func _refresh_visibility():
 
 
 func _on_ability_script_panel_saved():
+	_refresh()
 	saved.emit()
 
 
