@@ -3,7 +3,7 @@ extends CardAbilityEffect
 
 @export var effect: CardAbilityEffect
 
-func get_output_variables() -> Array[String]:
+func get_variable_names() -> Array[String]:
 	return ["destroyed_unit_level"]
 
 class Task extends CardTask:

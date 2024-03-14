@@ -1,32 +1,54 @@
 extends Node
 class_name CardTask
+## A fiber task to be used with [class CardFiber].
 
+## Task status
 enum Status {
+	## The task is awaiting execution.
 	PENDING = 1,
+	## The task is awaiting a future value or other task.
 	WAITING = 2,
+	## The task is complete.
 	DONE = 3,
 }
 
+## Task result
 enum Result {
+	## The task requires more execution or is awaiting something.
 	PENDING = 0,
+	## The task is done, and finished successfully.
 	SUCCESS = 1,
+	## The task is done, and failed.
 	FAILED = 2,
+	## The task was cancelled before finishing.
 	CANCELLED = 3,
 }
 
+## A basic future/promise value.
 class Future:
 	var _value
+	
+	## If true, the future has been fulfilled with a value.
 	var is_fulfilled: bool = false
-	var value:
-		get:
-			assert(is_fulfilled, "Cannot get value from unfulfilled future")
-			return _value
+	
+	## The fulfilled future value.
+	var value: Variant: get = get_value
+	
+	func _to_string():
+		return "<unfulfilled future>" if not is_fulfilled else ("<fulfilled, %s>" % [_value])
+	
+	## Safely gets the value. Raises an error if the future is not fulfilled.
+	func get_value():
+		if not is_fulfilled:
+			push_error("Cannot get value from unfulfilled future")
+			breakpoint
+		return _value
+	
+	## Fulfils the future with the given value.
 	func fulfill(v):
 		assert(!is_fulfilled, "Cannot fulfil an already fulfilled future")
 		_value = v
 		is_fulfilled = true
-	func _to_string():
-		return "<unfulfilled future>" if not is_fulfilled else ("<fulfilled, %s>" % [_value])
 
 class ResultValue:
 	var value
@@ -86,6 +108,12 @@ func info(what: String, from_task: bool = true):
 func run() -> void:
 	if is_done():
 		push_error("Attempted to run a CardTask which is already done.")
+		breakpoint
+		return
+	
+	if _awaited_future and not _awaited_future.is_fulfilled:
+		push_error("Waiting task must not be run.")
+		breakpoint
 		return
 	
 	_did_update_state = false
@@ -94,11 +122,6 @@ func run() -> void:
 		info("Running state \"%s\"" % [_next_state], false)
 		self.call(_next_state)
 	else:
-		assert(_awaited_future.is_fulfilled, "Waiting tasks must not be run!")
-		if not _awaited_future.is_fulfilled:
-			push_error("Waiting task must not be run.")
-			_did_update_state = false
-			return
 		var state := _next_state
 		var value = _awaited_future.value
 		if value is ResultValue:
@@ -170,7 +193,7 @@ func wait_for(task: CardTask, next: Callable, on_fail: Callable = Callable()) ->
 	assert(!_awaited_future, "Already awaiting something.")
 	status = Status.WAITING
 	if !task.is_inside_tree():
-		fiber.run_task(task, self)
+		fiber.run_task(task)
 	_set_awaiting_task(task)
 	_next_state = next.get_method()
 	_fail_state = on_fail.get_method() if on_fail.is_valid() else &"_default_fail_state"

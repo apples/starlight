@@ -15,6 +15,7 @@ extends CardAbilityCost
 	"Own Front:4",
 	"Own Back:8"
 	) var unit_target_zones: int = TargetZone.OPPONENT_FRONT
+@export var unit_target_zones_var: String
 
 @export var discard_target_count: int = 0
 

@@ -96,6 +96,7 @@ func _get_plus_tab() -> int:
 	return tab_container.get_tab_count() - 1
 
 func _ability_tab_append(i: int):
+	assert(card)
 	assert(i == _ability_tab_count())
 	var tab := ability_tab_scene.instantiate()
 	tab.name = "Ability %s" % i

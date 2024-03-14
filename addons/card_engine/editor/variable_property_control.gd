@@ -10,20 +10,28 @@ signal variable_changed(new_text: String)
 
 var all_options: Array[String] = []
 
-func initialize(fixed_value_control: Control, variable_text):
-	var selected = variable_text if variable_text != null else ""
-	
-	searchable_popup_menu.edit.text = ""
-	_update_filtered_options()
-	
-	variable_line_edit.visible = selected != ""
-	fixed_value_container.visible = not variable_line_edit.visible
-	fixed_value_container.add_child(fixed_value_control)
-	check_button.button_pressed = variable_line_edit.visible
+var variable_text: String:
+	set(v):
+		variable_text = v
+		if variable_line_edit: variable_line_edit.text = v
+		variable_changed.emit(v)
 
-func set_options(options: Array[String]):
-	all_options = options
+func _ready() -> void:
+	searchable_popup_menu.edit.text = ""
+	variable_line_edit.visible = variable_text != ""
+	variable_line_edit.text = variable_text
+	fixed_value_container.visible = not variable_line_edit.visible
+	check_button.button_pressed = variable_line_edit.visible
 	_update_filtered_options()
+
+func set_options(options: Array[String]) -> void:
+	all_options = options
+	if not is_inside_tree():
+		return
+	_update_filtered_options()
+
+func add_fixed_value_control(control: Control) -> void:
+	%FixedValueContainer.add_child(control)
 
 func _update_filtered_options():
 	searchable_popup_menu.clear()
@@ -35,10 +43,10 @@ func _update_filtered_options():
 
 
 func _on_variable_line_edit_text_changed(new_text):
-	variable_changed.emit(new_text)
+	variable_text = new_text
 
 func _on_variable_line_edit_text_submitted(new_text):
-	variable_changed.emit(new_text)
+	variable_text = new_text
 
 func _on_check_button_toggled(button_pressed):
 	if button_pressed:
@@ -47,23 +55,20 @@ func _on_check_button_toggled(button_pressed):
 	else:
 		variable_line_edit.visible = false
 		fixed_value_container.visible = true
-		variable_line_edit.text = ""
-		variable_changed.emit("")
+		variable_text = ""
 
 func _on_searchable_popup_menu_search_changed(new_text):
 	_update_filtered_options()
 
 
 func _on_searchable_popup_menu_search_submitted(new_text):
-	variable_line_edit.text = new_text
-	variable_changed.emit(new_text)
+	variable_text = new_text
 	searchable_popup_menu.hide()
 
 
 func _on_searchable_popup_menu_selected_id(id):
 	var text := all_options[id]
-	variable_line_edit.text = text
-	variable_changed.emit(text)
+	variable_text = text
 	searchable_popup_menu.hide()
 
 

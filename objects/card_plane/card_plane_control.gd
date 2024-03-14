@@ -49,7 +49,6 @@ func refresh():
 		return
 	
 	for i in range(card_render.ability_panels.size()):
-		var ability_panel: Control = card_render.ability_panels[i]
 		var ability_overlay: Control
 		if i < ability_overlays.get_child_count():
 			ability_overlay = ability_overlays.get_child(i)
@@ -59,14 +58,21 @@ func refresh():
 		
 		var cl = ability_overlay.click_target
 		cl.custom_tag = "ability%s" % i
-		
-		ability_overlay.scale = Vector2(0.5, 0.5) * sprite.size / sprite.texture.get_size()
-		ability_overlay.size = ability_panel.size / ability_overlay.scale
-		ability_overlay.position = ability_panel.global_position
+	
+	_refresh_sizes.call_deferred()
 	
 	for i in range(card_render.ability_panels.size(), ability_overlays.get_child_count()):
 		ability_overlays.get_child(i).queue_free()
-	
+
+
+func _refresh_sizes() -> void:
+	for i in range(card_render.ability_panels.size()):
+		var ability_panel: Control = card_render.ability_panels[i]
+		var ability_overlay: Control = ability_overlays.get_child(i)
+		assert(ability_overlay)
+		ability_overlay.scale = Vector2(0.5, 0.5) * sprite.size / sprite.texture.get_size()
+		ability_overlay.size = ability_panel.size / ability_overlay.scale
+		ability_overlay.position = ability_panel.global_position
 
 
 func _on_sub_viewport_size_changed():

@@ -13,8 +13,8 @@ func start() -> void:
 		return done(_selected_targets)
 	
 	if allowed_locations.size() < target_count:
-		assert(false)
 		info("Target selection no longer valid")
+		breakpoint
 		return fail(_selected_targets)
 	
 	goto(pick_next_target)

@@ -52,7 +52,7 @@ func handle_request_response(message: MessageTypes.RequestResponse):
 	
 	var ability: int = trigger.available_trigger_abilities.pick_random()
 	
-	message.action_future.fulfill([trigger[0], ability])
+	message.action_future.fulfill([trigger.card_uid, ability])
 
 func handle_choose_field_location(message: MessageTypes.ChooseFieldLocation):
 	message.future.fulfill(message.allowed_locations.pick_random())

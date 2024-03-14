@@ -12,10 +12,10 @@ layout_mode = 2
 
 [node name="VariableLineEdit" type="LineEdit" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 tooltip_text = "Variable name"
 theme_override_constants/minimum_character_width = 15
-text = "destroyed_unit_level"
 placeholder_text = "variable"
 editable = false
 context_menu_enabled = false
@@ -34,7 +34,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Toggle variable mode"
-button_pressed = true
 
 [connection signal="gui_input" from="VariableLineEdit" to="." method="_on_variable_line_edit_gui_input"]
 [connection signal="text_changed" from="VariableLineEdit" to="." method="_on_variable_line_edit_text_changed"]

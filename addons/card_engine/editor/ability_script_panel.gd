@@ -1,6 +1,8 @@
 @tool
 extends Control
 
+const AbilityScriptPanelFieldControl = preload("res://addons/card_engine/editor/ability_script_panel_field_control.gd")
+
 @export var card: Resource
 
 @export var ability: Resource:
@@ -156,8 +158,7 @@ func _reset_fields():
 	properties_container.visible = true
 	edit_button.disabled = false
 	
-	while properties.get_child_count() > 0:
-		var c := properties.get_child(0)
+	for c in properties.get_children():
 		c.queue_free()
 		properties.remove_child(c)
 	
@@ -167,122 +168,46 @@ func _reset_fields():
 	var script := ability_part.get_script() as Script
 	assert(script)
 	
+	var prop_dict := {}
+	var value_props: Array[String] = []
+	
 	for prop in script.get_script_property_list():
 		if not (prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
 			continue
 		
+		prop_dict[prop.name] = prop
+		
 		if prop.name.ends_with("_var"):
 			continue
+		
+		value_props.append(prop.name)
+	
+	for prop_name: String in value_props:
+		var prop = prop_dict[prop_name]
 		
 		var label := Label.new()
 		label.text = "%s:" % prop.name
 		label.size_flags_vertical = Control.SIZE_FILL
 		properties.add_child(label)
 		
-		var current_value = get_ability_part()[prop.name]
-		
-		var prop_control: Control
-		
-		match prop.type:
-			TYPE_INT:
-				match prop.hint:
-					PROPERTY_HINT_ENUM:
-						var option_button := OptionButton.new()
-						option_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-						for option in CardDatabase.get_enum_options(prop):
-							var l = option[0]
-							var v = option[1]
-							assert(v >= 0)
-							option_button.add_item(l, v)
-						option_button.select(option_button.get_item_index(current_value))
-						option_button.item_selected.connect(func (idx):
-							_set_property(prop.name, option_button.get_item_id(idx))
-						)
-						prop_control = option_button
-					PROPERTY_HINT_FLAGS:
-						var flags_container := GridContainer.new()
-						flags_container.columns = 2
-						
-						for option in CardDatabase.get_enum_options(prop):
-							var l = option[0]
-							var v = option[1]
-							assert(v > 0)
-							
-							var flag_check := CheckBox.new()
-							flag_check.button_pressed = current_value & v if current_value != null else false
-							flag_check.pressed.connect(func ():
-								var cur_v: int = get_ability_part()[prop.name]
-								if flag_check.button_pressed:
-									cur_v |= v
-								else:
-									cur_v &= ~v
-								_set_property(prop.name, cur_v))
-							flags_container.add_child(flag_check)
-							
-							var flag_label := Label.new()
-							flag_label.text = l
-							flags_container.add_child(flag_label)
-						
-						prop_control = flags_container
-					_:
-						var spinbox := SpinBox.new()
-						spinbox.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-						spinbox.value = current_value if current_value != null else 0
-						spinbox.value_changed.connect(func (new_value):
-							_set_property(prop.name, new_value)
-						)
-						prop_control = spinbox
-			TYPE_STRING:
-				var lineedit := LineEdit.new()
-				lineedit.text = current_value
-				lineedit.text_submitted.connect(func (new_value):
-					_set_property(prop.name, new_value)
-				)
-				lineedit.focus_exited.connect(func ():
-					_set_property(prop.name, lineedit.text)
-				)
-				prop_control = lineedit
-			TYPE_BOOL:
-				var checkbox := CheckBox.new()
-				checkbox.button_pressed = current_value == true
-				checkbox.toggled.connect(func (new_value):
-					_set_property(prop.name, new_value)
-				)
-				prop_control = checkbox
-			TYPE_OBJECT:
-				if prop.hint == PROPERTY_HINT_RESOURCE_TYPE:
-					match prop.hint_string:
-						"CardAbilityTrigger":
-							prop_control = _create_inner_panel(prop.name, "Trigger", "trigger")
-						"CardAbilityEffect":
-							prop_control = _create_inner_panel(prop.name, "Effect", "effect")
-				else:
-					assert(false)
-					push_error("Not supported!")
-			_:
-				assert(false)
-				push_error("Not supported!")
-		
-		if prop_control == null:
-			var error_label := Label.new()
-			error_label.text = "(not supported)"
-			error_label.size_flags_vertical = Control.SIZE_FILL
-			properties.add_child(error_label)
+		var prop_control: Control = AbilityScriptPanelFieldControl.new(get_ability_part(), prop, _create_inner_panel)
+		prop_control.value_changed.connect(_set_property.bind(prop.name))
 		
 		var varprop_name: String = prop.name + "_var"
-		if varprop_name in ability_part:
-			var variable_property_control := variable_property_control_scene.instantiate()
-			properties.add_child(variable_property_control)
-			
-			variable_property_control.initialize(prop_control, ability_part[varprop_name])
-			variable_property_control.set_options(variable_options)
-			
-			variable_property_control.variable_changed.connect(func (new_value):
-				_set_property(varprop_name, new_value))
-			
-			prop_control = variable_property_control
-		else:
-			properties.add_child(prop_control)
+		if varprop_name in prop_dict:
+			if prop_dict[varprop_name].type != TYPE_STRING:
+				push_error("Ability script (%s) has incorrect type for varprop %s (should be String)." % [script.resource_path, varprop_name])
+			else:
+				var variable_property_control := variable_property_control_scene.instantiate()
+				variable_property_control.variable_text = ability_part[varprop_name]
+				variable_property_control.add_fixed_value_control(prop_control)
+				variable_property_control.set_options(variable_options)
+				
+				variable_property_control.variable_changed.connect(_set_property.bind(varprop_name))
+				
+				prop_control = variable_property_control
+		
+		properties.add_child(prop_control)
 		
 		_property_controls[prop.name] = [label, prop_control]
 	
@@ -308,7 +233,7 @@ func _create_inner_panel(propname: String, label: String, kind: String) -> Contr
 	panel.saved.connect(_on_inner_panel_saved)
 	panel.edit_script_requested.connect(_on_inner_panel_edit_script_requested)
 	var vo := variable_options.duplicate()
-	vo.append_array(get_ability_part().get_output_variables())
+	vo.append_array(get_ability_part().get_variable_names())
 	panel.variable_options = vo
 	return panel
 
@@ -318,7 +243,7 @@ func _on_inner_panel_saved():
 func _on_inner_panel_edit_script_requested(script: Script):
 	edit_script_requested.emit(script)
 
-func _set_property(prop_name: String, value):
+func _set_property(value, prop_name: String):
 	get_ability_part()[prop_name] = value
 	_save()
 	_update_visibility()

@@ -13,4 +13,5 @@ mana = 2
 kind = 0
 unit_hp = 7
 level = 1
+mana_value = 0
 abilities = Array[Resource("res://resource_types/card/card_ability.gd")]([])

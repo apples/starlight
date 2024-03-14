@@ -148,12 +148,15 @@ func get_enum_options(prop: Dictionary) -> Array:
 	assert(prop.hint == PROPERTY_HINT_ENUM || prop.hint == PROPERTY_HINT_FLAGS)
 	var result := []
 	var option_strs = prop.hint_string.split(",")
-	for i in range(option_strs.size()):
+	var prev_value := -1
+	for i: int in range(option_strs.size()):
 		var option = option_strs[i]
 		var split = option.split(":")
 		var label = split[0]
-		var value: int = int(split[1]) if split.size() == 2 else i
+		var default := (1 << i) if prop.hint == PROPERTY_HINT_FLAGS else prev_value + 1
+		var value: int = int(split[1]) if split.size() == 2 else default
 		result.append([label, value])
+		prev_value = value
 	return result
 
 func get_mana_types():
