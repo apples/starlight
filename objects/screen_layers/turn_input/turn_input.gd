@@ -3,7 +3,7 @@ extends BattleScreenLayer
 
 signal player_action(action: Dictionary)
 
-var available_abilities: Dictionary = {}
+var available_abilities: Dictionary = {} ## { [uid: int]: [ability_index: int] }
 var available_summons: Array[int] = []
 
 var choose_unit_action_scene: PackedScene = preload("res://objects/screen_layers/choose_unit_action/choose_unit_action.tscn")
@@ -20,7 +20,9 @@ func uncover():
 	click_target_agent.set_criteria({
 		group_layer_mask = ClickTargetGroup.LAYER_HAND | ClickTargetGroup.LAYER_FIELD,
 		target_filter = func (cl: ClickTarget):
-			return cl.location != null
+			return (cl.location != null and
+				cl.location.side == ZoneLocation.Side.Player and
+				battle_scene.battle_state.get_card_at(cl.location) != null)
 	})
 	
 	battle_scene.set_screen_label("Your Turn")

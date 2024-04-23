@@ -39,7 +39,6 @@ func _update_filtered_options():
 		var o := all_options[i]
 		if searchable_popup_menu.edit.text == "" or o.contains(searchable_popup_menu.edit.text):
 			searchable_popup_menu.add_item(o, i)
-	
 
 
 func _on_variable_line_edit_text_changed(new_text):

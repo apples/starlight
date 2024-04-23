@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c7l4ewmtxcety"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://c7l4ewmtxcety"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_1a5v1"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_1qojk"]
@@ -11,10 +11,22 @@ amount = 3
 [sub_resource type="Resource" id="Resource_7oj2k"]
 script = ExtResource("1_1a5v1")
 ability_name = ""
-description = "draw 3"
+description = "draw 3
+draw 3
+draw 3"
 type = 1
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 effect = SubResource("Resource_mdd2a")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_gsh1u"]
+script = ExtResource("1_1a5v1")
+ability_name = ""
+description = "draw 3
+draw 3
+draw 3"
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
 is_uninterruptable = false
 
 [resource]
@@ -29,4 +41,4 @@ kind = 1
 unit_hp = 0
 level = 0
 mana_value = 0
-abilities = Array[ExtResource("1_1a5v1")]([SubResource("Resource_7oj2k")])
+abilities = Array[ExtResource("1_1a5v1")]([SubResource("Resource_7oj2k"), SubResource("Resource_gsh1u")])

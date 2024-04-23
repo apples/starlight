@@ -29,7 +29,7 @@ layers = 64
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="MaterialTextureRect" type="NinePatchRect" parent="Group/ClickTarget"]
+[node name="CursorSprite" type="NinePatchRect" parent="Group/ClickTarget"]
 texture_filter = 2
 material = ExtResource("2_otp6b")
 layout_mode = 1

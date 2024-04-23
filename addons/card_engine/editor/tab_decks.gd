@@ -256,16 +256,17 @@ func _on_search_item_change_count(id: int, amount: int):
 			loaded_deck.stella_card_key = _make_key(card.uid)
 			_reconcile_stella()
 		CardDatabase.card_script.Kind.STARLIGHT:
-			var found := false
-			for k in loaded_deck.starlight_card_keys:
-				if _get_key_uid(k) == card.uid:
-					found = true
-					break
-			if not found:
-				var a: Array[String] = loaded_deck.starlight_card_keys.duplicate()
-				a.append(_make_key(card.uid))
-				loaded_deck.starlight_card_keys = a
-				_reconcile_starlights()
+			if loaded_deck.starlight_card_keys.size() < 5:
+				var found := false
+				#for k in loaded_deck.starlight_card_keys:
+					#if _get_key_uid(k) == card.uid:
+						#found = true
+						#break
+				if not found:
+					var a: Array[String] = loaded_deck.starlight_card_keys.duplicate()
+					a.append(_make_key(card.uid))
+					loaded_deck.starlight_card_keys = a
+					_reconcile_starlights()
 		_:
 			var found := false
 			for c in loaded_deck.main_deck_cards:

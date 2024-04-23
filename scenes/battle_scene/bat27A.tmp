@@ -21,6 +21,7 @@
 
 [node name="BattleScene" type="Node3D"]
 script = ExtResource("1_vdvqa")
+card_plane_scene = null
 
 [node name="BattleState" type="Node" parent="."]
 script = ExtResource("1_6tg30")
@@ -29,10 +30,11 @@ rules = ExtResource("3_qp2vo")
 [node name="CardFiber" type="Node" parent="BattleState"]
 script = ExtResource("4_yrerv")
 
-[node name="PlayerAgent" type="Node" parent="BattleState" node_paths=PackedStringArray("battle_scene")]
+[node name="PlayerAgent" type="Node" parent="BattleState"]
 script = ExtResource("5_rmg7w")
 deck = ExtResource("6_e4m36")
-battle_scene = NodePath("../..")
+battle_scene = Object(Node3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"script":ExtResource("1_vdvqa"),"card_plane_scene":null)
+
 
 [node name="OpponentAgent" type="Node" parent="BattleState"]
 script = ExtResource("7_kgpwf")
@@ -59,7 +61,6 @@ transform = Transform3D(0.965926, -0.258819, -1.13133e-08, 0, -4.37114e-08, 1, -
 [node name="OpponentHand" type="Node3D" parent="."]
 transform = Transform3D(-1, 8.74228e-08, 0, 8.44439e-08, 0.965926, 0.258819, 2.26267e-08, 0.258819, -0.965926, 0, 0, -16)
 script = ExtResource("10_86xfy")
-side = 1
 
 [node name="Group" type="Node3D" parent="OpponentHand"]
 script = ExtResource("10_kcui6")
@@ -204,5 +205,3 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 0
 fiber = NodePath("../../BattleState/CardFiber")
-
-[connection signal="message_received" from="BattleState/PlayerAgent" to="." method="_on_player_agent_message_received"]

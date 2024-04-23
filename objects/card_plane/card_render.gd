@@ -6,6 +6,7 @@ extends Node2D
 @export var back_texture: Texture2D = null
 
 @export var stella_frame_texture: Texture2D = null
+@export var starlight_frame_texture: Texture2D = null
 
 @export var card: Card = null:
 	get:
@@ -75,7 +76,11 @@ func _cleanup(node: Node):
 
 
 func _refresh_typical():
-	background.texture = frame_texture
+	match card.kind:
+		Card.Kind.STARLIGHT:
+			background.texture = starlight_frame_texture
+		_:
+			background.texture = frame_texture
 	typical_cardface.visible = true
 	stella_cardface.visible = false
 	_refresh_generic(typical_cardface)

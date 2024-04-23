@@ -23,6 +23,9 @@ var current_click_target: ClickTarget = null:
 
 signal click_target_changed(click_target: ClickTarget)
 
+func _ready():
+	_apply_current_agent_criteria()
+
 func add_agent(agent: ClickTargetAgent):
 	agents.append(agent)
 	agent.last_click_target = current_click_target
@@ -193,6 +196,8 @@ func _on_group_click_target_added(click_target: ClickTarget):
 				click_target.enabled = false
 			elif agent.criteria.target_filter and not agent.criteria.target_filter.call(click_target):
 				click_target.enabled = false
+		else:
+			click_target.enabled = false
 	
 	click_target.enabled_changed.connect(_on_click_target_enabled_changed)
 	click_target.confirmed.connect(_on_click_target_confirmed)
@@ -229,4 +234,4 @@ func _apply_current_agent_criteria() -> void:
 	if agent and agent.criteria:
 		apply_criteria(agent.criteria.group_layer_mask, agent.criteria.target_filter)
 	else:
-		apply_criteria(ClickTargetGroup.LAYER_ALL, Callable())
+		apply_criteria(ClickTargetGroup.LAYER_NONE, Callable())

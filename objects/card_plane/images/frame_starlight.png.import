@@ -2,27 +2,26 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfiv4igjnlj0o"
-path.s3tc="res://.godot/imported/highlight.png-1012fdd7798ae3b7d5eb1d5e7f2d2e9c.s3tc.ctex"
+uid="uid://dd0bs71lvnkpv"
+path="res://.godot/imported/frame_starlight.png-2194364009d07c0e33e4639b12140cc8.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/card_plane/images/highlight.png"
-dest_files=["res://.godot/imported/highlight.png-1012fdd7798ae3b7d5eb1d5e7f2d2e9c.s3tc.ctex"]
+source_file="res://objects/card_plane/images/frame_starlight.png"
+dest_files=["res://.godot/imported/frame_starlight.png-2194364009d07c0e33e4639b12140cc8.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

@@ -147,27 +147,37 @@ func set_preview_card(card: Card):
 
 func get_card_plane(location: ZoneLocation) -> CardPlane:
 	var field := player_field
+	var hand := player_hand
 	
 	match location.side:
 		ZoneLocation.Side.Player:
 			field = player_field
+			hand = player_hand
 		ZoneLocation.Side.Opponent:
 			field = opponent_field
-	
-	var row := field.back_row
+			hand = opponent_hand
 	
 	match location.zone:
 		ZoneLocation.Zone.FrontRow:
-			row = field.front_row
+			assert(location.slot >= 0 && location.slot < field.front_row.size())
+			return field.front_row[location.slot]
 		ZoneLocation.Zone.BackRow:
-			row = field.back_row
+			assert(location.slot >= 0 && location.slot < field.back_row.size())
+			return field.back_row[location.slot]
+		ZoneLocation.Zone.Hand:
+			var row: Array[CardPlane] = []
+			for c in hand.group.get_children():
+				if c is CardPlane:
+					row.append(c)
+			assert(location.slot >= 0 && location.slot < row.size())
+			return row[location.slot]
+		ZoneLocation.Zone.Stella:
+			assert(location.slot == -1)
+			return field.stella
 		_:
-			push_error("Not supported")
-			breakpoint
+			push_error("Location %s cannot have a card plane" % [location])
+			return null
 	
-	assert(location.slot >= 0 && location.slot < row.size())
-	
-	return row[location.slot]
 
 
 

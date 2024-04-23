@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardDeck" load_steps=5 format=3 uid="uid://c5ghbhv4ruu1m"]
+[gd_resource type="Resource" script_class="CardDeck" load_steps=6 format=3 uid="uid://c5ghbhv4ruu1m"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_count.gd" id="1_osgnf"]
 [ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="2_1wpfe"]
@@ -13,9 +13,14 @@ script = ExtResource("1_osgnf")
 card_key = "i8bwz5vm54h6:0"
 count = 20
 
+[sub_resource type="Resource" id="Resource_bqqyo"]
+script = ExtResource("1_osgnf")
+card_key = "qgc1y40lroi8:0"
+count = 21
+
 [resource]
 script = ExtResource("2_1wpfe")
-main_deck_cards = Array[ExtResource("1_osgnf")]([SubResource("Resource_xpiay"), SubResource("Resource_fnj3j")])
+main_deck_cards = Array[ExtResource("1_osgnf")]([SubResource("Resource_xpiay"), SubResource("Resource_fnj3j"), SubResource("Resource_bqqyo")])
 starter_unit_card_keys = Array[String](["amm93ovatw2w:0", "i8bwz5vm54h6:0"])
-starlight_card_keys = Array[String]([])
+starlight_card_keys = Array[String](["ceufu5d0bx2k:0", "ceufu5d0bx2k:0", "ceufu5d0bx2k:0", "ceufu5d0bx2k:0", "ceufu5d0bx2k:0"])
 stella_card_key = "rwbfh03mfy1p:0"
