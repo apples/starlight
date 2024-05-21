@@ -1,0 +1,89 @@
+[gd_resource type="Resource" script_class="Card" load_steps=16 format=3 uid="uid://cjpwx0lg2usin"]
+
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_hm1hf"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_i7dsr"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_lg5rr"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="3_ir05l"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_destroyed.gd" id="4_5cgcy"]
+[ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="4_7px20"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/ready_unit.gd" id="5_4g3ew"]
+
+[sub_resource type="Resource" id="Resource_ro22j"]
+script = ExtResource("4_7px20")
+reach = false
+reach_var = ""
+
+[sub_resource type="Resource" id="Resource_yrw41"]
+script = ExtResource("1_hm1hf")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_7tyro"]
+script = ExtResource("3_ir05l")
+amount = 1
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_0fvjq"]
+script = ExtResource("1_i7dsr")
+ability_name = ""
+description = ""
+type = 2
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([SubResource("Resource_ro22j")])
+cost = SubResource("Resource_yrw41")
+effect = SubResource("Resource_7tyro")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_twp2h"]
+script = ExtResource("1_hm1hf")
+tap_self = false
+mana_amount = 0
+once_per_turn = true
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_y7m84"]
+script = ExtResource("5_4g3ew")
+target = 0
+
+[sub_resource type="Resource" id="Resource_lqf76"]
+script = ExtResource("4_5cgcy")
+this_unit = true
+other_own_unit = true
+opponent_unit = true
+by_this_unit = true
+
+[sub_resource type="Resource" id="Resource_cb5vd"]
+script = ExtResource("1_i7dsr")
+ability_name = ""
+description = "Once per turn, when this unit destroys a unit: Ready this unit."
+type = 3
+trigger = SubResource("Resource_lqf76")
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_twp2h")
+effect = SubResource("Resource_y7m84")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_lg5rr")
+uid = "0zp1uktcvdas"
+cardset_name = "Burn"
+cardset_idx = 3
+card_name = "Ash Twins"
+artwork_path = "res://data/cards/artwork/ash-twins.png"
+mana = 1
+kind = 0
+unit_hp = 2
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_i7dsr")]([SubResource("Resource_0fvjq"), SubResource("Resource_cb5vd")])

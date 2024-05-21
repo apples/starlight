@@ -3,19 +3,17 @@ extends Resource
 
 enum Kind {
 	UNIT = 0,
-	GRACE = 1,
-	STELLA = 2,
-	STARLIGHT = 3,
+	SPELL = 1,
+	RULECARD = 2,
+	GRACE = 3,
 }
 
 enum Mana {
 	COLORLESS = 0,
-	HOLY = 1,
-	CURSE = 2,
-	FLAME = 3,
-	FROST = 4,
-	SHOCK = 5,
-	GALE = 6,
+	PINK = 1,
+	GREEN = 2,
+	YELLOW = 3,
+	BLUE = 4,
 }
 
 @export var uid: String
@@ -27,8 +25,8 @@ enum Mana {
 @export var mana: Mana = Mana.COLORLESS
 @export var kind: Kind = Kind.UNIT
 @export var unit_hp: int
-@export_enum("0", "1", "2", "3") var level: int
-@export_enum("0", "1", "2", "3") var mana_value: int
+@export_enum("-", "1", "2", "3") var level: int
+@export_enum("-", "1", "2", "3") var mana_value: int
 
 @export var abilities: Array[CardAbility]
 

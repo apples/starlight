@@ -1,27 +1,30 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://mya6nmwq6s5j"]
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://mya6nmwq6s5j"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_4c6c3"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/draw.gd" id="1_6ok33"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/banish_this_card.gd" id="1_aw7db"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ukwli"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/and.gd" id="2_qbljg"]
 
-[sub_resource type="Resource" id="Resource_5eyl5"]
+[sub_resource type="Resource" id="Resource_i3asa"]
 script = ExtResource("1_6ok33")
 amount = 3
+
+[sub_resource type="Resource" id="Resource_sf0vv"]
+script = ExtResource("1_aw7db")
+
+[sub_resource type="Resource" id="Resource_r3a75"]
+script = ExtResource("2_qbljg")
+first_effect = SubResource("Resource_i3asa")
+second_effect = SubResource("Resource_sf0vv")
 
 [sub_resource type="Resource" id="Resource_erhtr"]
 script = ExtResource("1_ukwli")
 ability_name = ""
-description = "draw 3
-draw 3
-draw 3
-draw 3
-draw 3
-draw 3
-draw 3
-draw 3"
-type = 1
+description = "Draw 3 and banish this."
+type = 5
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
-effect = SubResource("Resource_5eyl5")
+effect = SubResource("Resource_r3a75")
 is_uninterruptable = false
 
 [resource]

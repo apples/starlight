@@ -88,11 +88,11 @@ func get_side_state(side: ZoneLocation.Side) -> BattleSideState:
 			push_error("Invalid side: %s" % side)
 			return null
 
-## Initializes the Stella card. Only called at the start of battle.
-func init_stella(side: ZoneLocation.Side):
+## Initializes the Rulecard card. Only called at the start of battle.
+func init_rulecard(side: ZoneLocation.Side):
 	var state = get_side_state(side)
-	for i in range(state.stella.card.abilities.size()):
-		_setup_passive(state.stella, i)
+	for i in range(state.rulecard.card.abilities.size()):
+		_setup_passive(state.rulecard, i)
 
 ## Shuffles the given side's deck.
 func shuffle_deck(side: ZoneLocation.Side):
@@ -136,10 +136,10 @@ func get_card_at(location: ZoneLocation) -> CardInstance:
 			return opponent.back_row[idx].card_instance if opponent.back_row[idx] else null
 		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Hand, var idx]:
 			return opponent.hand.get_card(idx)
-		[ZoneLocation.Side.Player, ZoneLocation.Zone.Stella, _]:
-			return player.stella
-		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Stella, _]:
-			return opponent.stella
+		[ZoneLocation.Side.Player, ZoneLocation.Zone.Rulecard, _]:
+			return player.rulecard
+		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Rulecard, _]:
+			return opponent.rulecard
 		_:
 			push_warning("Not implemented")
 	return null
@@ -147,7 +147,8 @@ func get_card_at(location: ZoneLocation) -> CardInstance:
 ## Deals damage to the specified location. Assumes a unit exists at that location.
 ## If the unit's damage exceeds its unit_hp, the unit is destroyed.
 ## Returns whether the unit was destroyed.
-func deal_damage(where: ZoneLocation, amount: int) -> bool:
+# TODO: remove default arg
+func deal_damage(where: ZoneLocation, amount: int, by_who: CardInstance = null) -> bool:
 	assert(where)
 	var unit := unit_get(where)
 	assert(unit)
@@ -161,7 +162,7 @@ func deal_damage(where: ZoneLocation, amount: int) -> bool:
 		amount = amount,
 	}))
 	if unit.damage >= unit.card_instance.card.unit_hp:
-		unit_destroy(where)
+		unit_destroy(where, by_who)
 		return true
 	return false
 
@@ -185,7 +186,7 @@ func unit_set_tapped(unit: UnitState, is_tapped: bool = true, for_mana: bool = f
 			for_mana = for_mana,
 		}))
 	else:
-		trigger_event_push(TriggerEvents.UnitUntapped.new({
+		trigger_event_push(TriggerEvents.UnitReadied.new({
 			unit = unit,
 		}))
 	
@@ -221,17 +222,17 @@ func gain_tokens(who: ZoneLocation.Side, kind: TokenType, amount: int):
 		total_amount = side_state.get_token_amount(kind),
 	}))
 
-## Grants the given side a specified amount of Stella Charge. Can be negative.
-## Will not lower the side's stella charges below zero. 
-func stella_charge(who: ZoneLocation.Side, amount: int):
+## Grants the given side a specified amount of Rulecard Charge. Can be negative.
+## Will not lower the side's rulecard charges below zero. 
+func rulecard_charge(who: ZoneLocation.Side, amount: int):
 	var side_state := get_side_state(who)
-	var actual_amount: int = max(amount, -side_state.stella_charge)
-	side_state.stella_charge += actual_amount
+	var actual_amount: int = max(amount, -side_state.rulecard_charge)
+	side_state.rulecard_charge += actual_amount
 	
-	trigger_event_push(TriggerEvents.StellaCharge.new({
+	trigger_event_push(TriggerEvents.RulecardCharge.new({
 		side = who,
 		amount_gained = actual_amount,
-		total_amount = side_state.stella_charge,
+		total_amount = side_state.rulecard_charge,
 	}))
 
 ## Pushes the ability onto the stack and starts its task. Does not check requirements.
@@ -355,7 +356,7 @@ func unit_summon(card_instance: CardInstance, location: ZoneLocation, suppress_t
 	broadcast_message(MessageTypes.UnitSummoned.new({ location = location }))
 
 ## Destroys the unit at the given location. Assumes the unit exists.
-func unit_destroy(where: ZoneLocation):
+func unit_destroy(where: ZoneLocation, by_who: CardInstance):
 	var unit := unit_get(where)
 	assert(unit)
 	
@@ -364,7 +365,10 @@ func unit_destroy(where: ZoneLocation):
 	trigger_event_push(TriggerEvents.UnitDestroyed.new({
 		unit = unit,
 		was = card_instance,
+		by_who = by_who,
 	}))
+	
+	claim_grace(where.side)
 	
 	# Tear down passives
 	for i in range(card_instance.card.abilities.size()):
@@ -436,10 +440,10 @@ func get_available_activations(side: ZoneLocation.Side) -> Dictionary:
 			return ability_indices
 		return null
 	
-	# Stella
-	var stella = check_card.call(side_state.stella)
-	if stella:
-		results[side_state.stella.uid] = stella
+	# Rulecard
+	var rulecard = check_card.call(side_state.rulecard)
+	if rulecard:
+		results[side_state.rulecard.uid] = rulecard
 	
 	var process_cards = func (cards: CardZoneArray):
 		for ci in cards:
@@ -478,6 +482,26 @@ func get_available_summons(side: ZoneLocation.Side) -> Array[int]:
 		results.append(card_instance.uid)
 	
 	return results
+
+func claim_grace(side: ZoneLocation.Side) -> void:
+	_info("claim_grace", side)
+	
+	var state := get_side_state(side)
+	
+	if state.graces.size() == 0:
+		declare_winner(ZoneLocation.flip(side))
+		return
+	
+	var card_instance := state.graces.get_card(state.graces.size() - 1)
+	
+	card_reveal(card_instance)
+	
+	ability_perform(side, card_instance, 0)
+	
+
+func banish_card(card_instance: CardInstance) -> void:
+	_move_card(card_instance, ZoneLocation.new(card_instance.owner_side, ZoneLocation.Zone.Banish))
+
 
 # === PRIVATE ===
 # ===============
@@ -560,14 +584,14 @@ func _float_card(card_instance: CardInstance):
 			side_state.deck.remove_card(card_instance)
 		ZoneLocation.Zone.Discard:
 			side_state.discard.remove_card(card_instance)
-		ZoneLocation.Zone.Starlight:
-			assert(false, "not implemented")
+		ZoneLocation.Zone.Grace:
+			side_state.graces.remove_card(card_instance)
 		ZoneLocation.Zone.Banish:
 			assert(false, "Cannot float banished card")
 		ZoneLocation.Zone.Floating:
 			pass
-		ZoneLocation.Zone.Stella:
-			assert(false, "Cannot float Stella card")
+		ZoneLocation.Zone.Rulecard:
+			assert(false, "Cannot float Rulecard card")
 
 func _drop_card(card_instance: CardInstance, new_location: ZoneLocation):
 	assert(card_instance.location.zone == ZoneLocation.Zone.Floating)
@@ -596,16 +620,16 @@ func _drop_card(card_instance: CardInstance, new_location: ZoneLocation):
 			side_state.deck.add_card(card_instance)
 		ZoneLocation.Zone.Discard:
 			side_state.discard.add_card(card_instance)
-		ZoneLocation.Zone.Starlight:
+		ZoneLocation.Zone.Grace:
 			assert(false, "not implemented")
 		ZoneLocation.Zone.Banish:
 			side_state.banish.add_card(card_instance)
 		ZoneLocation.Zone.Floating:
 			assert(false, "Cannot drop card to floating")
-		ZoneLocation.Zone.Stella:
-			assert(side_state.stella == null)
+		ZoneLocation.Zone.Rulecard:
+			assert(side_state.rulecard == null)
 			card_instance.location = new_location
-			side_state.stella = card_instance
+			side_state.rulecard = card_instance
 
 func _teardown_passive(card_instance: CardInstance, ability_index: int):
 	var ability := card_instance.card.abilities[ability_index]

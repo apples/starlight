@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://n31nke3n2mss"]
+
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_hqn6i"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_t0e3h"]
+
+[sub_resource type="Resource" id="Resource_p0jyb"]
+script = ExtResource("1_t0e3h")
+ability_name = ""
+description = "Give a unit Power+1 until it is destroyed."
+type = 5
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_hqn6i")
+uid = "04edjrqwj5m2"
+cardset_name = "Burn"
+cardset_idx = 20
+card_name = "Hot Blood"
+artwork_path = "res://data/cards/artwork/hot-blood.png"
+mana = 1
+kind = 3
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_t0e3h")]([SubResource("Resource_p0jyb")])

@@ -1,14 +1,44 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c0c8ai1tjyx1y"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://c0c8ai1tjyx1y"]
 
 [ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="1_fxuqx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2i250"]
 
 [resource]
 AbilityManaCostLabel/base_type = &"Label"
 AbilityManaCostLabel/colors/font_color = Color(0, 0, 0, 1)
+AbilityManaCostLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+AbilityManaCostLabel/colors/font_shadow_color = Color(0, 0, 0, 1)
+AbilityManaCostLabel/constants/line_spacing = 0
+AbilityManaCostLabel/constants/outline_size = 0
+AbilityManaCostLabel/constants/shadow_offset_x = 0
+AbilityManaCostLabel/constants/shadow_offset_y = 0
+AbilityManaCostLabel/constants/shadow_outline_size = 0
 AbilityTypeLabel/base_type = &"Label"
 AbilityTypeLabel/colors/font_color = Color(0, 0, 0, 1)
+AbilityTypeLabel/colors/font_shadow_color = Color(0, 0, 0, 1)
+AbilityTypeLabel/constants/line_spacing = 0
+AbilityTypeLabel/constants/outline_size = 0
+AbilityTypeLabel/constants/shadow_offset_x = 0
+AbilityTypeLabel/constants/shadow_offset_y = 0
+AbilityTypeLabel/constants/shadow_outline_size = 0
+GraceNameLabel/base_type = &"Label"
+GraceNameLabel/colors/font_color = Color(0, 0, 0, 1)
+GraceNameLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+GraceNameLabel/colors/font_shadow_color = Color(0, 0, 0, 1)
+GraceNameLabel/constants/line_spacing = 0
+GraceNameLabel/constants/outline_size = 0
+GraceNameLabel/constants/shadow_offset_x = 0
+GraceNameLabel/constants/shadow_offset_y = 0
+GraceNameLabel/constants/shadow_outline_size = 0
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
 Label/constants/line_spacing = 2
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
 Label/font_sizes/font_size = 19
 Label/fonts/font = ExtResource("1_fxuqx")
-StarlightNameLabel/base_type = &"Label"
-StarlightNameLabel/colors/font_color = Color(0, 0, 0, 1)
+Label/styles/normal = SubResource("StyleBoxEmpty_2i250")

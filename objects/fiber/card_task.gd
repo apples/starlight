@@ -228,7 +228,9 @@ func fail(value = null) -> void:
 	done(value, Result.FAILED)
 
 func cancel() -> void:
-	if _awaited_task != null and _awaited_task.status != Status.DONE:
+	if status == Status.DONE:
+		return
+	if _awaited_task != null:
 		_awaited_task.cancel()
 	done(null, Result.CANCELLED)
 

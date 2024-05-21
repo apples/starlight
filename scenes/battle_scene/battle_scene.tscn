@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://nm2eypux40v4"]
+[gd_scene load_steps=21 format=3 uid="uid://nm2eypux40v4"]
 
 [ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="1_6tg30"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
@@ -15,7 +15,9 @@
 [ext_resource type="Script" path="res://objects/token_display/token_display.gd" id="11_wuxep"]
 [ext_resource type="Texture2D" uid="uid://csbup4415o24m" path="res://scenes/battle_scene/images/field.png" id="12_ivm3m"]
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="13_41ud0"]
+[ext_resource type="Texture2D" uid="uid://boydx0pr8pko7" path="res://icon.svg" id="13_awpbw"]
 [ext_resource type="PackedScene" uid="uid://dvx53oob87xe4" path="res://objects/card_plane/card_plane_control.tscn" id="13_wngi3"]
+[ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="14_b77ha"]
 [ext_resource type="Script" path="res://scenes/battle_scene/screen_label.gd" id="15_is1p8"]
 [ext_resource type="PackedScene" uid="uid://cnuiopilm334g" path="res://scenes/battle_scene/debugging/fiber_debug.tscn" id="18_mexf0"]
 
@@ -90,7 +92,25 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 
 script = ExtResource("10_kcui6")
 layers = 13
 
-[node name="Stella" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
+[node name="GraceCount" type="Node3D" parent="OpponentField/FrontRow"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -4.5, 0, -4)
+
+[node name="GraceCountSprite" type="Sprite3D" parent="OpponentField/FrontRow/GraceCount"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+texture = ExtResource("13_awpbw")
+
+[node name="GraceCountLabel" type="Label3D" parent="OpponentField/FrontRow/GraceCount"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 0.0078131, 0, -1, -3.41521e-10, 0, 0.1, 0)
+pixel_size = 0.161
+alpha_cut = 1
+texture_filter = 0
+outline_modulate = Color(0.81792, 0.000306304, 0.764319, 1)
+text = "5"
+font = ExtResource("14_b77ha")
+font_size = 19
+outline_size = 2
+
+[node name="Rulecard" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, -4)
 
 [node name="FrontRow1" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
@@ -106,13 +126,31 @@ script = ExtResource("8_tbdo0")
 script = ExtResource("10_kcui6")
 layers = 11
 
+[node name="GraceCount" type="Node3D" parent="PlayerField/FrontRow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -4)
+
+[node name="GraceCountSprite" type="Sprite3D" parent="PlayerField/FrontRow/GraceCount"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+texture = ExtResource("13_awpbw")
+
+[node name="GraceCountLabel" type="Label3D" parent="PlayerField/FrontRow/GraceCount"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 0.0078131, 0, -1, -3.41521e-10, 0, 0.1, 0)
+pixel_size = 0.161
+alpha_cut = 1
+texture_filter = 0
+outline_modulate = Color(0.81792, 0.000306304, 0.764319, 1)
+text = "5"
+font = ExtResource("14_b77ha")
+font_size = 19
+outline_size = 2
+
 [node name="FrontRow0" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -4)
 
 [node name="FrontRow1" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
 
-[node name="Stella" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
+[node name="Rulecard" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, -4)
 
 [node name="BackRow" type="Node3D" parent="PlayerField" node_paths=PackedStringArray("nav_right")]

@@ -1,6 +1,6 @@
 class_name BattleField extends Node3D
 
-var stella: CardPlane
+var rulecard: CardPlane
 var front_row: Array[CardPlane] = []
 var back_row: Array[CardPlane] = []
 
@@ -23,8 +23,8 @@ func _ready():
 			row.resize(idx + 1)
 		row[idx] = x
 	
-	stella = $FrontRow/Stella
-	stella.location = ZoneLocation.new(side, ZoneLocation.Zone.Stella)
+	rulecard = $FrontRow/Rulecard
+	rulecard.location = ZoneLocation.new(side, ZoneLocation.Zone.Rulecard)
 	
 	for i in range(back_row.size()):
 		back_row[i].location = ZoneLocation.new(
@@ -37,3 +37,6 @@ func _ready():
 			side,
 			ZoneLocation.Zone.FrontRow,
 			i)
+
+func set_grace_count(val: int) -> void:
+	$FrontRow/GraceCount/GraceCountLabel.text = str(val)

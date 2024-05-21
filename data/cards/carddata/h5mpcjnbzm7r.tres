@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c2v34a60i4dpl"]
+
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_8l81k"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_iqisq"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_pu4dg"]
+
+[sub_resource type="Resource" id="Resource_w4pbt"]
+script = ExtResource("1_8l81k")
+tap_self = false
+mana_amount = 1
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_mqet7"]
+script = ExtResource("1_iqisq")
+ability_name = ""
+description = "Ready a unit you control. That unit cannot attack until the start of your next turn."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_w4pbt")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_pu4dg")
+uid = "h5mpcjnbzm7r"
+cardset_name = "Burn"
+cardset_idx = 15
+card_name = "Inspiration"
+artwork_path = "res://data/cards/artwork/inspiration.png"
+mana = 1
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_iqisq")]([SubResource("Resource_mqet7")])

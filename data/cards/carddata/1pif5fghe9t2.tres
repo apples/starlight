@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://duqmc3o3dplus"]
+
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_gjcye"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_liqvv"]
+
+[sub_resource type="Resource" id="Resource_7t28d"]
+script = ExtResource("1_liqvv")
+ability_name = ""
+description = "This unit retreats and takes 1 damage."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_blxae"]
+script = ExtResource("1_liqvv")
+ability_name = ""
+description = "Your units gain Power+1 while this unit is on the field."
+type = 4
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_gjcye")
+uid = "1pif5fghe9t2"
+cardset_name = "Burn"
+cardset_idx = 6
+card_name = "Bonfire"
+artwork_path = "res://data/cards/artwork/bonfire.png"
+mana = 1
+kind = 0
+unit_hp = 4
+level = 2
+mana_value = 0
+abilities = Array[ExtResource("1_liqvv")]([SubResource("Resource_7t28d"), SubResource("Resource_blxae")])

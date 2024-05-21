@@ -2,10 +2,13 @@
 extends Control
 
 @export var card: Card = null:
-	get:
-		return card
 	set(value):
 		card = value
+		refresh()
+
+@export var for_print: bool = false:
+	set(value):
+		for_print = value
 		refresh()
 
 @onready var sprite := $Sprite
@@ -20,5 +23,6 @@ func refresh():
 		return
 	
 	card_render.card = card
+	card_render.for_print = for_print
 	viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 	

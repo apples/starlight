@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://daegmfdom5kns"]
+
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_jid7e"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_jyi30"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_l5wjj"]
+[ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_rdrdj"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_6x8jt"]
+
+[sub_resource type="Resource" id="Resource_hckiy"]
+script = ExtResource("1_rdrdj")
+reach = false
+reach_var = ""
+
+[sub_resource type="Resource" id="Resource_0cypl"]
+script = ExtResource("1_jyi30")
+tap_self = true
+mana_amount = 1
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_dr06l"]
+script = ExtResource("2_6x8jt")
+amount = 2
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_afxyq"]
+script = ExtResource("1_l5wjj")
+ability_name = ""
+description = ""
+type = 2
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([SubResource("Resource_hckiy")])
+cost = SubResource("Resource_0cypl")
+effect = SubResource("Resource_dr06l")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_jid7e")
+uid = "0t6cd6ljohss"
+cardset_name = "Burn"
+cardset_idx = 2
+card_name = "Flame Guy"
+artwork_path = "res://data/cards/artwork/flame-guy.png"
+mana = 1
+kind = 0
+unit_hp = 2
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_l5wjj")]([SubResource("Resource_afxyq")])

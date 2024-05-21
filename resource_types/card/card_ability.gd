@@ -8,7 +8,7 @@ enum CardAbilityType {
 	DEFEND = 6,
 	TRIGGER = 3,
 	PASSIVE = 4,
-	STARLIGHT = 5,
+	GRACE = 5,
 }
 
 enum CardAbilityAttributes {

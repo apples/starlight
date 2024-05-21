@@ -21,8 +21,9 @@ class UnitAscended extends TriggerEvent:
 
 class UnitDestroyed extends TriggerEvent:
 	func get_type(): return "unit_destroyed"
-	var unit: UnitState
-	var was: CardInstance
+	var unit: UnitState # The unit that was destroyed
+	var was: CardInstance # The card instance that the unit was at time of destruction
+	var by_who: CardInstance # The card responsible for destroying the unit
 
 class UnitDiscarded extends TriggerEvent:
 	func get_type(): return "unit_discarded"
@@ -34,8 +35,8 @@ class UnitTapped extends TriggerEvent:
 	var unit: UnitState
 	var for_mana: bool
 
-class UnitUntapped extends TriggerEvent:
-	func get_type(): return "unit_untapped"
+class UnitReadied extends TriggerEvent:
+	func get_type(): return "unit_readied"
 	var unit: UnitState
 
 class GainedTokens extends TriggerEvent:
@@ -45,8 +46,8 @@ class GainedTokens extends TriggerEvent:
 	var amount_gained: int
 	var total_amount: int
 
-class StellaCharge extends TriggerEvent:
-	func get_type(): return "stella_charge"
+class RulecardCharge extends TriggerEvent:
+	func get_type(): return "rulecard_charge"
 	var side: ZoneLocation.Side
 	var amount_gained: int
 	var total_amount: int

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="1_32gan"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ekay0"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_g3ko6"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/stella_charge.gd" id="1_oj4qw"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/rulecard_charge.gd" id="1_oj4qw"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_summoned.gd" id="2_7ycrf"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_destroyed.gd" id="5_2ne08"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="6_iocn4"]
@@ -44,6 +44,7 @@ script = ExtResource("5_2ne08")
 this_unit = false
 other_own_unit = true
 opponent_unit = false
+by_this_unit = false
 
 [sub_resource type="Resource" id="Resource_vyo6p"]
 script = ExtResource("1_32gan")
@@ -69,7 +70,7 @@ unit_target_zones = 2
 unit_target_zones_var = ""
 discard_target_count = 0
 discard_target_sides = 1
-stella_charge_cost = 3
+rulecard_charge_cost = 3
 
 [sub_resource type="Resource" id="Resource_nbnlu"]
 script = ExtResource("7_yr72p")
@@ -95,7 +96,7 @@ unit_target_zones = 2
 unit_target_zones_var = ""
 discard_target_count = 0
 discard_target_sides = 1
-stella_charge_cost = 5
+rulecard_charge_cost = 5
 
 [sub_resource type="Resource" id="Resource_578ff"]
 script = ExtResource("1_ekay0")
@@ -116,7 +117,7 @@ unit_target_zones = 2
 unit_target_zones_var = ""
 discard_target_count = 0
 discard_target_sides = 1
-stella_charge_cost = 7
+rulecard_charge_cost = 7
 
 [sub_resource type="Resource" id="Resource_h3p4h"]
 script = ExtResource("1_ekay0")
@@ -137,7 +138,7 @@ unit_target_zones = 2
 unit_target_zones_var = ""
 discard_target_count = 0
 discard_target_sides = 1
-stella_charge_cost = 10
+rulecard_charge_cost = 10
 
 [sub_resource type="Resource" id="Resource_ys0ej"]
 script = ExtResource("8_ydvdr")

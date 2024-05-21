@@ -160,6 +160,10 @@ fiber_debug_step={
 ]
 }
 
+[internationalization]
+
+locale/translation_remaps={}
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://kfb15def0dcj"]
+
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_4ibwo"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_8ylx4"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="1_p5kdj"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_xqe0m"]
+
+[sub_resource type="Resource" id="Resource_35lsc"]
+script = ExtResource("1_4ibwo")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_au8vi"]
+script = ExtResource("1_p5kdj")
+amount = 1
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_lsaxu"]
+script = ExtResource("1_8ylx4")
+ability_name = ""
+description = ""
+type = 2
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+cost = SubResource("Resource_35lsc")
+effect = SubResource("Resource_au8vi")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_ets4a"]
+script = ExtResource("1_8ylx4")
+ability_name = ""
+description = "Target a unit; Deal 1 damage to the target and target gains Power+1 until the end of the turn."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_xqe0m")
+uid = "0jp966d7conn"
+cardset_name = "Burn"
+cardset_idx = 5
+card_name = "Flame Whip"
+artwork_path = "res://data/cards/artwork/lava-whip.png"
+mana = 1
+kind = 0
+unit_hp = 2
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_8ylx4")]([SubResource("Resource_lsaxu"), SubResource("Resource_ets4a")])

@@ -11,10 +11,10 @@ enum Zone {
 	Hand,
 	Deck,
 	Discard,
-	Starlight,
+	Grace,
 	Banish,
 	Floating,
-	Stella,
+	Rulecard,
 }
 
 var side: ZoneLocation.Side
@@ -43,7 +43,7 @@ func is_field() -> bool:
 
 func is_hidden() -> bool:
 	match zone:
-		Zone.Hand, Zone.Deck, Zone.Starlight, Zone.Banish:
+		Zone.Hand, Zone.Deck, Zone.Grace, Zone.Banish:
 			return true
 	return false
 

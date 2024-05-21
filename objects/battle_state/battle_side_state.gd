@@ -8,10 +8,10 @@ var deck: CardZoneArray = null
 var hand: CardZoneArray = null
 var discard: CardZoneArray = null
 var banish: CardZoneArray = null
-var starlights: CardZoneArray = null
+var graces: CardZoneArray = null
 var starters: Array[CardInstance] = []
 
-var stella: CardInstance
+var rulecard: CardInstance
 var front_row: Array[UnitState] = [null, null]
 var back_row: Array[UnitState] = [null, null, null, null]
 
@@ -19,7 +19,7 @@ var Zone := ZoneLocation.Zone
 
 var token_amounts: Dictionary = {}
 
-var stella_charge: int = 0
+var rulecard_charge: int = 0
 
 func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	battle_state = bs
@@ -32,27 +32,27 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	hand = CardZoneArray.new(side, ZoneLocation.Zone.Hand)
 	discard = CardZoneArray.new(side, ZoneLocation.Zone.Discard)
 	banish = CardZoneArray.new(side, ZoneLocation.Zone.Banish)
-	starlights = CardZoneArray.new(side, ZoneLocation.Zone.Starlight)
+	graces = CardZoneArray.new(side, ZoneLocation.Zone.Grace)
 	
 	agent.battle_state = bs
 	
 	var card_deck := agent.get_deck()
 	
-	stella = battle_state.create_card_instance(CardDatabase.load_from_key(card_deck.stella_card_key), ZoneLocation.new(side, Zone.Stella), side)
+	rulecard = battle_state.create_card_instance(CardDatabase.load_from_key(card_deck.rulecard_card_key), ZoneLocation.new(side, Zone.Rulecard), side)
 	
 	for card_count in card_deck.main_deck_cards:
 		var card := CardDatabase.load_from_key(card_count.card_key)
 		for i in range(card_count.count):
 			deck.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
-	for card_key in card_deck.starlight_card_keys:
+	for card_key in card_deck.grace_card_keys:
 		var card := CardDatabase.load_from_key(card_key)
-		starlights.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
+		graces.add_card(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
 	for card_key in card_deck.starter_unit_card_keys:
 		var card := CardDatabase.load_from_key(card_key)
 		starters.append(battle_state.create_card_instance(card, ZoneLocation.new(side, Zone.Floating), side))
 	
 	deck.shuffle()
-	starlights.shuffle()
+	graces.shuffle()
 
 func get_field_zone(zone: ZoneLocation.Zone) -> Array[UnitState]:
 	match zone:

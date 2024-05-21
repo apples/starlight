@@ -14,6 +14,6 @@ class Task extends CardTask:
 	
 	# Start of effect execution
 	func start() -> void:
-		battle_state.stella_charge(ability_instance.controller, amount)
+		battle_state.rulecard_charge(ability_instance.controller, amount)
 		
 		done()

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://ctvn1k8pknxb0"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_0foij"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_bxni0"]
+
+[sub_resource type="Resource" id="Resource_0g3ti"]
+script = ExtResource("1_0foij")
+ability_name = ""
+description = "When your unit is destroyed: bounce that unit."
+type = 3
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_bxni0")
+uid = "09uw1h1ke94w"
+cardset_name = "Burn"
+cardset_idx = 17
+card_name = "The Flame Beckons"
+artwork_path = "res://data/cards/artwork/flame-beckons.png"
+mana = 1
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_0foij")]([SubResource("Resource_0g3ti")])

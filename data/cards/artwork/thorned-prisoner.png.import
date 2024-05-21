@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4wtfcim5rsr4"
-path="res://.godot/imported/frame_ability_stella.png-0614f5ed65aed0cd7831170dbdbca7e1.ctex"
+uid="uid://cp2et2qokdo4d"
+path="res://.godot/imported/thorned-prisoner.png-83d6021bf151a1f434b481032505ab42.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/card_plane/images/frame_ability_stella.png"
-dest_files=["res://.godot/imported/frame_ability_stella.png-0614f5ed65aed0cd7831170dbdbca7e1.ctex"]
+source_file="res://data/cards/artwork/thorned-prisoner.png"
+dest_files=["res://.godot/imported/thorned-prisoner.png-83d6021bf151a1f434b481032505ab42.ctex"]
 
 [params]
 

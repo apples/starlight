@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db8xm23r1xx07"
-path="res://.godot/imported/frame_ability_starlight.png-9115d2d316729186f0c1f3a9da33f41e.ctex"
+uid="uid://dd0bs71lvnkpv"
+path="res://.godot/imported/frame_grace.png-c2682d8537a7263f09a9eb66b17a7692.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/card_plane/images/frame_ability_starlight.png"
-dest_files=["res://.godot/imported/frame_ability_starlight.png-9115d2d316729186f0c1f3a9da33f41e.ctex"]
+source_file="res://objects/card_plane/images/frame_grace.png"
+dest_files=["res://.godot/imported/frame_grace.png-c2682d8537a7263f09a9eb66b17a7692.ctex"]
 
 [params]
 

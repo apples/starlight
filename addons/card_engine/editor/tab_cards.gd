@@ -12,6 +12,8 @@ var card_engine_config: CardEngineConfig
 @onready var set_option_button: OptionButton = %SetOptionButton
 @onready var card_details = %CardDetails
 @onready var default_mana_option_button: OptionButton = %DefaultManaOptionButton
+@onready var print_preview_check_button: CheckButton = %PrintPreviewCheckButton
+
 
 var plugin
 
@@ -274,3 +276,7 @@ func _on_card_data_table_delete_requested(cardfilepath):
 	
 	refresh()
 
+
+
+func _on_print_preview_check_button_toggled(toggled_on: bool) -> void:
+	card_details.for_print = toggled_on

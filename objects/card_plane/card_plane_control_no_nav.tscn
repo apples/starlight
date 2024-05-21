@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccb62u8ib4n0u"]
+[gd_scene load_steps=8 format=3 uid="uid://ccb62u8ib4n0u"]
 
+[ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="1_8kkt1"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane_control_no_nav.gd" id="1_uv8pl"]
+[ext_resource type="Resource" uid="uid://bui66wxxop438" path="res://data/cards/carddata/p1c69cpaogxt.tres" id="2_j86ol"]
 [ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="2_rt0ip"]
 [ext_resource type="Material" uid="uid://buraluh2x3tka" path="res://objects/material_sprite/material_sprite_canvasmaterial.tres" id="3_xbigd"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_texturerect.gd" id="4_iyl3r"]
@@ -11,7 +13,9 @@ viewport_path = NodePath("SubViewport")
 [node name="CardPlaneControl" type="MarginContainer"]
 offset_right = 288.0
 offset_bottom = 404.0
+theme = ExtResource("1_8kkt1")
 script = ExtResource("1_uv8pl")
+card = ExtResource("2_j86ol")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -21,6 +25,7 @@ render_target_update_mode = 1
 
 [node name="CardRender" parent="SubViewport" instance=ExtResource("2_rt0ip")]
 unique_name_in_owner = true
+for_print = false
 
 [node name="Sprite" type="TextureRect" parent="."]
 texture_filter = 2

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0818nyxi7eh6"
-path="res://.godot/imported/frame_stella.png-04e72b1ac23fb22d3de1807ba72154c6.ctex"
+uid="uid://dql4houkqhydx"
+path="res://.godot/imported/frame_ability_spell.png-e82a3de304cf95adb281bc501635c8c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/card_plane/images/frame_stella.png"
-dest_files=["res://.godot/imported/frame_stella.png-04e72b1ac23fb22d3de1807ba72154c6.ctex"]
+source_file="res://objects/card_plane/images/frame_ability_spell.png"
+dest_files=["res://.godot/imported/frame_ability_spell.png-e82a3de304cf95adb281bc501635c8c2.ctex"]
 
 [params]
 

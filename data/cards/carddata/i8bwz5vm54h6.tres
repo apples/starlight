@@ -21,7 +21,7 @@ unit_target_zones = 2
 unit_target_zones_var = "basic_attack_target_zones"
 discard_target_count = 0
 discard_target_sides = 1
-stella_charge_cost = 0
+rulecard_charge_cost = 0
 
 [sub_resource type="Resource" id="Resource_afj1w"]
 script = ExtResource("2_3ue7v")

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://c6dp7rqgkwop3"]
+
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_tnyda"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_u8sq1"]
+
+[sub_resource type="Resource" id="Resource_7l5ww"]
+script = ExtResource("1_u8sq1")
+ability_name = ""
+description = "Target a tapped unit: Deal 2 damage to the target."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_tnyda")
+uid = "6p7r1jjkc9dy"
+cardset_name = "Burn"
+cardset_idx = 14
+card_name = "Heat Wave"
+artwork_path = "res://data/cards/artwork/heat-wave.png"
+mana = 1
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_u8sq1")]([SubResource("Resource_7l5ww")])

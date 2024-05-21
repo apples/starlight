@@ -1,12 +1,9 @@
 @tool
 extends Control
 
-var normal_frame_texture: Texture = preload("res://objects/card_plane/images/frame_ability.png")
-var starlight_frame_texture: Texture = preload("res://objects/card_plane/images/frame_ability_starlight.png")
-
 @onready var overlays := %NormalOverlays
 @onready var frame := %Frame
-@onready var type_label := %Type
+@onready var type_rect: TextureRect = %Type
 @onready var attack_power_frame := %AttackPowerFrame
 @onready var attack_power_label := %AttackPower
 @onready var name_label := %Name
@@ -14,13 +11,14 @@ var starlight_frame_texture: Texture = preload("res://objects/card_plane/images/
 @onready var mana_cost_label := %ManaCost
 @onready var description_label := %Description
 @onready var normal_header_row = %NormalHeaderRow
-@onready var stella_frame = %StellaFrame
 
-@onready var starlight_overlays := %StarlightOverlays
-@onready var starlight_name_label := %StarlightName
-@onready var starlight_description_label := %StarlightDescription
+@onready var grace_overlays := %GraceOverlays
+@onready var grace_name_label := %GraceName
+@onready var grace_description_label := %GraceDescription
 
 var card: Card
+var get_card_texture: Callable
+var text_modulate: Color = Color.WHITE
 
 var card_ability: CardAbility = null:
 	get:
@@ -36,35 +34,46 @@ func _ready():
 	refresh()
 
 func refresh():
-	assert(card_ability)
+	if not card_ability:
+		return
 	
-	if card_ability.type == CardAbility.CardAbilityType.STARLIGHT:
+	if card_ability.type == CardAbility.CardAbilityType.GRACE:
 		overlays.visible = false
-		starlight_overlays.visible = true
-		_refresh_starlight()
+		grace_overlays.visible = true
+		_refresh_grace()
 	else:
 		overlays.visible = true
-		starlight_overlays.visible = false
+		grace_overlays.visible = false
 		_refresh_normal()
 
 func _refresh_normal():
 	
 	# frame
-	if card.kind == Card.Kind.STELLA:
-		stella_frame.visible = true
-		frame.visible = false
-	else:
-		stella_frame.visible = false
-		frame.visible = true
-		frame.texture = normal_frame_texture
+	match card.kind:
+		Card.Kind.RULECARD:
+			frame.texture = get_card_texture.call(&"FRAME_ABILITY_RULECARD")
+		Card.Kind.UNIT:
+			frame.texture = get_card_texture.call(&"FRAME_ABILITY")
+		Card.Kind.SPELL:
+			frame.texture = get_card_texture.call(&"FRAME_ABILITY_SPELL")
 	
-	if card.kind == Card.Kind.STELLA:
+	if card.kind == Card.Kind.RULECARD:
 		normal_header_row.visible = false
 	else:
 		normal_header_row.visible = true
-			
+		
 		# type
-		type_label.text = CardAbility.CardAbilityType.find_key(card_ability.type)
+		match card_ability.type:
+			CardAbility.CardAbilityType.ACTION:
+				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_ACTION")
+			CardAbility.CardAbilityType.ATTACK:
+				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_ATTACK")
+			CardAbility.CardAbilityType.PASSIVE:
+				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_PASSIVE")
+			CardAbility.CardAbilityType.TRIGGER:
+				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_TRIGGER")
+			_:
+				push_error("Unknown type: ", card_ability.type)
 		
 		# attack power
 		if card_ability.effect:
@@ -79,31 +88,43 @@ func _refresh_normal():
 		
 		# name
 		name_label.text = card_ability.ability_name
+		name_label.modulate = text_modulate
 		
 		# mana cost
 		if card_ability.cost:
 			var mana_cost := card_ability.cost.get_mana_cost()
-			if mana_cost != "":
-				mana_cost_frame.visible = true
-				mana_cost_label.text = mana_cost
-			else:
-				mana_cost_frame.visible = false
+			var tap := card_ability.cost.get_requires_tap()
+			mana_cost_frame.visible = mana_cost != "" or tap
+			match [tap, mana_cost]:
+				[true, ""]:
+					mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST_TAP")
+					mana_cost_label.text = ""
+				[true, _]:
+					mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST_TAP")
+					mana_cost_label.text = "+" + mana_cost
+				[false, _]:
+					mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST")
+					mana_cost_label.text = " " + mana_cost
+				_:
+					push_error("Invalid mana cost state")
+					breakpoint
 		else:
 			mana_cost_frame.visible = false
 	
 	# description
 	description_label.text = card_ability.description
+	description_label.modulate = text_modulate
 	
 
-func _refresh_starlight():
+func _refresh_grace():
 	# frame
-	stella_frame.visible = false
-	frame.visible = true
-	frame.texture = starlight_frame_texture
+	frame.texture = get_card_texture.call(&"FRAME_ABILITY_GRACE")
 	
 	# name
-	starlight_name_label.text = card_ability.ability_name
+	grace_name_label.text = card_ability.ability_name
+	grace_name_label.modulate = text_modulate
 	
 	# description
-	starlight_description_label.text = card_ability.description
+	grace_description_label.text = card_ability.description
+	grace_description_label.modulate = text_modulate
 

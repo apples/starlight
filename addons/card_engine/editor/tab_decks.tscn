@@ -102,14 +102,14 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Stella:"
+text = "Rulecard:"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 vertical_scroll_mode = 0
 
-[node name="StellaContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
+[node name="RulecardContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -118,14 +118,14 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-text = "Starlights:"
+text = "Graces:"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 vertical_scroll_mode = 0
 
-[node name="StarlightsContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer3/ScrollContainer"]
+[node name="GracesContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/DeckPanel/ScrollContainer/VBoxContainer/HBoxContainer3/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

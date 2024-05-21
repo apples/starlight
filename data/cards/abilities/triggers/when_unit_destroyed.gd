@@ -5,6 +5,8 @@ extends CardAbilityTrigger
 @export var other_own_unit: bool = false
 @export var opponent_unit: bool = false
 
+@export var by_this_unit: bool = false
+
 func handle_unit_destroyed(
 	e: TriggerEvents.UnitDestroyed, # The trigger event
 	battle_state: BattleState,
@@ -12,6 +14,8 @@ func handle_unit_destroyed(
 	ability_index: int, # Which ability slot *this* ability occupies on the card
 	user_side: ZoneLocation.Side, # Which user will be activating *this* ability
 ) -> bool:
+	if by_this_unit and not e.by_who.is_same(card_instance):
+		return false
 	
 	if this_unit and e.was.is_same(card_instance):
 		return true

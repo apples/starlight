@@ -17,7 +17,7 @@ func start() -> void:
 	match ability.type:
 		CardAbility.CardAbilityType.ACTION,\
 		CardAbility.CardAbilityType.ATTACK,\
-		CardAbility.CardAbilityType.STARLIGHT:
+		CardAbility.CardAbilityType.GRACE:
 			pass
 		CardAbility.CardAbilityType.TRIGGER:
 			assert(ability.trigger)

@@ -86,14 +86,16 @@ text = "Set:"
 [node name="SetOptionButton" type="OptionButton" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 3
+item_count = 4
 selected = 0
 popup/item_0/text = "ALL_SETS"
 popup/item_0/id = 0
-popup/item_1/text = "Darkness"
+popup/item_1/text = "Burn"
 popup/item_1/id = 1
-popup/item_2/text = "Screet"
+popup/item_2/text = "Darkness"
 popup/item_2/id = 2
+popup/item_3/text = "Screet"
+popup/item_3/id = 3
 
 [node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -102,22 +104,18 @@ text = "Default Mana:"
 [node name="DefaultManaOptionButton" type="OptionButton" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 7
+item_count = 5
 selected = 0
 popup/item_0/text = "Colorless"
 popup/item_0/id = 0
-popup/item_1/text = "Holy"
+popup/item_1/text = "Pink"
 popup/item_1/id = 1
-popup/item_2/text = "Curse"
+popup/item_2/text = "Green"
 popup/item_2/id = 2
-popup/item_3/text = "Flame"
+popup/item_3/text = "Yellow"
 popup/item_3/id = 3
-popup/item_4/text = "Frost"
+popup/item_4/text = "Blue"
 popup/item_4/id = 4
-popup/item_5/text = "Shock"
-popup/item_5/id = 5
-popup/item_6/text = "Gale"
-popup/item_6/id = 6
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -127,6 +125,28 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "New Card
 "
+
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Print Preview:"
+
+[node name="PrintPreviewCheckButton" type="CheckButton" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Split" type="VSplitContainer" parent="."]
 layout_mode = 2
@@ -302,6 +322,7 @@ one_shot = true
 [connection signal="text_submitted" from="PanelContainer/HBoxContainer/TopBar/SearchRow/SearchEdit" to="." method="_on_search_edit_text_submitted"]
 [connection signal="item_selected" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/SetOptionButton" to="." method="_on_set_option_button_item_selected"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer2/NewCardButton" to="." method="_on_new_card_button_pressed"]
+[connection signal="toggled" from="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/PrintPreviewCheckButton" to="." method="_on_print_preview_check_button_toggled"]
 [connection signal="delete_requested" from="Split/PanelContainer/UpperPanel/CardDataTable" to="." method="_on_card_data_table_delete_requested"]
 [connection signal="row_clicked" from="Split/PanelContainer/UpperPanel/CardDataTable" to="." method="_on_card_data_table_row_clicked"]
 [connection signal="show_in_filesystem_requested" from="Split/PanelContainer/UpperPanel/CardDataTable" to="." method="_on_card_data_table_show_in_filesystem_requested"]

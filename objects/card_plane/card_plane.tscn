@@ -63,6 +63,7 @@ render_target_update_mode = 1
 
 [node name="CardRender" parent="SubViewport" instance=ExtResource("1_2hb1l")]
 card = null
+for_print = false
 
 [node name="Sprite" type="Sprite3D" parent="."]
 material_override = SubResource("ShaderMaterial_ieiuw")

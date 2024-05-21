@@ -1,14 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://drp7gbrv7ff86"]
+[gd_scene load_steps=8 format=3 uid="uid://drp7gbrv7ff86"]
 
+[ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="1_pqk6l"]
 [ext_resource type="Script" path="res://objects/card_plane/ability_panel.gd" id="1_xs14d"]
-[ext_resource type="Texture2D" uid="uid://4wtfcim5rsr4" path="res://objects/card_plane/images/frame_ability_stella.png" id="3_ft6lc"]
 [ext_resource type="Texture2D" uid="uid://b6yyo8lo0mep" path="res://objects/card_plane/images/frame_ability.png" id="4_42y8b"]
+[ext_resource type="Texture2D" uid="uid://bf4btcfc02sa5" path="res://objects/card_plane/images/frame_ability_tag_attack.png" id="5_meipf"]
 [ext_resource type="Texture2D" uid="uid://73vgyww6ux5f" path="res://objects/card_plane/images/frame_ability_attackpower.png" id="6_1ajto"]
-[ext_resource type="Texture2D" uid="uid://dmw1px5imhen5" path="res://objects/card_plane/images/frame_ability_manacost.png" id="7_blf14"]
+[ext_resource type="Texture2D" uid="uid://yy50mbm2sk52" path="res://objects/card_plane/images/frame_ability_manacost_tap.png" id="7_7rpn3"]
+[ext_resource type="FontFile" uid="uid://6yeciinxit51" path="res://fonts/Silver_ascii_bold.ttf" id="8_wimtd"]
 
 [node name="AbilityPanel" type="MarginContainer"]
 offset_right = 224.0
 offset_bottom = 74.0
+theme = ExtResource("1_pqk6l")
 script = ExtResource("1_xs14d")
 
 [node name="Frame" type="NinePatchRect" parent="."]
@@ -20,19 +23,10 @@ patch_margin_top = 17
 patch_margin_right = 1
 patch_margin_bottom = 1
 
-[node name="StellaFrame" type="NinePatchRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-texture = ExtResource("3_ft6lc")
-patch_margin_left = 1
-patch_margin_top = 17
-patch_margin_right = 1
-patch_margin_bottom = 1
-
 [node name="NormalOverlays" type="MarginContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/margin_left = 2
+theme_override_constants/margin_left = 1
 theme_override_constants/margin_top = 1
 theme_override_constants/margin_right = 1
 theme_override_constants/margin_bottom = 1
@@ -43,16 +37,21 @@ theme_override_constants/separation = 0
 
 [node name="NormalHeaderRow" type="HBoxContainer" parent="NormalOverlays/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+theme_override_constants/separation = 0
 
-[node name="Type" type="Label" parent="NormalOverlays/VBoxContainer/NormalHeaderRow"]
+[node name="MarginContainer" type="MarginContainer" parent="NormalOverlays/VBoxContainer/NormalHeaderRow"]
+layout_mode = 2
+theme_override_constants/margin_right = -5
+
+[node name="Type" type="TextureRect" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"AbilityTypeLabel"
-text = "ATTACK"
+texture = ExtResource("5_meipf")
 
 [node name="AttackPowerSpacer" type="Control" parent="NormalOverlays/VBoxContainer/NormalHeaderRow"]
-custom_minimum_size = Vector2(25, 0)
+custom_minimum_size = Vector2(27, 0)
 layout_mode = 2
 
 [node name="AttackPowerFrame" type="TextureRect" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/AttackPowerSpacer"]
@@ -69,6 +68,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "3"
@@ -78,13 +78,13 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 text = "Bite"
 
 [node name="ManaCostFrame" type="TextureRect" parent="NormalOverlays/VBoxContainer/NormalHeaderRow"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-texture = ExtResource("7_blf14")
+texture = ExtResource("7_7rpn3")
 stretch_mode = 2
 
 [node name="ManaCost" type="Label" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/ManaCostFrame"]
@@ -93,47 +93,64 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 15.0
+offset_left = 16.0
+offset_top = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"AbilityManaCostLabel"
-text = "4"
-horizontal_alignment = 1
+theme_override_fonts/font = ExtResource("8_wimtd")
+theme_override_font_sizes/font_size = 12
+text = "+6"
 
-[node name="Description" type="Label" parent="NormalOverlays/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="NormalOverlays/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 3
+
+[node name="Description" type="Label" parent="NormalOverlays/VBoxContainer/MarginContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(219, 0)
 layout_mode = 2
 size_flags_vertical = 0
 text = "When this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit with \"Lily\" in its name, manifest a \"Darkness\" Token."
 autowrap_mode = 3
 visible_characters_behavior = 1
 
-[node name="StarlightOverlays" type="MarginContainer" parent="."]
+[node name="GraceOverlays" type="MarginContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 1
 theme_override_constants/margin_right = 1
 theme_override_constants/margin_bottom = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="StarlightOverlays"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GraceOverlays"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="CenterContainer" parent="StarlightOverlays/VBoxContainer"]
+[node name="HBoxContainer" type="CenterContainer" parent="GraceOverlays/VBoxContainer"]
 layout_mode = 2
 
-[node name="StarlightName" type="Label" parent="StarlightOverlays/VBoxContainer/HBoxContainer"]
+[node name="GraceName" type="Label" parent="GraceOverlays/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"StarlightNameLabel"
+theme_type_variation = &"GraceNameLabel"
 text = "Bite"
 
-[node name="StarlightDescription" type="Label" parent="StarlightOverlays/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="GraceOverlays/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 3
+
+[node name="GraceDescription" type="Label" parent="GraceOverlays/VBoxContainer/MarginContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_vertical = 0
 text = "W欲しくen this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit

@@ -103,10 +103,10 @@ func process_activate_ability(payload: Dictionary) -> void:
 	match card_instance.card.kind:
 		Card.Kind.UNIT:
 			return _process_activate_ability_unit(card_instance, index)
-		Card.Kind.GRACE:
-			return _process_activate_ability_grace(card_instance, index)
-		Card.Kind.STELLA:
-			return _process_activate_ability_stella(card_instance, index)
+		Card.Kind.SPELL:
+			return _process_activate_ability_spell(card_instance, index)
+		Card.Kind.RULECARD:
+			return _process_activate_ability_rulecard(card_instance, index)
 	
 
 func _process_activate_ability_unit(card_instance: CardInstance, index: int) -> void:
@@ -133,7 +133,7 @@ func _process_activate_ability_unit(card_instance: CardInstance, index: int) -> 
 	
 	wait_for(new_ability_instance.task, activate_ability_finished)
 
-func _process_activate_ability_grace(card_instance: CardInstance, index: int) -> void:
+func _process_activate_ability_spell(card_instance: CardInstance, index: int) -> void:
 	var ability: CardAbility = card_instance.card.abilities[index]
 	assert(ability != null)
 	if ability == null:
@@ -150,7 +150,7 @@ func _process_activate_ability_grace(card_instance: CardInstance, index: int) ->
 	
 	wait_for(new_ability_instance.task, activate_ability_finished)
 
-func _process_activate_ability_stella(card_instance: CardInstance, index: int) -> void:
+func _process_activate_ability_rulecard(card_instance: CardInstance, index: int) -> void:
 	var ability: CardAbility = card_instance.card.abilities[index]
 	assert(ability != null)
 	if ability == null:

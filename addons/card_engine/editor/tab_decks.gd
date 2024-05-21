@@ -17,8 +17,8 @@ var set_filter: String = ""
 @onready var name_line_edit = %NameLineEdit
 @onready var deck_cards = %DeckCards
 @onready var card_search_list = %CardSearchList
-@onready var stella_container = %StellaContainer
-@onready var starlights_container = %StarlightsContainer
+@onready var rulecard_container = %RulecardContainer
+@onready var graces_container = %GracesContainer
 @onready var starters_container = %StartersContainer
 @onready var zoom_label = %ZoomLabel
 @onready var zoom_minus = %ZoomMinus
@@ -30,8 +30,8 @@ var new_deck_scene = preload("res://addons/card_engine/editor/new_deck_dialog.ts
 
 #@export var main_deck_cards: Array[CardCount] = []
 #@export var starter_unit_card_keys: Array[String] = []
-#@export var starlight_card_keys: Array[String] = []
-#@export var stella_card_key: String
+#@export var grace_card_keys: Array[String] = []
+#@export var rulecard_card_key: String
 var loaded_deck: Resource
 
 var search_name: String
@@ -86,17 +86,17 @@ func _reconcile():
 	
 	no_deck_container.visible = false
 	
-	_reconcile_stella()
-	_reconcile_starlights()
+	_reconcile_rulecard()
+	_reconcile_graces()
 	_reconcile_starters()
 	_reconcile_main_deck()
 
-func _reconcile_stella():
-	var arr := [loaded_deck.stella_card_key] if loaded_deck.stella_card_key else []
-	_reconcile_deck_container(stella_container, arr, _on_stella_item_change_count)	
+func _reconcile_rulecard():
+	var arr := [loaded_deck.rulecard_card_key] if loaded_deck.rulecard_card_key else []
+	_reconcile_deck_container(rulecard_container, arr, _on_rulecard_item_change_count)	
 
-func _reconcile_starlights():
-	_reconcile_deck_container(starlights_container, loaded_deck.starlight_card_keys, _on_starlight_item_change_count)
+func _reconcile_graces():
+	_reconcile_deck_container(graces_container, loaded_deck.grace_card_keys, _on_grace_item_change_count)
 
 func _reconcile_starters():
 	_reconcile_deck_container(starters_container, loaded_deck.starter_unit_card_keys, _on_starter_item_change_count)
@@ -113,11 +113,11 @@ func _on_card_deck_item_change_count(id: int, amount: int):
 		_reconcile_main_deck()
 	_save()
 
-func _on_starlight_item_change_count(id: int, amount: int):
+func _on_grace_item_change_count(id: int, amount: int):
 	if amount == 1:
 		return
-	loaded_deck.starlight_card_keys.remove_at(id)
-	_reconcile_starlights()
+	loaded_deck.grace_card_keys.remove_at(id)
+	_reconcile_graces()
 	_save()
 
 func _on_starter_item_change_count(id: int, amount: int):
@@ -127,11 +127,11 @@ func _on_starter_item_change_count(id: int, amount: int):
 	_reconcile_starters()
 	_save()
 
-func _on_stella_item_change_count(id: int, amount: int):
+func _on_rulecard_item_change_count(id: int, amount: int):
 	if amount == 1:
 		return
-	loaded_deck.stella_card_key = ""
-	_reconcile_stella()
+	loaded_deck.rulecard_card_key = ""
+	_reconcile_rulecard()
 	_save()
 
 func _reconcile_deck_item(deck_item, id: int, card_key: String, count: int):
@@ -252,21 +252,21 @@ func _on_search_item_change_count(id: int, amount: int):
 	assert(amount == 1)
 	var card = card_search_list.get_child(id).card
 	match card.kind:
-		CardDatabase.card_script.Kind.STELLA:
-			loaded_deck.stella_card_key = _make_key(card.uid)
-			_reconcile_stella()
-		CardDatabase.card_script.Kind.STARLIGHT:
-			if loaded_deck.starlight_card_keys.size() < 5:
+		CardDatabase.card_script.Kind.RULECARD:
+			loaded_deck.rulecard_card_key = _make_key(card.uid)
+			_reconcile_rulecard()
+		CardDatabase.card_script.Kind.GRACE:
+			if loaded_deck.grace_card_keys.size() < 5:
 				var found := false
-				#for k in loaded_deck.starlight_card_keys:
+				#for k in loaded_deck.grace_card_keys:
 					#if _get_key_uid(k) == card.uid:
 						#found = true
 						#break
 				if not found:
-					var a: Array[String] = loaded_deck.starlight_card_keys.duplicate()
+					var a: Array[String] = loaded_deck.grace_card_keys.duplicate()
 					a.append(_make_key(card.uid))
-					loaded_deck.starlight_card_keys = a
-					_reconcile_starlights()
+					loaded_deck.grace_card_keys = a
+					_reconcile_graces()
 		_:
 			var found := false
 			for c in loaded_deck.main_deck_cards:

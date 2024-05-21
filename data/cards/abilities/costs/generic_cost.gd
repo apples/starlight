@@ -21,7 +21,7 @@ extends CardAbilityCost
 
 @export_flags("Own:1", "Opponent:2") var discard_target_sides: int = 1
 
-@export var stella_charge_cost: int = 0
+@export var rulecard_charge_cost: int = 0
 
 enum TargetZone {
 	OPPONENT_BACK = 1,
@@ -45,6 +45,9 @@ func get_property_display(prop: StringName) -> bool:
 
 func get_mana_cost() -> String:
 	return str(mana_amount) if mana_amount != 0 else ""
+
+func get_requires_tap() -> bool:
+	return tap_self
 
 func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability_index: int, user_side: ZoneLocation.Side) -> bool:
 	# Cannot be paid unless controlled by user
@@ -123,9 +126,9 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 		if total < discard_target_count:
 			return false
 	
-	# Stella charge
+	# Rulecard charge
 	
-	if side_state.stella_charge < stella_charge_cost:
+	if side_state.rulecard_charge < rulecard_charge_cost:
 		return false
 	
 	return true
@@ -138,7 +141,7 @@ class Task extends CardTask:
 	var unit_target_zones: int
 	var discard_target_count: int
 	var discard_target_sides: int
-	var stella_charge_cost: int
+	var rulecard_charge_cost: int
 
 	var _choose_multi_targets = preload("res://objects/tasks/choose_multi_targets.gd")
 	
@@ -241,9 +244,9 @@ class Task extends CardTask:
 		if once_per_turn:
 			ability_instance.scratch.for_turn["once_per_turn_used"] = true
 		
-		# Stella charge
+		# Rulecard charge
 		
-		battle_state.stella_charge(ability_instance.controller, -stella_charge_cost)
+		battle_state.rulecard_charge(ability_instance.controller, -rulecard_charge_cost)
 		
 		done()
 	

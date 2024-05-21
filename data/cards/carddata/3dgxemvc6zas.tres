@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://bd5yt4n4w5c3e"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_4t210"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_5q7t7"]
+
+[sub_resource type="Resource" id="Resource_wke1b"]
+script = ExtResource("1_4t210")
+ability_name = ""
+description = "Target a unit: Target gains Power+1 until the end of the turn."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_5q7t7")
+uid = "3dgxemvc6zas"
+cardset_name = "Burn"
+cardset_idx = 13
+card_name = "Spicy Pepper"
+artwork_path = "res://data/cards/artwork/spicy-pepper.png"
+mana = 1
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_4t210")]([SubResource("Resource_wke1b")])

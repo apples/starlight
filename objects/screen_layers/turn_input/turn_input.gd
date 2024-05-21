@@ -77,14 +77,14 @@ func _on_click_target_agent_confirmed(click_target):
 				Card.Kind.UNIT:
 					if card_instance.uid in available_summons:
 						_play_unit(card_instance)
-				Card.Kind.GRACE:
+				Card.Kind.SPELL:
 					if card_instance.uid in available_abilities:
 						_play_hand_card(card_instance)
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.FrontRow, _],\
 		[ZoneLocation.Side.Player, ZoneLocation.Zone.BackRow, _]:
 			if card_plane.card:
 				_choose_card_action(card_plane)
-		[ZoneLocation.Side.Player, ZoneLocation.Zone.Stella, _]:
+		[ZoneLocation.Side.Player, ZoneLocation.Zone.Rulecard, _]:
 			if card_plane.card:
 				_choose_card_action(card_plane)
 

@@ -2,10 +2,14 @@
 extends VBoxContainer
 
 @onready var viewports = $Viewports
+@onready var trim_bleed: CheckButton = %TrimBleed
+@onready var for_print: CheckButton = %ForPrint
 
 var _job_queue = []
 
 var _current_batch = null
+
+var _rendered_files = []
 
 const BATCH_SIZE = 10
 
@@ -23,6 +27,18 @@ func _on_visual_server_frame_post_draw():
 	else:
 		_current_batch = null
 		RenderingServer.frame_post_draw.disconnect(_on_visual_server_frame_post_draw)
+		$Popup.hide()
+		
+		_rendered_files.sort_custom(func (a, b):
+			if a.cardset != b.cardset:
+				return a.cardset < b.cardset
+			return a.idx < b.idx
+		)
+		
+		var file_list = FileAccess.open("res://.renders/cardlist.txt", FileAccess.WRITE)
+		for r in _rendered_files:
+			file_list.store_line(r.filename)
+		file_list.close()
 
 func _start_job(job):
 	print("JOB START: ", job)
@@ -31,6 +47,8 @@ func _start_job(job):
 			var dpi := CardDatabase.config.card_print_dpi
 			var size_in := CardDatabase.config.card_print_size_in
 			var bleed_in := CardDatabase.config.card_print_bleed_in
+			if trim_bleed.button_pressed:
+				bleed_in = Vector2.ZERO
 			var result_size_px := Vector2i(dpi * (size_in + bleed_in))
 			#var render_scale := dpi * size_in / Vector2(CardDatabase.config.card_size_pixels)
 			var result_card_size_px := Vector2i(dpi * size_in)
@@ -41,6 +59,7 @@ func _start_job(job):
 			viewport.transparent_bg = true
 			
 			var render: Control = CardDatabase.config.card_control.instantiate()
+			render.for_print = for_print.button_pressed
 			render.card = load(job.card_path)
 			render.position = Vector2i(dpi * bleed_in / 2)
 			render.size = result_card_size_px
@@ -65,16 +84,13 @@ func _finish_job(job):
 			
 			vp.queue_free()
 			
-			var file_list = FileAccess.open("res://.renders/cardlist.txt", FileAccess.READ_WRITE)
-			file_list.seek_end()
-			file_list.store_line(filename)
-			file_list.close()
+			_rendered_files.append({ cardset = job.card.cardset_name, idx = job.card.cardset_idx, filename = filename })
+			
 
 func _on_button_pressed():
 	DirAccess.make_dir_recursive_absolute("res://.renders/images")
 	
-	var file_list = FileAccess.open("res://.renders/cardlist.txt", FileAccess.WRITE)
-	file_list.close()
+	_rendered_files = []
 	
 	for path in CardDatabase.get_all_cards():
 		_job_queue.append({
@@ -83,3 +99,5 @@ func _on_button_pressed():
 		})
 	
 	RenderingServer.frame_post_draw.connect(_on_visual_server_frame_post_draw)
+	
+	$Popup.popup_centered()

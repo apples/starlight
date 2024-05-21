@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://3djnkw5qwhjg"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_gmcch"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_mqtuh"]
+
+[sub_resource type="Resource" id="Resource_0w35e"]
+script = ExtResource("1_gmcch")
+ability_name = ""
+description = "▲1 when your attack destroys a unit."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_a5vtf"]
+script = ExtResource("1_gmcch")
+ability_name = ""
+description = "▼1; make a unit retreat."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_g8hxn"]
+script = ExtResource("1_gmcch")
+ability_name = ""
+description = "▼3; ready a level 1 or level 2 unit."
+type = 1
+conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("1_mqtuh")
+uid = "23qjownq6gyw"
+cardset_name = "Burn"
+cardset_idx = 22
+card_name = "Eyes in the Shadows"
+artwork_path = ""
+mana = 1
+kind = 2
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_gmcch")]([SubResource("Resource_0w35e"), SubResource("Resource_a5vtf"), SubResource("Resource_g8hxn")])

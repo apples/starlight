@@ -12,6 +12,9 @@ func start() -> void:
 	
 	print("request_trigger_response: %s" % [ZoneLocation.Side.find_key(side)])
 	
+	for te in battle_state.trigger_events:
+		print("    ", te)
+	
 	# Find possible trigger activations
 	
 	var side_state := battle_state.get_side_state(side)
@@ -98,6 +101,9 @@ func pass_to_next() -> void:
 		return become(next_task)
 	
 	# Otherwise, we are done
+	
+	battle_state.trigger_events_clear()
+	
 	done()
 
 func _check_ability(card_instance: CardInstance, ability_index: int) -> bool:
@@ -107,17 +113,17 @@ func _check_ability(card_instance: CardInstance, ability_index: int) -> bool:
 	var ability: CardAbility = card_instance.card.abilities[ability_index]
 	assert(ability)
 	
-	print("_check_ability(%s)" % [ability])
+	#print("_check_ability(%s)" % [ability])
 	
 	if not ability.type == CardAbility.CardAbilityType.TRIGGER:
-		print("    not a trigger")
+		#print("    not a trigger")
 		return false
 	if ability.cost and not ability.cost.can_be_paid(battle_state, card_instance, ability_index, side):
-		print("    cannot pay cost")
+		#print("    cannot pay cost")
 		return false
 	if ability.trigger and not ability.trigger.can_activate(battle_state, card_instance, ability_index, side):
-		print("    cannot be activated")
+		#print("    cannot be activated")
 		return false
 	
-	print("    check passed")
+	#print("    check passed")
 	return true
