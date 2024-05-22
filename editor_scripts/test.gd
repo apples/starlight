@@ -2,11 +2,7 @@
 extends EditorScript
 
 
-var asdf = null
-
-func printstr(s: String):
-	print([s])
-
 
 func _run():
-	print()
+	pass
+	#print(EditorPaths.get_project_settings_dir())

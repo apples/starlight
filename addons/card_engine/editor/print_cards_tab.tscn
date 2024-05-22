@@ -51,6 +51,8 @@ text = "Trim Bleed"
 [node name="TrimBleed" type="CheckButton" parent="PanelContainer/VBoxContainer/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
 
 [node name="Label3" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
 layout_mode = 2
@@ -59,6 +61,73 @@ text = "Use Print Textures"
 [node name="ForPrint" type="CheckButton" parent="PanelContainer/VBoxContainer/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label4" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "Save TTS Object"
+
+[node name="SaveTTSObject" type="CheckButton" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+
+[node name="Label5" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "TTS Object Name"
+
+[node name="TTSName" type="LineEdit" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/minimum_character_width = 10
+text = "starlight_deck"
+
+[node name="Label9" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "TTS Folder"
+
+[node name="TTSFolder" type="LineEdit" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/minimum_character_width = 10
+
+[node name="Label6" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "BackBlaze Upload"
+
+[node name="BackblazeUpload" type="CheckButton" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+
+[node name="Label7" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "B2 API Key ID"
+
+[node name="BackblazeApiKeyId" type="LineEdit" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/minimum_character_width = 10
+
+[node name="Label8" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "B2 API Key"
+
+[node name="BackblazeApiKey" type="LineEdit" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/minimum_character_width = 10
+
+[node name="Label10" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "Use B2 URL for TTS"
+
+[node name="BackblazeURLForTTS" type="CheckButton" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
 button_pressed = true
 
 [node name="Viewports" type="Node" parent="."]
@@ -77,5 +146,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_1noee")
 [node name="Label" type="Label" parent="Popup/PanelContainer"]
 layout_mode = 2
 text = "Rendering images for print..."
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]

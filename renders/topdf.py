@@ -1,5 +1,4 @@
 from fpdf import FPDF
-import itertools
 import argparse
 
 parser = argparse.ArgumentParser(description='Render the cards to a PDF.')
