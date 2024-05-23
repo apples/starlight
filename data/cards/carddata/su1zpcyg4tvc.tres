@@ -27,6 +27,7 @@ rulecard_charge_cost = 0
 script = ExtResource("1_gfm43")
 amount = 1
 amount_var = ""
+null_damage = false
 
 [sub_resource type="Resource" id="Resource_lfuv5"]
 script = ExtResource("1_rcggk")
@@ -47,7 +48,7 @@ card_name = "Fire Sprite"
 artwork_path = "res://data/cards/artwork/fire-sprite.png"
 mana = 1
 kind = 0
-unit_hp = 3
+unit_hp = 4
 level = 1
 mana_value = 0
 abilities = Array[ExtResource("1_rcggk")]([SubResource("Resource_lfuv5")])

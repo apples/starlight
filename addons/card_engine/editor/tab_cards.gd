@@ -40,6 +40,8 @@ func _ready():
 
 
 func _on_reload_button_pressed():
+	if Engine.is_editor_hint() and EditorInterface.get_edited_scene_root() and (EditorInterface.get_edited_scene_root() == self or EditorInterface.get_edited_scene_root().is_ancestor_of(self)):
+		return
 	print("Loading cards!")
 	CardDatabase.config = load(config_path_edit.text)
 	reload()

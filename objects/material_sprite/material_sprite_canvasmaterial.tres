@@ -5,5 +5,5 @@
 [resource]
 resource_local_to_scene = true
 shader = ExtResource("1_kyfcw")
-shader_parameter/sprite_filter_trilinear = true
+shader_parameter/sprite_filter_trilinear = false
 shader_parameter/texture2DAA_bias = 0.8

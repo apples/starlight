@@ -21,6 +21,7 @@ rulecard_charge_cost = 0
 script = ExtResource("2_ekelx")
 amount = 2
 amount_var = ""
+null_damage = false
 
 [sub_resource type="Resource" id="Resource_snwsc"]
 script = ExtResource("1_x7nt2")

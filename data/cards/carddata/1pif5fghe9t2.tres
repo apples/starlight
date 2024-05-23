@@ -1,14 +1,22 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://duqmc3o3dplus"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://duqmc3o3dplus"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_gjcye"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_liqvv"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="1_u5gkr"]
+
+[sub_resource type="Resource" id="Resource_j1po0"]
+script = ExtResource("1_u5gkr")
+amount = 0
+amount_var = ""
+null_damage = true
 
 [sub_resource type="Resource" id="Resource_7t28d"]
 script = ExtResource("1_liqvv")
 ability_name = ""
 description = "This unit retreats and takes 1 damage."
-type = 1
+type = 2
 conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+effect = SubResource("Resource_j1po0")
 is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_blxae"]

@@ -21,6 +21,8 @@ const BASE_TEXTURES = {
 	HP_LARGE = preload("res://objects/card_plane/images/hp_large.png"),
 	HP_SMALL = preload("res://objects/card_plane/images/hp_small.png"),
 	LEVEL_ICON = preload("res://objects/card_plane/images/level_icon.png"),
+	GRACE_ICON = preload("res://objects/card_plane/images/grace_icon.png"),
+	SPELL_ICON = preload("res://objects/card_plane/images/spell_icon.png"),
 }
 
 
@@ -124,15 +126,22 @@ func _refresh_typical():
 		if icon.visible:
 			icon.texture = _get_card_texture(&"LEVEL_ICON")
 	
-	# hp
+	# kind icon
 	
-	var hp_rect: TextureRect = typical_cardface.get_node("HP")
-	var hp_label: Label = hp_rect.get_node("Label")
+	var kind_icon: TextureRect = typical_cardface.get_node("KindIcon")
+	var hp_label: Label = kind_icon.get_node("Label")
 	
-	hp_rect.visible = card.unit_hp > 0
-	hp_rect.texture = _get_card_texture("HP_SMALL") if card.unit_hp < 10 else _get_card_texture("HP_LARGE")
-	hp_label.text = str(card.unit_hp)
-	hp_label.modulate = Color.BLACK if for_print else Color.WHITE
+	match card.kind:
+		Card.Kind.UNIT:
+			kind_icon.texture = _get_card_texture("HP_SMALL") if card.unit_hp < 10 else _get_card_texture("HP_LARGE")
+			hp_label.text = str(card.unit_hp) if card.unit_hp != 0 else ""
+			hp_label.modulate = Color.BLACK if for_print else Color.WHITE
+		Card.Kind.SPELL:
+			kind_icon.texture = _get_card_texture("SPELL_ICON")
+			hp_label.text = ""
+		Card.Kind.GRACE:
+			kind_icon.texture = _get_card_texture("GRACE_ICON")
+			hp_label.text = ""
 
 func _refresh_rulecard():
 	background.texture = _get_card_texture(&"FRAME_RULECARD")

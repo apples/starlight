@@ -45,13 +45,11 @@ func _refresh():
 	
 	if card:
 		if card_control:
-			card_control.card = card
-			card_control.for_print = for_print
-		else:
-			card_control = CardDatabase.config.card_control.instantiate()
-			card_control.card = card
-			card_control.for_print = for_print
-			card_preview_container.add_child(card_control)
+			card_control.queue_free()
+		card_control = CardDatabase.config.card_control.instantiate()
+		card_control.card = card
+		card_control.for_print = for_print
+		card_preview_container.add_child(card_control)
 		
 		design_note = CardDatabase.get_design_note(card)
 		design_notes_text_edit.editable = true

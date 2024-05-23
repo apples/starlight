@@ -31,6 +31,6 @@ passive_template_path = "res://resource_types/card/script_templates/passive.gd"
 card_control = ExtResource("2_ighby")
 card_render = ExtResource("5_orf0f")
 card_size_pixels = Vector2i(240, 336)
-card_print_dpi = 300.0
+card_print_dpi = 96.0
 card_print_size_in = Vector2(2.5, 3.5)
 card_print_bleed_in = Vector2(0.25, 0.25)

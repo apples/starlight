@@ -11,6 +11,7 @@ extends VBoxContainer
 @onready var backblaze_api_key_id: LineEdit = %BackblazeApiKeyId
 @onready var backblaze_api_key: LineEdit = %BackblazeApiKey
 @onready var backblaze_url_for_tts: CheckButton = %BackblazeURLForTTS
+@onready var card_names_as_filenames: CheckButton = %CardNamesAsFilenames
 
 
 var _job_queue = []
@@ -34,6 +35,8 @@ func _ready() -> void:
 	if not DirAccess.dir_exists_absolute(tts_folder.text):
 		tts_folder.text = "res://renders"
 	
+	tts_name.text = EditorInterface.get_editor_settings().get_project_metadata("card_engine", "tts_name")
+	tts_folder.text = EditorInterface.get_editor_settings().get_project_metadata("card_engine", "tts_folder")
 	backblaze_api_key_id.text = EditorInterface.get_editor_settings().get_project_metadata("card_engine", "backblaze_api_key_id")
 	backblaze_api_key.text = EditorInterface.get_editor_settings().get_project_metadata("card_engine", "backblaze_api_key")
 
@@ -67,6 +70,10 @@ func _on_visual_server_frame_post_draw():
 		
 		var http: HTTPRequest = $HTTPRequest as HTTPRequest
 		
+		var b2_api_url := ""
+		var b2_api_headers := []
+		var b2_prefix := "starlight_tts/"
+		var b2_bucket_id := ""
 		var b2_bucket_name := ""
 		var b2_download_url := ""
 		var b2_upload_url := ""
@@ -88,19 +95,19 @@ func _on_visual_server_frame_post_draw():
 			var response = await http.request_completed
 			var body = JSON.parse_string(response[3].get_string_from_utf8())
 			
-			var api_url = body.apiInfo.storageApi.apiUrl
-			var bucket_id = body.apiInfo.storageApi.bucketId
+			b2_api_url = body.apiInfo.storageApi.apiUrl
+			b2_bucket_id = body.apiInfo.storageApi.bucketId
 			
 			b2_download_url = body.apiInfo.storageApi.downloadUrl
 			b2_bucket_name = body.apiInfo.storageApi.bucketName
 			
-			print({ api_url = api_url, bucket_id = bucket_id, b2_bucket_name = b2_bucket_name, b2_download_url = b2_download_url })
+			print({ b2_api_url = b2_api_url, b2_bucket_id = b2_bucket_id, b2_bucket_name = b2_bucket_name, b2_download_url = b2_download_url })
 			
-			headers = [
+			b2_api_headers = [
 				"Authorization: %s" % body.authorizationToken
 			]
 			
-			http.request(api_url.path_join("b2api/v3/b2_get_upload_url")+"?bucketId="+bucket_id, headers)
+			http.request(b2_api_url.path_join("b2api/v3/b2_get_upload_url")+"?bucketId="+b2_bucket_id, b2_api_headers)
 			response = await http.request_completed
 			body = JSON.parse_string(response[3].get_string_from_utf8())
 			
@@ -110,17 +117,45 @@ func _on_visual_server_frame_post_draw():
 		if backblaze_upload.button_pressed:
 			print("Uploading to B2...")
 			
-			for c in _rendered_files:
-				print("    ", c.filename)
+			var bucket_file_hashes = {}
+			var nextFileName = null
+			
+			while true:
+				var params := "?bucketId=%s&prefix=%s&maxFileCount=%s" % [b2_bucket_id, b2_prefix.uri_encode(), 10000]
+				if nextFileName:
+					params += "&startFileName=%s" % [nextFileName]
+				http.request(b2_api_url.path_join("b2api/v3/b2_list_file_names")+params, b2_api_headers)
+				var response = await http.request_completed
+				assert(response[1] == 200)
+				var body = JSON.parse_string(response[3].get_string_from_utf8())
+				for f in body.files:
+					bucket_file_hashes[f.fileName] = f.contentSha1
+				nextFileName = body.nextFileName
+				if nextFileName == null:
+					break
+			
+			for i in _rendered_files.size():
+				var c = _rendered_files[i]
+				var b2_filename := b2_prefix.path_join(c.filename)
+				
+				print("    (%s/%s) " % [i+1, _rendered_files.size()], c.filename, " => ", b2_filename)
+				
+				if b2_filename in bucket_file_hashes:
+					if bucket_file_hashes[b2_filename] == c.filehash:
+						print("        NO CHANGE")
+						continue
+					print("        UPDATING")
+				else:
+					print("        NEW")
+				
 				var filepath = "res://renders/images".path_join(c.filename)
-				var f = FileAccess.get_file_as_bytes(filepath)
 				var headers = [
 					b2_upload_auth,
-					"X-Bz-File-Name: " + str("starlight_tts/"+c.filename).uri_encode(),
+					"X-Bz-File-Name: " + b2_filename.uri_encode(),
+					"X-Bz-Content-Sha1: " + c.filehash,
 					"Content-Type: b2/x-auto",
-					"X-Bz-Content-Sha1: " + _hash_stuff(f),
-					"Content-Length: " + str(f.size()),
 				]
+				var f = FileAccess.get_file_as_bytes(filepath)
 				http.request_raw(b2_upload_url, headers, HTTPClient.METHOD_POST, f)
 				var response = await http.request_completed
 				var body = JSON.parse_string(response[3].get_string_from_utf8())
@@ -306,6 +341,8 @@ func _on_visual_server_frame_post_draw():
 		
 		print("Done.")
 		
+		EditorInterface.get_editor_settings().set_project_metadata("card_engine", "tts_name", tts_name.text)
+		EditorInterface.get_editor_settings().set_project_metadata("card_engine", "tts_folder", tts_folder.text)
 		EditorInterface.get_editor_settings().set_project_metadata("card_engine", "backblaze_api_key_id", backblaze_api_key_id.text)
 		EditorInterface.get_editor_settings().set_project_metadata("card_engine", "backblaze_api_key", backblaze_api_key.text)
 
@@ -354,13 +391,18 @@ func _finish_job(job):
 			var image = vp.get_texture().get_image()
 			image.convert(Image.FORMAT_RGBA8)
 			
-			var filename = "%s_%s_%s.png" % [job.card.cardset_name, job.card.cardset_idx, (job.card.card_name as String).replace(" ", "_")]
+			var filename = "%s.png" % [job.card.uid]
+			if card_names_as_filenames.button_pressed:
+				filename = "%s_%s_%s.png" % [job.card.cardset_name, job.card.cardset_idx, (job.card.card_name as String).replace(" ", "_")]
+			
 			var path = "res://renders/images/".path_join(filename)
 			image.save_png(path)
 			
 			vp.queue_free()
 			
-			_rendered_files.append({ cardset = job.card.cardset_name, idx = job.card.cardset_idx, filename = filename })
+			var hash = _hash_stuff(FileAccess.get_file_as_bytes(path))
+			
+			_rendered_files.append({ cardset = job.card.cardset_name, idx = job.card.cardset_idx, filename = filename, filehash = hash })
 			
 
 func _on_button_pressed():
@@ -377,3 +419,9 @@ func _on_button_pressed():
 	RenderingServer.frame_post_draw.connect(_on_visual_server_frame_post_draw)
 	
 	$Popup.popup_centered()
+
+
+func _on_backblaze_upload_toggled(toggled_on: bool) -> void:
+	card_names_as_filenames.button_pressed = not toggled_on
+	card_names_as_filenames.disabled = toggled_on
+	
