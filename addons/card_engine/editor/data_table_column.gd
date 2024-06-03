@@ -167,4 +167,3 @@ func _item_updated(who: Control):
 	ResourceSaver.save(data)
 	
 	saved.emit(who.get_index())
-

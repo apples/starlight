@@ -185,4 +185,3 @@ func _format_description(text: String) -> String:
 		result += "%s%s%s" % [effect_prefix, effect, effect_suffix]
 	
 	return result
-

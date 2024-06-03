@@ -303,4 +303,3 @@ func _on_autofill_artworks_button_pressed() -> void:
 		ResourceSaver.save(card)
 		print("Added artwork to \"%s\": %s" % [card_name, art_filename])
 	refresh()
-
