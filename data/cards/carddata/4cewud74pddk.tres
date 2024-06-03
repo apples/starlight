@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://cqfxpvjvuvwll"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_h2syv"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_10u6r"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_opuo5"]
+
+[sub_resource type="Resource" id="Resource_ryjd8"]
+script = ExtResource("1_h2syv")
+ability_name = ""
+description = "When an attack is declared: banish 2 units from your graveyard; nullify the attack."
+type = 3
+conditions = Array[ExtResource("2_opuo5")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_10u6r")
+uid = "4cewud74pddk"
+cardset_name = "Wood"
+cardset_idx = 18
+card_name = "Ancient Howl"
+artwork_path = "res://data/cards/artwork/ancient_howl.png"
+mana = 2
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_h2syv")]([SubResource("Resource_ryjd8")])

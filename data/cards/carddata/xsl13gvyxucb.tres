@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://lugppsuj868l"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_lffoi"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_1x44u"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_4n60n"]
+
+[sub_resource type="Resource" id="Resource_yw4id"]
+script = ExtResource("1_lffoi")
+ability_name = ""
+description = "Ready a rear unit you control."
+type = 1
+conditions = Array[ExtResource("2_4n60n")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_1x44u")
+uid = "xsl13gvyxucb"
+cardset_name = "Wood"
+cardset_idx = 14
+card_name = "Witch's Tea"
+artwork_path = "res://data/cards/artwork/witchs_tea.png"
+mana = 2
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_lffoi")]([SubResource("Resource_yw4id")])

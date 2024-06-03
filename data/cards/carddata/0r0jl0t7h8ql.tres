@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://cc6sg62cmxo3"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ba7nm"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_ok0q5"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_w8umn"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_af54d"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_34x5r"]
+
+[sub_resource type="Resource" id="Resource_3dmqn"]
+script = ExtResource("3_af54d")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_ecdbs"]
+script = ExtResource("4_34x5r")
+amount = 1
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_rh1e7"]
+script = ExtResource("1_ba7nm")
+ability_name = ""
+description = "Flip a coin, if heads, this attack deals +1 base damage."
+type = 2
+conditions = Array[ExtResource("2_ok0q5")]([])
+cost = SubResource("Resource_3dmqn")
+effect = SubResource("Resource_ecdbs")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_w8umn")
+uid = "0r0jl0t7h8ql"
+cardset_name = "Wood"
+cardset_idx = 1
+card_name = "Big Tusks"
+artwork_path = "res://data/cards/artwork/big_tusks.png"
+mana = 2
+kind = 0
+unit_hp = 5
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_ba7nm")]([SubResource("Resource_rh1e7")])

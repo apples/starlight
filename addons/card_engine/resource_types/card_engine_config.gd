@@ -9,6 +9,7 @@ class_name CardEngineConfig extends Resource
 @export var ability_conditions_path := "cards/abilities/conditions"
 @export var ability_passives_path := "cards/abilities/passives"
 @export var design_notes_path := "cards/design_notes"
+@export var artwork_path := "cards/artwork"
 @export var decks_path := "decks"
 
 @export var card_script: Script

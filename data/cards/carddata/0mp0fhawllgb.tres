@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://cx2qlu37fk4x"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ufpnq"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_afvc6"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_o7uus"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_cxao2"]
+
+[sub_resource type="Resource" id="Resource_hxw3r"]
+script = ExtResource("3_cxao2")
+tap_self = false
+mana_amount = 1
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_3uarr"]
+script = ExtResource("1_ufpnq")
+ability_name = ""
+description = "Any time: target a unit; exhaust that unit."
+type = 3
+conditions = Array[ExtResource("2_o7uus")]([])
+cost = SubResource("Resource_hxw3r")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_afvc6")
+uid = "0mp0fhawllgb"
+cardset_name = "Wood"
+cardset_idx = 19
+card_name = "Suffocating Fog"
+artwork_path = "res://data/cards/artwork/suffocating_fog.png"
+mana = 2
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_ufpnq")]([SubResource("Resource_3uarr")])

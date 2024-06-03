@@ -1,5 +1,5 @@
 @tool
-extends Control
+extends ScrollContainer
 
 
 var columns: Array[Control] = []
@@ -7,12 +7,20 @@ var columns: Array[Control] = []
 var data: Array[String] = []
 
 @onready var column_container := %Columns
-@onready var highlight_panel: Control = %HighlightPanel
 @onready var data_table_popup_menu: PopupMenu = %DataTablePopupMenu
 
 signal row_clicked(idx: int)
 signal show_in_filesystem_requested(path: String)
 signal delete_requested(cardfilepath: String)
+
+var primary_selection: int = -1:
+	set(v):
+		if primary_selection == v:
+			return
+		primary_selection = v
+		queue_redraw()
+
+var multi_selection: Array[int] = []
 
 var right_click_index: int
 
@@ -22,17 +30,29 @@ func _ready():
 	for col in columns:
 		col.clicked.connect(_column_clicked)
 		col.right_clicked.connect(_column_right_clicked)
-	highlight_panel.visible = false
+	self.get_v_scroll_bar().value_changed.connect(func (v):
+		queue_redraw())
+
+func _draw() -> void:
+	for m in multi_selection:
+		var col_control: Control = column_container.get_child(0).get_item(primary_selection)
+		var pos: Vector2 = col_control.global_position - column_container.global_position
+		pos.x = 0
+		pos.y -= get_v_scroll_bar().value
+		var sz := Vector2(size.x - get_v_scroll_bar().size.x, 32)
+		draw_rect(Rect2(pos, sz), Color("#457095"))
+	if primary_selection != -1:
+		var col_control: Control = column_container.get_child(0).get_item(primary_selection)
+		var pos: Vector2 = col_control.global_position - column_container.global_position
+		pos.x = 0
+		pos.y -= get_v_scroll_bar().value
+		var sz := Vector2(size.x - get_v_scroll_bar().size.x, 32)
+		draw_rect(Rect2(pos, sz), Color("#5f9fd5"))
 
 func _column_clicked(column: Control, row: int):
-	var col_control: Control = column.get_item(row)
-	var pos: Vector2 = col_control.global_position - highlight_panel.get_parent().global_position
-	pos.x = 0
-	var sz := Vector2(size.x, 32)
-	highlight_panel.visible = true
-	highlight_panel.position = pos
-	highlight_panel.size = sz
+	primary_selection = row
 	row_clicked.emit(row)
+
 
 func _column_right_clicked(column: Control, row: int):
 	right_click_index = row

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://bffynvha1chy0"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_0mwpw"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_36e3l"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_vrylf"]
+
+[sub_resource type="Resource" id="Resource_12egn"]
+script = ExtResource("1_0mwpw")
+ability_name = ""
+description = "Draw 2."
+type = 1
+conditions = Array[ExtResource("2_36e3l")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_vrylf")
+uid = "0l5pftdeyvol"
+cardset_name = "Wood"
+cardset_idx = 20
+card_name = "Witch's Pantry"
+artwork_path = "res://data/cards/artwork/witchs_pantry.png"
+mana = 2
+kind = 3
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_0mwpw")]([SubResource("Resource_12egn")])

@@ -1,0 +1,40 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://eno4rt7dwa5h"
+path="res://.godot/imported/card_numbers.ttf-0da54bccdd4a25087e5da15dc1ccd6c1.fontdata"
+
+[deps]
+
+source_file="res://fonts/card_numbers.ttf"
+dest_files=["res://.godot/imported/card_numbers.ttf-0da54bccdd4a25087e5da15dc1ccd6c1.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=0
+generate_mipmaps=false
+disable_embedded_bitmaps=true
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=1
+subpixel_positioning=1
+oversampling=1.0
+Fallbacks=null
+fallbacks=[Resource("res://fonts/Silver_ascii_bold.ttf")]
+Compress=null
+compress=true
+preload=[{
+"chars": [32, 42, 43, 45, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(15, 0),
+"variation_embolden": 0.0
+}]
+language_support={}
+script_support={}
+opentype_features={}

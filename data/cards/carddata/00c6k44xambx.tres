@@ -1,21 +1,22 @@
-[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://dvfwmyhfqwfnk"]
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://dvfwmyhfqwfnk"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_bybq6"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_xqvi1"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_ics1k"]
 
 [sub_resource type="Resource" id="Resource_1hyor"]
 script = ExtResource("1_bybq6")
 ability_name = ""
 description = "When your opponent ends their turn: Make an attack with a front row unit you control."
 type = 3
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_ics1k")]([])
 is_uninterruptable = false
 
 [resource]
 script = ExtResource("1_xqvi1")
 uid = "00c6k44xambx"
 cardset_name = "Burn"
-cardset_idx = 16
+cardset_idx = 17
 card_name = "Idle Hands"
 artwork_path = "res://data/cards/artwork/idle-hands.png"
 mana = 1

@@ -5,15 +5,12 @@ extends Control
 @export var new_card_window: PackedScene = preload("res://addons/card_engine/editor/new_card_window.tscn")
 @export var change_set_window: PackedScene = preload("res://addons/card_engine/editor/change_set_window.tscn")
 
-var card_engine_config: CardEngineConfig
-
 @onready var config_path_edit: LineEdit = %ConfigPathEdit
 @onready var card_data_table = %CardDataTable
 @onready var set_option_button: OptionButton = %SetOptionButton
 @onready var card_details = %CardDetails
 @onready var default_mana_option_button: OptionButton = %DefaultManaOptionButton
 @onready var print_preview_check_button: CheckButton = %PrintPreviewCheckButton
-
 
 var plugin
 
@@ -279,6 +276,31 @@ func _on_card_data_table_delete_requested(cardfilepath):
 	refresh()
 
 
-
 func _on_print_preview_check_button_toggled(toggled_on: bool) -> void:
 	card_details.for_print = toggled_on
+
+
+func _on_autofill_artworks_button_pressed() -> void:
+	var art_root := CardDatabase.config.data_root.path_join(CardDatabase.config.artwork_path)
+	for c in filtered_cards:
+		var card := load(c)
+		if card.artwork_path:
+			continue
+		var card_name: String = card.card_name
+		if not card_name:
+			continue
+		var art_name := (
+			card_name.to_lower()
+				.replace("'", "")
+				.replace(" ", "_")
+				.replace(",", "")
+		)
+		var art_filename := art_root.path_join(art_name + ".png")
+		if not FileAccess.file_exists(art_filename):
+			print("%s does not exist." % [art_filename])
+			continue
+		card.artwork_path = art_filename
+		ResourceSaver.save(card)
+		print("Added artwork to \"%s\": %s" % [card_name, art_filename])
+	refresh()
+

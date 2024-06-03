@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://bovce0bh3wuoi"]
+[gd_resource type="Resource" script_class="Card" load_steps=15 format=3 uid="uid://bovce0bh3wuoi"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_1pd1v"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_og70g"]
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_omui6"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_oyuk5"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_6q4r4"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="5_vuahj"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_an_attack_is_declared.gd" id="5_xfxmt"]
 
@@ -31,7 +32,7 @@ description = "
 
 "
 type = 2
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([SubResource("Resource_ktyfj")])
+conditions = Array[ExtResource("2_6q4r4")]([SubResource("Resource_ktyfj")])
 cost = SubResource("Resource_5f0bv")
 is_uninterruptable = false
 
@@ -61,7 +62,7 @@ ability_name = "Boost"
 description = "When your front unit attacks: that attack deals +3 damage."
 type = 3
 trigger = SubResource("Resource_3j1oo")
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_6q4r4")]([])
 cost = SubResource("Resource_fjwe5")
 effect = SubResource("Resource_c2a8o")
 is_uninterruptable = false

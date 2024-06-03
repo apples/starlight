@@ -46,7 +46,7 @@ const AbilityScriptPanelFieldControl = preload("res://addons/card_engine/editor/
 @onready var minimize_hint = %MinimizeHint
 @onready var properties_inner_container = %PropertiesInnerContainer
 
-var ability_script_panel_scene := preload("res://addons/card_engine/editor/ability_script_panel.tscn")
+var ability_script_panel_scene := load("res://addons/card_engine/editor/ability_script_panel.tscn")
 var variable_property_control_scene := preload("res://addons/card_engine/editor/variable_property_control.tscn")
 
 var script_kind: String = ""
@@ -223,7 +223,7 @@ func _update_visibility():
 			c.visible = v
 
 func _create_inner_panel(propname: String, label: String, kind: String) -> Control:
-	var panel := ability_script_panel_scene.instantiate()
+	var panel = ability_script_panel_scene.instantiate()
 	panel.card = card
 	panel.ability = ability
 	panel.panel_label = label

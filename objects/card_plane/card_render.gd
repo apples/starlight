@@ -8,10 +8,12 @@ const BASE_TEXTURES = {
 	FRAME_ABILITY = preload("res://objects/card_plane/images/frame_ability.png"),
 	FRAME_ABILITY_ATTACKPOWER = preload("res://objects/card_plane/images/frame_ability_attackpower.png"),
 	FRAME_ABILITY_GRACE = preload("res://objects/card_plane/images/frame_ability_grace.png"),
+	FRAME_ABILITY_TAPCOST = preload("res://objects/card_plane/images/frame_ability_tapcost.png"),
 	FRAME_ABILITY_MANACOST = preload("res://objects/card_plane/images/frame_ability_manacost.png"),
 	FRAME_ABILITY_MANACOST_TAP = preload("res://objects/card_plane/images/frame_ability_manacost_tap.png"),
 	FRAME_ABILITY_RULECARD = preload("res://objects/card_plane/images/frame_ability_rulecard.png"),
 	FRAME_ABILITY_SPELL = preload("res://objects/card_plane/images/frame_ability_spell.png"),
+	FRAME_ABILITY_SPELL_TRIGGER = preload("res://objects/card_plane/images/frame_ability_spell_trigger.png"),
 	FRAME_ABILITY_TAG_ACTION = preload("res://objects/card_plane/images/frame_ability_tag_action.png"),
 	FRAME_ABILITY_TAG_ATTACK = preload("res://objects/card_plane/images/frame_ability_tag_attack.png"),
 	FRAME_ABILITY_TAG_PASSIVE = preload("res://objects/card_plane/images/frame_ability_tag_passive.png"),
@@ -20,11 +22,29 @@ const BASE_TEXTURES = {
 	FRAME_RULECARD = preload("res://objects/card_plane/images/frame_rulecard.png"),
 	HP_LARGE = preload("res://objects/card_plane/images/hp_large.png"),
 	HP_SMALL = preload("res://objects/card_plane/images/hp_small.png"),
-	LEVEL_ICON = preload("res://objects/card_plane/images/level_icon.png"),
 	GRACE_ICON = preload("res://objects/card_plane/images/grace_icon.png"),
 	SPELL_ICON = preload("res://objects/card_plane/images/spell_icon.png"),
+	CONDITION_TAG = preload("res://objects/card_plane/images/condition_tag.png"),
+	COST_TAG = preload("res://objects/card_plane/images/cost_tag.png"),
+	GREEN_ICON = preload("res://objects/card_plane/images/green_icon.png"),
+	PINK_ICON = preload("res://objects/card_plane/images/pink_icon.png"),
 }
 
+const BASE_COLORS = {
+	TEXT = Color.WHITE,
+	UNDERLINE_CONDITION = Color("#37946e"),
+	UNDERLINE_COST = Color("#76428a"),
+	HIGHLIGHT_CONDITION = Color("#364e21"),
+	HIGHLIGHT_COST = Color("#5c316c"),
+}
+
+const PRINT_COLORS = {
+	TEXT = Color.BLACK,
+	UNDERLINE_CONDITION = Color("#99e550"),
+	UNDERLINE_COST = Color("#d77bba"),
+	HIGHLIGHT_CONDITION = Color("#d3fce7"),
+	HIGHLIGHT_COST = Color("#f6edf9"),
+}
 
 @export var frame_texture: Texture2D = null
 @export var back_texture: Texture2D = null
@@ -120,16 +140,17 @@ func _refresh_typical():
 	
 	var level_icons: VBoxContainer = typical_cardface.get_node("LevelIcons")
 	
-	for i in range(3):
+	var level_icon_texture := _get_card_texture(str(Card.Mana.find_key(card.mana)) + "_ICON")
+	
+	for i in range(level_icons.get_child_count()):
 		var icon: TextureRect = level_icons.get_child(i)
 		icon.visible = i < card.level
-		if icon.visible:
-			icon.texture = _get_card_texture(&"LEVEL_ICON")
+		icon.texture = level_icon_texture
 	
 	# kind icon
 	
 	var kind_icon: TextureRect = typical_cardface.get_node("KindIcon")
-	var hp_label: Label = kind_icon.get_node("Label")
+	var hp_label: Label = kind_icon.get_node("LabelMargin/Label")
 	
 	match card.kind:
 		Card.Kind.UNIT:
@@ -164,21 +185,17 @@ func _refresh_generic(cardface: Node):
 	
 	for i in range(card.abilities.size()):
 		if i < ability_panels.size():
-			ability_panels[i].get_card_texture = _get_card_texture
-			ability_panels[i].text_modulate = Color.BLACK if for_print else Color.WHITE
 			ability_panels[i].card = card
 			ability_panels[i].card_ability = card.abilities[i]
 		else:
 			if i == 0:
 				assert(ability_container.get_child_count() == 0)
-				ability_container.add_spacer(false)
 			var ap = ability_panel_scene.instantiate()
 			ap.get_card_texture = _get_card_texture
-			ap.text_modulate = Color.BLACK if for_print else Color.WHITE
+			ap.get_card_color = _get_card_color
 			ap.card = card
 			ap.card_ability = card.abilities[i]
 			ability_container.add_child(ap)
-			ability_container.add_spacer(false)
 			ability_panels.append(ap)
 	
 	for i in range(ability_panels.size(), card.abilities.size(), -1):
@@ -201,3 +218,8 @@ func _get_card_texture(p_name: StringName) -> Texture2D:
 			return load(print_file_path)
 	
 	return BASE_TEXTURES[p_name]
+
+func _get_card_color(p_name: StringName) -> Color:
+	if for_print and p_name in PRINT_COLORS:
+		return PRINT_COLORS[p_name]
+	return BASE_COLORS[p_name]

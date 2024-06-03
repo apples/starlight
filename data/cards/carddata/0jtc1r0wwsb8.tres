@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://dly74sv6t0m3u"]
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://dly74sv6t0m3u"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_a8uid"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_r7xid"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_tg0po"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_5lg6n"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_scp36"]
 
 [sub_resource type="Resource" id="Resource_1g3um"]
@@ -28,7 +29,7 @@ script = ExtResource("1_r7xid")
 ability_name = ""
 description = ""
 type = 2
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_5lg6n")]([])
 cost = SubResource("Resource_1g3um")
 effect = SubResource("Resource_1skmy")
 is_uninterruptable = false
@@ -50,7 +51,7 @@ script = ExtResource("1_r7xid")
 ability_name = ""
 description = "Deal 1 damage to each of your opponent's back row units."
 type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_5lg6n")]([])
 cost = SubResource("Resource_8ahki")
 is_uninterruptable = false
 
@@ -58,12 +59,12 @@ is_uninterruptable = false
 script = ExtResource("1_tg0po")
 uid = "0jtc1r0wwsb8"
 cardset_name = "Burn"
-cardset_idx = 7
+cardset_idx = 8
 card_name = "Sparks"
 artwork_path = "res://data/cards/artwork/sparks.png"
 mana = 1
 kind = 0
-unit_hp = 4
+unit_hp = 6
 level = 2
 mana_value = 0
 abilities = Array[ExtResource("1_r7xid")]([SubResource("Resource_pak0g"), SubResource("Resource_ur57b")])

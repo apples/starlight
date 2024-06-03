@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Card" load_steps=2 format=3 uid="uid://c8n12jjsmso87"]
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://c8n12jjsmso87"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_0ov6s"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_oyonu"]
 
 [resource]
 script = ExtResource("1_0ov6s")
@@ -14,4 +15,4 @@ kind = 0
 unit_hp = 7
 level = 1
 mana_value = 0
-abilities = Array[Resource("res://resource_types/card/card_ability.gd")]([])
+abilities = Array[ExtResource("1_oyonu")]([])

@@ -1,15 +1,16 @@
 [gd_scene load_steps=7 format=3 uid="uid://31toqqjcrn7u"]
 
 [ext_resource type="Script" path="res://objects/screen_layers/choose_unit_action/action_panel.gd" id="1_auew0"]
+[ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="1_hxbnc"]
 [ext_resource type="PackedScene" uid="uid://cl2erxuk42yq8" path="res://objects/screen_layers/choose_unit_action/action_click_target.tscn" id="2_e6oma"]
 [ext_resource type="Texture2D" uid="uid://brkd6gmslwr1s" path="res://objects/screen_layers/choose_unit_action/images/icon_ability.png" id="3_uckx4"]
-[ext_resource type="LabelSettings" uid="uid://bh8851qad5fd7" path="res://fonts/label_settings.tres" id="4_wposm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pggq3"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r3cbw"]
 
 [node name="Ability" type="PanelContainer"]
+theme = ExtResource("1_hxbnc")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_pggq3")
 script = ExtResource("1_auew0")
 
@@ -40,7 +41,6 @@ stretch_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Ability"
-label_settings = ExtResource("4_wposm")
 horizontal_alignment = 1
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

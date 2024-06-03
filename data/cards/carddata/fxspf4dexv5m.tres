@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://chqjfd6yynrdb"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_dqxk7"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_hkndo"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_tvlul"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_o6daa"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_1q58k"]
+
+[sub_resource type="Resource" id="Resource_bthu7"]
+script = ExtResource("3_o6daa")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_mvplm"]
+script = ExtResource("4_1q58k")
+amount = 2
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_grr2s"]
+script = ExtResource("1_dqxk7")
+ability_name = ""
+description = "You may discard a card: this unit gains Power+2 for this attack."
+type = 2
+conditions = Array[ExtResource("2_hkndo")]([])
+cost = SubResource("Resource_bthu7")
+effect = SubResource("Resource_mvplm")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_jfftu"]
+script = ExtResource("3_o6daa")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_q8rpy"]
+script = ExtResource("1_dqxk7")
+ability_name = ""
+description = "Draw 1 and discard 1."
+type = 1
+conditions = Array[ExtResource("2_hkndo")]([])
+cost = SubResource("Resource_jfftu")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_tvlul")
+uid = "fxspf4dexv5m"
+cardset_name = "Wood"
+cardset_idx = 8
+card_name = "Recon Crow"
+artwork_path = "res://data/cards/artwork/recon_crow.png"
+mana = 2
+kind = 0
+unit_hp = 6
+level = 2
+mana_value = 0
+abilities = Array[ExtResource("1_dqxk7")]([SubResource("Resource_grr2s"), SubResource("Resource_q8rpy")])

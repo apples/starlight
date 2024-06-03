@@ -2,6 +2,8 @@
 extends VBoxContainer
 
 @onready var viewports = $Viewports
+
+@onready var set_name: LineEdit = %SetName
 @onready var trim_bleed: CheckButton = %TrimBleed
 @onready var for_print: CheckButton = %ForPrint
 @onready var save_tts_object: CheckButton = %SaveTTSObject
@@ -171,7 +173,6 @@ func _on_visual_server_frame_post_draw():
 			print("Creating TTS deck...")
 			
 			var tts_deck = {
-				"GUID": "903b4e",
 				"Name": "Deck",
 				"Transform": {
 					"posX": 0,
@@ -184,39 +185,8 @@ func _on_visual_server_frame_post_draw():
 					"scaleY": 1.0,
 					"scaleZ": 1.0
 				},
-				"Nickname": "",
-				"Description": "",
-				"GMNotes": "",
-				"AltLookAngle": {
-					"x": 0.0,
-					"y": 0.0,
-					"z": 0.0
-				},
-				"ColorDiffuse": {
-					"r": 0.713235259,
-					"g": 0.713235259,
-					"b": 0.713235259
-				},
-				"LayoutGroupSortIndex": 0,
-				"Value": 0,
-				"Locked": false,
-				"Grid": true,
-				"Snap": true,
-				"IgnoreFoW": false,
-				"MeasureMovement": false,
-				"DragSelectable": true,
-				"Autoraise": true,
-				"Sticky": true,
-				"Tooltip": true,
-				"GridProjection": false,
-				"HideWhenFaceDown": true,
-				"Hands": false,
-				"SidewaysCard": false,
 				"DeckIDs": [],
 				"CustomDeck": {},
-				"LuaScript": "",
-				"LuaScriptState": "",
-				"XmlUI": "",
 				"ContainedObjects": []
 			}
 			
@@ -233,8 +203,8 @@ func _on_visual_server_frame_post_draw():
 				tts_idx += 1
 				
 				var tts_card = {
-					"GUID": "667031",
 					"Name": "CardCustom",
+					"NickName": c.cardname,
 					"Transform": {
 						"posX": 0,
 						"posY": 0,
@@ -246,30 +216,7 @@ func _on_visual_server_frame_post_draw():
 						"scaleY": 1,
 						"scaleZ": 1
 					},
-					"Nickname": "",
-					"Description": "",
-					"GMNotes": "",
-					"ColorDiffuse": {
-						"r": 0.713235259,
-						"g": 0.713235259,
-						"b": 0.713235259
-					},
-					"LayoutGroupSortIndex": 0,
-					"Value": 0,
-					"Locked": false,
-					"Grid": true,
-					"Snap": true,
-					"IgnoreFoW": false,
-					"MeasureMovement": false,
-					"DragSelectable": true,
-					"Autoraise": true,
-					"Sticky": true,
-					"Tooltip": true,
-					"GridProjection": false,
-					"HideWhenFaceDown": true,
-					"Hands": true,
 					"CardID": tts_idx * 100,
-					"SidewaysCard": false,
 					"CustomDeck": {
 						str(tts_idx): {
 							"FaceURL": url,
@@ -281,22 +228,6 @@ func _on_visual_server_frame_post_draw():
 							"Type": 0
 						}
 					},
-					"LuaScript": "",
-					"LuaScriptState": "",
-					"XmlUI": "",
-					"PhysicsMaterial": {
-						"StaticFriction": 1,
-						"DynamicFriction": 0.7,
-						"Bounciness": 0,
-						"FrictionCombine": 0,
-						"BounceCombine": 0
-					},
-					"Rigidbody": {
-						"Mass": 0.5,
-						"Drag": 0.1,
-						"AngularDrag": 0.1,
-						"UseGravity": true
-					}
 				}
 				
 				var tts_custom_deck_entry = {
@@ -402,7 +333,7 @@ func _finish_job(job):
 			
 			var hash = _hash_stuff(FileAccess.get_file_as_bytes(path))
 			
-			_rendered_files.append({ cardset = job.card.cardset_name, idx = job.card.cardset_idx, filename = filename, filehash = hash })
+			_rendered_files.append({ cardname = job.card.card_name, cardset = job.card.cardset_name, idx = job.card.cardset_idx, filename = filename, filehash = hash })
 			
 
 func _on_button_pressed():
@@ -410,11 +341,14 @@ func _on_button_pressed():
 	
 	_rendered_files = []
 	
+	var set_filter := set_name.text
+	
 	for path in CardDatabase.get_all_cards():
-		_job_queue.append({
-			type = "card",
-			card_path = path,
-		})
+		if set_filter == "" or load(path).cardset_name == set_filter:
+			_job_queue.append({
+				type = "card",
+				card_path = path,
+			})
 	
 	RenderingServer.frame_post_draw.connect(_on_visual_server_frame_post_draw)
 	

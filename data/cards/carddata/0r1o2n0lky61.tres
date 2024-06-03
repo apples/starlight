@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://cn5gl1wxj0puf"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://cn5gl1wxj0puf"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_mpumh"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_pgrj1"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_wla4x"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_i6p8s"]
 
 [sub_resource type="Resource" id="Resource_bouk5"]
 script = ExtResource("1_pgrj1")
@@ -19,9 +20,9 @@ rulecard_charge_cost = 0
 [sub_resource type="Resource" id="Resource_nbklb"]
 script = ExtResource("1_wla4x")
 ability_name = ""
-description = "Target a unit: Deal 3 damage to the target."
+description = "Target a unit; Deal 3 damage to the target."
 type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_i6p8s")]([])
 cost = SubResource("Resource_bouk5")
 is_uninterruptable = false
 
@@ -29,7 +30,7 @@ is_uninterruptable = false
 script = ExtResource("1_mpumh")
 uid = "0r1o2n0lky61"
 cardset_name = "Burn"
-cardset_idx = 18
+cardset_idx = 19
 card_name = "Fireball"
 artwork_path = "res://data/cards/artwork/fireball.png"
 mana = 1

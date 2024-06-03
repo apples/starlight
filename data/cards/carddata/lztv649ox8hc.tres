@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://da04vk404718a"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_xd6s7"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_jovuo"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_k4yhk"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_6wb0q"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_t06ci"]
+
+[sub_resource type="Resource" id="Resource_coyh1"]
+script = ExtResource("3_6wb0q")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_6hkh4"]
+script = ExtResource("4_t06ci")
+amount = 1
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_lyup6"]
+script = ExtResource("1_xd6s7")
+ability_name = ""
+description = ""
+type = 2
+conditions = Array[ExtResource("2_jovuo")]([])
+cost = SubResource("Resource_coyh1")
+effect = SubResource("Resource_6hkh4")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_e5ln2"]
+script = ExtResource("1_xd6s7")
+ability_name = ""
+description = "When this card is sent to the graveyard: banish this card; freely summon a level 1 unit from your hand."
+type = 3
+conditions = Array[ExtResource("2_jovuo")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_k4yhk")
+uid = "lztv649ox8hc"
+cardset_name = "Burn"
+cardset_idx = 6
+card_name = "Ember Herald"
+artwork_path = "res://data/cards/artwork/ember_herald.png"
+mana = 1
+kind = 0
+unit_hp = 3
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_xd6s7")]([SubResource("Resource_lyup6"), SubResource("Resource_e5ln2")])

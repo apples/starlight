@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://dlsvc3n3jdgm0"]
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://dlsvc3n3jdgm0"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_8qx5k"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_iqs1e"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_usi3s"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_fq62f"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_xpg2s"]
 
 [sub_resource type="Resource" id="Resource_w0tn2"]
 script = ExtResource("1_usi3s")
@@ -28,7 +29,7 @@ script = ExtResource("1_iqs1e")
 ability_name = ""
 description = ""
 type = 2
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_xpg2s")]([])
 cost = SubResource("Resource_w0tn2")
 effect = SubResource("Resource_hwrr6")
 is_uninterruptable = false
@@ -50,7 +51,7 @@ script = ExtResource("1_iqs1e")
 ability_name = ""
 description = "This unit advances."
 type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_xpg2s")]([])
 cost = SubResource("Resource_d1e0d")
 is_uninterruptable = false
 
@@ -58,7 +59,7 @@ is_uninterruptable = false
 script = ExtResource("1_8qx5k")
 uid = "ty9mtpajgn27"
 cardset_name = "Burn"
-cardset_idx = 10
+cardset_idx = 11
 card_name = "Flame Serpent"
 artwork_path = "res://data/cards/artwork/flame-serpent.png"
 mana = 1

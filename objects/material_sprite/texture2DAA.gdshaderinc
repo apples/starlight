@@ -44,7 +44,7 @@ vec4 texture2DAA(sampler2D tex, vec2 uv) {
 	
 	if (length(fwidth(uv_texspace)) > 1.414) {
 		if (sprite_filter_trilinear) {
-			return texture2DAA_textureTrilinear(tex, uv);
+			return texture2DAA_textureDownsampleBilinear(tex, uv);
 		} else {
 			return texture(tex, uv);
 		}
@@ -54,4 +54,13 @@ vec4 texture2DAA(sampler2D tex, vec2 uv) {
 	uv_texspace = (uv_texspace-seam)/deriv+seam;
 	uv_texspace = clamp(uv_texspace, seam-.5, seam+.5);
 	return texture(tex, uv_texspace/texsize);
+}
+
+vec4 texture2DAA2(sampler2D tex, vec2 uv) {
+	vec2 texSize = vec2(textureSize(tex, 0));
+	vec2 boxSize = clamp(fwidth(uv) * texSize, 1e-5, 1.0);
+	vec2 tx = uv * texSize - 0.5 * boxSize;
+	vec2 txOffset = smoothstep(1.0 - boxSize, vec2(1.0), fract(tx));//clamp((fract(tx) - (1.0 - boxSize)) / boxSize, 0.0, 1.0);
+	vec2 uvFinal = (floor(tx) + 0.5 + txOffset) / texSize;
+	return textureGrad(tex, uvFinal, dFdx(uv), dFdy(uv));
 }

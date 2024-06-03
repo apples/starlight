@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://c1vxgh8vtdyu3"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ffxpx"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_pxkvk"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_x2u7j"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_mdsbh"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_wfjuy"]
+
+[sub_resource type="Resource" id="Resource_t16cx"]
+script = ExtResource("3_mdsbh")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_hwb1f"]
+script = ExtResource("4_wfjuy")
+amount = 0
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_me3xj"]
+script = ExtResource("1_ffxpx")
+ability_name = ""
+description = "Target unit does not ready during its next ready phase."
+type = 2
+conditions = Array[ExtResource("2_pxkvk")]([])
+cost = SubResource("Resource_t16cx")
+effect = SubResource("Resource_hwb1f")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_x2u7j")
+uid = "82x5y9181pfc"
+cardset_name = "Wood"
+cardset_idx = 4
+card_name = "Clinging Vine"
+artwork_path = "res://data/cards/artwork/clinging_vine.png"
+mana = 2
+kind = 0
+unit_hp = 4
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_ffxpx")]([SubResource("Resource_me3xj")])

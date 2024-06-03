@@ -10,10 +10,8 @@
 [ext_resource type="Resource" uid="uid://bui66wxxop438" path="res://data/cards/carddata/p1c69cpaogxt.tres" id="6_psmtr"]
 [ext_resource type="Texture2D" uid="uid://3mes4106wsja" path="res://objects/card_plane/images/level_icon.png" id="10_xw1nt"]
 [ext_resource type="Texture2D" uid="uid://ll1vbnnut8k2" path="res://objects/card_plane/images/hp_small.png" id="11_jm66b"]
+[ext_resource type="FontFile" uid="uid://eno4rt7dwa5h" path="res://fonts/card_numbers.ttf" id="12_7m4rc"]
 [ext_resource type="FontFile" uid="uid://6yeciinxit51" path="res://fonts/Silver_ascii_bold.ttf" id="12_kqiw5"]
-
-[sub_resource type="FontVariation" id="FontVariation_tlmn1"]
-base_font = ExtResource("12_kqiw5")
 
 [node name="CardRender" type="Node2D"]
 script = ExtResource("1_m5yay")
@@ -43,6 +41,17 @@ offset_right = 240.0
 offset_bottom = 336.0
 theme = ExtResource("5_573gv")
 
+[node name="Name" type="Label" parent="Control/TypicalCardFace"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 13.0
+offset_right = 232.0
+offset_bottom = 27.0
+theme_override_fonts/font = ExtResource("12_kqiw5")
+theme_override_font_sizes/font_size = 12
+text = "The Rat"
+horizontal_alignment = 1
+
 [node name="Artwork" type="TextureRect" parent="Control/TypicalCardFace"]
 layout_mode = 0
 offset_left = 24.0
@@ -53,25 +62,21 @@ scale = Vector2(3, 3)
 texture = ExtResource("6_f6a4j")
 expand_mode = 1
 
-[node name="Name" type="Label" parent="Control/TypicalCardFace"]
+[node name="ArtistLabel" type="Label" parent="Control/TypicalCardFace"]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 13.0
-offset_right = 232.0
-offset_bottom = 27.0
-theme_override_fonts/font = SubResource("FontVariation_tlmn1")
-theme_override_font_sizes/font_size = 12
-text = "The Rat"
-horizontal_alignment = 1
+offset_left = 25.0
+offset_top = 173.0
+offset_right = 119.0
+offset_bottom = 189.0
+text = "Artist: Apples"
 
 [node name="AbilityContainer" type="VBoxContainer" parent="Control/TypicalCardFace"]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 177.0
+offset_top = 188.0
 offset_right = 232.0
 offset_bottom = 328.0
-theme_override_constants/separation = 1
-alignment = 1
+theme_override_constants/separation = 0
 
 [node name="LevelIcons" type="VBoxContainer" parent="Control/TypicalCardFace"]
 layout_mode = 0
@@ -93,28 +98,37 @@ layout_mode = 2
 texture = ExtResource("10_xw1nt")
 
 [node name="KindIcon" type="TextureRect" parent="Control/TypicalCardFace"]
-layout_mode = 0
-offset_left = 190.0
-offset_top = 7.0
-offset_right = 231.0
-offset_bottom = 31.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -33.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 32.0
+grow_horizontal = 0
+size_flags_horizontal = 8
 texture = ExtResource("11_jm66b")
 stretch_mode = 3
 metadata/_edit_group_ = true
 
-[node name="Label" type="Label" parent="Control/TypicalCardFace/KindIcon"]
+[node name="LabelMargin" type="MarginContainer" parent="Control/TypicalCardFace/KindIcon"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = 1.0
-offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("12_kqiw5")
-theme_override_font_sizes/font_size = 24
-text = "8"
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="Label" parent="Control/TypicalCardFace/KindIcon/LabelMargin"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_7m4rc")
+theme_override_font_sizes/font_size = 15
+text = "1"
 horizontal_alignment = 1
 
 [node name="RulecardCardFace" type="Control" parent="Control"]

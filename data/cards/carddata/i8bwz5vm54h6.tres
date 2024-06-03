@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://dxd6df7bcc34w"]
+[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://dxd6df7bcc34w"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_0vfpn"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_a1xo7"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_ix1e0"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3ue7v"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_n4q3k"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_t1uh2"]
 
 [sub_resource type="Resource" id="Resource_f3gt5"]
@@ -32,11 +33,39 @@ null_damage = false
 [sub_resource type="Resource" id="Resource_atprm"]
 script = ExtResource("3_t1uh2")
 ability_name = "Bites"
-description = "Bites"
+description = "Bites
+Bites
+Bites
+Bites
+"
 type = 2
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([SubResource("Resource_f3gt5")])
+conditions = Array[ExtResource("2_n4q3k")]([SubResource("Resource_f3gt5")])
 cost = SubResource("Resource_l4jsq")
 effect = SubResource("Resource_afj1w")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_iieew"]
+script = ExtResource("1_ix1e0")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_qsqyg"]
+script = ExtResource("3_t1uh2")
+ability_name = ""
+description = "Bites
+Bites
+Bites
+Bites"
+type = 1
+conditions = Array[ExtResource("2_n4q3k")]([])
+cost = SubResource("Resource_iieew")
 is_uninterruptable = false
 
 [resource]
@@ -51,4 +80,4 @@ kind = 0
 unit_hp = 3
 level = 0
 mana_value = 0
-abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm")])
+abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm"), SubResource("Resource_qsqyg")])

@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://daegmfdom5kns"]
+[gd_resource type="Resource" script_class="Card" load_steps=12 format=3 uid="uid://daegmfdom5kns"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_jid7e"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_jyi30"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_l5wjj"]
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_rdrdj"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_6x8jt"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_35lak"]
 
 [sub_resource type="Resource" id="Resource_hckiy"]
 script = ExtResource("1_rdrdj")
@@ -34,9 +35,17 @@ script = ExtResource("1_l5wjj")
 ability_name = ""
 description = ""
 type = 2
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([SubResource("Resource_hckiy")])
+conditions = Array[ExtResource("2_35lak")]([SubResource("Resource_hckiy")])
 cost = SubResource("Resource_0cypl")
 effect = SubResource("Resource_dr06l")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_2k0u6"]
+script = ExtResource("1_l5wjj")
+ability_name = ""
+description = "While in the graveyard: discard 1 card; freely summon this unit from the graveyard."
+type = 1
+conditions = Array[ExtResource("2_35lak")]([])
 is_uninterruptable = false
 
 [resource]
@@ -48,7 +57,7 @@ card_name = "Flame Guy"
 artwork_path = "res://data/cards/artwork/flame-guy.png"
 mana = 1
 kind = 0
-unit_hp = 3
+unit_hp = 4
 level = 1
 mana_value = 0
-abilities = Array[ExtResource("1_l5wjj")]([SubResource("Resource_afxyq")])
+abilities = Array[ExtResource("1_l5wjj")]([SubResource("Resource_afxyq"), SubResource("Resource_2k0u6")])

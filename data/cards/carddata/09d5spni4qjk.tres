@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://bynbqon3hh42u"]
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://bynbqon3hh42u"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_42iy2"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_cu5wq"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="1_ga8mf"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_jnorn"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_qfjcg"]
 
 [sub_resource type="Resource" id="Resource_katsj"]
 script = ExtResource("1_cu5wq")
@@ -28,7 +29,7 @@ script = ExtResource("1_42iy2")
 ability_name = ""
 description = "This unit takes 1 damage."
 type = 2
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_qfjcg")]([])
 cost = SubResource("Resource_katsj")
 effect = SubResource("Resource_kw8na")
 is_uninterruptable = false
@@ -37,12 +38,12 @@ is_uninterruptable = false
 script = ExtResource("1_jnorn")
 uid = "09d5spni4qjk"
 cardset_name = "Burn"
-cardset_idx = 9
+cardset_idx = 10
 card_name = "Thorned Warrior"
 artwork_path = "res://data/cards/artwork/thorned-warrior.png"
 mana = 1
 kind = 0
-unit_hp = 5
+unit_hp = 6
 level = 2
 mana_value = 0
 abilities = Array[ExtResource("1_42iy2")]([SubResource("Resource_ajp2a")])

@@ -1,0 +1,39 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://bgrnvyn356m48"
+path="res://.godot/imported/ark-pixel-10px-proportional-ko.otf-3c5855638284fa5c37d4a24cd4c15f9f.fontdata"
+
+[deps]
+
+source_file="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-ko.otf"
+dest_files=["res://.godot/imported/ark-pixel-10px-proportional-ko.otf-3c5855638284fa5c37d4a24cd4c15f9f.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=false
+disable_embedded_bitmaps=true
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=1
+subpixel_positioning=1
+oversampling=1.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(16, 0)
+}]
+language_support={}
+script_support={}
+opentype_features={}

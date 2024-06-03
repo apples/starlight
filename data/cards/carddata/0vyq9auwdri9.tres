@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://mae82itmkxan"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_blhlt"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_jqybt"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_su4cj"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_hgfpq"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_gviyu"]
+
+[sub_resource type="Resource" id="Resource_1knqr"]
+script = ExtResource("3_hgfpq")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_5tfor"]
+script = ExtResource("4_gviyu")
+amount = 1
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_iwuor"]
+script = ExtResource("1_blhlt")
+ability_name = ""
+description = ""
+type = 2
+conditions = Array[ExtResource("2_su4cj")]([])
+cost = SubResource("Resource_1knqr")
+effect = SubResource("Resource_5tfor")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_m8bce"]
+script = ExtResource("3_hgfpq")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_psc0d"]
+script = ExtResource("1_blhlt")
+ability_name = ""
+description = "When an attack is declared: attacker gains Power-1 for this attack."
+type = 3
+conditions = Array[ExtResource("2_su4cj")]([])
+cost = SubResource("Resource_m8bce")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_jqybt")
+uid = "0vyq9auwdri9"
+cardset_name = "Wood"
+cardset_idx = 3
+card_name = "Meadow Mist"
+artwork_path = "res://data/cards/artwork/meadow_mist.png"
+mana = 2
+kind = 0
+unit_hp = 3
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_blhlt")]([SubResource("Resource_iwuor"), SubResource("Resource_psc0d")])

@@ -5,20 +5,31 @@ extends Control
 @onready var frame := %Frame
 @onready var type_rect: TextureRect = %Type
 @onready var attack_power_frame := %AttackPowerFrame
-@onready var attack_power_label := %AttackPower
-@onready var name_label := %Name
+@onready var attack_power_label: Label = %AttackPower
+@onready var name_label: Label = %Name
+
+
+@onready var tap_cost: TextureRect = %TapCost
 @onready var mana_cost_frame := %ManaCostFrame
-@onready var mana_cost_label := %ManaCost
-@onready var description_label := %Description
+@onready var mana_cost_label: Label = %ManaCost
+
+@onready var description_label: Label = %Description
 @onready var normal_header_row = %NormalHeaderRow
 
 @onready var grace_overlays := %GraceOverlays
-@onready var grace_name_label := %GraceName
-@onready var grace_description_label := %GraceDescription
+@onready var grace_name_label: Label = %GraceName
+@onready var grace_description_label: Label = %GraceDescription
+
+var condition_prefix := "[bgcolor=red]"
+var condition_suffix := "[/bgcolor]"
+var costs_prefix := "[bgcolor=green]"
+var costs_suffix := "[/bgcolor]"
+var effect_prefix := ""
+var effect_suffix := ""
 
 var card: Card
 var get_card_texture: Callable
-var text_modulate: Color = Color.WHITE
+var get_card_color: Callable
 
 var card_ability: CardAbility = null:
 	get:
@@ -55,7 +66,11 @@ func _refresh_normal():
 		Card.Kind.UNIT:
 			frame.texture = get_card_texture.call(&"FRAME_ABILITY")
 		Card.Kind.SPELL:
-			frame.texture = get_card_texture.call(&"FRAME_ABILITY_SPELL")
+			match card_ability.type:
+				CardAbility.CardAbilityType.TRIGGER:
+					frame.texture = get_card_texture.call(&"FRAME_ABILITY_SPELL_TRIGGER")
+				_:
+					frame.texture = get_card_texture.call(&"FRAME_ABILITY_SPELL")
 	
 	if card.kind == Card.Kind.RULECARD:
 		normal_header_row.visible = false
@@ -63,14 +78,16 @@ func _refresh_normal():
 		normal_header_row.visible = true
 		
 		# type
-		match card_ability.type:
-			CardAbility.CardAbilityType.ACTION:
+		match [card.kind, card_ability.type]:
+			[Card.Kind.SPELL, _]:
+				type_rect.texture = null
+			[_, CardAbility.CardAbilityType.ACTION]:
 				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_ACTION")
-			CardAbility.CardAbilityType.ATTACK:
+			[_, CardAbility.CardAbilityType.ATTACK]:
 				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_ATTACK")
-			CardAbility.CardAbilityType.PASSIVE:
+			[_, CardAbility.CardAbilityType.PASSIVE]:
 				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_PASSIVE")
-			CardAbility.CardAbilityType.TRIGGER:
+			[_, CardAbility.CardAbilityType.TRIGGER]:
 				type_rect.texture = get_card_texture.call(&"FRAME_ABILITY_TAG_TRIGGER")
 			_:
 				push_error("Unknown type: ", card_ability.type)
@@ -88,33 +105,44 @@ func _refresh_normal():
 		
 		# name
 		name_label.text = card_ability.ability_name
-		name_label.modulate = text_modulate
+		name_label.add_theme_color_override(&"font_color", get_card_color.call(&"TEXT"))
 		
 		# mana cost
 		if card_ability.cost:
 			var mana_cost := card_ability.cost.get_mana_cost()
 			var tap := card_ability.cost.get_requires_tap()
-			mana_cost_frame.visible = mana_cost != "" or tap
-			match [tap, mana_cost]:
-				[true, ""]:
-					mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST_TAP")
-					mana_cost_label.text = ""
-				[true, _]:
-					mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST_TAP")
-					mana_cost_label.text = "+" + mana_cost
-				[false, _]:
-					mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST")
-					mana_cost_label.text = " " + mana_cost
-				_:
-					push_error("Invalid mana cost state")
-					breakpoint
+			tap_cost.visible = tap
+			tap_cost.texture = get_card_texture.call(&"FRAME_ABILITY_TAPCOST")
+			mana_cost_frame.visible = mana_cost != ""
+			mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST_TAP" if tap else &"FRAME_ABILITY_MANACOST")
+			mana_cost_label.text = mana_cost
 		else:
+			tap_cost.visible = false
 			mana_cost_frame.visible = false
 	
 	# description
 	description_label.text = card_ability.description
-	description_label.modulate = text_modulate
+	description_label.add_theme_color_override(&"font_color", get_card_color.call(&"TEXT"))
 	
+	var description_parent = description_label.get_parent()
+	
+	if description_parent.condition_style is StyleBoxFlat:
+		assert(description_parent.condition_style.resource_local_to_scene)
+		description_parent.condition_style.bg_color = get_card_color.call(&"HIGHLIGHT_CONDITION")
+	
+	if description_parent.costs_style is StyleBoxFlat:
+		assert(description_parent.costs_style.resource_local_to_scene)
+		description_parent.costs_style.bg_color = get_card_color.call(&"HIGHLIGHT_COST")
+	
+	description_parent.underline_condition_color = get_card_color.call(&"UNDERLINE_CONDITION")
+	description_parent.underline_condition_tag = get_card_texture.call(&"CONDITION_TAG")
+	description_parent.underline_cost_color = get_card_color.call(&"UNDERLINE_COST")
+	description_parent.underline_cost_tag = get_card_texture.call(&"COST_TAG")
+	
+	if card.kind == Card.Kind.RULECARD:
+		description_parent.highlight_sections = false
+		description_parent.underline_sections = false
+	description_parent.refresh()
 
 func _refresh_grace():
 	# frame
@@ -122,9 +150,39 @@ func _refresh_grace():
 	
 	# name
 	grace_name_label.text = card_ability.ability_name
-	grace_name_label.modulate = text_modulate
+	grace_name_label.add_theme_color_override(&"font_color", get_card_color.call(&"TEXT"))
 	
 	# description
 	grace_description_label.text = card_ability.description
-	grace_description_label.modulate = text_modulate
+	grace_description_label.add_theme_color_override(&"font_color", get_card_color.call(&"TEXT"))
+
+
+func _format_description(text: String) -> String:
+	
+	var condition: String
+	var costs: String
+	var effect: String
+	
+	var colon_pos := text.find(":")
+	
+	if colon_pos != -1:
+		condition = text.substr(0, colon_pos)
+	
+	var semicolon_pos := text.find(";")
+	
+	if semicolon_pos != -1:
+		costs = text.substr(colon_pos + 1 if colon_pos != -1 else 0, semicolon_pos)
+	
+	effect = text.substr(semicolon_pos + 1 if semicolon_pos != -1 else colon_pos + 1 if colon_pos != -1 else 0)
+	
+	var result: String = ""
+	
+	if condition:
+		result += "%s%s:%s" % [condition_prefix, condition, condition_suffix]
+	if costs:
+		result += "%s%s;%s" % [costs_prefix, costs, costs_suffix]
+	if effect:
+		result += "%s%s%s" % [effect_prefix, effect, effect_suffix]
+	
+	return result
 

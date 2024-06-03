@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://c1sbldmtqq7ae"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_rr4d0"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_58bu8"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_v1lj4"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_yyspm"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_ffl0p"]
+
+[sub_resource type="Resource" id="Resource_i6noh"]
+script = ExtResource("3_yyspm")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_4o28x"]
+script = ExtResource("4_ffl0p")
+amount = 1
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_4u62h"]
+script = ExtResource("1_rr4d0")
+ability_name = ""
+description = ""
+type = 2
+conditions = Array[ExtResource("2_58bu8")]([])
+cost = SubResource("Resource_i6noh")
+effect = SubResource("Resource_4o28x")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_rjpgt"]
+script = ExtResource("3_yyspm")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_okjpx"]
+script = ExtResource("1_rr4d0")
+ability_name = ""
+description = "Target a unit; target heals 2."
+type = 1
+conditions = Array[ExtResource("2_58bu8")]([])
+cost = SubResource("Resource_rjpgt")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_v1lj4")
+uid = "s66hdb6iek4c"
+cardset_name = "Wood"
+cardset_idx = 2
+card_name = "Salve Fairy"
+artwork_path = "res://data/cards/artwork/salve_fairy.png"
+mana = 2
+kind = 0
+unit_hp = 3
+level = 1
+mana_value = 0
+abilities = Array[ExtResource("1_rr4d0")]([SubResource("Resource_4u62h"), SubResource("Resource_okjpx")])

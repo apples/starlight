@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://nyo35m8adsjc"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_rnfmk"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_k2uxe"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_yia5w"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_tys1f"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_3mhek"]
+
+[sub_resource type="Resource" id="Resource_4ditr"]
+script = ExtResource("3_tys1f")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_3k7sd"]
+script = ExtResource("4_3mhek")
+amount = 1
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_3ukyk"]
+script = ExtResource("1_rnfmk")
+ability_name = ""
+description = "Target unit retreats."
+type = 2
+conditions = Array[ExtResource("2_k2uxe")]([])
+cost = SubResource("Resource_4ditr")
+effect = SubResource("Resource_3k7sd")
+is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_64ii8"]
+script = ExtResource("1_rnfmk")
+ability_name = ""
+description = "At the end of your opponent's turn, all your ready units heal 1."
+type = 4
+conditions = Array[ExtResource("2_k2uxe")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_yia5w")
+uid = "782xsrp3zfn3"
+cardset_name = "Wood"
+cardset_idx = 10
+card_name = "Forest Maze"
+artwork_path = "res://data/cards/artwork/forest_maze.png"
+mana = 2
+kind = 0
+unit_hp = 6
+level = 2
+mana_value = 0
+abilities = Array[ExtResource("1_rnfmk")]([SubResource("Resource_3ukyk"), SubResource("Resource_64ii8")])

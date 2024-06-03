@@ -1,0 +1,13 @@
+[gd_resource type="FontVariation" load_steps=8 format=3 uid="uid://6pdovapjjkvh"]
+
+[ext_resource type="FontFile" uid="uid://b3m7cnenqx01t" path="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-latin.otf" id="1_i0ucr"]
+[ext_resource type="FontFile" uid="uid://cb4n4wltxa7r" path="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-ja.otf" id="2_24d62"]
+[ext_resource type="FontFile" uid="uid://bgrnvyn356m48" path="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-ko.otf" id="3_44g31"]
+[ext_resource type="FontFile" uid="uid://0j63slnilul0" path="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-zh_cn.otf" id="4_gmpf6"]
+[ext_resource type="FontFile" uid="uid://155rr5tjf6gw" path="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-zh_hk.otf" id="5_1pad4"]
+[ext_resource type="FontFile" uid="uid://fkr4ptxmqw3e" path="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-zh_tr.otf" id="6_rgru6"]
+[ext_resource type="FontFile" uid="uid://d1510la3ps7tj" path="res://fonts/ark-pixel-font-10px-proportional-otf-v2024.05.12/ark-pixel-10px-proportional-zh_tw.otf" id="7_805cj"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_24d62"), ExtResource("3_44g31"), ExtResource("4_gmpf6"), ExtResource("5_1pad4"), ExtResource("6_rgru6"), ExtResource("7_805cj")])
+base_font = ExtResource("1_i0ucr")

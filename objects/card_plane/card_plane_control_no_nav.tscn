@@ -27,7 +27,7 @@ render_target_update_mode = 1
 unique_name_in_owner = true
 
 [node name="Sprite" type="TextureRect" parent="."]
-texture_filter = 1
+texture_filter = 2
 material = ExtResource("3_xbigd")
 layout_mode = 2
 texture = SubResource("ViewportTexture_10how")

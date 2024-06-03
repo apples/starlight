@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://cj8hpvsd1bg0e"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_e2jxs"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_b2t6e"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_fhw22"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_bs01s"]
+
+[sub_resource type="Resource" id="Resource_fvsyt"]
+script = ExtResource("3_bs01s")
+tap_self = false
+mana_amount = 1
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
+[sub_resource type="Resource" id="Resource_3bmrm"]
+script = ExtResource("1_e2jxs")
+ability_name = ""
+description = "When your opponent activates a spell action: nullify that action."
+type = 3
+conditions = Array[ExtResource("2_b2t6e")]([])
+cost = SubResource("Resource_fvsyt")
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_fhw22")
+uid = "0vpc8a5wrq49"
+cardset_name = "Wood"
+cardset_idx = 17
+card_name = "Barrier"
+artwork_path = "res://data/cards/artwork/barrier.png"
+mana = 2
+kind = 1
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_e2jxs")]([SubResource("Resource_3bmrm")])

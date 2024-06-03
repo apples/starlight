@@ -18,6 +18,7 @@ ability_triggers_path = "cards/abilities/triggers"
 ability_conditions_path = "cards/abilities/conditions"
 ability_passives_path = "cards/abilities/passives"
 design_notes_path = "cards/design_notes"
+artwork_path = "cards/artwork"
 decks_path = "decks"
 card_script = ExtResource("6_p2w8p")
 ability_script = ExtResource("1_rfiki")

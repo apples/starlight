@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=3 format=3 uid="uid://c0c8ai1tjyx1y"]
 
-[ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="1_fxuqx"]
+[ext_resource type="FontVariation" uid="uid://6pdovapjjkvh" path="res://fonts/ark-pixel-10px-proportional.tres" id="1_xmtav"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2i250"]
 
@@ -34,11 +34,11 @@ GraceNameLabel/constants/shadow_outline_size = 0
 Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_outline_color = Color(1, 1, 1, 1)
 Label/colors/font_shadow_color = Color(0, 0, 0, 0)
-Label/constants/line_spacing = 2
+Label/constants/line_spacing = 0
 Label/constants/outline_size = 0
 Label/constants/shadow_offset_x = 1
 Label/constants/shadow_offset_y = 1
 Label/constants/shadow_outline_size = 1
-Label/font_sizes/font_size = 19
-Label/fonts/font = ExtResource("1_fxuqx")
+Label/font_sizes/font_size = 10
+Label/fonts/font = ExtResource("1_xmtav")
 Label/styles/normal = SubResource("StyleBoxEmpty_2i250")

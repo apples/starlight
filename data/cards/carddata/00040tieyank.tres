@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://gcwhjsbs0och"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_e7mrk"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_3kh2k"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_jvtwf"]
+
+[sub_resource type="Resource" id="Resource_k7sp8"]
+script = ExtResource("1_e7mrk")
+ability_name = ""
+description = "Exhaust a unit or draw 1."
+type = 1
+conditions = Array[ExtResource("2_jvtwf")]([])
+is_uninterruptable = false
+
+[resource]
+script = ExtResource("2_3kh2k")
+uid = "00040tieyank"
+cardset_name = "Wood"
+cardset_idx = 21
+card_name = "Fairy Surprise"
+artwork_path = "res://data/cards/artwork/fairy_surprise.png"
+mana = 2
+kind = 3
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_e7mrk")]([SubResource("Resource_k7sp8")])

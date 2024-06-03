@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Card" load_steps=28 format=3 uid="uid://wus6fey2x03q"]
+[gd_resource type="Resource" script_class="Card" load_steps=29 format=3 uid="uid://wus6fey2x03q"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/passives/when_trigger_run_effect.gd" id="1_32gan"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ekay0"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_g3ko6"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/rulecard_charge.gd" id="1_oj4qw"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_summoned.gd" id="2_7ycrf"]
+[ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_wxk5m"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_destroyed.gd" id="5_2ne08"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="6_iocn4"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/draw.gd" id="7_yr72p"]
@@ -30,7 +31,7 @@ script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▲1 when you summon a unit."
 type = 4
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_wxk5m")]([])
 passive = SubResource("Resource_w8jbi")
 is_uninterruptable = false
 
@@ -56,7 +57,7 @@ script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▲1 when your unit is destroyed."
 type = 4
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_wxk5m")]([])
 passive = SubResource("Resource_vyo6p")
 is_uninterruptable = false
 
@@ -81,7 +82,7 @@ script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▼3, tap, draw 1."
 type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_wxk5m")]([])
 cost = SubResource("Resource_ufv0k")
 effect = SubResource("Resource_nbnlu")
 is_uninterruptable = true
@@ -103,7 +104,7 @@ script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▼5, tap, gain 1 colorless mana counter."
 type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_wxk5m")]([])
 cost = SubResource("Resource_n764j")
 is_uninterruptable = true
 
@@ -124,7 +125,7 @@ script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▼7, tap, target a card in your GY; return that target to your hand."
 type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_wxk5m")]([])
 cost = SubResource("Resource_dxdam")
 is_uninterruptable = true
 
@@ -148,7 +149,7 @@ script = ExtResource("1_ekay0")
 ability_name = ""
 description = "▼10, tap, target a unit on your opponent's back row; send that unit to the GY."
 type = 1
-conditions = Array[Resource("res://resource_types/card/card_ability_condition.gd")]([])
+conditions = Array[ExtResource("2_wxk5m")]([])
 cost = SubResource("Resource_lluy6")
 effect = SubResource("Resource_ys0ej")
 is_uninterruptable = true
