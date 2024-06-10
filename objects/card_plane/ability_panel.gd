@@ -8,17 +8,12 @@ extends Control
 @onready var attack_power_label: Label = %AttackPower
 @onready var name_label: Label = %Name
 
-
-@onready var tap_cost: TextureRect = %TapCost
-@onready var mana_cost_frame := %ManaCostFrame
-@onready var mana_cost_label: Label = %ManaCost
-
-@onready var description_label: Label = %Description
+@onready var description_label: IconLabel = %Description
 @onready var normal_header_row = %NormalHeaderRow
 
 @onready var grace_overlays := %GraceOverlays
-@onready var grace_name_label: Label = %GraceName
-@onready var grace_description_label: Label = %GraceDescription
+#@onready var grace_name_label: Label = %GraceName
+@onready var grace_description_label: IconLabel = %GraceDescription
 
 var condition_prefix := "[bgcolor=red]"
 var condition_suffix := "[/bgcolor]"
@@ -72,6 +67,8 @@ func _refresh_normal():
 				_:
 					frame.texture = get_card_texture.call(&"FRAME_ABILITY_SPELL")
 	
+	var cost_inject := ""
+	
 	if card.kind == Card.Kind.RULECARD:
 		normal_header_row.visible = false
 	else:
@@ -109,48 +106,70 @@ func _refresh_normal():
 		
 		# mana cost
 		if card_ability.cost:
-			var mana_cost := card_ability.cost.get_mana_cost()
-			var tap := card_ability.cost.get_requires_tap()
-			tap_cost.visible = tap
-			tap_cost.texture = get_card_texture.call(&"FRAME_ABILITY_TAPCOST")
-			mana_cost_frame.visible = mana_cost != ""
-			mana_cost_frame.texture = get_card_texture.call(&"FRAME_ABILITY_MANACOST_TAP" if tap else &"FRAME_ABILITY_MANACOST")
-			mana_cost_label.text = mana_cost
-		else:
-			tap_cost.visible = false
-			mana_cost_frame.visible = false
+			if card_ability.cost.get_requires_tap():
+				cost_inject += "{{tap}}"
+			cost_inject += "{{mana}}".repeat(card_ability.cost.get_mana_cost())
 	
 	# description
-	description_label.text = card_ability.description
+	
+	var desc_text: String = card_ability.description
+	
+	var cost_end := desc_text.find(";")
+	if cost_end != -1:
+		var trigger_end := desc_text.rfind(":", cost_end) + 1
+		while desc_text[trigger_end] in [" ", "\n"]:
+			trigger_end += 1
+		desc_text = desc_text.insert(cost_end, "\u200D{{cost_rt}}")
+		desc_text = desc_text.insert(trigger_end, "{{cost}}\u200D")
+	
+	if cost_inject:
+		var cost_pos := desc_text.find("{{cost}}")
+		if cost_pos != -1:
+			cost_pos += "{{cost}}".length()
+			desc_text = desc_text.insert(cost_pos, cost_inject + ", ")
+		else:
+			var trigger_end := desc_text.find(":")
+			if trigger_end != -1:
+				trigger_end = mini(trigger_end + 2, desc_text.length())
+				desc_text = desc_text.insert(trigger_end, "{{cost}}" + cost_inject + "{{cost_rt}}; ")
+			else:
+				desc_text = desc_text.insert(0, "{{cost}}" + cost_inject + "{{cost_rt}}" + ("; " if desc_text else "."))
+	
+	description_label.text = desc_text
+	
+	#description_label.text = card_ability.description#.replace(":", "：").replace(";", "；")
 	description_label.add_theme_color_override(&"font_color", get_card_color.call(&"TEXT"))
 	
-	var description_parent = description_label.get_parent()
+	var condition_style = description_label.highlights[0].style if description_label.highlights.size() > 0 and description_label.highlights[0] else null
+	var costs_style = description_label.highlights[1].style if description_label.highlights.size() > 1 and description_label.highlights[1] else null
 	
-	if description_parent.condition_style is StyleBoxFlat:
-		assert(description_parent.condition_style.resource_local_to_scene)
-		description_parent.condition_style.bg_color = get_card_color.call(&"HIGHLIGHT_CONDITION")
+	if condition_style is StyleBoxFlat:
+		assert(condition_style.resource_local_to_scene)
+		condition_style.bg_color = get_card_color.call(&"HIGHLIGHT_CONDITION")
 	
-	if description_parent.costs_style is StyleBoxFlat:
-		assert(description_parent.costs_style.resource_local_to_scene)
-		description_parent.costs_style.bg_color = get_card_color.call(&"HIGHLIGHT_COST")
+	if costs_style is StyleBoxFlat:
+		assert(costs_style.resource_local_to_scene)
+		costs_style.bg_color = get_card_color.call(&"HIGHLIGHT_COST")
 	
-	description_parent.underline_condition_color = get_card_color.call(&"UNDERLINE_CONDITION")
-	description_parent.underline_condition_tag = get_card_texture.call(&"CONDITION_TAG")
-	description_parent.underline_cost_color = get_card_color.call(&"UNDERLINE_COST")
-	description_parent.underline_cost_tag = get_card_texture.call(&"COST_TAG")
+	description_label.mark_dirty()
 	
-	if card.kind == Card.Kind.RULECARD:
-		description_parent.highlight_sections = false
-		description_parent.underline_sections = false
-	description_parent.refresh()
+	#description_parent.underline_condition_color = get_card_color.call(&"UNDERLINE_CONDITION")
+	#description_parent.underline_condition_tag = get_card_texture.call(&"CONDITION_TAG")
+	#description_parent.underline_cost_color = get_card_color.call(&"UNDERLINE_COST")
+	#description_parent.underline_cost_tag = get_card_texture.call(&"COST_TAG")
+	
+	#if card.kind == Card.Kind.RULECARD:
+		#description_parent.highlight_sections = false
+		#description_parent.underline_sections = false
+	#description_parent.refresh()
 
 func _refresh_grace():
 	# frame
 	frame.texture = get_card_texture.call(&"FRAME_ABILITY_GRACE")
 	
 	# name
-	grace_name_label.text = card_ability.ability_name
-	grace_name_label.add_theme_color_override(&"font_color", get_card_color.call(&"TEXT"))
+	#grace_name_label.text = card_ability.ability_name
+	#grace_name_label.add_theme_color_override(&"font_color", get_card_color.call(&"TEXT"))
 	
 	# description
 	grace_description_label.text = card_ability.description

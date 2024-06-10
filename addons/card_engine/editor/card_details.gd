@@ -18,7 +18,7 @@ extends HSplitContainer
 @onready var design_notes_text_edit = %DesignNotesTextEdit
 @onready var notes_save_timer = %NotesSaveTimer
 @onready var save_indicator = %SaveIndicator
-@onready var tab_container: TabContainer = %CardDetailsTabContainer
+@onready var tab_container = %CardDetailsTabContainer
 
 var ability_tab_scene := preload("res://addons/card_engine/editor/ability_tab.tscn")
 
@@ -214,8 +214,9 @@ func _on_ability_edit_script_requested(script: Script):
 
 
 func _on_card_details_tab_container_tab_selected(tab: int):
-	# + tab
-	if tab == tab_container.get_tab_count() - 1:
+	if Engine.is_editor_hint() and get_tree().edited_scene_root and get_tree().edited_scene_root.is_ancestor_of(self):
+		return
+	if tab_container and tab == tab_container.get_tab_count() - 1:
 		var i := _ability_tab_count()
 		assert(i == card.abilities.size())
 		card.abilities.append(CardDatabase.ability_script.new())

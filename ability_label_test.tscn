@@ -1,232 +1,137 @@
-[gd_scene load_steps=2 format=3 uid="uid://cs5dldvvdqvc5"]
+[gd_scene load_steps=22 format=3 uid="uid://cs5dldvvdqvc5"]
 
-[sub_resource type="GDScript" id="GDScript_mjvjm"]
-script/source = "extends Control
+[ext_resource type="Script" path="res://node_types/icon_label.gd" id="1_gfw28"]
+[ext_resource type="FontVariation" uid="uid://6pdovapjjkvh" path="res://fonts/ark-pixel-10px-proportional.tres" id="2_gw46n"]
+[ext_resource type="Script" path="res://resource_types/icon_label_settings.gd" id="2_pfsq3"]
+[ext_resource type="Script" path="res://resource_types/icon_collection_item.gd" id="3_c70av"]
+[ext_resource type="Script" path="res://resource_types/icon_collection.gd" id="5_c5cjo"]
+[ext_resource type="Texture2D" uid="uid://bn3kln73ddqel" path="res://objects/card_plane/images/cost_icon.png" id="5_qxryv"]
+[ext_resource type="Script" path="res://resource_types/icon_label_highlight.gd" id="6_dauaw"]
+[ext_resource type="Texture2D" uid="uid://cp8a5gqeenf3d" path="res://objects/card_plane/images/tap_icon.png" id="6_hlkhm"]
+[ext_resource type="Texture2D" uid="uid://dx0ai6yd41lhk" path="res://objects/card_plane/images/mana_icon.png" id="6_wspf5"]
+[ext_resource type="Texture2D" uid="uid://c3okp6bvrvlru" path="res://objects/card_plane/images/cost_rt_icon.png" id="7_mgv55"]
+
+[sub_resource type="GDScript" id="GDScript_lv07t"]
+script/source = "extends Node2D
+
+@onready var better_label: Control = $BetterLabel
 
 
-@export var text: String = \"\"
-@export var font: Font = null
-@export var font_size: int = 12
-
-var _text_rid: RID
-var _lines_rid: Array[RID] = []
-
-var TS: TextServer:
-	get: return TextServerManager.get_primary_interface()
-
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if not font:
-		font = get_theme_font(\"font\", \"Label\")
-
-func get_line_height(p_line: int) -> int:
-	if p_line >= 0 and p_line < _lines_rid.size():
-		return TS.shaped_text_get_size(_lines_rid[p_line]).y
-	elif _lines_rid.size() > 0:
-		var h := 0
-		for rid: RID in _lines_rid:
-			h = maxi(h, TS.shaped_text_get_size(rid).y)
-		return h
-	else:
-		return font.get_height(font_size)
+	pass # Replace with function body.
 
 
-func _shape() -> void:
-	var style: StyleBox = get_theme_stylebox(\"normal\", \"Label\")
-	
-	var width: int = size.x - style.get_minimum_size().x
-	
-	if dirty or font_dirty:
-		if dirty:
-			TS->shaped_text_clear(text_rid);
-		}
-		if (text_direction == Control::TEXT_DIRECTION_INHERITED) {
-			TS->shaped_text_set_direction(text_rid, is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR);
-		} else {
-			TS->shaped_text_set_direction(text_rid, (TextServer::Direction)text_direction);
-		}
-		const Ref<Font> &font = (settings.is_valid() && settings->get_font().is_valid()) ? settings->get_font() : theme_cache.font;
-		int font_size = settings.is_valid() ? settings->get_font_size() : theme_cache.font_size;
-		ERR_FAIL_COND(font.is_null());
-		String txt = (uppercase) ? TS->string_to_upper(xl_text, language) : xl_text;
-		if (visible_chars >= 0 && visible_chars_behavior == TextServer::VC_CHARS_BEFORE_SHAPING) {
-			txt = txt.substr(0, visible_chars);
-		}
-		if (dirty) {
-			TS->shaped_text_add_string(text_rid, txt, font->get_rids(), font_size, font->get_opentype_features(), language);
-		} else {
-			int spans = TS->shaped_get_span_count(text_rid);
-			for (int i = 0; i < spans; i++) {
-				TS->shaped_set_span_update_font(text_rid, i, font->get_rids(), font_size, font->get_opentype_features());
-			}
-		}
-		TS->shaped_text_set_bidi_override(text_rid, structured_text_parser(st_parser, st_args, txt));
-		if (!tab_stops.is_empty()) {
-			TS->shaped_text_tab_align(text_rid, tab_stops);
-		}
-		dirty = false;
-		font_dirty = false;
-		lines_dirty = true;
-	}
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	queue_redraw()
 
-	if (lines_dirty) {
-		for (int i = 0; i < lines_rid.size(); i++) {
-			TS->free_rid(lines_rid[i]);
-		}
-		lines_rid.clear();
 
-		BitField<TextServer::LineBreakFlag> autowrap_flags = TextServer::BREAK_MANDATORY;
-		switch (autowrap_mode) {
-			case TextServer::AUTOWRAP_WORD_SMART:
-				autowrap_flags = TextServer::BREAK_WORD_BOUND | TextServer::BREAK_ADAPTIVE | TextServer::BREAK_MANDATORY;
-				break;
-			case TextServer::AUTOWRAP_WORD:
-				autowrap_flags = TextServer::BREAK_WORD_BOUND | TextServer::BREAK_MANDATORY;
-				break;
-			case TextServer::AUTOWRAP_ARBITRARY:
-				autowrap_flags = TextServer::BREAK_GRAPHEME_BOUND | TextServer::BREAK_MANDATORY;
-				break;
-			case TextServer::AUTOWRAP_OFF:
-				break;
-		}
-		autowrap_flags = autowrap_flags | TextServer::BREAK_TRIM_EDGE_SPACES;
 
-		PackedInt32Array line_breaks = TS->shaped_text_get_line_breaks(text_rid, width, 0, autowrap_flags);
-		for (int i = 0; i < line_breaks.size(); i = i + 2) {
-			RID line = TS->shaped_text_substr(text_rid, line_breaks[i], line_breaks[i + 1] - line_breaks[i]);
-			if (!tab_stops.is_empty()) {
-				TS->shaped_text_tab_align(line, tab_stops);
-			}
-			lines_rid.push_back(line);
-		}
-	}
-
-	if (xl_text.length() == 0) {
-		minsize = Size2(1, get_line_height());
-		return;
-	}
-
-	if (autowrap_mode == TextServer::AUTOWRAP_OFF) {
-		minsize.width = 0.0f;
-		for (int i = 0; i < lines_rid.size(); i++) {
-			if (minsize.width < TS->shaped_text_get_size(lines_rid[i]).x) {
-				minsize.width = TS->shaped_text_get_size(lines_rid[i]).x;
-			}
-		}
-	}
-
-	if (lines_dirty) {
-		BitField<TextServer::TextOverrunFlag> overrun_flags = TextServer::OVERRUN_NO_TRIM;
-		switch (overrun_behavior) {
-			case TextServer::OVERRUN_TRIM_WORD_ELLIPSIS:
-				overrun_flags.set_flag(TextServer::OVERRUN_TRIM);
-				overrun_flags.set_flag(TextServer::OVERRUN_TRIM_WORD_ONLY);
-				overrun_flags.set_flag(TextServer::OVERRUN_ADD_ELLIPSIS);
-				break;
-			case TextServer::OVERRUN_TRIM_ELLIPSIS:
-				overrun_flags.set_flag(TextServer::OVERRUN_TRIM);
-				overrun_flags.set_flag(TextServer::OVERRUN_ADD_ELLIPSIS);
-				break;
-			case TextServer::OVERRUN_TRIM_WORD:
-				overrun_flags.set_flag(TextServer::OVERRUN_TRIM);
-				overrun_flags.set_flag(TextServer::OVERRUN_TRIM_WORD_ONLY);
-				break;
-			case TextServer::OVERRUN_TRIM_CHAR:
-				overrun_flags.set_flag(TextServer::OVERRUN_TRIM);
-				break;
-			case TextServer::OVERRUN_NO_TRIMMING:
-				break;
-		}
-
-		// Fill after min_size calculation.
-
-		BitField<TextServer::JustificationFlag> line_jst_flags = jst_flags;
-		if (!tab_stops.is_empty()) {
-			line_jst_flags.set_flag(TextServer::JUSTIFICATION_AFTER_LAST_TAB);
-		}
-		if (autowrap_mode != TextServer::AUTOWRAP_OFF) {
-			int visible_lines = get_visible_line_count();
-			bool lines_hidden = visible_lines > 0 && visible_lines < lines_rid.size();
-			if (lines_hidden) {
-				overrun_flags.set_flag(TextServer::OVERRUN_ENFORCE_ELLIPSIS);
-			}
-			if (horizontal_alignment == HORIZONTAL_ALIGNMENT_FILL) {
-				int jst_to_line = visible_lines;
-				if (lines_rid.size() == 1 && line_jst_flags.has_flag(TextServer::JUSTIFICATION_DO_NOT_SKIP_SINGLE_LINE)) {
-					jst_to_line = lines_rid.size();
-				} else {
-					if (line_jst_flags.has_flag(TextServer::JUSTIFICATION_SKIP_LAST_LINE)) {
-						jst_to_line = visible_lines - 1;
-					}
-					if (line_jst_flags.has_flag(TextServer::JUSTIFICATION_SKIP_LAST_LINE_WITH_VISIBLE_CHARS)) {
-						for (int i = visible_lines - 1; i >= 0; i--) {
-							if (TS->shaped_text_has_visible_chars(lines_rid[i])) {
-								jst_to_line = i;
-								break;
-							}
-						}
-					}
-				}
-				for (int i = 0; i < lines_rid.size(); i++) {
-					if (i < jst_to_line) {
-						TS->shaped_text_fit_to_width(lines_rid[i], width, line_jst_flags);
-					} else if (i == (visible_lines - 1)) {
-						TS->shaped_text_set_custom_ellipsis(lines_rid[i], (el_char.length() > 0) ? el_char[0] : 0x2026);
-						TS->shaped_text_overrun_trim_to_width(lines_rid[i], width, overrun_flags);
-					}
-				}
-			} else if (lines_hidden) {
-				TS->shaped_text_set_custom_ellipsis(lines_rid[visible_lines - 1], (el_char.length() > 0) ? el_char[0] : 0x2026);
-				TS->shaped_text_overrun_trim_to_width(lines_rid[visible_lines - 1], width, overrun_flags);
-			}
-		} else {
-			// Autowrap disabled.
-			int jst_to_line = lines_rid.size();
-			if (lines_rid.size() == 1 && line_jst_flags.has_flag(TextServer::JUSTIFICATION_DO_NOT_SKIP_SINGLE_LINE)) {
-				jst_to_line = lines_rid.size();
-			} else {
-				if (line_jst_flags.has_flag(TextServer::JUSTIFICATION_SKIP_LAST_LINE)) {
-					jst_to_line = lines_rid.size() - 1;
-				}
-				if (line_jst_flags.has_flag(TextServer::JUSTIFICATION_SKIP_LAST_LINE_WITH_VISIBLE_CHARS)) {
-					for (int i = lines_rid.size() - 1; i >= 0; i--) {
-						if (TS->shaped_text_has_visible_chars(lines_rid[i])) {
-							jst_to_line = i;
-							break;
-						}
-					}
-				}
-			}
-			for (int i = 0; i < lines_rid.size(); i++) {
-				if (i < jst_to_line && horizontal_alignment == HORIZONTAL_ALIGNMENT_FILL) {
-					TS->shaped_text_fit_to_width(lines_rid[i], width, line_jst_flags);
-					overrun_flags.set_flag(TextServer::OVERRUN_JUSTIFICATION_AWARE);
-					TS->shaped_text_set_custom_ellipsis(lines_rid[i], (el_char.length() > 0) ? el_char[0] : 0x2026);
-					TS->shaped_text_overrun_trim_to_width(lines_rid[i], width, overrun_flags);
-					TS->shaped_text_fit_to_width(lines_rid[i], width, line_jst_flags | TextServer::JUSTIFICATION_CONSTRAIN_ELLIPSIS);
-				} else {
-					TS->shaped_text_set_custom_ellipsis(lines_rid[i], (el_char.length() > 0) ? el_char[0] : 0x2026);
-					TS->shaped_text_overrun_trim_to_width(lines_rid[i], width, overrun_flags);
-				}
-			}
-		}
-		lines_dirty = false;
-	}
-
-	_update_visible();
-
-	if (autowrap_mode == TextServer::AUTOWRAP_OFF || !clip || overrun_behavior == TextServer::OVERRUN_NO_TRIMMING) {
-		update_minimum_size();
-	}
-}
+func _draw() -> void:
+	for r: Rect2 in better_label.get_selection_rects(1, 2):
+		draw_rect(r, Color.from_ok_hsl(randf(), 1.0, 0.5))
 "
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="Resource" id="Resource_hhnxq"]
+script = ExtResource("3_c70av")
+name = "cost"
+texture = ExtResource("5_qxryv")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
 
-[node name="Control" type="Control" parent="."]
+[sub_resource type="Resource" id="Resource_pjk8l"]
+script = ExtResource("3_c70av")
+name = "cost_rt"
+texture = ExtResource("7_mgv55")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_dr0aa"]
+script = ExtResource("3_c70av")
+name = "tap"
+texture = ExtResource("6_hlkhm")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_7y8fq"]
+script = ExtResource("3_c70av")
+name = "mana"
+texture = ExtResource("6_wspf5")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_4ch8l"]
+script = ExtResource("5_c5cjo")
+icons = Array[ExtResource("3_c70av")]([SubResource("Resource_hhnxq"), SubResource("Resource_pjk8l"), SubResource("Resource_dr0aa"), SubResource("Resource_7y8fq")])
+
+[sub_resource type="Resource" id="Resource_dshxo"]
+script = ExtResource("2_pfsq3")
+font = ExtResource("2_gw46n")
+font_size = 10
+color = Color(1, 1, 1, 1)
+line_spacing = -3
+icon_collection = SubResource("Resource_4ch8l")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3d6h"]
+resource_local_to_scene = true
+bg_color = Color(0.211765, 0.305882, 0.129412, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="Resource" id="Resource_8sg06"]
+script = ExtResource("6_dauaw")
+regex = "\\b[^.]*[:：]"
+style = SubResource("StyleBoxFlat_w3d6h")
+margin_left = 1
+margin_top = -1
+margin_right = 0
+margin_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ybkxg"]
+resource_local_to_scene = true
+bg_color = Color(0.360784, 0.192157, 0.423529, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="Resource" id="Resource_30o5b"]
+script = ExtResource("6_dauaw")
+regex = "{{cost}}.*{{cost_rt}}"
+style = SubResource("StyleBoxFlat_ybkxg")
+margin_left = 0
+margin_top = -1
+margin_right = -1
+margin_bottom = 1
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_lv07t")
+
+[node name="BetterLabel" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 248.0
+offset_bottom = 58.0
+script = ExtResource("1_gfw28")
+text = "When your opponent disses your fly M：
+{{cost}}{{tap}}+1{{mana}}, discard 1{{cost_rt}}; funky dance and destroy target units."
+label_settings = SubResource("Resource_dshxo")
+indent = 20
+horizontal_alignment = 3
+autowrap_mode = 3
+highlights = Array[ExtResource("6_dauaw")]([SubResource("Resource_8sg06"), SubResource("Resource_30o5b")])
+
+[node name="Label" type="Label" parent="."]
 offset_right = 40.0
-offset_bottom = 40.0
-script = SubResource("GDScript_mjvjm")
-text = null
-font_size = null
+offset_bottom = 23.0

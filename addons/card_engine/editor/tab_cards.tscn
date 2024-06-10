@@ -85,14 +85,16 @@ text = "Set:"
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
-item_count = 4
+item_count = 5
 popup/item_0/text = "ALL_SETS"
-popup/item_1/text = "Burn"
+popup/item_1/text = "Wood"
 popup/item_1/id = 1
-popup/item_2/text = "Darkness"
+popup/item_2/text = "Burn"
 popup/item_2/id = 2
-popup/item_3/text = "Screet"
+popup/item_3/text = "Darkness"
 popup/item_3/id = 3
+popup/item_4/text = "Screet"
+popup/item_4/id = 4
 
 [node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2

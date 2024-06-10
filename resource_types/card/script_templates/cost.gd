@@ -3,8 +3,8 @@ extends CardAbilityCost
 
 # Returns the mana cost as text to display on the card face.
 # An empty string will cause the mana cost box to be hidden.
-func get_mana_cost() -> String:
-	return ""
+func get_mana_cost() -> int:
+	return 0
 
 # Determines if the cost can be paid
 func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability_index: int, user_side: ZoneLocation.Side) -> bool:

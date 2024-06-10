@@ -28,6 +28,11 @@ enum TargetZone {
 	OPPONENT_FRONT = 2,
 	OWN_FRONT = 4,
 	OWN_BACK = 8,
+	FRONT = OPPONENT_FRONT | OWN_FRONT,
+	BACK = OPPONENT_BACK | OWN_BACK,
+	OPPONENT = OPPONENT_BACK | OPPONENT_FRONT,
+	OWN = OWN_FRONT | OWN_BACK,
+	ANY = OPPONENT | OWN,
 }
 
 enum DiscardSide {
@@ -43,8 +48,8 @@ func get_property_display(prop: StringName) -> bool:
 			return discard_target_count != 0
 	return true
 
-func get_mana_cost() -> String:
-	return str(mana_amount) if mana_amount != 0 else ""
+func get_mana_cost() -> int:
+	return mana_amount
 
 func get_requires_tap() -> bool:
 	return tap_self

@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_0g3ti"]
 script = ExtResource("1_0foij")
 ability_name = ""
-description = "When your unit is destroyed: discard 1 card; return that unit to your hand."
+description = "When your unit is destroyed: Discard 1; Return that unit to your hand."
 type = 3
 conditions = Array[ExtResource("2_jx324")]([])
 is_uninterruptable = false

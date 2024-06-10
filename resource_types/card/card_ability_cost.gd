@@ -2,8 +2,8 @@
 class_name CardAbilityCost
 extends Resource
 
-func get_mana_cost() -> String:
-	return ""
+func get_mana_cost() -> int:
+	return 0
 
 func get_requires_tap() -> bool:
 	return false

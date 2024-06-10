@@ -23,11 +23,12 @@ script = ExtResource("4_3mhek")
 amount = 1
 amount_var = ""
 null_damage = false
+plus_damage = false
 
 [sub_resource type="Resource" id="Resource_3ukyk"]
 script = ExtResource("1_rnfmk")
 ability_name = ""
-description = "Target unit retreats."
+description = "Choose any unit, chosen unit retreats."
 type = 2
 conditions = Array[ExtResource("2_k2uxe")]([])
 cost = SubResource("Resource_4ditr")
@@ -37,7 +38,7 @@ is_uninterruptable = false
 [sub_resource type="Resource" id="Resource_64ii8"]
 script = ExtResource("1_rnfmk")
 ability_name = ""
-description = "At the end of your opponent's turn, all your ready units heal 1."
+description = "At the end of your opponent's turn, all your rear units heal 1."
 type = 4
 conditions = Array[ExtResource("2_k2uxe")]([])
 is_uninterruptable = false
@@ -53,5 +54,5 @@ mana = 2
 kind = 0
 unit_hp = 6
 level = 2
-mana_value = 0
+mana_value = 1
 abilities = Array[ExtResource("1_rnfmk")]([SubResource("Resource_3ukyk"), SubResource("Resource_64ii8")])

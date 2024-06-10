@@ -4,6 +4,7 @@ extends CardAbilityEffect
 @export var amount: int = 0
 @export var amount_var: String = ""
 @export var null_damage: bool = false
+@export var plus_damage: bool = false
 @export var effect: CardAbilityEffect
 
 func get_attack_damage() -> String:
@@ -11,6 +12,8 @@ func get_attack_damage() -> String:
 		return "-"
 	elif amount_var:
 		return "?"
+	elif plus_damage:
+		return str(amount) + "+"
 	return str(amount)
 
 class Task extends CardTask:

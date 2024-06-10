@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-const ZOOM_LEVELS = [0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+const ZOOM_LEVELS = [0.5, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0, 12.0]
 
 var _zoom_idx := 1
 
@@ -16,11 +16,11 @@ func _ready() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			_zoom_idx = clampi(_zoom_idx + 1, 0, ZOOM_LEVELS.size())
+			_zoom_idx = clampi(_zoom_idx + 1, 0, ZOOM_LEVELS.size() - 1)
 			fit_check_button.button_pressed = false
 			update_size()
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			_zoom_idx = clampi(_zoom_idx - 1, 0, ZOOM_LEVELS.size())
+			_zoom_idx = clampi(_zoom_idx - 1, 0, ZOOM_LEVELS.size() - 1)
 			fit_check_button.button_pressed = false
 			update_size()
 	if not fit_check_button.button_pressed:

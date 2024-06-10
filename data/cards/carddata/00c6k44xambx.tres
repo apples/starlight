@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_1hyor"]
 script = ExtResource("1_bybq6")
 ability_name = ""
-description = "When your opponent ends their turn: Make an attack with a front row unit you control."
+description = "When your opponent ends their turn: Declare and perform an attack with a front unit you control."
 type = 3
 conditions = Array[ExtResource("2_ics1k")]([])
 is_uninterruptable = false

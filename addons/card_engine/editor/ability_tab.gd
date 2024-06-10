@@ -305,4 +305,3 @@ func _add_condition_panel():
 func _on_is_uninterruptable_check_button_toggled(button_pressed):
 	_get_ability().is_uninterruptable = button_pressed
 	_save()
-

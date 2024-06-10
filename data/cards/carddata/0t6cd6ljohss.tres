@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Card" load_steps=12 format=3 uid="uid://daegmfdom5kns"]
+[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://daegmfdom5kns"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_jid7e"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_jyi30"]
@@ -40,12 +40,25 @@ cost = SubResource("Resource_0cypl")
 effect = SubResource("Resource_dr06l")
 is_uninterruptable = false
 
+[sub_resource type="Resource" id="Resource_dwt5k"]
+script = ExtResource("1_jyi30")
+tap_self = false
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
 [sub_resource type="Resource" id="Resource_2k0u6"]
 script = ExtResource("1_l5wjj")
 ability_name = ""
-description = "While in the graveyard: discard 1 card; freely summon this unit from the graveyard."
+description = "While in the graveyard: Discard 1; Free summon this unit from the graveyard."
 type = 1
 conditions = Array[ExtResource("2_35lak")]([])
+cost = SubResource("Resource_dwt5k")
 is_uninterruptable = false
 
 [resource]
@@ -59,5 +72,5 @@ mana = 1
 kind = 0
 unit_hp = 4
 level = 1
-mana_value = 0
+mana_value = 1
 abilities = Array[ExtResource("1_l5wjj")]([SubResource("Resource_afxyq"), SubResource("Resource_2k0u6")])

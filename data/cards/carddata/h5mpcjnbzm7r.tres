@@ -20,7 +20,7 @@ rulecard_charge_cost = 0
 [sub_resource type="Resource" id="Resource_mqet7"]
 script = ExtResource("1_iqisq")
 ability_name = ""
-description = "Ready a unit you control. That unit cannot attack until the start of your next turn."
+description = "Choose a unit you control, ready it, it cannot attack until the end of the turn."
 type = 1
 conditions = Array[ExtResource("2_fpknu")]([])
 cost = SubResource("Resource_w4pbt")

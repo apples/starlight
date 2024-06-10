@@ -1,36 +1,101 @@
-[gd_scene load_steps=12 format=3 uid="uid://drp7gbrv7ff86"]
+[gd_scene load_steps=27 format=3 uid="uid://drp7gbrv7ff86"]
 
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="1_pqk6l"]
 [ext_resource type="Script" path="res://objects/card_plane/ability_panel.gd" id="1_xs14d"]
 [ext_resource type="Texture2D" uid="uid://b6yyo8lo0mep" path="res://objects/card_plane/images/frame_ability.png" id="4_42y8b"]
 [ext_resource type="Texture2D" uid="uid://bf4btcfc02sa5" path="res://objects/card_plane/images/frame_ability_tag_attack.png" id="5_meipf"]
 [ext_resource type="Texture2D" uid="uid://73vgyww6ux5f" path="res://objects/card_plane/images/frame_ability_attackpower.png" id="6_1ajto"]
-[ext_resource type="Texture2D" uid="uid://dhv4ibs4dba4u" path="res://objects/card_plane/images/frame_ability_tapcost.png" id="7_a4m8o"]
-[ext_resource type="Script" path="res://objects/card_plane/ability_description_highlighter.gd" id="8_d4jt1"]
-[ext_resource type="Texture2D" uid="uid://dmw1px5imhen5" path="res://objects/card_plane/images/frame_ability_manacost.png" id="8_h2xlm"]
+[ext_resource type="Script" path="res://node_types/icon_label.gd" id="7_yu4y7"]
 [ext_resource type="FontFile" uid="uid://eno4rt7dwa5h" path="res://fonts/card_numbers.ttf" id="8_k63xl"]
+[ext_resource type="Script" path="res://resource_types/icon_collection_item.gd" id="9_6euvk"]
+[ext_resource type="FontVariation" uid="uid://6pdovapjjkvh" path="res://fonts/ark-pixel-10px-proportional.tres" id="10_bfv6i"]
+[ext_resource type="Texture2D" uid="uid://bn3kln73ddqel" path="res://objects/card_plane/images/cost_icon.png" id="10_tmsa7"]
+[ext_resource type="Texture2D" uid="uid://c3okp6bvrvlru" path="res://objects/card_plane/images/cost_rt_icon.png" id="11_i1ntk"]
+[ext_resource type="Texture2D" uid="uid://cp8a5gqeenf3d" path="res://objects/card_plane/images/tap_icon.png" id="12_s1id4"]
+[ext_resource type="Texture2D" uid="uid://clc3kds04t8c2" path="res://objects/card_plane/images/once_per_turn.png" id="13_kwf51"]
+[ext_resource type="Script" path="res://resource_types/icon_collection.gd" id="14_nhgri"]
+[ext_resource type="Script" path="res://resource_types/icon_label_settings.gd" id="15_ndi03"]
+[ext_resource type="Script" path="res://resource_types/icon_label_highlight.gd" id="16_2b375"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cyac"]
+[sub_resource type="Resource" id="Resource_hhnxq"]
+script = ExtResource("9_6euvk")
+name = "cost"
+texture = ExtResource("10_tmsa7")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_pjk8l"]
+script = ExtResource("9_6euvk")
+name = "cost_rt"
+texture = ExtResource("11_i1ntk")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_dr0aa"]
+script = ExtResource("9_6euvk")
+name = "tap"
+texture = ExtResource("12_s1id4")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_7y8fq"]
+script = ExtResource("9_6euvk")
+name = "once_per_turn"
+texture = ExtResource("13_kwf51")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_4ch8l"]
+script = ExtResource("14_nhgri")
+icons = Array[ExtResource("9_6euvk")]([SubResource("Resource_hhnxq"), SubResource("Resource_pjk8l"), SubResource("Resource_dr0aa"), SubResource("Resource_7y8fq"), SubResource("Resource_7y8fq")])
+
+[sub_resource type="Resource" id="Resource_dshxo"]
+script = ExtResource("15_ndi03")
+font = ExtResource("10_bfv6i")
+font_size = 10
+color = Color(1, 1, 1, 1)
+line_spacing = -3
+icon_collection = SubResource("Resource_4ch8l")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3d6h"]
 resource_local_to_scene = true
-bg_color = Color(0.963454, 0.93082, 0.977356, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-expand_margin_left = 1.0
-expand_margin_right = 1.0
+bg_color = Color(0.211765, 0.305882, 0.129412, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 anti_aliasing = false
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7pmrq"]
+[sub_resource type="Resource" id="Resource_8sg06"]
+script = ExtResource("16_2b375")
+regex = "\\b[^.]*[:：]"
+style = SubResource("StyleBoxFlat_w3d6h")
+margin_left = 1
+margin_top = -1
+margin_right = 0
+margin_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ybkxg"]
 resource_local_to_scene = true
-bg_color = Color(0.825967, 0.989867, 0.905805, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-expand_margin_left = 1.0
-expand_margin_right = 1.0
+bg_color = Color(0.360784, 0.192157, 0.423529, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 anti_aliasing = false
+
+[sub_resource type="Resource" id="Resource_30o5b"]
+script = ExtResource("16_2b375")
+regex = "{{cost}}.*{{cost_rt}}"
+style = SubResource("StyleBoxFlat_ybkxg")
+margin_left = 0
+margin_top = -1
+margin_right = -1
+margin_bottom = 1
 
 [node name="AbilityPanel" type="MarginContainer"]
 offset_right = 224.0
@@ -62,7 +127,7 @@ theme_override_constants/separation = 0
 
 [node name="NormalHeaderRow" type="HBoxContainer" parent="NormalOverlays/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 16)
+custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 theme_override_constants/separation = 0
 
@@ -77,14 +142,14 @@ texture = ExtResource("5_meipf")
 stretch_mode = 2
 
 [node name="AttackPowerSpacer" type="Control" parent="NormalOverlays/VBoxContainer/NormalHeaderRow"]
-custom_minimum_size = Vector2(27, 0)
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 
 [node name="AttackPowerFrame" type="TextureRect" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/AttackPowerSpacer"]
 unique_name_in_owner = true
 layout_mode = 1
 offset_right = 25.0
-offset_bottom = 21.0
+offset_bottom = 12.0
 texture = ExtResource("6_1ajto")
 stretch_mode = 2
 
@@ -94,17 +159,19 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = 1.0
-offset_bottom = -4.0
+offset_left = 3.0
+offset_top = -1.0
+offset_right = 2.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("8_k63xl")
 theme_override_font_sizes/font_size = 15
-text = "3"
+text = "1"
 horizontal_alignment = 1
 
 [node name="MarginContainer3" type="MarginContainer" parent="NormalOverlays/VBoxContainer/NormalHeaderRow"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = -1
@@ -115,76 +182,28 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-text = "Eternal Destruction"
-
-[node name="MarginContainer2" type="MarginContainer" parent="NormalOverlays/VBoxContainer/NormalHeaderRow"]
-layout_mode = 2
-theme_override_constants/margin_left = -4
-theme_override_constants/margin_top = -4
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = -4
-
-[node name="HBoxContainer" type="HBoxContainer" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/MarginContainer2"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="TapCost" type="TextureRect" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/MarginContainer2/HBoxContainer"]
-unique_name_in_owner = true
-z_index = 1
-layout_mode = 2
-texture = ExtResource("7_a4m8o")
-stretch_mode = 2
-
-[node name="ManaCostFrame" type="TextureRect" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/MarginContainer2/HBoxContainer"]
-unique_name_in_owner = true
-z_index = 1
-layout_mode = 2
-texture = ExtResource("8_h2xlm")
-stretch_mode = 2
-
-[node name="ManaCost" type="Label" parent="NormalOverlays/VBoxContainer/NormalHeaderRow/MarginContainer2/HBoxContainer/ManaCostFrame"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2.0
-offset_top = 5.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"AbilityManaCostLabel"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("8_k63xl")
-theme_override_font_sizes/font_size = 15
-text = "5"
-horizontal_alignment = 1
+text = "Eternal Destructios"
 
 [node name="MarginContainer" type="MarginContainer" parent="NormalOverlays/VBoxContainer"]
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = -4
+theme_override_constants/margin_bottom = -4
 
-[node name="MarginContainer" type="MarginContainer" parent="NormalOverlays/VBoxContainer/MarginContainer"]
-layout_mode = 2
-script = ExtResource("8_d4jt1")
-highlight_sections = true
-underline_sections = false
-condition_style = SubResource("StyleBoxFlat_7cyac")
-costs_style = SubResource("StyleBoxFlat_7pmrq")
-
-[node name="Description" type="Label" parent="NormalOverlays/VBoxContainer/MarginContainer/MarginContainer"]
+[node name="Description" type="Control" parent="NormalOverlays/VBoxContainer/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 52)
 layout_mode = 2
-size_flags_vertical = 0
-text = "This is a loty:
-of cool text;
-A bigg effect!!!"
+script = ExtResource("7_yu4y7")
+text = "While in the graveyard graveyard graveyard: {{cost}}discard 1 card{{cost_rt}}; freely summon this unit from the graveyard."
+label_settings = SubResource("Resource_dshxo")
 autowrap_mode = 3
-visible_characters_behavior = 1
+highlights = Array[ExtResource("16_2b375")]([SubResource("Resource_8sg06"), SubResource("Resource_30o5b")])
 
 [node name="GraceOverlays" type="MarginContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 1
@@ -195,30 +214,23 @@ theme_override_constants/margin_bottom = 1
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="CenterContainer" parent="GraceOverlays/VBoxContainer"]
+[node name="Spacer" type="Control" parent="GraceOverlays/VBoxContainer"]
+custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
-
-[node name="GraceName" type="Label" parent="GraceOverlays/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"GraceNameLabel"
-text = "Bite"
 
 [node name="MarginContainer" type="MarginContainer" parent="GraceOverlays/VBoxContainer"]
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 theme_override_constants/margin_left = 1
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 3
 
-[node name="GraceDescription" type="Label" parent="GraceOverlays/VBoxContainer/MarginContainer"]
+[node name="GraceDescription" type="Control" parent="GraceOverlays/VBoxContainer/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
-size_flags_vertical = 0
-text = "W欲しくen this unit defends, manifest a \"Darkness\" Token for every two damage this unit takes. If this unit is defending a unit
-"
+script = ExtResource("7_yu4y7")
+text = "While in the graveyard graveyard graveyard: {{cost}}discard 1 card{{cost_rt}}; freely summon this unit from the graveyard."
+label_settings = SubResource("Resource_dshxo")
 autowrap_mode = 3
-visible_characters_behavior = 1
+highlights = Array[ExtResource("16_2b375")]([SubResource("Resource_8sg06"), SubResource("Resource_30o5b")])

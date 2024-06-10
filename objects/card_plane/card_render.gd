@@ -24,10 +24,12 @@ const BASE_TEXTURES = {
 	HP_SMALL = preload("res://objects/card_plane/images/hp_small.png"),
 	GRACE_ICON = preload("res://objects/card_plane/images/grace_icon.png"),
 	SPELL_ICON = preload("res://objects/card_plane/images/spell_icon.png"),
+	TRAP_ICON = preload("res://objects/card_plane/images/trap_icon.png"),
 	CONDITION_TAG = preload("res://objects/card_plane/images/condition_tag.png"),
 	COST_TAG = preload("res://objects/card_plane/images/cost_tag.png"),
 	GREEN_ICON = preload("res://objects/card_plane/images/green_icon.png"),
 	PINK_ICON = preload("res://objects/card_plane/images/pink_icon.png"),
+	MANA = preload("res://objects/card_plane/images/mana.png"),
 }
 
 const BASE_COLORS = {
@@ -66,18 +68,18 @@ const PRINT_COLORS = {
 	set(_v):
 		refresh()
 
-@onready var background: Sprite2D = $Background
-@onready var typical_cardface: Control = $Control/TypicalCardFace
-@onready var rulecard_cardface: Control = $Control/RulecardCardFace
-
-
-
 
 var ability_panel_scene := preload("res://objects/card_plane/ability_panel.tscn")
 
 var ability_panels: Array[Control] = []
 
 var prev_card: Card
+
+@onready var background: Sprite2D = $Background
+@onready var typical_cardface: Control = $Control/TypicalCardFace
+@onready var rulecard_cardface: Control = $Control/RulecardCardFace
+
+
 
 func _ready():
 	refresh()
@@ -147,6 +149,17 @@ func _refresh_typical():
 		icon.visible = i < card.level
 		icon.texture = level_icon_texture
 	
+	# mana
+	
+	var mana_icons: VBoxContainer = typical_cardface.get_node("ManaIcons")
+	
+	var mana_icon_texture := _get_card_texture("MANA")
+	
+	for i in range(mana_icons.get_child_count()):
+		var icon: TextureRect = mana_icons.get_child(i)
+		icon.visible = i < card.mana_value
+		icon.texture = mana_icon_texture
+	
 	# kind icon
 	
 	var kind_icon: TextureRect = typical_cardface.get_node("KindIcon")
@@ -158,7 +171,10 @@ func _refresh_typical():
 			hp_label.text = str(card.unit_hp) if card.unit_hp != 0 else ""
 			hp_label.modulate = Color.BLACK if for_print else Color.WHITE
 		Card.Kind.SPELL:
-			kind_icon.texture = _get_card_texture("SPELL_ICON")
+			if card.abilities.size() > 0 and card.abilities[0].type == CardAbility.CardAbilityType.TRIGGER:
+				kind_icon.texture = _get_card_texture("TRAP_ICON")
+			else:
+				kind_icon.texture = _get_card_texture("SPELL_ICON")
 			hp_label.text = ""
 		Card.Kind.GRACE:
 			kind_icon.texture = _get_card_texture("GRACE_ICON")
@@ -208,6 +224,8 @@ func _refresh_generic(cardface: Node):
 	if card.abilities.size() == 0:
 		if ability_container.get_child_count() > 0:
 			ability_container.get_child(0).queue_free()
+	
+	#ability_container.alignment = BoxContainer.ALIGNMENT_CENTER if card.kind == Card.Kind.GRACE else BoxContainer.ALIGNMENT_BEGIN
 	
 
 func _get_card_texture(p_name: StringName) -> Texture2D:

@@ -53,5 +53,5 @@ mana = 1
 kind = 0
 unit_hp = 6
 level = 3
-mana_value = 0
+mana_value = 2
 abilities = Array[ExtResource("1_6uvef")]([SubResource("Resource_qbwh3"), SubResource("Resource_ba6os")])

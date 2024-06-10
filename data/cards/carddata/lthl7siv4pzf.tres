@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://l3fu6l105qc3"]
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://l3fu6l105qc3"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_q6jo1"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_4ac3p"]
@@ -23,6 +23,7 @@ script = ExtResource("4_uv0ne")
 amount = 3
 amount_var = ""
 null_damage = false
+plus_damage = false
 
 [sub_resource type="Resource" id="Resource_5fqen"]
 script = ExtResource("1_q6jo1")
@@ -34,12 +35,25 @@ cost = SubResource("Resource_idfjc")
 effect = SubResource("Resource_8d57l")
 is_uninterruptable = false
 
+[sub_resource type="Resource" id="Resource_sjmky"]
+script = ExtResource("3_md4tx")
+tap_self = false
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_target_count = 0
+discard_target_sides = 1
+rulecard_charge_cost = 0
+
 [sub_resource type="Resource" id="Resource_tclpj"]
 script = ExtResource("1_q6jo1")
 ability_name = ""
-description = "Discard a card, target a unit; target readies and gains Power-1 until the end of the turn."
+description = "{{once_per_turn}}, Discard a card, target a unit; target readies and gains Power-1 until the end of the turn."
 type = 1
 conditions = Array[ExtResource("2_4ac3p")]([])
+cost = SubResource("Resource_sjmky")
 is_uninterruptable = false
 
 [resource]
@@ -53,5 +67,5 @@ mana = 2
 kind = 0
 unit_hp = 8
 level = 3
-mana_value = 0
+mana_value = 2
 abilities = Array[ExtResource("1_q6jo1")]([SubResource("Resource_5fqen"), SubResource("Resource_tclpj")])

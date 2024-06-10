@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://kvf7e2omwxsr"]
+[gd_scene load_steps=25 format=3 uid="uid://kvf7e2omwxsr"]
 
 [ext_resource type="Script" path="res://objects/card_plane/card_render.gd" id="1_m5yay"]
 [ext_resource type="Texture2D" uid="uid://dfn538okc2f2e" path="res://objects/card_plane/images/frame.png" id="2_2x50j"]
@@ -8,10 +8,46 @@
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="5_573gv"]
 [ext_resource type="Texture2D" uid="uid://bifcbphjs1cxs" path="res://data/cards/artwork/_missing.png" id="6_f6a4j"]
 [ext_resource type="Resource" uid="uid://bui66wxxop438" path="res://data/cards/carddata/p1c69cpaogxt.tres" id="6_psmtr"]
+[ext_resource type="Script" path="res://node_types/icon_label.gd" id="10_pfftt"]
 [ext_resource type="Texture2D" uid="uid://3mes4106wsja" path="res://objects/card_plane/images/level_icon.png" id="10_xw1nt"]
+[ext_resource type="FontVariation" uid="uid://6pdovapjjkvh" path="res://fonts/ark-pixel-10px-proportional.tres" id="11_441gp"]
 [ext_resource type="Texture2D" uid="uid://ll1vbnnut8k2" path="res://objects/card_plane/images/hp_small.png" id="11_jm66b"]
 [ext_resource type="FontFile" uid="uid://eno4rt7dwa5h" path="res://fonts/card_numbers.ttf" id="12_7m4rc"]
 [ext_resource type="FontFile" uid="uid://6yeciinxit51" path="res://fonts/Silver_ascii_bold.ttf" id="12_kqiw5"]
+[ext_resource type="Script" path="res://resource_types/icon_collection_item.gd" id="12_lnege"]
+[ext_resource type="Texture2D" uid="uid://4ugel28ehy45" path="res://objects/card_plane/images/artist_icon.png" id="13_igs66"]
+[ext_resource type="Texture2D" uid="uid://dgo1gvxaldgvh" path="res://objects/card_plane/images/designer_icon.png" id="14_ivt5s"]
+[ext_resource type="Script" path="res://resource_types/icon_collection.gd" id="17_ksevh"]
+[ext_resource type="Texture2D" uid="uid://cpn6gv5tlfokc" path="res://objects/card_plane/images/mana.png" id="18_2u2ti"]
+[ext_resource type="Script" path="res://resource_types/icon_label_settings.gd" id="18_bpf14"]
+
+[sub_resource type="Resource" id="Resource_o2bew"]
+script = ExtResource("12_lnege")
+name = "artist"
+texture = ExtResource("13_igs66")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_876li"]
+script = ExtResource("12_lnege")
+name = "designer"
+texture = ExtResource("14_ivt5s")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_tvrp1"]
+script = ExtResource("17_ksevh")
+icons = Array[ExtResource("12_lnege")]([SubResource("Resource_o2bew"), SubResource("Resource_876li")])
+
+[sub_resource type="Resource" id="Resource_bhxnu"]
+script = ExtResource("18_bpf14")
+font = ExtResource("11_441gp")
+font_size = 10
+color = Color(1, 1, 1, 1)
+line_spacing = -4
+icon_collection = SubResource("Resource_tvrp1")
 
 [node name="CardRender" type="Node2D"]
 script = ExtResource("1_m5yay")
@@ -63,6 +99,7 @@ texture = ExtResource("6_f6a4j")
 expand_mode = 1
 
 [node name="ArtistLabel" type="Label" parent="Control/TypicalCardFace"]
+visible = false
 layout_mode = 0
 offset_left = 25.0
 offset_top = 173.0
@@ -70,13 +107,26 @@ offset_right = 119.0
 offset_bottom = 189.0
 text = "Artist: Apples"
 
+[node name="Description" type="Control" parent="Control/TypicalCardFace"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 25.0
+offset_top = 173.0
+offset_right = 215.0
+offset_bottom = 189.0
+script = ExtResource("10_pfftt")
+text = "{{artist}}Apples {{designer}}Apples"
+label_settings = SubResource("Resource_bhxnu")
+
 [node name="AbilityContainer" type="VBoxContainer" parent="Control/TypicalCardFace"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 188.0
 offset_right = 232.0
 offset_bottom = 328.0
-theme_override_constants/separation = 0
+theme_override_constants/separation = 1
+alignment = 1
 
 [node name="LevelIcons" type="VBoxContainer" parent="Control/TypicalCardFace"]
 layout_mode = 0
@@ -96,6 +146,26 @@ texture = ExtResource("10_xw1nt")
 [node name="Level3" type="TextureRect" parent="Control/TypicalCardFace/LevelIcons"]
 layout_mode = 2
 texture = ExtResource("10_xw1nt")
+
+[node name="ManaIcons" type="VBoxContainer" parent="Control/TypicalCardFace"]
+layout_mode = 0
+offset_left = 217.0
+offset_top = 33.0
+offset_right = 232.0
+offset_bottom = 48.0
+theme_override_constants/separation = 0
+
+[node name="1" type="TextureRect" parent="Control/TypicalCardFace/ManaIcons"]
+layout_mode = 2
+texture = ExtResource("18_2u2ti")
+
+[node name="2" type="TextureRect" parent="Control/TypicalCardFace/ManaIcons"]
+layout_mode = 2
+texture = ExtResource("18_2u2ti")
+
+[node name="3" type="TextureRect" parent="Control/TypicalCardFace/ManaIcons"]
+layout_mode = 2
+texture = ExtResource("18_2u2ti")
 
 [node name="KindIcon" type="TextureRect" parent="Control/TypicalCardFace"]
 layout_mode = 1
