@@ -1,38 +1,43 @@
-[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://c1sbldmtqq7ae"]
+[gd_resource type="Resource" script_class="Card" load_steps=15 format=3 uid="uid://c1sbldmtqq7ae"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_rr4d0"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_58bu8"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_v1lj4"]
+[ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="3_gfv4q"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_yyspm"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_ffl0p"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="4_ffl0p"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/deal_damage.gd" id="5_ejwac"]
 
-[sub_resource type="Resource" id="Resource_i6noh"]
+[sub_resource type="Resource" id="Resource_i6w8i"]
+script = ExtResource("3_gfv4q")
+reach = false
+reach_var = ""
+
+[sub_resource type="Resource" id="Resource_34214"]
 script = ExtResource("3_yyspm")
 tap_self = true
 mana_amount = 0
 once_per_turn = false
-unit_target_count = 0
+unit_target_count = 1
 unit_target_zones = 2
-unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+unit_target_zones_var = "basic_attack_target_zones"
+discard_count = 0
+discard_kind_flags = 7
 
-[sub_resource type="Resource" id="Resource_4o28x"]
+[sub_resource type="Resource" id="Resource_fx8sa"]
 script = ExtResource("4_ffl0p")
 amount = 1
 amount_var = ""
 null_damage = false
-plus_damage = false
 
 [sub_resource type="Resource" id="Resource_4u62h"]
 script = ExtResource("1_rr4d0")
 ability_name = ""
 description = ""
 type = 2
-conditions = Array[ExtResource("2_58bu8")]([])
-cost = SubResource("Resource_i6noh")
-effect = SubResource("Resource_4o28x")
+conditions = Array[ExtResource("2_58bu8")]([SubResource("Resource_i6w8i")])
+cost = SubResource("Resource_34214")
+effect = SubResource("Resource_fx8sa")
 is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_rjpgt"]
@@ -40,12 +45,16 @@ script = ExtResource("3_yyspm")
 tap_self = true
 mana_amount = 0
 once_per_turn = false
-unit_target_count = 0
-unit_target_zones = 2
+unit_target_count = 1
+unit_target_zones = 15
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
+
+[sub_resource type="Resource" id="Resource_diiup"]
+script = ExtResource("5_ejwac")
+amount = -2
+amount_var = ""
 
 [sub_resource type="Resource" id="Resource_okjpx"]
 script = ExtResource("1_rr4d0")
@@ -54,6 +63,7 @@ description = "Target a unit; Target heals 2."
 type = 1
 conditions = Array[ExtResource("2_58bu8")]([])
 cost = SubResource("Resource_rjpgt")
+effect = SubResource("Resource_diiup")
 is_uninterruptable = false
 
 [resource]

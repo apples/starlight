@@ -129,10 +129,10 @@ func set_datum(idx: int, data: Resource):
 		c.value = str(data[resource_key])
 
 
-func load_data(data: Array[String]):
+func load_data(data: Array[Card]):
 	resize(data.size())
 	for i in range(data.size()):
-		set_datum(i, load(data[i]))
+		set_datum(i, data[i])
 
 
 func _item_updated(who: Control):

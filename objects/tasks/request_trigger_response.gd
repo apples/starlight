@@ -3,7 +3,7 @@ class_name TaskRequestTriggerResponse extends CardTask
 var side: ZoneLocation.Side = ZoneLocation.Side.Player
 var is_second_priority: bool = false
 
-var _available_triggers: Array[Dictionary] = []
+var _available_triggers: Dictionary = {} # { [ciid: int]: Array }
 
 func _init(s: ZoneLocation.Side):
 	side = s
@@ -20,15 +20,16 @@ func start() -> void:
 	var side_state := battle_state.get_side_state(side)
 	var all_units := side_state.get_all_units()
 	
-	_available_triggers = []
+	_available_triggers = {}
 	
 	for unit in all_units:
-		var d: Dictionary = { card_uid = unit.card_instance.uid, available_trigger_abilities = [] }
+		var card_uid := unit.card_instance.id
+		var available_trigger_abilities := []
 		for i in range(unit.card_instance.card.abilities.size()):
 			if _check_ability(unit.card_instance, i):
-				d.available_trigger_abilities.append(i)
-		if not d.available_trigger_abilities.is_empty():
-			_available_triggers.append(d)
+				available_trigger_abilities.append(i)
+		if not available_trigger_abilities.is_empty():
+			_available_triggers[card_uid] = available_trigger_abilities
 	
 	# If no possible triggers, skip response window
 	if _available_triggers.size() == 0:
@@ -43,53 +44,58 @@ func start() -> void:
 	wait_for_future(action_future, action_chosen)
 
 
-func action_chosen(trigger_action: Array) -> void:
-	# Check for pass
+## { type = "activate_ability", ciid = card_instance.id, ability_index = index }
+## { type = "pass" }
+func action_chosen(trigger_action: Dictionary) -> void:
 	
-	if trigger_action.size() == 0:
-		return goto(pass_to_next)
-	
-	# Validate parameters
-	
-	assert(trigger_action.size() == 2)
-	if trigger_action.size() > 2:
-		push_error("Invalid response: unexpected tuple size")
+	if "type" not in trigger_action:
+		push_error("Invalid response: type not found.")
 		return done(null, Result.FAILED)
 	
-	var uid: int = trigger_action[0]
-	
-	assert(uid in battle_state.all_card_instances)
-	if not uid in battle_state.all_card_instances:
-		push_error("Invalid response")
-		return done(null, Result.FAILED)
-	
-	var card_instance: CardInstance = battle_state.all_card_instances[uid]
-	
-	var ability_index: int = trigger_action[1]
-	assert(ability_index >= 0)
-	assert(ability_index < card_instance.card.abilities.size())
-	if not (ability_index >= 0 and ability_index < card_instance.card.abilities.size()):
-		push_error("Invalid response")
-		return done(null, Result.FAILED)
-	
-	# Find choice in the list
-	
-	var chosen: Dictionary
-	for choice in _available_triggers:
-		if choice.card_uid == uid and ability_index in choice.available_trigger_abilities:
-			chosen = choice
-			break
-	
-	assert(chosen != {})
-	if chosen == {}:
-		push_error("Invalid choice, this is a bug!")
-		return done(null, Result.FAILED)
-	
-	# Execute trigger
-	
-	var new_ability_instance := battle_state.ability_perform(side, card_instance, ability_index)
-	
-	return become(new_ability_instance.task)
+	match trigger_action.type:
+		"pass":
+			return goto(pass_to_next)
+		"activate_ability":
+			
+			# Validate parameters
+			
+			if "ciid" not in trigger_action or trigger_action.ciid is not int:
+				push_error("Invalid response: ciid not found.")
+				return done(null, Result.FAILED)
+			
+			if "ability_index" not in trigger_action or trigger_action.ability_index is not int:
+				push_error("Invalid response: ability_index not found.")
+				return done(null, Result.FAILED)
+			
+			var ciid: int = trigger_action.ciid
+			
+			if not ciid in battle_state.all_card_instances:
+				push_error("Invalid response")
+				breakpoint
+				return done(null, Result.FAILED)
+			
+			var card_instance: CardInstance = battle_state.all_card_instances[ciid]
+			
+			var ability_index: int = trigger_action.ability_index
+			assert(ability_index >= 0)
+			assert(ability_index < card_instance.card.abilities.size())
+			if not (ability_index >= 0 and ability_index < card_instance.card.abilities.size()):
+				push_error("Invalid response")
+				return done(null, Result.FAILED)
+			
+			# Ensure choice was actually available
+			
+			var exists: bool = ability_index in _available_triggers.get(ciid, [])
+			
+			if not exists:
+				push_error("Invalid choice, this is a bug!")
+				return done(null, Result.FAILED)
+			
+			# Execute trigger
+			
+			var new_ability_instance := battle_state.ability_perform(side, card_instance, ability_index)
+			
+			return become(new_ability_instance.task)
 
 
 func pass_to_next() -> void:

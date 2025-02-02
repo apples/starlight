@@ -13,14 +13,13 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_3bmrm"]
 script = ExtResource("1_e2jxs")
 ability_name = ""
-description = "When your opponent activates a spell action: nullify that action."
+description = "When your opponent activates a Spell: nullify that Spell."
 type = 3
 conditions = Array[ExtResource("2_b2t6e")]([])
 cost = SubResource("Resource_fvsyt")
@@ -34,7 +33,7 @@ cardset_idx = 17
 card_name = "Barrier"
 artwork_path = "res://data/cards/artwork/barrier.png"
 mana = 2
-kind = 1
+kind = 4
 unit_hp = 0
 level = 0
 mana_value = 0

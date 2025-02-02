@@ -4,6 +4,7 @@ extends VBoxContainer
 @onready var viewports = $Viewports
 
 @onready var set_name: LineEdit = %SetName
+@onready var scale_edit: LineEdit = %Scale
 @onready var trim_bleed: CheckButton = %TrimBleed
 @onready var for_print: CheckButton = %ForPrint
 @onready var save_tts_object: CheckButton = %SaveTTSObject
@@ -13,6 +14,7 @@ extends VBoxContainer
 @onready var backblaze_api_key_id: LineEdit = %BackblazeApiKeyId
 @onready var backblaze_api_key: LineEdit = %BackblazeApiKey
 @onready var backblaze_url_for_tts: CheckButton = %BackblazeURLForTTS
+@onready var b2_append_hashes: CheckButton = %B2AppendHashes
 @onready var card_names_as_filenames: CheckButton = %CardNamesAsFilenames
 
 
@@ -138,7 +140,7 @@ func _on_visual_server_frame_post_draw():
 			
 			for i in _rendered_files.size():
 				var c = _rendered_files[i]
-				var b2_filename := b2_prefix.path_join(c.filename)
+				var b2_filename := b2_prefix.path_join(c.b2_filename)
 				
 				print("    (%s/%s) " % [i+1, _rendered_files.size()], c.filename, " => ", b2_filename)
 				
@@ -167,7 +169,7 @@ func _on_visual_server_frame_post_draw():
 		
 		if backblaze_url_for_tts.button_pressed:
 			for c in _rendered_files:
-				c.download_url = b2_download_url.path_join("file").path_join(b2_bucket_name).path_join("starlight_tts/"+c.filename.uri_encode())
+				c.download_url = b2_download_url.path_join("file").path_join(b2_bucket_name).path_join("starlight_tts/"+c.b2_filename.uri_encode())
 		
 		if save_tts_object.button_pressed:
 			print("Creating TTS deck...")
@@ -320,7 +322,12 @@ func _finish_job(job):
 		"card":
 			var vp = job.viewport as SubViewport
 			var image = vp.get_texture().get_image()
-			image.convert(Image.FORMAT_RGBA8)
+			image.convert(Image.FORMAT_RGB8)
+			
+			var img_scale: float = 1.0
+			if scale_edit.text.is_valid_float():
+				img_scale = float(scale_edit.text)
+			image.resize(image.get_width() * img_scale, image.get_height() * img_scale, Image.INTERPOLATE_NEAREST)
 			
 			var filename = "%s.png" % [job.card.uid]
 			if card_names_as_filenames.button_pressed:
@@ -331,9 +338,20 @@ func _finish_job(job):
 			
 			vp.queue_free()
 			
-			var hash = _hash_stuff(FileAccess.get_file_as_bytes(path))
+			var hash := _hash_stuff(FileAccess.get_file_as_bytes(path))
 			
-			_rendered_files.append({ cardname = job.card.card_name, cardset = job.card.cardset_name, idx = job.card.cardset_idx, filename = filename, filehash = hash })
+			var b2_filename := ""
+			if b2_append_hashes.button_pressed:
+				var b2_hash := hash.substr(0, 7)
+				b2_filename = "%s-%s.png" % [job.card.uid, b2_hash]
+				if card_names_as_filenames.button_pressed:
+					b2_filename = "%s_%s_%s-%s.png" % [job.card.cardset_name, job.card.cardset_idx, (job.card.card_name as String).replace(" ", "_"), b2_hash]
+			else:
+				b2_filename = "%s.png" % [job.card.uid]
+				if card_names_as_filenames.button_pressed:
+					b2_filename = "%s_%s_%s.png" % [job.card.cardset_name, job.card.cardset_idx, (job.card.card_name as String).replace(" ", "_")]
+			
+			_rendered_files.append({ cardname = job.card.card_name, cardset = job.card.cardset_name, idx = job.card.cardset_idx, filename = filename, filehash = hash, b2_filename = b2_filename })
 			
 
 func _on_button_pressed():
@@ -341,10 +359,10 @@ func _on_button_pressed():
 	
 	_rendered_files = []
 	
-	var set_filter := set_name.text
+	var set_filter := set_name.text.split(",")
 	
 	for path in CardDatabase.get_all_cards():
-		if set_filter == "" or load(path).cardset_name == set_filter:
+		if set_filter.is_empty() or set_filter.has(load(path).cardset_name):
 			_job_queue.append({
 				type = "card",
 				card_path = path,

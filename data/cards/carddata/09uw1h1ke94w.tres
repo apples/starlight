@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_0g3ti"]
 script = ExtResource("1_0foij")
 ability_name = ""
-description = "When your unit is destroyed: Discard 1; Return that unit to your hand."
+description = "When a unit you control is destroyed: Discard 1; Return that unit to your hand."
 type = 3
 conditions = Array[ExtResource("2_jx324")]([])
 is_uninterruptable = false
@@ -20,7 +20,7 @@ cardset_idx = 18
 card_name = "The Flame Beckons"
 artwork_path = "res://data/cards/artwork/flame-beckons.png"
 mana = 1
-kind = 1
+kind = 4
 unit_hp = 0
 level = 0
 mana_value = 0

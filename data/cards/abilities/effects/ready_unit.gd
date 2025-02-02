@@ -7,6 +7,7 @@ enum Target {
 
 @export var target: Target = Target.SELF
 
+
 # The task which will perform the effect
 class Task extends CardTask:
 	var target: Target

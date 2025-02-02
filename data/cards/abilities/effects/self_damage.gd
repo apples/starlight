@@ -4,6 +4,7 @@ extends CardAbilityEffect
 @export var amount: int = 0
 @export var amount_var: String = ""
 
+
 class Task extends CardTask:
 	var amount: int
 	

@@ -17,7 +17,7 @@ var plugin
 var card_script: Script = null
 
 var all_cards: Array[String] = []
-var filtered_cards: Array[String] = []
+var filtered_cards: Array[Card] = []
 
 var card_sets: Dictionary
 
@@ -52,14 +52,14 @@ func reload():
 		print("No cards!")
 	current_set = "ALL_SETS"
 	name_filter = ""
-	filtered_cards = all_cards
+	filtered_cards = Array(all_cards.map(func (c): return load(c)), TYPE_OBJECT, "Resource", preload("res://resource_types/card/card.gd"))
 	card_sets = {}
-	for c in all_cards:
-		var card := load(c)
+	var all_cards_loaded: Array = all_cards.map(func (c): return load(c))
+	for card: Card in all_cards_loaded:
 		if not card.cardset_name in card_sets:
-			card_sets[card.cardset_name] = [c]
+			card_sets[card.cardset_name] = [card.resource_path]
 		else:
-			card_sets[card.cardset_name].append(c)
+			card_sets[card.cardset_name].append(card.resource_path)
 	set_option_button.clear()
 	set_option_button.add_item("ALL_SETS")
 	for cardset_name in card_sets:
@@ -74,26 +74,35 @@ func reload():
 		default_mana_option_button.add_item(mt[0], mt[1])
 
 func refresh():
+	print("tab_cards.gd: refresh(): start")
+	var refresh_start := Time.get_ticks_usec()
+	
 	if current_set == "ALL_SETS" and name_filter == "":
 		filtered_cards = []
-		filtered_cards.assign(all_cards)
+		filtered_cards.assign(all_cards.map(func (c): return load(c)))
 	else:
 		filtered_cards = []
 		for c in all_cards:
-			var card := load(c)
+			var card: Card = load(c)
 			if current_set != "ALL_SETS" and card.cardset_name != current_set:
 				continue
 			if name_filter != "" and not card.card_name.to_lower().contains(name_filter):
 				continue
-			filtered_cards.append(c)
-	filtered_cards.sort_custom(func (ap, bp):
-		var a := load(ap)
-		var b := load(bp)
+			filtered_cards.append(card)
+	
+	print("tab_cards.gd: refresh(): after filter: ", (Time.get_ticks_usec() - refresh_start) / 1000, "ms")
+	
+	filtered_cards.sort_custom(func (a: Card, b: Card):
 		if a.cardset_name != b.cardset_name:
 			return a.cardset_name < b.cardset_name
 		return a.cardset_idx < b.cardset_idx)
+	
+	
+	print("tab_cards.gd: refresh(): after sort: ", (Time.get_ticks_usec() - refresh_start) / 1000, "ms")
+	
+	
 	if current_selection != "":
-		var idx := filtered_cards.find(current_selection)
+		var idx := filtered_cards.find(load(current_selection))
 		if idx != -1:
 			_select_index(idx)
 		else:
@@ -103,11 +112,15 @@ func refresh():
 		card_details.card = null
 	card_data_table.set_data(filtered_cards)
 	
+	print("tab_cards.gd: refresh(): after set_data: ", (Time.get_ticks_usec() - refresh_start) / 1000, "ms")
+	
 	if current_set != "ALL_SETS" and filtered_cards.size() > 0:
-		var mid = load(filtered_cards[0]).mana
+		var mid = filtered_cards[0].mana
 		var midx := default_mana_option_button.get_item_index(mid)
 		default_mana_option_button.select(midx)
 	
+	print("tab_cards.gd: refresh(): total: ", (Time.get_ticks_usec() - refresh_start) / 1000, "ms")
+	print("tab_cards.gd: refresh(): done.")
 
 func _on_new_card_button_pressed():
 	var popup := new_card_window.instantiate()
@@ -156,7 +169,7 @@ func _on_data_table_column_set_double_clicked(idx):
 	card_set_names.assign(card_sets.keys())
 	popup.set_sets(card_set_names)
 	
-	var card := load(filtered_cards[idx])
+	var card := filtered_cards[idx]
 	var old_set: String = card.cardset_name
 	
 	print("changing set: %s: %s" % [card.card_name, old_set])
@@ -210,13 +223,13 @@ func _on_card_data_table_row_clicked(idx: int):
 
 
 func _select_index(idx: int):
-	var card := load(filtered_cards[idx])
+	var card := filtered_cards[idx]
 	card_details.card = card
-	current_selection = filtered_cards[idx]
+	current_selection = filtered_cards[idx].resource_path
 
 
 func _on_data_table_column_id_saved(idx: int):
-	var card := load(filtered_cards[idx])
+	var card := filtered_cards[idx]
 	
 	var cardset: Array = card_sets[card.cardset_name]
 	var old_idx: int = cardset.find(filtered_cards[idx])
@@ -283,7 +296,7 @@ func _on_print_preview_check_button_toggled(toggled_on: bool) -> void:
 func _on_autofill_artworks_button_pressed() -> void:
 	var art_root := CardDatabase.config.data_root.path_join(CardDatabase.config.artwork_path)
 	for c in filtered_cards:
-		var card := load(c)
+		var card := c
 		if card.artwork_path:
 			continue
 		var card_name: String = card.card_name

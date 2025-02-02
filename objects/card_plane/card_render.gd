@@ -29,6 +29,7 @@ const BASE_TEXTURES = {
 	COST_TAG = preload("res://objects/card_plane/images/cost_tag.png"),
 	GREEN_ICON = preload("res://objects/card_plane/images/green_icon.png"),
 	PINK_ICON = preload("res://objects/card_plane/images/pink_icon.png"),
+	COLORLESS_ICON = preload("res://objects/card_plane/images/colorless_icon.png"),
 	MANA = preload("res://objects/card_plane/images/mana.png"),
 }
 
@@ -64,12 +65,17 @@ const PRINT_COLORS = {
 		for_print = value
 		refresh()
 
-@export var poke: bool:
-	set(_v):
+@export var half_size: bool = false:
+	set(value):
+		half_size = value
 		refresh()
 
+@export var poke: bool:
+	set(_v):
+		refresh(true)
 
 var ability_panel_scene := preload("res://objects/card_plane/ability_panel.tscn")
+var ability_panel_half_scene := preload("res://objects/card_plane/ability_panel_half.tscn")
 
 var ability_panels: Array[Control] = []
 
@@ -84,11 +90,11 @@ var prev_card: Card
 func _ready():
 	refresh()
 
-func refresh():
+func refresh(force: bool = false):
 	if not is_inside_tree():
 		return
 	
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() and not force:
 		if get_tree().edited_scene_root == self:
 			return
 		
@@ -101,11 +107,11 @@ func refresh():
 			_cleanup(rulecard_cardface.get_node("AbilityContainer"))
 			ability_panels = []
 		
-		match card.kind:
-			Card.Kind.RULECARD:
-				_refresh_rulecard()
-			_:
-				_refresh_typical()
+		#match card.kind:
+			#Card.Kind.RULECARD:
+				#_refresh_rulecard()
+			#_:
+		_refresh_typical()
 		
 		prev_card = card
 	else:
@@ -171,10 +177,10 @@ func _refresh_typical():
 			hp_label.text = str(card.unit_hp) if card.unit_hp != 0 else ""
 			hp_label.modulate = Color.BLACK if for_print else Color.WHITE
 		Card.Kind.SPELL:
-			if card.abilities.size() > 0 and card.abilities[0].type == CardAbility.CardAbilityType.TRIGGER:
-				kind_icon.texture = _get_card_texture("TRAP_ICON")
-			else:
-				kind_icon.texture = _get_card_texture("SPELL_ICON")
+			kind_icon.texture = _get_card_texture("SPELL_ICON")
+			hp_label.text = ""
+		Card.Kind.TRAP:
+			kind_icon.texture = _get_card_texture("TRAP_ICON")
 			hp_label.text = ""
 		Card.Kind.GRACE:
 			kind_icon.texture = _get_card_texture("GRACE_ICON")
@@ -206,7 +212,8 @@ func _refresh_generic(cardface: Node):
 		else:
 			if i == 0:
 				assert(ability_container.get_child_count() == 0)
-			var ap = ability_panel_scene.instantiate()
+			var ap_scene = ability_panel_half_scene if half_size else ability_panel_scene
+			var ap = ap_scene.instantiate()
 			ap.get_card_texture = _get_card_texture
 			ap.get_card_color = _get_card_color
 			ap.card = card
@@ -234,6 +241,11 @@ func _get_card_texture(p_name: StringName) -> Texture2D:
 		
 		if ResourceLoader.exists(print_file_path, "Texture2D"):
 			return load(print_file_path)
+	elif half_size:
+		var half_file_path := (BASE_TEXTURES[p_name] as Resource).resource_path.replace("images/", "images_half/")
+		
+		if ResourceLoader.exists(half_file_path, "Texture2D"):
+			return load(half_file_path)
 	
 	return BASE_TEXTURES[p_name]
 

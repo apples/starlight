@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardEngineDesignNote" load_steps=2 format=3 uid="uid://cp7sk6ts8jwer"]
+[gd_resource type="Resource" script_class="CardEngineDesignNote" load_steps=2 format=3 uid="uid://j18acrpf50h8"]
 
 [ext_resource type="Script" path="res://addons/card_engine/resource_types/card_engine_design_note.gd" id="1_2enpv"]
 

@@ -18,7 +18,7 @@ class Task extends CardTask:
 			return done()
 		
 		ability_instance.variables.destroyed_unit_level = \
-			ability_instance.attack_info.targets_destroyed[0].card_instance.card.level
+			ability_instance.attack_info.targets_destroyed[0].card.level
 		
 		var effect_task := effect.create_task(ability_instance)
 		

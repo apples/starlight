@@ -1,6 +1,7 @@
 @tool
 extends CardAbilityTrigger
 
+
 # Determines if the trigger can be activated based on the current event stack
 # This is a dynamically detected function:
 # The format is `handle_<event>`

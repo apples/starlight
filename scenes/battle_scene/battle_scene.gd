@@ -63,7 +63,7 @@ func reconcile():
 func _reconcile_field(state: BattleSideState, field: BattleField):
 	_reconcile_field_row(state.front_row, field.front_row)
 	_reconcile_field_row(state.back_row, field.back_row)
-	_reconcile_card(field.rulecard, state.rulecard)
+	#_reconcile_card(field.rulecard, state.rulecard)
 	field.set_grace_count(state.graces.size())
 
 func _reconcile_field_row(state_row: Array[UnitState], field_row: Array[CardPlane]):
@@ -172,9 +172,9 @@ func get_card_plane(location: ZoneLocation) -> CardPlane:
 					row.append(c)
 			assert(location.slot >= 0 && location.slot < row.size())
 			return row[location.slot]
-		ZoneLocation.Zone.Rulecard:
-			assert(location.slot == -1)
-			return field.rulecard
+		#ZoneLocation.Zone.Rulecard:
+			#assert(location.slot == -1)
+			#return field.rulecard
 		_:
 			push_error("Location %s cannot have a card plane" % [location])
 			return null
@@ -210,7 +210,7 @@ func _on_player_agent_message_received(message: BattleAgent.Message):
 
 
 func _handle_card_moved(message: MessageTypes.CardMoved):
-	var card_instance := battle_state.get_card_instance(message.uid)
+	var card_instance := battle_state.get_card_instance(message.ciid)
 	var card: Card = card_instance.card if card_instance else null
 	
 	print("<<< GOT MESADSADE >>> ", message)
@@ -251,4 +251,3 @@ func _handle_unit_tapped_changed(message: MessageTypes.UnitTappedChanged):
 
 func _handle_unit_removed(message: MessageTypes.UnitRemoved):
 	get_card_plane(message.location).reset()
-

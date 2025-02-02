@@ -64,7 +64,7 @@ signal _delete_card_dialog_closed
 func delete_card(path: String):
 	var card = load(path)
 	
-	var note = get_editor_interface().get_node("/root/CardDatabase").get_design_note(card, true)
+	var note = get_node("/root/CardDatabase").get_design_note(card, true)
 	
 	assert(card)
 	

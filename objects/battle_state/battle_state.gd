@@ -30,15 +30,15 @@ var _next_card_instance_id: int = 0:
 ## Creates a new card instance. Usually only called when loading a deck.
 func create_card_instance(card: Card, location: ZoneLocation, owner_side: ZoneLocation.Side) -> CardInstance:
 	var ci := CardInstance.new(card, _next_card_instance_id, location, owner_side)
-	all_card_instances[ci.uid] = ci
+	all_card_instances[ci.id] = ci
 	return ci
 
-## Gets the card instance for the given uid. Returns null if uid is 0.
-func get_card_instance(uid: int) -> CardInstance:
-	if uid == 0:
+## Gets the card instance for the given ciid. Returns null if ciid is 0.
+func get_card_instance(ciid: int) -> CardInstance:
+	if ciid == 0:
 		return null
-	assert(uid in all_card_instances)
-	return all_card_instances[uid]
+	assert(ciid in all_card_instances)
+	return all_card_instances[ciid]
 
 ## Declares a winner and immediately halts the gameplay fiber.
 func declare_winner(side: ZoneLocation.Side):
@@ -49,8 +49,8 @@ func setup_next_turn():
 	current_turn = ZoneLocation.flip(current_turn)
 	
 	# Clear scratch
-	for uid in all_card_instances:
-		var card_instance: CardInstance = all_card_instances[uid]
+	for ciid: int in all_card_instances:
+		var card_instance: CardInstance = all_card_instances[ciid]
 		for scratch in card_instance.ability_scratch:
 			scratch.for_turn = {}
 
@@ -88,11 +88,11 @@ func get_side_state(side: ZoneLocation.Side) -> BattleSideState:
 			push_error("Invalid side: %s" % side)
 			return null
 
-## Initializes the Rulecard card. Only called at the start of battle.
-func init_rulecard(side: ZoneLocation.Side):
-	var state = get_side_state(side)
-	for i in range(state.rulecard.card.abilities.size()):
-		_setup_passive(state.rulecard, i)
+### Initializes the Rulecard card. Only called at the start of battle.
+#func init_rulecard(side: ZoneLocation.Side):
+	#var state = get_side_state(side)
+	#for i in range(state.rulecard.card.abilities.size()):
+		#_setup_passive(state.rulecard, i)
 
 ## Shuffles the given side's deck.
 func shuffle_deck(side: ZoneLocation.Side):
@@ -136,10 +136,10 @@ func get_card_at(location: ZoneLocation) -> CardInstance:
 			return opponent.back_row[idx].card_instance if opponent.back_row[idx] else null
 		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Hand, var idx]:
 			return opponent.hand.get_card(idx)
-		[ZoneLocation.Side.Player, ZoneLocation.Zone.Rulecard, _]:
-			return player.rulecard
-		[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Rulecard, _]:
-			return opponent.rulecard
+		#[ZoneLocation.Side.Player, ZoneLocation.Zone.Rulecard, _]:
+			#return player.rulecard
+		#[ZoneLocation.Side.Opponent, ZoneLocation.Zone.Rulecard, _]:
+			#return opponent.rulecard
 		_:
 			push_warning("Not implemented")
 	return null
@@ -157,7 +157,7 @@ func deal_damage(where: ZoneLocation, amount: int, by_who: CardInstance = null) 
 	unit.damage += actual_amount
 	_info("deal_damage: to %s (%s / %s)" % [where, unit.damage, unit.card_instance.card.unit_hp])
 	broadcast_message(MessageTypes.UnitDamaged.new({
-		card_uid = unit.card_instance.uid,
+		card_uid = unit.card_instance.id,
 		location = unit.card_instance.location,
 		amount = amount,
 	}))
@@ -201,7 +201,7 @@ func get_tappable_units(controller: ZoneLocation.Side, exclude_uids: Array[int] 
 	
 	# Mana is paid by tapping units - check tappable units
 	for unit in all_units:
-		if unit.card_instance.uid in exclude_uids:
+		if unit.card_instance.id in exclude_uids:
 			continue
 		
 		if not unit.is_tapped:
@@ -222,18 +222,18 @@ func gain_tokens(who: ZoneLocation.Side, kind: TokenType, amount: int):
 		total_amount = side_state.get_token_amount(kind),
 	}))
 
-## Grants the given side a specified amount of Rulecard Charge. Can be negative.
-## Will not lower the side's rulecard charges below zero. 
-func rulecard_charge(who: ZoneLocation.Side, amount: int):
-	var side_state := get_side_state(who)
-	var actual_amount: int = max(amount, -side_state.rulecard_charge)
-	side_state.rulecard_charge += actual_amount
-	
-	trigger_event_push(TriggerEvents.RulecardCharge.new({
-		side = who,
-		amount_gained = actual_amount,
-		total_amount = side_state.rulecard_charge,
-	}))
+### Grants the given side a specified amount of Rulecard Charge. Can be negative.
+### Will not lower the side's rulecard charges below zero. 
+#func rulecard_charge(who: ZoneLocation.Side, amount: int):
+	#var side_state := get_side_state(who)
+	#var actual_amount: int = max(amount, -side_state.rulecard_charge)
+	#side_state.rulecard_charge += actual_amount
+	#
+	#trigger_event_push(TriggerEvents.RulecardCharge.new({
+		#side = who,
+		#amount_gained = actual_amount,
+		#total_amount = side_state.rulecard_charge,
+	#}))
 
 ## Pushes the ability onto the stack and starts its task. Does not check requirements.
 func ability_perform(controller: ZoneLocation.Side, card_instance: CardInstance, ability_index: int) -> AbilityInstance:
@@ -300,7 +300,7 @@ func ability_can_be_activated_by(card_instance: CardInstance, ability_index: int
 
 ## Temporarily reveals the card to both players.
 func card_reveal(card_instance: CardInstance):
-	broadcast_message(MessageTypes.CardRevealed.new({ uid = card_instance.uid }))
+	broadcast_message(MessageTypes.CardRevealed.new({ ciid = card_instance.id }))
 
 ## Returns the unit at the given location, or null if there is no unit.
 func unit_get(location: ZoneLocation) -> UnitState:
@@ -423,7 +423,7 @@ func unit_get_summon_locations(card_instance: CardInstance) -> Array[ZoneLocatio
 ##
 ## [code]
 ## {
-##     [uid: int]: Array[ability_index: int]
+##     [ciid: int]: Array[ability_index: int]
 ## }
 ## [/code]
 func get_available_activations(side: ZoneLocation.Side) -> Dictionary:
@@ -441,26 +441,26 @@ func get_available_activations(side: ZoneLocation.Side) -> Dictionary:
 		return null
 	
 	# Rulecard
-	var rulecard = check_card.call(side_state.rulecard)
-	if rulecard:
-		results[side_state.rulecard.uid] = rulecard
+	#var rulecard = check_card.call(side_state.rulecard)
+	#if rulecard:
+		#results[side_state.rulecard.ciid] = rulecard
 	
 	var process_cards = func (cards: CardZoneArray):
-		for ci in cards:
+		for ci: CardInstance in cards:
 			if not ci:
 				continue
 			var ab = check_card.call(ci)
 			if ab:
-				results[ci.uid] = ab
+				results[ci.id] = ab
 	
 	var process_units = func (units: Array[UnitState]):
-		for u in units:
+		for u: UnitState in units:
 			if not u:
 				continue
-			var ci = u.card_instance
+			var ci: CardInstance = u.card_instance
 			var ab = check_card.call(ci)
 			if ab:
-				results[ci.uid] = ab
+				results[ci.id] = ab
 	
 	process_units.call(side_state.front_row)
 	process_units.call(side_state.back_row)
@@ -479,7 +479,7 @@ func get_available_summons(side: ZoneLocation.Side) -> Array[int]:
 			continue
 		if unit_get_summon_locations(card_instance).size() == 0:
 			continue
-		results.append(card_instance.uid)
+		results.append(card_instance.id)
 	
 	return results
 
@@ -551,12 +551,12 @@ func _move_card(card_instance: CardInstance, new_location: ZoneLocation):
 	var is_hidden = from.is_hidden() and to.is_hidden()
 	
 	send_message_to(owner_side, MessageTypes.CardMoved.new({
-		uid = card_instance.uid,
+		ciid = card_instance.id,
 		from = from,
 		to = to,
 	}))
 	send_message_to(ZoneLocation.flip(owner_side), MessageTypes.CardMoved.new({
-		uid = 0 if is_hidden else card_instance.uid,
+		ciid = 0 if is_hidden else card_instance.id,
 		from = from,
 		to = to,
 	}))
@@ -590,8 +590,8 @@ func _float_card(card_instance: CardInstance):
 			assert(false, "Cannot float banished card")
 		ZoneLocation.Zone.Floating:
 			pass
-		ZoneLocation.Zone.Rulecard:
-			assert(false, "Cannot float Rulecard card")
+		#ZoneLocation.Zone.Rulecard:
+			#assert(false, "Cannot float Rulecard card")
 
 func _drop_card(card_instance: CardInstance, new_location: ZoneLocation):
 	assert(card_instance.location.zone == ZoneLocation.Zone.Floating)
@@ -626,10 +626,10 @@ func _drop_card(card_instance: CardInstance, new_location: ZoneLocation):
 			side_state.banish.add_card(card_instance)
 		ZoneLocation.Zone.Floating:
 			assert(false, "Cannot drop card to floating")
-		ZoneLocation.Zone.Rulecard:
-			assert(side_state.rulecard == null)
-			card_instance.location = new_location
-			side_state.rulecard = card_instance
+		#ZoneLocation.Zone.Rulecard:
+			#assert(side_state.rulecard == null)
+			#card_instance.location = new_location
+			#side_state.rulecard = card_instance
 
 func _teardown_passive(card_instance: CardInstance, ability_index: int):
 	var ability := card_instance.card.abilities[ability_index]

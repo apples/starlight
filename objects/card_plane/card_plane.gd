@@ -38,9 +38,7 @@ var _current_tap_tween: Tween
 var _toast_queue: Array[String] = []
 var _toast_tween: Tween
 
-@onready var subviewport := $SubViewport
-@onready var card_render := $SubViewport/CardRender
-@onready var sprite := $Sprite
+@onready var front_mesh: MeshInstance3D = $FrontMesh
 @onready var click_target: ClickTarget = %ClickTarget
 @onready var action_root := %ActionRoot
 @onready var toast_label := %ToastLabel as Label3D
@@ -95,22 +93,39 @@ func refresh():
 	click_target.location = location
 	
 	if show_card:
-		card_render.card = card
-		subviewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
-		sprite.visible = true
+		_get_front_material().set_shader_parameter("texture_albedo", null)
+		front_mesh.visible = false
 		
 		if is_tapped and _current_tap_tween_target != tween_target:
 			_refresh_tween_to(tween_target)
 		elif !is_tapped and _current_tap_tween_target == tween_target:
 			_refresh_tween_to(0)
+		
+		if card:
+			(func ():
+				_get_front_material().set_shader_parameter("texture_albedo", await CardRenderer.get_card_texture_async(card))
+				front_mesh.visible = true
+			).call()
+		
 	else:
-		sprite.visible = false
+		_get_front_material().set_shader_parameter("texture_albedo", null)
+		front_mesh.visible = false
+		
 
 func _editor_refresh():
 	assert(Engine.is_editor_hint())
 	
-	card_render.card = card
-	subviewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
+	if Engine.get_singleton("EditorInterface").get_edited_scene_root() == self:
+		return
+	
+	_get_front_material().set_shader_parameter("texture_albedo", null)
+	front_mesh.visible = false
+	
+	if card:
+		(func ():
+			_get_front_material().set_shader_parameter("texture_albedo", await CardRenderer.get_card_texture_async(card))
+			front_mesh.visible = true
+		).call()
 
 func toast(text: String):
 	_toast_queue.append(text)
@@ -123,7 +138,7 @@ func reset():
 	is_tapped = false
 	if _current_tap_tween:
 		_current_tap_tween.kill()
-	sprite.rotation_degrees = Vector3(0,0,0)
+	front_mesh.rotation_degrees = Vector3(0,0,0)
 
 
 func _refresh_tween_to(where: float):
@@ -133,8 +148,11 @@ func _refresh_tween_to(where: float):
 		.set_trans(Tween.TRANS_ELASTIC)\
 		.set_ease(Tween.EASE_IN_OUT)
 	_current_tap_tween_target = tween_target
-	_current_tap_tween.tween_property(sprite, "rotation_degrees", Vector3(0,0,where), tween_duration)
+	_current_tap_tween.tween_property(front_mesh, "rotation_degrees", Vector3(0,0,where), tween_duration)
 
+
+func _get_front_material() -> ShaderMaterial:
+	return front_mesh.get_surface_override_material(0)
 
 func _on_area_3d_input_event(_camera, event, _position, _normal, _shape_idx):
 	if click_target == null or not click_target.enabled:

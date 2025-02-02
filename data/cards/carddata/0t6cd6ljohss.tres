@@ -1,28 +1,29 @@
-[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://daegmfdom5kns"]
+[gd_resource type="Resource" script_class="Card" load_steps=17 format=3 uid="uid://daegmfdom5kns"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_jid7e"]
-[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_jyi30"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_l5wjj"]
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_rdrdj"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_6x8jt"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="2_6x8jt"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_35lak"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="6_msjja"]
+[ext_resource type="Script" path="res://data/cards/abilities/conditions/from_zones.gd" id="6_u08re"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/summon_this.gd" id="7_dbs4e"]
 
 [sub_resource type="Resource" id="Resource_hckiy"]
 script = ExtResource("1_rdrdj")
 reach = false
 reach_var = ""
 
-[sub_resource type="Resource" id="Resource_0cypl"]
-script = ExtResource("1_jyi30")
+[sub_resource type="Resource" id="Resource_1fx64"]
+script = ExtResource("6_msjja")
 tap_self = true
 mana_amount = 1
 once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_dr06l"]
 script = ExtResource("2_6x8jt")
@@ -36,29 +37,36 @@ ability_name = ""
 description = ""
 type = 2
 conditions = Array[ExtResource("2_35lak")]([SubResource("Resource_hckiy")])
-cost = SubResource("Resource_0cypl")
+cost = SubResource("Resource_1fx64")
 effect = SubResource("Resource_dr06l")
 is_uninterruptable = false
 
-[sub_resource type="Resource" id="Resource_dwt5k"]
-script = ExtResource("1_jyi30")
+[sub_resource type="Resource" id="Resource_duy2h"]
+script = ExtResource("6_u08re")
+zones = 8
+
+[sub_resource type="Resource" id="Resource_pqfab"]
+script = ExtResource("6_msjja")
 tap_self = false
 mana_amount = 0
 once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 1
+discard_kind_flags = 7
+
+[sub_resource type="Resource" id="Resource_kw3d1"]
+script = ExtResource("7_dbs4e")
 
 [sub_resource type="Resource" id="Resource_2k0u6"]
 script = ExtResource("1_l5wjj")
 ability_name = ""
-description = "While in the graveyard: Discard 1; Free summon this unit from the graveyard."
+description = "(from graveyard) discard 1 card; summon this unit from the graveyard."
 type = 1
-conditions = Array[ExtResource("2_35lak")]([])
-cost = SubResource("Resource_dwt5k")
+conditions = Array[ExtResource("2_35lak")]([SubResource("Resource_duy2h")])
+cost = SubResource("Resource_pqfab")
+effect = SubResource("Resource_kw3d1")
 is_uninterruptable = false
 
 [resource]

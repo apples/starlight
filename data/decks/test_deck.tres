@@ -23,4 +23,3 @@ script = ExtResource("2_1wpfe")
 main_deck_cards = Array[ExtResource("1_osgnf")]([SubResource("Resource_xpiay"), SubResource("Resource_fnj3j"), SubResource("Resource_bqqyo")])
 starter_unit_card_keys = Array[String](["amm93ovatw2w:0", "i8bwz5vm54h6:0"])
 grace_card_keys = Array[String](["ceufu5d0bx2k:0", "ceufu5d0bx2k:0", "ceufu5d0bx2k:0", "ceufu5d0bx2k:0", "ceufu5d0bx2k:0"])
-rulecard_card_key = "rwbfh03mfy1p:0"

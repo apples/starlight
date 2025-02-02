@@ -13,9 +13,8 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_3uarr"]
 script = ExtResource("1_ufpnq")
@@ -34,7 +33,7 @@ cardset_idx = 19
 card_name = "Suffocating Fog"
 artwork_path = "res://data/cards/artwork/suffocating_fog.png"
 mana = 2
-kind = 1
+kind = 4
 unit_hp = 0
 level = 0
 mana_value = 0

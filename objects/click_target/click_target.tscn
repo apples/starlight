@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://7xeqhx6uvn0d"]
+[gd_scene load_steps=12 format=3 uid="uid://7xeqhx6uvn0d"]
 
 [ext_resource type="Script" path="res://objects/click_target/click_target.gd" id="1_7m6by"]
 [ext_resource type="Material" uid="uid://cild4c13skl8l" path="res://objects/material_sprite/material_sprite_material.tres" id="2_1xgmc"]
 [ext_resource type="Texture2D" uid="uid://cjn42gnmsrct6" path="res://objects/card_plane/images/cursor.png" id="3_lt6ld"]
 [ext_resource type="Script" path="res://objects/material_sprite/material_sprite_3d.gd" id="4_oefvb"]
-[ext_resource type="Texture2D" uid="uid://cfiv4igjnlj0o" path="res://objects/card_plane/images/highlight.png" id="5_5l2ru"]
+[ext_resource type="Material" uid="uid://dj8sktepd6i0q" path="res://objects/click_target/click_target_highlight_material.tres" id="6_w6k8f"]
+[ext_resource type="Script" path="res://objects/click_target/inset_quad_mesh.gd" id="7_0iu4r"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jitj7"]
 transparency = 1
@@ -21,10 +22,29 @@ point_count = 2
 offsets = PackedFloat32Array(0, 0.182266, 0.70936, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.999235, 0.939927, 0, 1, 0.999235, 0.939927, 0, 1, 1, 0.944827, 0.17513, 0)
 
+[sub_resource type="PrimitiveMesh" id="PrimitiveMesh_meek4"]
+resource_local_to_scene = false
+resource_name = ""
+lightmap_size_hint = Vector2i(0, 0)
+material = ExtResource("6_w6k8f")
+custom_aabb = AABB(0, 0, 0, 0, 0, 0)
+flip_faces = false
+add_uv2 = false
+uv2_padding = 2.0
+script = ExtResource("7_0iu4r")
+orientation = 2
+size = Vector2(3.4, 4.36)
+left = 0.5
+top = 0.5
+right = 0.5
+bottom = 0.5
+
 [node name="ClickTarget" type="Node3D"]
 script = ExtResource("1_7m6by")
 
 [node name="CursorSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05)
+visible = false
 material_override = ExtResource("2_1xgmc")
 texture = ExtResource("3_lt6ld")
 script = ExtResource("4_oefvb")
@@ -54,6 +74,6 @@ scale_amount_max = 0.2
 scale_amount_curve = SubResource("Curve_vk3jl")
 color_ramp = SubResource("Gradient_j0e3p")
 
-[node name="Highlight" type="Sprite3D" parent="."]
+[node name="Highlight" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.01)
-texture = ExtResource("5_5l2ru")
+mesh = SubResource("PrimitiveMesh_meek4")

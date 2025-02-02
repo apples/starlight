@@ -1,10 +1,19 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://da04vk404718a"]
+[gd_resource type="Resource" script_class="Card" load_steps=18 format=3 uid="uid://da04vk404718a"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_xd6s7"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_jovuo"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_k4yhk"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_6wb0q"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_t06ci"]
+[ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="3_xksg3"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="4_t06ci"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/banish_self.gd" id="6_hkn6t"]
+[ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_destroyed.gd" id="6_o4482"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/summon_from_hand.gd" id="7_iep5e"]
+
+[sub_resource type="Resource" id="Resource_0qsph"]
+script = ExtResource("3_xksg3")
+reach = false
+reach_var = ""
 
 [sub_resource type="Resource" id="Resource_coyh1"]
 script = ExtResource("3_6wb0q")
@@ -14,9 +23,8 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_6hkh4"]
 script = ExtResource("4_t06ci")
@@ -29,17 +37,34 @@ script = ExtResource("1_xd6s7")
 ability_name = ""
 description = ""
 type = 2
-conditions = Array[ExtResource("2_jovuo")]([])
+conditions = Array[ExtResource("2_jovuo")]([SubResource("Resource_0qsph")])
 cost = SubResource("Resource_coyh1")
 effect = SubResource("Resource_6hkh4")
 is_uninterruptable = false
 
+[sub_resource type="Resource" id="Resource_3fhiq"]
+script = ExtResource("6_hkn6t")
+
+[sub_resource type="Resource" id="Resource_lbpml"]
+script = ExtResource("7_iep5e")
+
+[sub_resource type="Resource" id="Resource_f34wi"]
+script = ExtResource("6_o4482")
+this_unit = true
+other_own_unit = false
+opponent_unit = false
+by_this_unit = false
+
 [sub_resource type="Resource" id="Resource_e5ln2"]
 script = ExtResource("1_xd6s7")
 ability_name = ""
-description = "When this card is sent to the graveyard: Banish this card; Free summon a level 1 unit from your hand."
+description = "When this card is sent to the graveyard: banish this card; freely summon a
+Level 1 unit from your hand."
 type = 3
+trigger = SubResource("Resource_f34wi")
 conditions = Array[ExtResource("2_jovuo")]([])
+cost = SubResource("Resource_3fhiq")
+effect = SubResource("Resource_lbpml")
 is_uninterruptable = false
 
 [resource]

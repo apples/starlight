@@ -7,6 +7,7 @@ extends CardAbilityTrigger
 
 @export var by_this_unit: bool = false
 
+
 func handle_unit_destroyed(
 	e: TriggerEvents.UnitDestroyed, # The trigger event
 	battle_state: BattleState,

@@ -240,6 +240,19 @@ func _on_ability_type_option_button_item_selected(index):
 			_get_ability().passive = null
 	
 	_get_ability().type = type
+	
+	match type:
+		CAT.ATTACK:
+			if _get_ability().conditions.is_empty():
+				_get_ability().conditions.append(load("res://data/cards/abilities/conditions/basic_attack_condition.gd").new())
+			if _get_ability().cost == null:
+				var cost = load("res://data/cards/abilities/costs/generic_cost.gd").new()
+				cost.unit_target_count = 1
+				cost.unit_target_zones_var = "basic_attack_target_zones"
+				_get_ability().cost = cost
+			if _get_ability().effect == null:
+				_get_ability().effect = load("res://data/cards/abilities/effects/attack.gd").new()
+	
 	_save()
 	_refresh_visibility()
 

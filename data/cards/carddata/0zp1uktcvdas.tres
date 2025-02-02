@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_i7dsr"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_lg5rr"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_lt661"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="3_ir05l"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="3_ir05l"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_unit_destroyed.gd" id="4_5cgcy"]
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="4_7px20"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/ready_unit.gd" id="5_4g3ew"]
@@ -22,9 +22,8 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_7tyro"]
 script = ExtResource("3_ir05l")
@@ -50,9 +49,8 @@ once_per_turn = true
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_y7m84"]
 script = ExtResource("5_4g3ew")
@@ -68,7 +66,7 @@ by_this_unit = true
 [sub_resource type="Resource" id="Resource_cb5vd"]
 script = ExtResource("1_i7dsr")
 ability_name = ""
-description = "Once per turn, when this unit destroys a unit: Ready this unit."
+description = "When this unit destroys a unit: ready this unit."
 type = 3
 trigger = SubResource("Resource_lqf76")
 conditions = Array[ExtResource("2_lt661")]([])

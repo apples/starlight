@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_4ac3p"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_ruwui"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_md4tx"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_uv0ne"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="4_uv0ne"]
 
 [sub_resource type="Resource" id="Resource_idfjc"]
 script = ExtResource("3_md4tx")
@@ -14,16 +14,14 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_8d57l"]
 script = ExtResource("4_uv0ne")
 amount = 3
 amount_var = ""
 null_damage = false
-plus_damage = false
 
 [sub_resource type="Resource" id="Resource_5fqen"]
 script = ExtResource("1_q6jo1")
@@ -39,18 +37,17 @@ is_uninterruptable = false
 script = ExtResource("3_md4tx")
 tap_self = false
 mana_amount = 0
-once_per_turn = false
+once_per_turn = true
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_tclpj"]
 script = ExtResource("1_q6jo1")
 ability_name = ""
-description = "{{once_per_turn}}, Discard a card, target a unit; target readies and gains Power-1 until the end of the turn."
+description = "Discard a card, target a unit; Target readies and gains Power-1 until the end of the turn."
 type = 1
 conditions = Array[ExtResource("2_4ac3p")]([])
 cost = SubResource("Resource_sjmky")

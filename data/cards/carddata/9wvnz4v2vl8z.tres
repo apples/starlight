@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://bd06haqhyq3in"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_vn1hp"]
+[ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_y5k2s"]
+
+[resource]
+script = ExtResource("2_y5k2s")
+uid = "9wvnz4v2vl8z"
+cardset_name = "Scrap"
+cardset_idx = 0
+card_name = "Test"
+artwork_path = ""
+mana = 2
+kind = 0
+unit_hp = 0
+level = 0
+mana_value = 0
+abilities = Array[ExtResource("1_vn1hp")]([])

@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://cc6sg62cmxo3"]
+[gd_resource type="Resource" script_class="Card" load_steps=12 format=3 uid="uid://cc6sg62cmxo3"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_ba7nm"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_ok0q5"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_w8umn"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_af54d"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_34x5r"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="4_34x5r"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/coin_toss.gd" id="4_e2qmg"]
 
 [sub_resource type="Resource" id="Resource_3dmqn"]
 script = ExtResource("3_af54d")
@@ -14,25 +15,34 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
-[sub_resource type="Resource" id="Resource_ecdbs"]
+[sub_resource type="Resource" id="Resource_jygak"]
+script = ExtResource("4_34x5r")
+amount = 2
+amount_var = ""
+null_damage = false
+
+[sub_resource type="Resource" id="Resource_yn6d0"]
 script = ExtResource("4_34x5r")
 amount = 1
 amount_var = ""
 null_damage = false
-plus_damage = true
+
+[sub_resource type="Resource" id="Resource_w2j35"]
+script = ExtResource("4_e2qmg")
+on_heads = SubResource("Resource_jygak")
+on_tails = SubResource("Resource_yn6d0")
 
 [sub_resource type="Resource" id="Resource_rh1e7"]
 script = ExtResource("1_ba7nm")
 ability_name = ""
-description = "Flip a coin, if heads, this attack deals +2 base damage."
+description = "Flip a coin, if heads, this unit gains [Power+1] for this attack."
 type = 2
 conditions = Array[ExtResource("2_ok0q5")]([])
 cost = SubResource("Resource_3dmqn")
-effect = SubResource("Resource_ecdbs")
+effect = SubResource("Resource_w2j35")
 is_uninterruptable = false
 
 [resource]

@@ -1,0 +1,110 @@
+[gd_resource type="Resource" script_class="CardDeck" load_steps=23 format=3 uid="uid://dghrglu08i3la"]
+
+[ext_resource type="Script" path="res://resource_types/card/card_count.gd" id="1_0nv2j"]
+[ext_resource type="Script" path="res://resource_types/card/card_deck.gd" id="2_r1axu"]
+
+[sub_resource type="Resource" id="Resource_vjjoh"]
+script = ExtResource("1_0nv2j")
+card_key = "su1zpcyg4tvc:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_qwt8s"]
+script = ExtResource("1_0nv2j")
+card_key = "rzw93icf324s:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_qnook"]
+script = ExtResource("1_0nv2j")
+card_key = "0t6cd6ljohss:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_woglm"]
+script = ExtResource("1_0nv2j")
+card_key = "0zp1uktcvdas:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_3xk72"]
+script = ExtResource("1_0nv2j")
+card_key = "02r1uzklkw8l:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_nk1jd"]
+script = ExtResource("1_0nv2j")
+card_key = "0jp966d7conn:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_rq32p"]
+script = ExtResource("1_0nv2j")
+card_key = "lztv649ox8hc:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_kc6qh"]
+script = ExtResource("1_0nv2j")
+card_key = "1pif5fghe9t2:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_s4825"]
+script = ExtResource("1_0nv2j")
+card_key = "0jtc1r0wwsb8:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_8ekyq"]
+script = ExtResource("1_0nv2j")
+card_key = "p1c69cpaogxt:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_8cej3"]
+script = ExtResource("1_0nv2j")
+card_key = "09d5spni4qjk:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_hxb45"]
+script = ExtResource("1_0nv2j")
+card_key = "ty9mtpajgn27:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_3w70l"]
+script = ExtResource("1_0nv2j")
+card_key = "gic3xs49n74s:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_uo0em"]
+script = ExtResource("1_0nv2j")
+card_key = "0z7j47at35w0:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_teeus"]
+script = ExtResource("1_0nv2j")
+card_key = "6p7r1jjkc9dy:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_nshn7"]
+script = ExtResource("1_0nv2j")
+card_key = "h5mpcjnbzm7r:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_wutx7"]
+script = ExtResource("1_0nv2j")
+card_key = "00c6k44xambx:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_q7ka1"]
+script = ExtResource("1_0nv2j")
+card_key = "09uw1h1ke94w:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_2cy84"]
+script = ExtResource("1_0nv2j")
+card_key = "0r1o2n0lky61:0"
+count = 3
+
+[sub_resource type="Resource" id="Resource_2oyen"]
+script = ExtResource("1_0nv2j")
+card_key = "3dgxemvc6zas:0"
+count = 3
+
+[resource]
+script = ExtResource("2_r1axu")
+main_deck_cards = Array[ExtResource("1_0nv2j")]([SubResource("Resource_vjjoh"), SubResource("Resource_qwt8s"), SubResource("Resource_qnook"), SubResource("Resource_woglm"), SubResource("Resource_3xk72"), SubResource("Resource_nk1jd"), SubResource("Resource_rq32p"), SubResource("Resource_kc6qh"), SubResource("Resource_s4825"), SubResource("Resource_8ekyq"), SubResource("Resource_8cej3"), SubResource("Resource_hxb45"), SubResource("Resource_3w70l"), SubResource("Resource_uo0em"), SubResource("Resource_teeus"), SubResource("Resource_nshn7"), SubResource("Resource_wutx7"), SubResource("Resource_q7ka1"), SubResource("Resource_2cy84"), SubResource("Resource_2oyen")])
+starter_unit_card_keys = Array[String](["02r1uzklkw8l:0", "0zp1uktcvdas:0"])
+grace_card_keys = Array[String]([])

@@ -55,6 +55,16 @@ layout_mode = 2
 theme_override_constants/minimum_character_width = 10
 placeholder_text = "ALL"
 
+[node name="Label13" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "Scale
+"
+
+[node name="Scale" type="LineEdit" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1"
+
 [node name="Label11" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
 layout_mode = 2
 text = "Card Names as Filenames"
@@ -150,6 +160,15 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 button_pressed = true
+
+[node name="Label12" type="Label" parent="PanelContainer/VBoxContainer/Grid"]
+layout_mode = 2
+text = "B2 Append Hashes"
+
+[node name="B2AppendHashes" type="CheckButton" parent="PanelContainer/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="Viewports" type="Node" parent="."]
 

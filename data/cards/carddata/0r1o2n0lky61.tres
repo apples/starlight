@@ -13,14 +13,14 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_nbklb"]
 script = ExtResource("1_wla4x")
 ability_name = ""
-description = "Target a unit; Deal 3 damage to the target."
+description = "Target a unit;
+Target takes 3 damage."
 type = 1
 conditions = Array[ExtResource("2_i6p8s")]([])
 cost = SubResource("Resource_bouk5")

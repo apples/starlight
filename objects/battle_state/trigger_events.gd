@@ -46,8 +46,8 @@ class GainedTokens extends TriggerEvent:
 	var amount_gained: int
 	var total_amount: int
 
-class RulecardCharge extends TriggerEvent:
-	func get_type(): return "rulecard_charge"
-	var side: ZoneLocation.Side
-	var amount_gained: int
-	var total_amount: int
+#class RulecardCharge extends TriggerEvent:
+	#func get_type(): return "rulecard_charge"
+	#var side: ZoneLocation.Side
+	#var amount_gained: int
+	#var total_amount: int

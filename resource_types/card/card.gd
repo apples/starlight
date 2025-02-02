@@ -4,8 +4,9 @@ extends Resource
 enum Kind {
 	UNIT = 0,
 	SPELL = 1,
-	RULECARD = 2,
+	#RULECARD = 2,
 	GRACE = 3,
+	TRAP = 4,
 }
 
 enum Mana {

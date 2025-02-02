@@ -14,7 +14,7 @@ enum Zone {
 	Grace,
 	Banish,
 	Floating,
-	Rulecard,
+	#Rulecard,
 }
 
 var side: ZoneLocation.Side

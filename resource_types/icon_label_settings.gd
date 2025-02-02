@@ -10,4 +10,6 @@ extends Resource
 
 @export_custom(PROPERTY_HINT_NONE, "suffix:px") var line_spacing: int = 0
 
+@export var icon_scale: Vector2 = Vector2(1, 1)
+
 @export var icon_collection: IconCollection = null

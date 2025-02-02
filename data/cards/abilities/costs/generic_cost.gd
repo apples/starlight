@@ -12,28 +12,14 @@ extends CardAbilityCost
 @export_flags( \
 	"Opponent Back:1",
 	"Opponent Front:2",
-	"Own Front:4",
-	"Own Back:8"
-	) var unit_target_zones: int = TargetZone.OPPONENT_FRONT
+	"Own Back:4",
+	"Own Front:8",
+	) var unit_target_zones: int = FieldZoneFlags.OPPONENT_FRONT
 @export var unit_target_zones_var: String
 
-@export var discard_target_count: int = 0
+@export var discard_count: int = 0
 
-@export_flags("Own:1", "Opponent:2") var discard_target_sides: int = 1
-
-@export var rulecard_charge_cost: int = 0
-
-enum TargetZone {
-	OPPONENT_BACK = 1,
-	OPPONENT_FRONT = 2,
-	OWN_FRONT = 4,
-	OWN_BACK = 8,
-	FRONT = OPPONENT_FRONT | OWN_FRONT,
-	BACK = OPPONENT_BACK | OWN_BACK,
-	OPPONENT = OPPONENT_BACK | OPPONENT_FRONT,
-	OWN = OWN_FRONT | OWN_BACK,
-	ANY = OPPONENT | OWN,
-}
+@export_flags("Unit:1", "Spell:2", "Trap:4") var discard_kind_flags: int = 7
 
 enum DiscardSide {
 	OPPONENT = 1,
@@ -44,8 +30,8 @@ func get_property_display(prop: StringName) -> bool:
 	match prop:
 		&"unit_target_zones":
 			return unit_target_count != 0
-		&"discard_target_sides":
-			return discard_target_count != 0
+		&"discard_kind_flags":
+			return discard_count != 0
 	return true
 
 func get_mana_cost() -> int:
@@ -53,6 +39,17 @@ func get_mana_cost() -> int:
 
 func get_requires_tap() -> bool:
 	return tap_self
+
+func get_once_per_turn() -> bool:
+	return once_per_turn
+
+func get_targets() -> Array:
+	if unit_target_count:
+		return [{
+			count = unit_target_count,
+			zones = unit_target_zones_var if unit_target_zones_var else unit_target_zones,
+		}]
+	return []
 
 func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability_index: int, user_side: ZoneLocation.Side) -> bool:
 	# Cannot be paid unless controlled by user
@@ -117,24 +114,16 @@ func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability
 		if possible_locations.size() < unit_target_count:
 			return false
 	
-	# Discard targets
+	# Discards
 	
-	if discard_target_count > 0:
+	if discard_count > 0:
 		var total := 0
+		for ci: CardInstance in side_state.hand:
+			if CardKindFlags.matches(ci.card, discard_kind_flags):
+				total += 1
 		
-		if discard_target_sides & DiscardSide.OPPONENT:
-			total += battle_state.get_side_state(ZoneLocation.flip(user_side)).discard.size()
-		
-		if discard_target_sides & DiscardSide.OWN:
-			total += side_state.discard.size()
-		
-		if total < discard_target_count:
+		if total < discard_count:
 			return false
-	
-	# Rulecard charge
-	
-	if side_state.rulecard_charge < rulecard_charge_cost:
-		return false
 	
 	return true
 
@@ -144,10 +133,9 @@ class Task extends CardTask:
 	var once_per_turn: bool
 	var unit_target_count: int
 	var unit_target_zones: int
-	var discard_target_count: int
-	var discard_target_sides: int
-	var rulecard_charge_cost: int
-
+	var discard_count: int 
+	var discard_kind_flags: int
+	
 	var _choose_multi_targets = preload("res://objects/tasks/choose_multi_targets.gd")
 	
 	var _chosen_mana_sources: Array[UnitState] = []
@@ -166,7 +154,7 @@ class Task extends CardTask:
 		if mana_amount == 0:
 			return unit_target_selection()
 		
-		var tappable := battle_state.get_tappable_units(ability_instance.controller, [card_instance.uid])
+		var tappable := battle_state.get_tappable_units(ability_instance.controller, [card_instance.id])
 		
 		# Request taps
 		var m := MessageTypes.RequestManaTaps.new({
@@ -180,7 +168,7 @@ class Task extends CardTask:
 	
 	func mana_taps_chosen(chosen_locations: Array[ZoneLocation]) -> void:
 		var card_instance := ability_instance.card_instance
-		var tappable := battle_state.get_tappable_units(ability_instance.controller, [card_instance.uid])
+		var tappable := battle_state.get_tappable_units(ability_instance.controller, [card_instance.id])
 		
 		var is_tappable := func (location: ZoneLocation) -> bool:
 			for loc in tappable:
@@ -249,28 +237,26 @@ class Task extends CardTask:
 		if once_per_turn:
 			ability_instance.scratch.for_turn["once_per_turn_used"] = true
 		
-		# Rulecard charge
-		
-		battle_state.rulecard_charge(ability_instance.controller, -rulecard_charge_cost)
+		# TODO: discard
 		
 		done()
 	
 	static func _get_possible_unit_target_locations(target_zones: int, user_side: ZoneLocation.Side) -> Array[ZoneLocation]:
 		var possible_locations: Array[ZoneLocation] = []
 		
-		if target_zones & TargetZone.OPPONENT_BACK:
+		if target_zones & FieldZoneFlags.OPPONENT_BACK:
 			for i in range(4):
 				possible_locations.append(ZoneLocation.new(
 					ZoneLocation.flip(user_side), ZoneLocation.Zone.BackRow, i))
-		if target_zones & TargetZone.OPPONENT_FRONT:
+		if target_zones & FieldZoneFlags.OPPONENT_FRONT:
 			for i in range(2):
 				possible_locations.append(ZoneLocation.new(
 					ZoneLocation.flip(user_side), ZoneLocation.Zone.FrontRow, i))
-		if target_zones & TargetZone.OWN_FRONT:
+		if target_zones & FieldZoneFlags.OWN_FRONT:
 			for i in range(2):
 				possible_locations.append(ZoneLocation.new(
 					user_side, ZoneLocation.Zone.FrontRow, i))
-		if target_zones & TargetZone.OWN_BACK:
+		if target_zones & FieldZoneFlags.OWN_BACK:
 			for i in range(4):
 				possible_locations.append(ZoneLocation.new(
 					user_side, ZoneLocation.Zone.BackRow, i))

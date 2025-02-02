@@ -4,7 +4,7 @@ extends ScrollContainer
 
 var columns: Array[Control] = []
 
-var data: Array[String] = []
+var data: Array[Card] = []
 
 @onready var column_container := %Columns
 @onready var data_table_popup_menu: PopupMenu = %DataTablePopupMenu
@@ -62,8 +62,10 @@ func _column_right_clicked(column: Control, row: int):
 	data_table_popup_menu.show()
 
 
-func set_data(new_data: Array[String]):
+func set_data(new_data: Array[Card]):
 	data = new_data
+	primary_selection = -1
+	multi_selection.clear()
 	
 	if data.size() == 0:
 		for col in columns:
@@ -85,14 +87,12 @@ func set_data(new_data: Array[String]):
 func _on_data_table_popup_menu_id_pressed(id):
 	match id:
 		0: # Show in FileSystem
-			show_in_filesystem_requested.emit(data[right_click_index])
+			show_in_filesystem_requested.emit(data[right_click_index].resource_path)
 		1: # Delete
 			_delete(data[right_click_index])
 
 
-func _delete(filepath: String):
-	var card := load(filepath)
-	
+func _delete(card: Card):
 	var dialog := ConfirmationDialog.new()
 	dialog.title = "Delete card"
 	dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
@@ -103,7 +103,7 @@ func _delete(filepath: String):
 	%s
 	This cannot be undone.
 	Are you sure?
-	""" % [filepath, card.card_name]
+	""" % [card.resource_path, card.card_name]
 	
 	dialog.add_child(label)
 	add_child(dialog)
@@ -117,4 +117,4 @@ func _delete(filepath: String):
 	
 	dialog.queue_free()
 	
-	delete_requested.emit(filepath)
+	delete_requested.emit(card.resource_path)

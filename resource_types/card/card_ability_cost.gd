@@ -8,6 +8,12 @@ func get_mana_cost() -> int:
 func get_requires_tap() -> bool:
 	return false
 
+func get_once_per_turn() -> bool:
+	return false
+
+func get_targets() -> Array:
+	return []
+
 @warning_ignore("unused_parameter")
 func can_be_paid(battle_state: BattleState, card_instance: CardInstance, ability_index: int, user_side: ZoneLocation.Side) -> bool:
 	push_error("CardAbilityCost: can_be_paid() not implemented")

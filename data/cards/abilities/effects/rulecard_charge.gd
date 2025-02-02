@@ -14,6 +14,9 @@ class Task extends CardTask:
 	
 	# Start of effect execution
 	func start() -> void:
-		battle_state.rulecard_charge(ability_instance.controller, amount)
+		push_error("Not implemented!")
+		breakpoint
+		fail()
 		
-		done()
+		#battle_state.rulecard_charge(ability_instance.controller, amount)
+		#done()

@@ -1,8 +1,6 @@
 @tool
 extends CardAbilityCondition
 
-const GenericCost = preload("res://data/cards/abilities/costs/generic_cost.gd")
-
 @export var reach: bool = false
 @export var reach_var: String
 
@@ -26,9 +24,9 @@ func compute_variables(ability_instance: AbilityInstance) -> Dictionary:
 	
 	var basic_attack_target_zones: int = 0
 	if reach_v or is_front_row:
-		basic_attack_target_zones |= GenericCost.TargetZone.OPPONENT_FRONT
+		basic_attack_target_zones |= FieldZoneFlags.OPPONENT_FRONT
 	if reach_v and is_front_row:
-		basic_attack_target_zones |= GenericCost.TargetZone.OPPONENT_BACK
+		basic_attack_target_zones |= FieldZoneFlags.OPPONENT_BACK
 	
 	return {
 		basic_attack_target_zones = basic_attack_target_zones,

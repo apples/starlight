@@ -11,7 +11,7 @@ var banish: CardZoneArray = null
 var graces: CardZoneArray = null
 var starters: Array[CardInstance] = []
 
-var rulecard: CardInstance
+#var rulecard: CardInstance
 var front_row: Array[UnitState] = [null, null]
 var back_row: Array[UnitState] = [null, null, null, null]
 
@@ -19,7 +19,7 @@ var Zone := ZoneLocation.Zone
 
 var token_amounts: Dictionary = {}
 
-var rulecard_charge: int = 0
+#var rulecard_charge: int = 0
 
 func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	battle_state = bs
@@ -38,7 +38,7 @@ func _init(bs: BattleState, a: BattleAgent, s: ZoneLocation.Side):
 	
 	var card_deck := agent.get_deck()
 	
-	rulecard = battle_state.create_card_instance(CardDatabase.load_from_key(card_deck.rulecard_card_key), ZoneLocation.new(side, Zone.Rulecard), side)
+	#rulecard = battle_state.create_card_instance(CardDatabase.load_from_key(card_deck.rulecard_card_key), ZoneLocation.new(side, Zone.Rulecard), side)
 	
 	for card_count in card_deck.main_deck_cards:
 		var card := CardDatabase.load_from_key(card_count.card_key)

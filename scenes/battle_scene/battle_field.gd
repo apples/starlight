@@ -1,6 +1,6 @@
 class_name BattleField extends Node3D
 
-var rulecard: CardPlane
+#var rulecard: CardPlane
 var front_row: Array[CardPlane] = []
 var back_row: Array[CardPlane] = []
 
@@ -23,8 +23,8 @@ func _ready():
 			row.resize(idx + 1)
 		row[idx] = x
 	
-	rulecard = $FrontRow/Rulecard
-	rulecard.location = ZoneLocation.new(side, ZoneLocation.Zone.Rulecard)
+	#rulecard = $FrontRow/Rulecard
+	#rulecard.location = ZoneLocation.new(side, ZoneLocation.Zone.Rulecard)
 	
 	for i in range(back_row.size()):
 		back_row[i].location = ZoneLocation.new(

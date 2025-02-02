@@ -40,6 +40,10 @@ func _ready():
 	highlight = get_node_or_null("Highlight")
 	show_highlight(enabled)
 	
+	if highlight:
+		highlight.set_instance_shader_parameter("t0", randf_range(0.0, 1000.0))
+		highlight.set_instance_shader_parameter("r", randf_range(0.0, TAU))
+	
 	var parent = get_parent()
 	while parent != null:
 		if parent is ClickTargetGroup:
@@ -65,8 +69,7 @@ func show_highlight(on: bool) -> void:
 	if not highlight:
 		return
 	highlight.visible = on
-	if "modulate" in highlight:
-		highlight.modulate = Color.CYAN
+	highlight.set_instance_shader_parameter("color", Color.CYAN)
 
 func _on_tree_exiting():
 	group.remove_target(self)

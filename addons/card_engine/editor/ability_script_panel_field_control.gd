@@ -21,7 +21,7 @@ func _init(ability_part: Object, prop: Dictionary, create_inner_panel: Callable)
 						var v = option[1]
 						assert(v >= 0)
 						option_button.add_item(l, v)
-					option_button.select(option_button.get_item_index(value))
+					option_button.select(option_button.get_item_index(value) if value != null else option_button.get_selectable_item())
 					option_button.item_selected.connect(_on_option_button_item_selected)
 					_prop_control = option_button
 				PROPERTY_HINT_FLAGS:
@@ -34,7 +34,7 @@ func _init(ability_part: Object, prop: Dictionary, create_inner_panel: Callable)
 						assert(value_mask > 0)
 						
 						var flag_check := CheckBox.new()
-						flag_check.button_pressed = value & value_mask
+						flag_check.button_pressed = value & value_mask if value else 0
 						flag_check.pressed.connect(_on_flag_check_pressed.bind(flag_check, value_mask))
 						flags_container.add_child(flag_check)
 						
@@ -46,7 +46,10 @@ func _init(ability_part: Object, prop: Dictionary, create_inner_panel: Callable)
 				_:
 					var spinbox := SpinBox.new()
 					spinbox.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-					spinbox.value = value
+					spinbox.allow_greater = true
+					spinbox.allow_lesser = true
+					spinbox.min_value = -100
+					spinbox.value = value if value != null else 0
 					spinbox.value_changed.connect(_on_spinbox_value_changed)
 					_prop_control = spinbox
 		TYPE_STRING:
@@ -107,4 +110,3 @@ func _on_lineedit_focus_exited():
 func _on_checkbox_toggled(toggled_on: bool) -> void:
 	value = toggled_on
 	value_changed.emit(value)
-

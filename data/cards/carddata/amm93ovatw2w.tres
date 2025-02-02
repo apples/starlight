@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Card" load_steps=15 format=3 uid="uid://bovce0bh3wuoi"]
+[gd_resource type="Resource" script_class="Card" load_steps=17 format=3 uid="uid://bovce0bh3wuoi"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_1pd1v"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_og70g"]
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_omui6"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_oyuk5"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_6q4r4"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="5_ff6x5"]
 [ext_resource type="Script" path="res://data/cards/abilities/effects/boost_attack.gd" id="5_vuahj"]
 [ext_resource type="Script" path="res://data/cards/abilities/triggers/when_an_attack_is_declared.gd" id="5_xfxmt"]
 
@@ -21,9 +22,14 @@ once_per_turn = false
 unit_target_count = 1
 unit_target_zones = 3
 unit_target_zones_var = "basic_attack_target_zones"
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
+
+[sub_resource type="Resource" id="Resource_lmqfc"]
+script = ExtResource("5_ff6x5")
+amount = 2
+amount_var = ""
+null_damage = false
 
 [sub_resource type="Resource" id="Resource_nchxk"]
 script = ExtResource("1_og70g")
@@ -34,6 +40,7 @@ description = "
 type = 2
 conditions = Array[ExtResource("2_6q4r4")]([SubResource("Resource_ktyfj")])
 cost = SubResource("Resource_5f0bv")
+effect = SubResource("Resource_lmqfc")
 is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_fjwe5"]
@@ -44,9 +51,8 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_c2a8o"]
 script = ExtResource("5_vuahj")

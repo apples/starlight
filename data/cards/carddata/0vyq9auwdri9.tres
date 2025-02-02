@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_jqybt"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_su4cj"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_hgfpq"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_gviyu"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="4_gviyu"]
 
 [sub_resource type="Resource" id="Resource_1knqr"]
 script = ExtResource("3_hgfpq")
@@ -14,16 +14,14 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_5tfor"]
 script = ExtResource("4_gviyu")
 amount = 1
 amount_var = ""
 null_damage = false
-plus_damage = false
 
 [sub_resource type="Resource" id="Resource_iwuor"]
 script = ExtResource("1_blhlt")
@@ -43,14 +41,13 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_psc0d"]
 script = ExtResource("1_blhlt")
 ability_name = ""
-description = "When an attack is declared: attacker gains Power-1 for this attack."
+description = "When an attack is declared: attacker gains [Power-1] for this attack."
 type = 3
 conditions = Array[ExtResource("2_su4cj")]([])
 cost = SubResource("Resource_m8bce")

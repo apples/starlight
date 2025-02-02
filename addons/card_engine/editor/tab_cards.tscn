@@ -91,7 +91,7 @@ popup/item_1/text = "Wood"
 popup/item_1/id = 1
 popup/item_2/text = "Burn"
 popup/item_2/id = 2
-popup/item_3/text = "Darkness"
+popup/item_3/text = "Scrap"
 popup/item_3/id = 3
 popup/item_4/text = "Screet"
 popup/item_4/id = 4
@@ -308,8 +308,8 @@ script = ExtResource("6_50dyi")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(31.82, 30.345)
 layout_mode = 2
-offset_right = 308.0
-offset_bottom = 344.0
+offset_right = 31.82
+offset_bottom = 30.345
 mouse_filter = 2
 
 [node name="FitCheckButton" type="CheckButton" parent="Split/CardDetails/CardPreviewRoot"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://drp7gbrv7ff86"]
+[gd_scene load_steps=31 format=3 uid="uid://drp7gbrv7ff86"]
 
 [ext_resource type="Theme" uid="uid://c0c8ai1tjyx1y" path="res://global_theme.tres" id="1_pqk6l"]
 [ext_resource type="Script" path="res://objects/card_plane/ability_panel.gd" id="1_xs14d"]
@@ -12,8 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://bn3kln73ddqel" path="res://objects/card_plane/images/cost_icon.png" id="10_tmsa7"]
 [ext_resource type="Texture2D" uid="uid://c3okp6bvrvlru" path="res://objects/card_plane/images/cost_rt_icon.png" id="11_i1ntk"]
 [ext_resource type="Texture2D" uid="uid://cp8a5gqeenf3d" path="res://objects/card_plane/images/tap_icon.png" id="12_s1id4"]
+[ext_resource type="Texture2D" uid="uid://dx0ai6yd41lhk" path="res://objects/card_plane/images/mana_icon.png" id="13_014bo"]
 [ext_resource type="Texture2D" uid="uid://clc3kds04t8c2" path="res://objects/card_plane/images/once_per_turn.png" id="13_kwf51"]
 [ext_resource type="Script" path="res://resource_types/icon_collection.gd" id="14_nhgri"]
+[ext_resource type="Texture2D" uid="uid://dr4gqjnoto8u6" path="res://objects/card_plane/images/archery.png" id="15_8hocb"]
 [ext_resource type="Script" path="res://resource_types/icon_label_settings.gd" id="15_ndi03"]
 [ext_resource type="Script" path="res://resource_types/icon_label_highlight.gd" id="16_2b375"]
 
@@ -43,15 +45,31 @@ alignment_text_point = 12
 
 [sub_resource type="Resource" id="Resource_7y8fq"]
 script = ExtResource("9_6euvk")
+name = "mana"
+texture = ExtResource("13_014bo")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
+[sub_resource type="Resource" id="Resource_5yull"]
+script = ExtResource("9_6euvk")
 name = "once_per_turn"
 texture = ExtResource("13_kwf51")
 size = Vector2(0, 0)
 alignment_image_point = 2
 alignment_text_point = 12
 
+[sub_resource type="Resource" id="Resource_eav0u"]
+script = ExtResource("9_6euvk")
+name = "archery"
+texture = ExtResource("15_8hocb")
+size = Vector2(0, 0)
+alignment_image_point = 2
+alignment_text_point = 12
+
 [sub_resource type="Resource" id="Resource_4ch8l"]
 script = ExtResource("14_nhgri")
-icons = Array[ExtResource("9_6euvk")]([SubResource("Resource_hhnxq"), SubResource("Resource_pjk8l"), SubResource("Resource_dr0aa"), SubResource("Resource_7y8fq"), SubResource("Resource_7y8fq")])
+icons = Array[ExtResource("9_6euvk")]([SubResource("Resource_hhnxq"), SubResource("Resource_pjk8l"), SubResource("Resource_dr0aa"), SubResource("Resource_7y8fq"), SubResource("Resource_5yull"), SubResource("Resource_eav0u")])
 
 [sub_resource type="Resource" id="Resource_dshxo"]
 script = ExtResource("15_ndi03")
@@ -59,6 +77,7 @@ font = ExtResource("10_bfv6i")
 font_size = 10
 color = Color(1, 1, 1, 1)
 line_spacing = -3
+icon_scale = Vector2(1, 1)
 icon_collection = SubResource("Resource_4ch8l")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3d6h"]
@@ -72,7 +91,7 @@ anti_aliasing = false
 
 [sub_resource type="Resource" id="Resource_8sg06"]
 script = ExtResource("16_2b375")
-regex = "\\b[^.]*[:：]"
+regex = "[A-Za-a](?!{{once_per_turn}}).*?:"
 style = SubResource("StyleBoxFlat_w3d6h")
 margin_left = 1
 margin_top = -1
@@ -204,6 +223,7 @@ highlights = Array[ExtResource("16_2b375")]([SubResource("Resource_8sg06"), SubR
 
 [node name="GraceOverlays" type="MarginContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 1

@@ -310,6 +310,7 @@ func _parse_icon(icon_start: int) -> int:
 	if icon:
 		var key := { icon = icon, tok = icon_start }
 		var icon_size := icon.size if icon.size else icon.texture.get_size() if icon.texture else Vector2.ZERO
+		icon_size *= label_settings.icon_scale
 		_paragraph.add_object(
 			key,
 			icon_size,

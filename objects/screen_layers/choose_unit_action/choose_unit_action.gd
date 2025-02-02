@@ -36,5 +36,4 @@ func _on_click_target_agent_confirmed(click_target):
 
 func _on_click_target_agent_cancelled():
 	remove_screen()
-	emit_signal("action_chosen", null)
-
+	action_chosen.emit({})

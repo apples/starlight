@@ -1,28 +1,27 @@
 [gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://cvc4nrmms0aq1"]
 
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="1_gfm43"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="1_gfm43"]
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_mgs1u"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_rcggk"]
-[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_si4ot"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_xsbh0"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_mkaah"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="4_fncp8"]
 
 [sub_resource type="Resource" id="Resource_ea8g4"]
 script = ExtResource("1_mgs1u")
 reach = false
 reach_var = ""
 
-[sub_resource type="Resource" id="Resource_tuey4"]
-script = ExtResource("1_si4ot")
+[sub_resource type="Resource" id="Resource_4qodg"]
+script = ExtResource("4_fncp8")
 tap_self = true
 mana_amount = 0
 once_per_turn = false
-unit_target_count = 1
+unit_target_count = 0
 unit_target_zones = 2
-unit_target_zones_var = "basic_attack_target_zones"
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+unit_target_zones_var = ""
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_llxnt"]
 script = ExtResource("1_gfm43")
@@ -36,7 +35,7 @@ ability_name = "Singe"
 description = ""
 type = 2
 conditions = Array[ExtResource("2_mkaah")]([SubResource("Resource_ea8g4")])
-cost = SubResource("Resource_tuey4")
+cost = SubResource("Resource_4qodg")
 effect = SubResource("Resource_llxnt")
 is_uninterruptable = false
 

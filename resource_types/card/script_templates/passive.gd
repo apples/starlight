@@ -1,11 +1,6 @@
 @tool
 extends CardAbilityPassive
 
-@export var value: int
-
-class Task extends CardAbilityPassiveTask:
-	var value: int
-	
-	func handle_unit_ascended(e: TriggerEvents.UnitAscended):
-		pass
-
+@warning_ignore("unused_parameter")
+func process_trigger_event(passive_effect: PassiveEffect, trigger_event: TriggerEvent, battle_state: BattleState) -> void:
+	pass

@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://xq1v3dfbo3u5"]
+
+[ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="1_vxnib"]
+
+[node name="CardRendererSubviewport" type="Node"]
+
+[node name="Full" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(240, 336)
+render_target_update_mode = 4
+
+[node name="CardRender" parent="Full" instance=ExtResource("1_vxnib")]
+card = null

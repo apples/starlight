@@ -4,8 +4,8 @@ func start():
 	battle_state.shuffle_deck(ZoneLocation.Side.Player)
 	battle_state.shuffle_deck(ZoneLocation.Side.Opponent)
 	
-	battle_state.init_rulecard(ZoneLocation.Side.Player)
-	battle_state.init_rulecard(ZoneLocation.Side.Opponent)
+	#battle_state.init_rulecard(ZoneLocation.Side.Player)
+	#battle_state.init_rulecard(ZoneLocation.Side.Opponent)
 	
 	battle_state.summon_starters(ZoneLocation.Side.Player)
 	battle_state.summon_starters(ZoneLocation.Side.Opponent)

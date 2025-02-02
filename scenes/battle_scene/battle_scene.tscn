@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://nm2eypux40v4"]
+[gd_scene load_steps=22 format=3 uid="uid://nm2eypux40v4"]
 
 [ext_resource type="Script" path="res://objects/battle_state/battle_state.gd" id="1_6tg30"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_scene.gd" id="1_vdvqa"]
@@ -6,9 +6,10 @@
 [ext_resource type="Resource" uid="uid://ccejnbeeab8k2" path="res://data/rulesets/default_rules.tres" id="3_qp2vo"]
 [ext_resource type="Script" path="res://objects/fiber/card_fiber.gd" id="4_yrerv"]
 [ext_resource type="Script" path="res://objects/battle_agents/player_agent.gd" id="5_rmg7w"]
-[ext_resource type="Resource" uid="uid://c5ghbhv4ruu1m" path="res://data/decks/test_deck.tres" id="6_e4m36"]
+[ext_resource type="Resource" uid="uid://df0fesem5fasl" path="res://data/decks/test_wood.tres" id="6_wo6lx"]
 [ext_resource type="Script" path="res://objects/battle_agents/dummy_agent.gd" id="7_kgpwf"]
 [ext_resource type="Environment" uid="uid://bii3ud25vjalr" path="res://scenes/battle_scene/environment.tres" id="8_nvdvi"]
+[ext_resource type="Resource" uid="uid://dghrglu08i3la" path="res://data/decks/test_flame.tres" id="8_q0uu4"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_field.gd" id="8_tbdo0"]
 [ext_resource type="Script" path="res://scenes/battle_scene/battle_hand.gd" id="10_86xfy"]
 [ext_resource type="Script" path="res://objects/click_target/click_target_group.gd" id="10_kcui6"]
@@ -33,12 +34,12 @@ script = ExtResource("4_yrerv")
 
 [node name="PlayerAgent" type="Node" parent="BattleState" node_paths=PackedStringArray("battle_scene")]
 script = ExtResource("5_rmg7w")
-deck = ExtResource("6_e4m36")
+deck = ExtResource("6_wo6lx")
 battle_scene = NodePath("../..")
 
 [node name="OpponentAgent" type="Node" parent="BattleState"]
 script = ExtResource("7_kgpwf")
-deck = ExtResource("6_e4m36")
+deck = ExtResource("8_q0uu4")
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.408426, 0.912791, 0, -0.912791, 0.408426, 4.76837e-07, 23.4694, 6.16592)
@@ -110,9 +111,6 @@ font = ExtResource("14_b77ha")
 font_size = 19
 outline_size = 2
 
-[node name="Rulecard" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, -4)
-
 [node name="FrontRow1" parent="OpponentField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
 
@@ -149,9 +147,6 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 
 
 [node name="FrontRow1" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -4)
-
-[node name="Rulecard" parent="PlayerField/FrontRow" instance=ExtResource("2_mdxbd")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, -4)
 
 [node name="BackRow" type="Node3D" parent="PlayerField" node_paths=PackedStringArray("nav_right")]
 script = ExtResource("10_kcui6")
@@ -205,27 +200,33 @@ theme = ExtResource("13_41ud0")
 [node name="CardPreview" parent="UI" instance=ExtResource("13_wngi3")]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.407
-anchor_bottom = 0.407
-offset_top = -217.504
-offset_bottom = 118.496
+anchor_top = 0.0833333
+anchor_right = 0.3
+anchor_bottom = 0.833333
+offset_right = -120.0
+offset_bottom = -168.0
 grow_vertical = 2
 scale = Vector2(1.5, 1.5)
+metadata/_edit_use_anchors_ = true
 
 [node name="ScreenLabelContainer" type="CenterContainer" parent="UI"]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = -1
+anchor_top = 0.0193452
 anchor_right = 1.0
-offset_top = 67.0
-offset_bottom = 131.0
+anchor_bottom = 0.159226
 grow_horizontal = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/ScreenLabelContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/ScreenLabelContainer/PanelContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
@@ -234,7 +235,7 @@ theme_override_constants/margin_bottom = 8
 [node name="ScreenLabel" type="Label" parent="UI/ScreenLabelContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 76
+theme_override_font_sizes/font_size = 48
 script = ExtResource("15_is1p8")
 
 [node name="FiberDebug" parent="UI" node_paths=PackedStringArray("fiber") instance=ExtResource("18_mexf0")]

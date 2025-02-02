@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://dxd6df7bcc34w"]
+[gd_resource type="Resource" script_class="Card" load_steps=17 format=3 uid="uid://dxd6df7bcc34w"]
 
 [ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="1_0vfpn"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_a1xo7"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="1_ix1e0"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="2_3ue7v"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="2_3ue7v"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_n4q3k"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="3_t1uh2"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/draw.gd" id="5_bwf7c"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/if_attack_destroyed_unit.gd" id="5_n87ob"]
 
 [sub_resource type="Resource" id="Resource_f3gt5"]
 script = ExtResource("1_0vfpn")
@@ -19,25 +21,29 @@ mana_amount = 0
 once_per_turn = false
 unit_target_count = 1
 unit_target_zones = 2
-unit_target_zones_var = "basic_attack_target_zones"
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+unit_target_zones_var = ""
+discard_count = 0
+discard_kind_flags = 7
+
+[sub_resource type="Resource" id="Resource_qny54"]
+script = ExtResource("5_bwf7c")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_cux04"]
+script = ExtResource("5_n87ob")
+effect = SubResource("Resource_qny54")
 
 [sub_resource type="Resource" id="Resource_afj1w"]
 script = ExtResource("2_3ue7v")
 amount = 3
 amount_var = ""
 null_damage = false
+after_effect = SubResource("Resource_cux04")
 
 [sub_resource type="Resource" id="Resource_atprm"]
 script = ExtResource("3_t1uh2")
 ability_name = "Bites"
-description = "Bites
-Bites
-Bites
-Bites
-"
+description = "If this attack destroyed a unit, draw 1."
 type = 2
 conditions = Array[ExtResource("2_n4q3k")]([SubResource("Resource_f3gt5")])
 cost = SubResource("Resource_l4jsq")
@@ -52,9 +58,8 @@ once_per_turn = false
 unit_target_count = 0
 unit_target_zones = 2
 unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_qsqyg"]
 script = ExtResource("3_t1uh2")
@@ -78,6 +83,6 @@ artwork_path = "res://data/cards/artwork/screet.png"
 mana = 1
 kind = 0
 unit_hp = 3
-level = 0
+level = 1
 mana_value = 0
 abilities = Array[ExtResource("3_t1uh2")]([SubResource("Resource_atprm"), SubResource("Resource_qsqyg")])

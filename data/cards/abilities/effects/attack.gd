@@ -4,22 +4,26 @@ extends CardAbilityEffect
 @export var amount: int = 0
 @export var amount_var: String = ""
 @export var null_damage: bool = false
-@export var plus_damage: bool = false
-@export var effect: CardAbilityEffect
+@export var prior_effect: CardAbilityEffect
+@export var after_effect: CardAbilityEffect
 
 func get_attack_damage() -> String:
 	if null_damage:
 		return "-"
-	elif amount_var:
-		return "?"
-	elif plus_damage:
-		return str(amount) + "+"
-	return str(amount)
+	var damage_str := ""
+	if amount_var:
+		damage_str = "X"
+	else:
+		damage_str = str(amount)
+	if prior_effect:
+		damage_str += prior_effect.get_attack_suffix()
+	return damage_str
 
 class Task extends CardTask:
 	var amount: int
 	var null_damage: bool
-	var effect: CardAbilityEffect
+	var prior_effect: CardAbilityEffect
+	var after_effect: CardAbilityEffect
 	
 	func start() -> void:
 		info("amount = %s" % amount)
@@ -35,14 +39,16 @@ class Task extends CardTask:
 				if not unit:
 					continue
 				
+				var card_instance = unit.card_instance
+				
 				if battle_state.deal_damage(target, damage_amount):
-					ability_instance.attack_info.targets_destroyed.append(unit)
+					ability_instance.attack_info.targets_destroyed.append(card_instance)
 		else:
 			pass # TODO: apply null hit
 		
-		if effect == null:
+		if after_effect == null:
 			return done()
 		
-		var effect_task := effect.create_task(ability_instance)
+		var after_effect_task := after_effect.create_task(ability_instance)
 		
-		become(effect_task)
+		become(after_effect_task)

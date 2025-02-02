@@ -1,50 +1,30 @@
-[gd_scene load_steps=12 format=3 uid="uid://cp1inby5ax2i"]
+[gd_scene load_steps=11 format=3 uid="uid://cp1inby5ax2i"]
 
-[ext_resource type="PackedScene" uid="uid://kvf7e2omwxsr" path="res://objects/card_plane/card_render.tscn" id="1_2hb1l"]
 [ext_resource type="Script" path="res://objects/card_plane/card_plane.gd" id="1_q5tqm"]
+[ext_resource type="QuadMesh" uid="uid://3ib5i74rv6gk" path="res://objects/card_plane/card_plane_mesh.tres" id="2_a0h3c"]
 [ext_resource type="Shader" path="res://objects/material_sprite/material_sprite_material.gdshader" id="3_0imkw"]
+[ext_resource type="Texture2D" uid="uid://daratiau4tydb" path="res://objects/card_plane/sample_card.png" id="3_a58u5"]
 [ext_resource type="PackedScene" uid="uid://7xeqhx6uvn0d" path="res://objects/click_target/click_target.tscn" id="5_580d1"]
 [ext_resource type="Texture2D" uid="uid://scw7ioffqw1j" path="res://objects/card_plane/images/back.png" id="5_p4qor"]
-[ext_resource type="Script" path="res://objects/material_sprite/material_sprite_3d.gd" id="6_74fw4"]
 [ext_resource type="FontFile" uid="uid://0iiveksu7uw2" path="res://fonts/Silver_nodescent.ttf" id="6_a2h0i"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_c2f4v"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ieiuw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_voyud"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_0imkw")
 shader_parameter/alpha_scissor_threshold = 0.5
-shader_parameter/alpha_antialiasing_edge = 0.3
 shader_parameter/albedo = Color(1, 1, 1, 1)
-shader_parameter/albedo_texture_size = null
-shader_parameter/metallic = null
-shader_parameter/metallic_texture_channel = null
-shader_parameter/roughness = null
-shader_parameter/specular = null
 shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = null
-shader_parameter/sprite_filter_trilinear = true
-shader_parameter/texture2DAA_bias = 1.0
-shader_parameter/texture_albedo = SubResource("ViewportTexture_c2f4v")
+shader_parameter/texture_albedo = ExtResource("3_a58u5")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wxi78"]
-resource_local_to_scene = true
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gdon4"]
 render_priority = 0
 shader = ExtResource("3_0imkw")
 shader_parameter/alpha_scissor_threshold = 0.5
-shader_parameter/alpha_antialiasing_edge = 0.3
 shader_parameter/albedo = Color(1, 1, 1, 1)
-shader_parameter/albedo_texture_size = null
-shader_parameter/metallic = null
-shader_parameter/metallic_texture_channel = null
-shader_parameter/roughness = null
-shader_parameter/specular = null
 shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = null
-shader_parameter/sprite_filter_trilinear = true
-shader_parameter/texture2DAA_bias = 1.0
 shader_parameter/texture_albedo = ExtResource("5_p4qor")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_84lxg"]
@@ -54,36 +34,14 @@ size = Vector3(2.4, 3.36, 0.01)
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 script = ExtResource("1_q5tqm")
 
-[node name="SubViewport" type="SubViewport" parent="."]
-transparent_bg = true
-handle_input_locally = false
-canvas_item_default_texture_filter = 0
-size = Vector2i(240, 336)
-render_target_update_mode = 1
+[node name="FrontMesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_a0h3c")
+surface_material_override/0 = SubResource("ShaderMaterial_voyud")
 
-[node name="CardRender" parent="SubViewport" instance=ExtResource("1_2hb1l")]
-card = null
-for_print = false
-
-[node name="Sprite" type="Sprite3D" parent="."]
-material_override = SubResource("ShaderMaterial_ieiuw")
-cast_shadow = 0
-transparent = false
-double_sided = false
-alpha_cut = 1
-texture_filter = 1
-texture = SubResource("ViewportTexture_c2f4v")
-script = ExtResource("6_74fw4")
-
-[node name="SpriteBack" type="Sprite3D" parent="Sprite"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_wxi78")
-cast_shadow = 0
-transparent = false
-alpha_cut = 1
-texture_filter = 1
-texture = ExtResource("5_p4qor")
-script = ExtResource("6_74fw4")
+[node name="BackMesh" type="MeshInstance3D" parent="FrontMesh"]
+transform = Transform3D(-1, -3.82137e-15, 8.74228e-08, 3.82137e-15, 1, 8.74228e-08, -8.74228e-08, 8.74228e-08, -1, 0, 0, 0)
+mesh = ExtResource("2_a0h3c")
+surface_material_override/0 = SubResource("ShaderMaterial_gdon4")
 
 [node name="ClickTarget" parent="." instance=ExtResource("5_580d1")]
 unique_name_in_owner = true
@@ -111,6 +69,11 @@ outline_size = 60
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_84lxg")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.409)
+projection = 1
+size = 3.36
 
 [connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
 [connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]

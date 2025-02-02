@@ -7,7 +7,8 @@
 [sub_resource type="Resource" id="Resource_7l5ww"]
 script = ExtResource("1_u8sq1")
 ability_name = ""
-description = "Target an exhausted unit; Deal 2 damage to the target."
+description = "Target an exhausted unit;
+Target takes 2 damage."
 type = 1
 conditions = Array[ExtResource("2_gj41k")]([])
 is_uninterruptable = false

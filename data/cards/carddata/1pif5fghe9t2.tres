@@ -1,22 +1,54 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://duqmc3o3dplus"]
+[gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://duqmc3o3dplus"]
 
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="1_gjcye"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_liqvv"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_0o47y"]
+[ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_qm28e"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/retreat_self.gd" id="4_22nyv"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/and.gd" id="4_u56tc"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/deal_damage.gd" id="6_02y6l"]
+
+[sub_resource type="Resource" id="Resource_ei0g0"]
+script = ExtResource("3_qm28e")
+tap_self = true
+mana_amount = 0
+once_per_turn = false
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_count = 0
+discard_kind_flags = 7
+
+[sub_resource type="Resource" id="Resource_w6u8e"]
+script = ExtResource("4_22nyv")
+
+[sub_resource type="Resource" id="Resource_wjg8a"]
+script = ExtResource("6_02y6l")
+amount = 1
+amount_var = ""
+
+[sub_resource type="Resource" id="Resource_cqk8b"]
+script = ExtResource("4_u56tc")
+first_effect = SubResource("Resource_w6u8e")
+second_effect = SubResource("Resource_wjg8a")
 
 [sub_resource type="Resource" id="Resource_7t28d"]
 script = ExtResource("1_liqvv")
 ability_name = ""
-description = "This unit retreats and takes 1 damage."
+description = "This unit retreats and takes
+1 damage."
 type = 1
 conditions = Array[ExtResource("2_0o47y")]([])
+cost = SubResource("Resource_ei0g0")
+effect = SubResource("Resource_cqk8b")
 is_uninterruptable = false
 
 [sub_resource type="Resource" id="Resource_blxae"]
 script = ExtResource("1_liqvv")
 ability_name = ""
-description = "Your units gain Power+1 while this unit is on the field.
-This unit takes 1 damage at the start of your turn."
+description = "Your units have [Power+1].
+At the start of your turn, this unit takes
+1 damage."
 type = 4
 conditions = Array[ExtResource("2_0o47y")]([])
 is_uninterruptable = false

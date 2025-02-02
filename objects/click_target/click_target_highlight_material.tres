@@ -1,0 +1,30 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://dj8sktepd6i0q"]
+
+[ext_resource type="Shader" path="res://objects/click_target/click_target_highlight_shader.gdshader" id="1_guemc"]
+
+[sub_resource type="Gradient" id="Gradient_6bpew"]
+offsets = PackedFloat32Array(0.307018, 0.539474)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xcsuu"]
+noise_type = 2
+seed = 204
+frequency = 0.0443
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_cr4vt"]
+width = 128
+height = 218
+depth = 16
+invert = true
+seamless = true
+seamless_blend_skirt = 0.91
+color_ramp = SubResource("Gradient_6bpew")
+noise = SubResource("FastNoiseLite_xcsuu")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_guemc")
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/speed = 1.0
+shader_parameter/edge_power = 3.0
+shader_parameter/noise_3d = SubResource("NoiseTexture3D_cr4vt")

@@ -199,7 +199,7 @@ func _reset_fields():
 				push_error("Ability script (%s) has incorrect type for varprop %s (should be String)." % [script.resource_path, varprop_name])
 			else:
 				var variable_property_control := variable_property_control_scene.instantiate()
-				variable_property_control.variable_text = ability_part[varprop_name]
+				variable_property_control.variable_text = ability_part[varprop_name] if ability_part[varprop_name] else ""
 				variable_property_control.add_fixed_value_control(prop_control)
 				variable_property_control.set_options(variable_options)
 				

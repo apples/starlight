@@ -45,10 +45,10 @@ func process_action(action: Dictionary) -> void:
 		goto(neutral)
 
 func process_play_unit(action: Dictionary) -> void:
-	if not _require(action, ["uid"]):
+	if not _require(action, ["ciid"]):
 		return goto(neutral)
 	
-	var card_instance := battle_state.get_card_instance(action.uid)
+	var card_instance := battle_state.get_card_instance(action.ciid)
 	
 	assert(card_instance)
 	if not card_instance:
@@ -86,10 +86,10 @@ func _process_play_unit_location_chosen(location: ZoneLocation) -> void:
 	goto(neutral)
 
 func process_activate_ability(payload: Dictionary) -> void:
-	if not _require(payload, ["uid", "ability_index"]):
+	if not _require(payload, ["ciid", "ability_index"]):
 		return goto(neutral)
 	
-	var card_instance := battle_state.get_card_instance(payload.uid)
+	var card_instance := battle_state.get_card_instance(payload.ciid)
 	
 	assert(card_instance)
 	if not card_instance:
@@ -105,8 +105,11 @@ func process_activate_ability(payload: Dictionary) -> void:
 			return _process_activate_ability_unit(card_instance, index)
 		Card.Kind.SPELL:
 			return _process_activate_ability_spell(card_instance, index)
-		Card.Kind.RULECARD:
-			return _process_activate_ability_rulecard(card_instance, index)
+		#Card.Kind.RULECARD:
+			#return _process_activate_ability_rulecard(card_instance, index)
+		_:
+			breakpoint
+			return fail()
 	
 
 func _process_activate_ability_unit(card_instance: CardInstance, index: int) -> void:
@@ -150,22 +153,22 @@ func _process_activate_ability_spell(card_instance: CardInstance, index: int) ->
 	
 	wait_for(new_ability_instance.task, activate_ability_finished)
 
-func _process_activate_ability_rulecard(card_instance: CardInstance, index: int) -> void:
-	var ability: CardAbility = card_instance.card.abilities[index]
-	assert(ability != null)
-	if ability == null:
-		print("Invalid ability index: %s" % index)
-		goto(neutral)
-		return
-	
-	if ability.effect == null:
-		print("Ability has no effect! (index: %s)" % index)
-		goto(neutral)
-		return
-	
-	var new_ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
-	
-	wait_for(new_ability_instance.task, activate_ability_finished)
+#func _process_activate_ability_rulecard(card_instance: CardInstance, index: int) -> void:
+	#var ability: CardAbility = card_instance.card.abilities[index]
+	#assert(ability != null)
+	#if ability == null:
+		#print("Invalid ability index: %s" % index)
+		#goto(neutral)
+		#return
+	#
+	#if ability.effect == null:
+		#print("Ability has no effect! (index: %s)" % index)
+		#goto(neutral)
+		#return
+	#
+	#var new_ability_instance := battle_state.ability_perform(battle_state.current_turn, card_instance, index)
+	#
+	#wait_for(new_ability_instance.task, activate_ability_finished)
 
 
 func activate_ability_finished() -> void:

@@ -16,14 +16,14 @@ func handle_message(message: BattleAgent.Message):
 
 func handle_take_turn(message: MessageTypes.TakeTurn):
 	if message.available_summons.size() > 0:
-		var uid = message.available_summons.pick_random()
-		message.action_future.fulfill({ type = "play_unit", uid = uid })
+		var ciid = message.available_summons.pick_random()
+		message.action_future.fulfill({ type = "play_unit", ciid = ciid })
 		return
 	
 	if message.available_abilities.size() > 0:
-		var uid = message.available_abilities.keys().pick_random()
-		var idx = message.available_abilities[uid].pick_random()
-		message.action_future.fulfill({ type = "activate_ability", uid = uid, ability_index = idx })
+		var ciid = message.available_abilities.keys().pick_random()
+		var idx = message.available_abilities[ciid].pick_random()
+		message.action_future.fulfill({ type = "activate_ability", ciid = ciid, ability_index = idx })
 		return
 	
 	message.action_future.fulfill({ type = "end_turn" })
@@ -48,11 +48,11 @@ func handle_request_mana_taps(message: MessageTypes.RequestManaTaps):
 	message.action_future.fulfill(chosen)
 
 func handle_request_response(message: MessageTypes.RequestResponse):
-	var trigger: Dictionary = message.available_triggers.pick_random()
+	var instance_id: int = message.available_triggers.keys().pick_random()
 	
-	var ability: int = trigger.available_trigger_abilities.pick_random()
+	var ability: int = message.available_triggers[instance_id].pick_random()
 	
-	message.action_future.fulfill([trigger.card_uid, ability])
+	message.action_future.fulfill([instance_id, ability])
 
 func handle_choose_field_location(message: MessageTypes.ChooseFieldLocation):
 	message.future.fulfill(message.allowed_locations.pick_random())

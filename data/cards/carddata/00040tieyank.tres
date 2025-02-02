@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_k7sp8"]
 script = ExtResource("1_e7mrk")
 ability_name = ""
-description = "Exhaust a unit or draw 1."
+description = "Either draw 1, or choose any unit, chosen unit exhausts."
 type = 1
 conditions = Array[ExtResource("2_jvtwf")]([])
 is_uninterruptable = false

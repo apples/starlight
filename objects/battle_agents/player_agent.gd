@@ -64,55 +64,51 @@ func handle_request_mana_taps(message: MessageTypes.RequestManaTaps):
 	)
 
 func handle_request_response(message: MessageTypes.RequestResponse):
-	var screen = battle_scene.push_screen(choose_field_unit, func (screen):
-		var available_locations: Array[ZoneLocation] = []
-		for trigger in message.available_triggers:
-			var card: CardInstance = battle_state.all_card_instances[trigger.card_uid]
-			assert(card)
-			available_locations.append(card.location)
-		screen.allowed_locations = available_locations
-		var where: ZoneLocation = await screen.location_picked
-		_request_response_choose_ability(message, where)
+	var screen = battle_scene.push_screen(turn_input_screen_scene, func (screen):
+		screen.mode = screen.Mode.RESPONSE
+		screen.available_abilities = message.available_triggers
 	)
+	var action = await screen.player_action
+	message.action_future.fulfill(action)
 
-func _request_response_choose_ability(message: MessageTypes.RequestResponse, where: ZoneLocation):
-	if not where:
-		message.action_future.fulfill([])
-		return
-	
-	var card_instance := battle_state.get_card_at(where)
-	
-	# Find trigger info index
-	
-	var trigger_index := -1
-	for i in range(message.available_triggers.size()):
-		if message.available_triggers[i].card_uid == card_instance.uid:
-			trigger_index = i
-			break
-	
-	assert(trigger_index != -1)
-	if trigger_index == -1:
-		message.action_future.fulfill([])
-	
-	var trigger := message.available_triggers[trigger_index]
-	
-	battle_scene.push_screen(choose_card_ability_scene, func (screen):
-		screen.card_instance = card_instance
-		screen.allowed_ability_types.append_array([
-			CardAbility.CardAbilityType.TRIGGER,
-		])
-		screen.allowed_ability_indices = []
-		for i in trigger.available_trigger_abilities.size():
-			screen.allowed_ability_indices.append(trigger.available_trigger_abilities[i])
-		var ci_idx = await screen.ability_chosen
-		assert(ci_idx.size() == 2)
-		var ability_index: int = ci_idx[1]
-		if ability_index == -1:
-			handle_request_response(message)
-			return
-		assert(ability_index in screen.allowed_ability_indices)
-		message.action_future.fulfill([trigger.card_uid, ability_index])
-	)
+#func _request_response_choose_ability(message: MessageTypes.RequestResponse, where: ZoneLocation):
+	#if not where:
+		#message.action_future.fulfill([])
+		#return
+	#
+	#var card_instance := battle_state.get_card_at(where)
+	#
+	## Find trigger info index
+	#
+	#var trigger_index := -1
+	#for i in range(message.available_triggers.size()):
+		#if message.available_triggers[i].card_uid == card_instance.id:
+			#trigger_index = i
+			#break
+	#
+	#assert(trigger_index != -1)
+	#if trigger_index == -1:
+		#message.action_future.fulfill([])
+	#
+	#var trigger := message.available_triggers[trigger_index]
+	#
+	#battle_scene.push_screen(choose_card_ability_scene, func (screen):
+		#screen.card_instance = card_instance
+		#screen.allowed_ability_types.append_array([
+			#CardAbility.CardAbilityType.TRIGGER,
+		#])
+		#screen.allowed_ability_indices = []
+		#for i in trigger.available_trigger_abilities.size():
+			#screen.allowed_ability_indices.append(trigger.available_trigger_abilities[i])
+		#var ci_idx = await screen.ability_chosen
+		#assert(ci_idx.size() == 2)
+		#var ability_index: int = ci_idx[1]
+		#if ability_index == -1:
+			#handle_request_response(message)
+			#return
+		#assert(ability_index in screen.allowed_ability_indices)
+		#message.action_future.fulfill([trigger.card_uid, ability_index])
+	#)
 
 func handle_unit_damaged(message: MessageTypes.UnitDamaged):
 	var card_plane := battle_scene.get_card_plane(message.location)
@@ -136,7 +132,7 @@ func handle_declare_winner(message: MessageTypes.DeclareWinner):
 	)
 
 func handle_card_revealed(message: MessageTypes.CardRevealed):
-	var card_instance := battle_state.get_card_instance(message.uid)
+	var card_instance := battle_state.get_card_instance(message.ciid)
 	
 	battle_scene.push_screen(reveal_card, func (screen):
 		hold_messages = true

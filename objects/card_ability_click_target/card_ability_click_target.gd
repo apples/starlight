@@ -18,4 +18,3 @@ func _on_gui_input(event):
 func _on_mouse_entered():
 	if click_target.enabled:
 		click_target.make_current()
-

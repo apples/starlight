@@ -1,46 +1,62 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://bxd87nbi1on2d"]
+[gd_resource type="Resource" script_class="Card" load_steps=13 format=3 uid="uid://bxd87nbi1on2d"]
 
 [ext_resource type="Script" path="res://resource_types/card/card_ability.gd" id="1_lwikf"]
 [ext_resource type="Script" path="res://resource_types/card/card.gd" id="2_21jrp"]
 [ext_resource type="Script" path="res://resource_types/card/card_ability_condition.gd" id="2_g05en"]
 [ext_resource type="Script" path="res://data/cards/abilities/costs/generic_cost.gd" id="3_7pqog"]
-[ext_resource type="Script" path="res://data/cards/abilities/effects/attack_damage.gd" id="4_iakad"]
+[ext_resource type="Script" path="res://data/cards/abilities/conditions/basic_attack_condition.gd" id="3_cph8j"]
+[ext_resource type="Script" path="res://data/cards/abilities/effects/attack.gd" id="4_iakad"]
 
-[sub_resource type="Resource" id="Resource_0b868"]
+[sub_resource type="Resource" id="Resource_181gb"]
+script = ExtResource("3_cph8j")
+reach = false
+reach_var = ""
+
+[sub_resource type="Resource" id="Resource_ps8a2"]
 script = ExtResource("3_7pqog")
 tap_self = true
 mana_amount = 0
 once_per_turn = false
-unit_target_count = 0
+unit_target_count = 1
 unit_target_zones = 2
-unit_target_zones_var = ""
-discard_target_count = 0
-discard_target_sides = 1
-rulecard_charge_cost = 0
+unit_target_zones_var = "basic_attack_target_zones"
+discard_count = 0
+discard_kind_flags = 7
 
-[sub_resource type="Resource" id="Resource_ip2lx"]
+[sub_resource type="Resource" id="Resource_v16ge"]
 script = ExtResource("4_iakad")
 amount = 1
 amount_var = ""
 null_damage = false
-plus_damage = false
 
 [sub_resource type="Resource" id="Resource_feu26"]
 script = ExtResource("1_lwikf")
 ability_name = ""
-description = "Exhaust the target."
+description = "Attack target exhausts."
 type = 2
-conditions = Array[ExtResource("2_g05en")]([])
-cost = SubResource("Resource_0b868")
-effect = SubResource("Resource_ip2lx")
+conditions = Array[ExtResource("2_g05en")]([SubResource("Resource_181gb")])
+cost = SubResource("Resource_ps8a2")
+effect = SubResource("Resource_v16ge")
 is_uninterruptable = false
+
+[sub_resource type="Resource" id="Resource_v7tqv"]
+script = ExtResource("3_7pqog")
+tap_self = false
+mana_amount = 0
+once_per_turn = true
+unit_target_count = 0
+unit_target_zones = 2
+unit_target_zones_var = ""
+discard_count = 0
+discard_kind_flags = 7
 
 [sub_resource type="Resource" id="Resource_htip7"]
 script = ExtResource("1_lwikf")
 ability_name = ""
-description = "Once per turn: Either retreat or advance this unit."
+description = "Either retreat or advance this unit."
 type = 1
 conditions = Array[ExtResource("2_g05en")]([])
+cost = SubResource("Resource_v7tqv")
 is_uninterruptable = false
 
 [resource]

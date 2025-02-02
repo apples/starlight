@@ -3,6 +3,7 @@ extends CardAbilityEffect
 
 @export var amount: int = 1
 
+
 # The task which will perform the effect
 class Task extends CardTask:
 	var amount: int

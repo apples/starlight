@@ -18,13 +18,13 @@ class DeckShuffled extends BattleAgent.Message:
 
 class CardMoved extends BattleAgent.Message:
 	func get_type(): return "card_moved"
-	var uid: int
+	var ciid: int
 	var from: ZoneLocation
 	var to: ZoneLocation
 
 class CardRevealed extends BattleAgent.Message:
 	func get_type(): return "card_revealed"
-	var uid: int
+	var ciid: int
 
 class Alert extends BattleAgent.Message:
 	func get_type(): return "alert"
@@ -43,14 +43,20 @@ class ChooseFieldLocation extends BattleAgent.Message:
 
 class TakeTurn extends BattleAgent.Message:
 	func get_type(): return "take_turn"
+	## { type = "play_unit", ciid = card_instance.id }
+	## { type = "activate_ability", ciid = card_instance.id, ability_index = index }
+	## { type = "end_turn" }
+	## { type = "pass" }
 	var action_future: CardTask.Future
-	var available_abilities: Dictionary = {} ## { [uid: int]: [ability_index: int] }
+	var available_abilities: Dictionary = {} ## { [ciid: int]: [ability_index: int] }
 	var available_summons: Array[int] = []
 
 class RequestResponse extends BattleAgent.Message:
 	func get_type(): return "request_response"
+	## { type = "activate_ability", ciid = card_instance.id, ability_index = index }
+	## { type = "pass" }
 	var action_future: CardTask.Future
-	var available_triggers: Array[Dictionary] ## Array[{ card_uid: int, available_trigger_abilities: Array[int] }]
+	var available_triggers: Dictionary ## { [ciid: int]: [ability_index: int] }
 
 class RequestManaTaps extends BattleAgent.Message:
 	func get_type(): return "request_mana_taps"
